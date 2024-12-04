@@ -1,11 +1,9 @@
 ---
-title: CBR XYZ
+title: CBR Custom - News Feeds
 ---
 
 # cbr-xyz
-Repo for XYZ (replace with name of project). 
-
-This is the template for the other projects and builds up the main CI/CD pipeline
+Repo for CBR Custom - News Feeds
 
 
 ## Repo details

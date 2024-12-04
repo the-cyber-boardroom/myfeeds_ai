@@ -1,0 +1,23 @@
+name: "run-qa-tests"
+description: "run-qa-tests"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Poetry - Install Dependencies
+      uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/poetry__install@dev
+      with:
+        pip_install: '-r requirements-test.txt'
+
+    - name: Git Update Current Branch
+      uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/git__update_branch@dev
+
+    - name: Set $Version from file
+      uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/git__read_version@dev
+
+    - name: Run Unit Tests (using Poetry)
+      uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/poetry__run-unit-tests@dev
+      with:
+        test_target: 'tests/qa'
