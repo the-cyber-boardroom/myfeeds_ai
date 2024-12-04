@@ -1,0 +1,4 @@
+# for testing
+pytest
+pytest-cov
+coveralls

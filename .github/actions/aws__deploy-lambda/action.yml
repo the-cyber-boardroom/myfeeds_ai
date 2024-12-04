@@ -1,0 +1,19 @@
+name: "aws__deploy-lambda"
+description: "aws__deploy_lambda"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Poetry - Install Dependencies
+      uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/poetry__install@dev
+
+    - name: Git Update Current Branch
+      uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/git__update_branch@dev
+
+    - name: deploy lambda
+      shell: bash
+      run: |
+        echo "Deploying lambda function"        
+        poetry run python ./deploy/lambdas/Deploy_Lambda__OSBot_LLMs.py

@@ -1,0 +1,8 @@
+services:
+  cbr_xyz:
+    build:
+      context: ../../..
+      dockerfile: ./deploy/docker/cbr_xyz__from_pip/Dockerfile
+    platform: linux/amd64
+    container_name: cbr_xyz__from_pip
+    tty: true
