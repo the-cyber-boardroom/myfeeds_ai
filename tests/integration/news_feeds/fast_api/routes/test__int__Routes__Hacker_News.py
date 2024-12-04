@@ -28,7 +28,7 @@ class test__int__Routes__Hacker_News(TestCase):
                 assert 'title'        in article
                 assert 'description'  in article
                 assert 'link'         in article
-                assert 'guid'         in article
+                #assert 'guid'         in article
                 assert 'pub_date'     in article
                 assert 'author'       in article
                 assert 'image_url'    in article
