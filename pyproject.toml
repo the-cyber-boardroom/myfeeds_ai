@@ -1,6 +1,6 @@
 [tool.poetry]
 name        = "cbr_custom_news_feeds"
-version     = "v0.2.0"
+version     = "v1.0.2"
 description = "CBR Custom - News Feeds"
 authors     = ["Dinis Cruz <dinis.cruz@owasp.org>"]
 license     = "Apache 2.0"
