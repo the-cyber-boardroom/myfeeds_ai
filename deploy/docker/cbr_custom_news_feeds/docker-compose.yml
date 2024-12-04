@@ -1,0 +1,8 @@
+services:
+  cbr_custom_news_feeds:
+    build:
+      context: ../../..
+      dockerfile: ./deploy/docker/cbr_custom_news_feeds/Dockerfile
+    platform: linux/amd64
+    container_name: cbr_custom_news_feeds
+    tty: true

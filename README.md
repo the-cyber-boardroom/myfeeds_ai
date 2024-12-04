@@ -1,14 +1,12 @@
 ---
-title: CBR XYZ
+title: CBR Custom - News Feeds
 ---
 
 # cbr-xyz
-Repo for XYZ (replace with name of project). 
-
-This is the template for the other projects and builds up the main CI/CD pipeline
+Repo for CBR Custom - News Feeds
 
 
 ## Repo details
 
-![Current Release](https://img.shields.io/badge/release-v0.8.1-blue)
+![Current Release](https://img.shields.io/badge/release-v0.1.1-blue)
 

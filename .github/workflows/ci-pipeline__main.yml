@@ -8,9 +8,9 @@ on:
 env:
   GIT__BRANCH      : 'main'
   RELEASE_TYPE     : 'major'
-  PACKAGE_NAME     : 'cbr_xyz'
+  PACKAGE_NAME     : 'cbr_custom_news_feeds'
   DOCKER__CONTEXT  : "."
-  DOCKER__FILE     : './deploy/docker/cbr_xyz/Dockerfile'
+  DOCKER__FILE     : './deploy/docker/cbr_custom_news_feeds/Dockerfile'
 
 jobs:
 
@@ -21,6 +21,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: "run-tests"
         uses: ./.github/actions/run-tests
+        env:
+          AWS_ACCOUNT_ID       : ${{ secrets.AWS_ACCOUNT_ID__654654216424        }}
+          AWS_ACCESS_KEY_ID    : ${{ secrets.AWS_ACCESS_KEY_ID__654654216424     }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY__654654216424 }}
+          AWS_DEFAULT_REGION   : ${{ secrets.AWS_DEFAULT_REGION__654654216424    }}
 
   increment-tag:
     name: Increment Tag - Main
@@ -84,3 +89,18 @@ jobs:
           AWS_DEFAULT_REGION    : ${{ secrets.AWS_DEFAULT_REGION__654654216424    }}
     needs:
       - publish-to-aws-ecr
+
+  run-qa-tests:
+    name: "Run QA Tests"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run Tests and Integration Tests
+        uses: ./.github/actions/aws__run-qa-tests
+        env:
+          AWS_ACCOUNT_ID        : ${{ secrets.AWS_ACCOUNT_ID__654654216424        }}
+          AWS_ACCESS_KEY_ID     : ${{ secrets.AWS_ACCESS_KEY_ID__654654216424     }}
+          AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY__654654216424 }}
+          AWS_DEFAULT_REGION    : ${{ secrets.AWS_DEFAULT_REGION__654654216424    }}
+    needs:
+      - deploy-lambda-function
