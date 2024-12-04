@@ -4,7 +4,7 @@ class Model__Hacker_News__Article(Type_Safe):  # Schema for a single Hacker News
     title      : str
     description: str
     link       : str
-    guid       : str
+    #guid       : str                           # todo: review this since in the current feed the guid is just the link
     pub_date   : str
     author     : str
     image_url  : str

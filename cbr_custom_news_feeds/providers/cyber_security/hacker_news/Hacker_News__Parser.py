@@ -79,7 +79,7 @@ class Hacker_News__Parser(Type_Safe):                                           
         return Model__Hacker_News__Article(title       = self.get_element_text(item, 'title')      ,
                                          description  = description                                 ,
                                          link        = self.get_element_text(item, 'link')         ,
-                                         guid        = self.get_element_text(item, 'guid')         ,
+                                         #guid        = self.get_element_text(item, 'guid')         ,       # todo: review this since in the current feed the guid is just the link
                                          pub_date    = self.get_element_text(item, 'pubDate')      ,
                                          author      = self.get_element_text(item, 'author')       ,
                                          image_url   = image_url                                   )
