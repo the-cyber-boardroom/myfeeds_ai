@@ -1,5 +1,5 @@
-from unittest                               import TestCase
-from starlette.testclient                   import TestClient
+from unittest             import TestCase
+from starlette.testclient import TestClient
 
 from cbr_custom_news_feeds.lambdas.handler import app
 

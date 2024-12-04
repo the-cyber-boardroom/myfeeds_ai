@@ -1,6 +1,7 @@
-from unittest                                            import TestCase
-from cbr_custom_news_feeds.fast_api.News_Feeds__Fast_API import News_Feeds__Fast_API
-from cbr_custom_news_feeds.fast_api.routes.Routes__Info  import ROUTES_PATHS__INFO
+from unittest                                                   import TestCase
+from cbr_custom_news_feeds.fast_api.News_Feeds__Fast_API        import News_Feeds__Fast_API
+from cbr_custom_news_feeds.fast_api.routes.Routes__Hacker_News  import ROUTES_PATHS__HACKER_NEWS
+from cbr_custom_news_feeds.fast_api.routes.Routes__Info         import ROUTES_PATHS__INFO
 
 
 class test_News_Feeds__Fast_API(TestCase):
@@ -16,8 +17,9 @@ class test_News_Feeds__Fast_API(TestCase):
         self.fast_api.setup()
         routes = self.fast_api.routes_paths()
 
-        assert routes == sorted(['/', '/config/info', '/config/status', '/config/version'] \
-                                 + ROUTES_PATHS__INFO                                      )
+        assert routes == sorted(['/', '/config/info', '/config/status', '/config/version']  \
+                                 + ROUTES_PATHS__INFO                                       \
+                                 + ROUTES_PATHS__HACKER_NEWS                                )
 
 
 
