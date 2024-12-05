@@ -33,17 +33,7 @@ class test__int__Routes__Hacker_News(TestCase):
                 assert 'author'       in article
                 assert 'image_url'    in article
 
-    # def test_get_articles(self):
-    #     with self.routes_hacker_news as _:
-    #         articles = _.get_articles()
-    #         assert isinstance(articles, list)
-    #         assert len(articles) > 0
-    #
-    #         article = articles[0]
-    #         assert 'title'       in article
-    #         assert 'description' in article
-    #         assert 'link'        in article
-    #         assert 'guid'        in article
-    #         assert 'pub_date'    in article
-    #         assert 'author'      in article
-    #         assert 'image_url'   in article
+    def test_prompt_analysis(self):
+        with self.routes_hacker_news as _:
+            feed_data = _.prompt_analysis()
+            assert "prompt" in feed_data
