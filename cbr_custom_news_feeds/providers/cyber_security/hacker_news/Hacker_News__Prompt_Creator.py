@@ -16,7 +16,7 @@ Please provide:
 4. Potential implications for organizations and security professionals"""
 
 PROMPT_SCHEMA = """The following data is from {feed_title} feed collected at {last_build}. 
-There are {article_count} articles using the Hacker News schema with fields: title, description, link, pub_date, author, image_url
+There are {article_count} articles using the Hacker News schema with fields: title, description, link, data, author, summary
 
 Current Articles:
 {articles}"""

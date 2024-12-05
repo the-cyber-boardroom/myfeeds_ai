@@ -1,12 +1,8 @@
-from unittest                                                                             import TestCase
-from unittest.mock import patch
-
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content import Hacker_News__Http_Content
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import \
-    Model__Hacker_News__Article
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed import \
-    Model__Hacker_News__Feed
-
+from unittest                                                                                      import TestCase
+from unittest.mock                                                                                 import patch
+from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content          import Hacker_News__Http_Content
+from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
+from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
 
 class test_Hacker_News__Http_Content(TestCase):
 
@@ -49,8 +45,10 @@ class test_Hacker_News__Http_Content(TestCase):
 
     def test_get_feed_data(self):
         with self.http_content as target:
-            data = target.get_feed_data()
-            assert isinstance(data, dict)
+            news_feed = target.get_feed_data()
+            data      = news_feed.json()
+            assert type(news_feed) is Model__Hacker_News__Feed
+            assert type(data     ) is dict
             assert isinstance(data['articles'], list)
             assert 'title'           in data
             assert 'link'            in data
@@ -73,8 +71,7 @@ class test_Hacker_News__Http_Content(TestCase):
             assert 'image_url'   in article
 
 
-    @patch(
-        'cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
+    @patch('cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
     def test_get_prompt_analysis(self, mock_get_feed_data):  # Test analysis prompt creation
         mock_get_feed_data.return_value = self.sample_feed
 
