@@ -70,25 +70,10 @@ class test_Hacker_News__Http_Content(TestCase):
             assert 'author'      in article
             assert 'image_url'   in article
 
-
-    @patch('cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
-    def test_get_prompt_analysis(self, mock_get_feed_data):  # Test analysis prompt creation
-        mock_get_feed_data.return_value = self.sample_feed
-
-        with self.http_content as _:
-            prompt = _.get_prompt_analysis(size=1)
-
-            assert "The Hacker News" in prompt  # Check feed details
-            assert "Test Article" in prompt  # Check article content
-            assert "current cybersecurity landscape" in prompt  # Check prompt format
-
-            mock_get_feed_data.assert_called_once()  # Verify feed data was fetched
-
-
-    @patch(
-        'cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
-    def test_get_prompt_schema(self, mock_get_feed_data):  # Test schema prompt creation
-        mock_get_feed_data.return_value = self.sample_feed
+    # todo: remove this patch once we have added the DB_S3 support
+    @patch('cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.feed_data')
+    def test_get_prompt_schema(self, mock_feed_data):  # Test schema prompt creation
+        mock_feed_data.return_value = self.sample_feed
 
         with self.http_content as _:
             prompt = _.feed_prompt(size=1)
@@ -97,18 +82,30 @@ class test_Hacker_News__Http_Content(TestCase):
             assert "Test Article" in prompt  # Check article content
             assert "Hacker News schema" in prompt  # Check schema information
 
-            mock_get_feed_data.assert_called_once()  # Verify feed data was fetched
+            mock_feed_data.assert_called_once()  # Verify feed data was fetched
 
+    # @patch('cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
+    # def test_get_prompt_analysis(self, mock_get_feed_data):  # Test analysis prompt creation
+    #     mock_get_feed_data.return_value = self.sample_feed
+    #
+    #     with self.http_content as _:
+    #         prompt = _.get_prompt_analysis(size=1)
+    #
+    #         assert "The Hacker News" in prompt  # Check feed details
+    #         assert "Test Article" in prompt  # Check article content
+    #         assert "current cybersecurity landscape" in prompt  # Check prompt format
+    #
+    #         mock_get_feed_data.assert_called_once()  # Verify feed data was fetched
 
-    @patch('cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
-    def test_get_prompt_executive(self, mock_get_feed_data):  # Test executive prompt creation
-        mock_get_feed_data.return_value = self.sample_feed
-
-        with self.http_content as _:
-            prompt = _.get_prompt_executive(size=1)
-
-            assert "Test Article" in prompt  # Check article title
-            assert "cybersecurity news headlines" in prompt  # Check prompt format
-            assert "Test Description" not in prompt  # Verify only headlines included
-
-            mock_get_feed_data.assert_called_once()
+    # @patch('cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
+    # def test_get_prompt_executive(self, mock_get_feed_data):  # Test executive prompt creation
+    #     mock_get_feed_data.return_value = self.sample_feed
+    #
+    #     with self.http_content as _:
+    #         prompt = _.get_prompt_executive(size=1)
+    #
+    #         assert "Test Article" in prompt  # Check article title
+    #         assert "cybersecurity news headlines" in prompt  # Check prompt format
+    #         assert "Test Description" not in prompt  # Verify only headlines included
+    #
+    #         mock_get_feed_data.assert_called_once()

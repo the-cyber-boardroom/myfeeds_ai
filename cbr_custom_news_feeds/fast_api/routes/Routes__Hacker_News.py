@@ -3,10 +3,8 @@ from starlette.responses                import PlainTextResponse
 
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content import Hacker_News__Http_Content
 
-ROUTES_PATHS__HACKER_NEWS = [ '/hacker-news/feed'            ,
-                              '/hacker-news/prompt-analysis' ,
-                              '/hacker-news/prompt-schema'   ,
-                              '/hacker-news/prompt-executive']
+ROUTES_PATHS__HACKER_NEWS = [ '/hacker-news/feed'        ,
+                              '/hacker-news/feed-prompt' ]
 
 
 class Routes__Hacker_News(Fast_API_Routes):

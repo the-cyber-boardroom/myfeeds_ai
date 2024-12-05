@@ -9,16 +9,15 @@ homepage    = "https://github.com/the-cyber-boardroom/cbr-custom--news-feeds"
 repository  = "https://github.com/the-cyber-boardroom/cbr-custom--news-feeds"
 
 [tool.poetry.dependencies]
-python          = "^3.11"
-osbot-utils     = "*"
-osbot-aws       = "*"
-osbot-fast-api  = "*"
-mangum          = "*"
-httpx           = "*"
-uvicorn         = "*"
-bs4             = "*"
-pytest = "^8.3.4"
-
+python             = "^3.11"
+osbot-utils        = "*"
+osbot-aws          = "*"
+osbot-fast-api     = "*"
+osbot-local-stack  = "*"
+mangum             = "*"
+httpx              = "*"
+uvicorn            = "*"
+bs4                = "*"
 
 [build-system]
 requires        = ["poetry-core>=1.0.0"]
