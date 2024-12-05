@@ -14,28 +14,15 @@ class Hacker_News__Http_Content(Type_Safe):                 # Handler for fetchi
         url = url_join_safe(self.server, path)
         return requests.get(url, params=params)
 
-    def get_feed_content(self) -> str:                     # Fetch the RSS feed content
+    def feed_content(self) -> str:                              # Fetch the RSS feed content
         path = 'TheHackersNews'
         return self.requests_get(path).text
 
-    def get_feed_data(self):                              # Fetch and parse the RSS feed into structured data
-        feed_content = self.get_feed_content()
+    def feed_data(self):                                        # Fetch and parse the RSS feed into structured data
+        feed_content = self.feed_content()
         parser = Hacker_News__Parser().setup(feed_content)
         return parser.parse_feed()
 
-    def get_prompt_analysis(self, size=5):  # Get analysis prompt from feed data with specified size
-
-        feed_data = self.get_feed_data()
-        return self.prompt_creator.create_prompt_analysis(feed_data, size)
-
-    def get_prompt_schema(self, size=5):  # Get schema prompt from feed data with specified size
-        feed_data = self.get_feed_data()
+    def feed_prompt(self, size=5):                            # Get schema prompt from feed data with specified size
+        feed_data = self.feed_data()
         return self.prompt_creator.create_prompt_schema(feed_data, size)
-
-    def get_prompt_executive(self, size=3):                                         # Get executive prompt from feed data with specified size
-        feed_data = self.get_feed_data()
-        return self.prompt_creator.create_prompt_executive(feed_data, size)
-
-    # def get_articles(self):                             # Get only the articles from the feed
-    #     feed_data = self.get_feed_data()
-    #     return feed_data['articles']

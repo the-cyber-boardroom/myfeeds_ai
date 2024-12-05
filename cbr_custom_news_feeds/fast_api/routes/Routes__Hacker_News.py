@@ -14,21 +14,16 @@ class Routes__Hacker_News(Fast_API_Routes):
     http_content: Hacker_News__Http_Content
 
     def feed(self):                                         # Get the complete feed data
-        return self.http_content.get_feed_data().json()
+        return self.http_content.feed_data().json()
 
     def prompt_analysis(self, size:int=5):
-        return { "prompt" : self.http_content.get_prompt_analysis(size=size)}
+        return { "prompt" : self.http_content.feed_prompt(size=size)}
 
-    def prompt_schema(self, size:int=5):
+    def feed_prompt(self, size:int=5):
         #return { "prompt" : self.http_content.get_prompt_schema(size=size) }
-        return PlainTextResponse(self.http_content.get_prompt_schema(size=size))
+        return PlainTextResponse(self.http_content.feed_prompt(size=size))
 
-
-    def prompt_executive(self, size:int=5):
-        return { "prompt" : self.http_content.get_prompt_executive(size=size) }
 
     def setup_routes(self):
-        self.add_route_get(self.feed                )
-        self.add_route_get(self.prompt_analysis )
-        self.add_route_get(self.prompt_schema   )
-        self.add_route_get(self.prompt_executive)
+        self.add_route_get(self.feed        )
+        self.add_route_get(self.feed_prompt )

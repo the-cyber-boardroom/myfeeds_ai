@@ -1,0 +1,42 @@
+### good list of feeds
+
+ - https://github.com/mrtouch93/awesome-security-feed
+ - https://rss.feedspot.com/cyber_security_rss_feeds/
+
+### with RSS feeds
+
+ - https://securityaffairs.com/ : https://feeder.co/discover/5f3bb36868/securityaffairs-co-wordpress
+ - https://krebsonsecurity.com: https://krebsonsecurity.com/feed/
+
+ - https://talkback.sh/ - https://talkback.sh/feeds/
+        https://talkback.sh/resources/feed/
+        https://talkback.sh/resources/feed/news/
+        https://talkback.sh/resources/feed/tech/
+
+   - https://www.ncsc.gov.uk/section/keep-up-to-date/ncsc-news?q=&defaultTypes=news,information&sort=date%2Bdesc
+       https://www.ncsc.gov.uk/api/1/services/v1/news-rss-feed.xml
+       see also  https://www.ncsc.gov.uk/api/1/services/v1/all-rss-feed.xml
+    - Schneier on Security RSS Feed
+        https://www.schneier.com/feed/atom/
+
+     -  CSO Online RSS Feed
+            https://www.csoonline.com/feed/
+
+     - Troy Hunt RSS Feed
+            https://www.troyhunt.com/rss/
+
+     - https://www.darkreading.com/
+            https://www.darkreading.com/rss.xml
+
+     - We Live Security RSS Feed
+            https://feeds.feedburner.com/eset/blog
+
+     - Infosecurity Magazine - https://www.infosecurity-magazine.com/news/
+            https://www.infosecurity-magazine.com/rss/news/
+
+
+- List of other media APIs:
+     - https://en.wikipedia.org/wiki/List_of_news_media_APIs
+     - the BBC doesn't have a public API for their news: https://www.perplexity.ai/search/hi-does-the-bbc-have-an-api-to-SZDP2YDiT6ytCDuIpLUzkQ
+
+

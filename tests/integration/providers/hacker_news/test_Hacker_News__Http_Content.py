@@ -35,7 +35,7 @@ class test_Hacker_News__Http_Content(TestCase):
 
     def test_get_feed_content(self):
         with self.http_content as target:
-            content = target.get_feed_content()
+            content = target.feed_content()
             assert isinstance(content, str)
             assert len(content) > 0
             assert '<?xml' in content
@@ -45,7 +45,7 @@ class test_Hacker_News__Http_Content(TestCase):
 
     def test_get_feed_data(self):
         with self.http_content as target:
-            news_feed = target.get_feed_data()
+            news_feed = target.feed_data()
             data      = news_feed.json()
             assert type(news_feed) is Model__Hacker_News__Feed
             assert type(data     ) is dict
@@ -91,7 +91,7 @@ class test_Hacker_News__Http_Content(TestCase):
         mock_get_feed_data.return_value = self.sample_feed
 
         with self.http_content as _:
-            prompt = _.get_prompt_schema(size=1)
+            prompt = _.feed_prompt(size=1)
 
             assert "The Hacker News" in prompt  # Check feed details
             assert "Test Article" in prompt  # Check article content
