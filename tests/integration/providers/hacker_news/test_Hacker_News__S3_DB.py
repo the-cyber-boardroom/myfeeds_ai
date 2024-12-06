@@ -10,7 +10,7 @@ class test_Hacker_News__S3_DB(TestCase):
     @classmethod
     def setUpClass(cls):
         cbr_website__assert_local_stack()
-        cls.s3_db_hacker_news = Hacker_News__S3_DB()#setup()            #.setup() will create the DB
+        cls.s3_db_hacker_news = Hacker_News__S3_DB().setup()            #.setup() will create the DB
 
     def test__init__(self):
         with self.s3_db_hacker_news as _:
