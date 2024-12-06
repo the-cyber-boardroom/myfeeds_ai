@@ -407,13 +407,13 @@ files = [
 
 [[package]]
 name = "osbot-aws"
-version = "2.37.11"
+version = "2.37.13"
 description = "OWASP Security Bot - AWS"
 optional = false
 python-versions = "<4.0,>=3.7"
 files = [
-    {file = "osbot_aws-2.37.11-py3-none-any.whl", hash = "sha256:b31c61c1c0dc05fd1159bd2f0a56252237fc5a020a9f835507ea1d4629158a36"},
-    {file = "osbot_aws-2.37.11.tar.gz", hash = "sha256:c814301a7b375dc30335794bc54cecfb69a82cd7e0ed4720f673ebbea69a9a42"},
+    {file = "osbot_aws-2.37.13-py3-none-any.whl", hash = "sha256:6dfac3650b31c320a021d4c21b65095909fee3694d1aaa9dd34ab01d488011f9"},
+    {file = "osbot_aws-2.37.13.tar.gz", hash = "sha256:a3b386d858815b1ade33b079a224888579cbc77ac0acb16e3d4f411d3f7789ab"},
 ]
 
 [package.dependencies]
@@ -454,13 +454,13 @@ osbot-aws = "*"
 
 [[package]]
 name = "osbot-utils"
-version = "1.85.0"
+version = "1.86.0"
 description = "OWASP Security Bot - Utils"
 optional = false
 python-versions = "<4.0,>=3.7"
 files = [
-    {file = "osbot_utils-1.85.0-py3-none-any.whl", hash = "sha256:82332c9e4f15c173fe0aa466693251d7876a414f0c73a90ca0f1f9736ea504ec"},
-    {file = "osbot_utils-1.85.0.tar.gz", hash = "sha256:c8fbd8ccb8f5fc68f96801cff9180f1847935876aa8e0896a9de6fec59bc0554"},
+    {file = "osbot_utils-1.86.0-py3-none-any.whl", hash = "sha256:2fa764468ca321d8abf9c14a45688a7f8f5458c91abe8d5cb0e7662c34b28d4b"},
+    {file = "osbot_utils-1.86.0.tar.gz", hash = "sha256:a407e1b95201bbd8b177251b128c98d135c7bd02dce97934968a8f4113d58bf2"},
 ]
 
 [[package]]

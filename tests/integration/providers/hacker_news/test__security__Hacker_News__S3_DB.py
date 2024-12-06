@@ -2,13 +2,13 @@ from unittest                                                                   
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator  import Hacker_News__S3__Key_Generator
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker__News__S3_DB             import Hacker_News__S3_DB
 from osbot_utils.helpers.Safe_Id                                                                import Safe_Id
-from osbot_utils.utils.Misc                                                                     import random_text
 
 class test__security__Hacker_News__S3_DB(TestCase):
 
     @classmethod
     def setUpClass(cls):
         cls.s3_db_hacker_news = Hacker_News__S3_DB()
+        cls.s3_db_hacker_news.s3_key_generator.split_when = False
 
     def test__init__(self):
         with self.s3_db_hacker_news as _:
@@ -41,7 +41,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
                     assert pattern not in safe_file, f"Unsafe pattern {pattern} found in {safe_file}"
 
                 # Verify the final S3 key is properly sanitized
-                result = _.s3_key(area=safe_area, file_id=good_file_id)
+                result = _.s3_key_generator.s3_key(area=safe_area, file_id=good_file_id)
                 assert result.startswith('public-data/'), f"Invalid S3 key structure: {result}"
                 assert result.endswith('.json'), f"Invalid S3 key extension: {result}"
                 assert result == f"public-data/{safe_area}/{when_path_elements}/{good_file_id}.json"
@@ -71,7 +71,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
                 for char in unsafe_chars:
                     assert char not in safe_id, f"Unsafe character {char} found in {safe_id}"
 
-                result = _.s3_key(area=safe_id, file_id=good_file_id)                                 # Verify S3 key generation works with sanitized value
+                result = _.s3_key_generator.s3_key(area=safe_id, file_id=good_file_id)                                 # Verify S3 key generation works with sanitized value
                 assert '//' not in result, f"Double slash found in S3 key: {result}"
                 assert result.count('/') >= 2, f"Invalid path structure in S3 key: {result}"
                 assert result == f"public-data/{safe_id}/{when_path_elements}/{good_file_id}.json"
@@ -89,12 +89,12 @@ class test__security__Hacker_News__S3_DB(TestCase):
 
             for invalid_input in invalid_types:
                 with self.assertRaises(ValueError) as context:                          # Test area parameter
-                    _.s3_key(area=invalid_input, file_id='valid-file')
+                    _.s3_key_generator.s3_key(area=invalid_input, file_id='valid-file')
                 assert "type" in str(context.exception).lower()
 
 
                 with self.assertRaises(ValueError) as context:                          # Test file_id parameter
-                    _.s3_key(area='valid-area', file_id=invalid_input)
+                    _.s3_key_generator.s3_key(area='valid-area', file_id=invalid_input)
                 assert "type" in str(context.exception).lower()
 
     def test__security__s3_key__encoding_handling(self):                                           # Test that various encoding attempts are properly sanitized
@@ -118,7 +118,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
                 for char in control_chars:
                     assert char not in safe_id, f"Control character found in {safe_id}"
 
-                result = _.s3_key(area=safe_id, file_id='valid-file')                               # Verify S3 key is properly formatted
+                result = _.s3_key_generator.s3_key(area=safe_id, file_id='valid-file')                               # Verify S3 key is properly formatted
                 assert result.startswith('public-data/'), f"Invalid S3 key prefix: {result}"
                 assert len(result.split('/')) >= 3, f"Invalid path depth in S3 key: {result}"
                 assert result == f"public-data/{safe_id}/{when_path_elements}/valid-file.json"
