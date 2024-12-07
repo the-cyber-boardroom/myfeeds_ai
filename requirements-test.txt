@@ -1,4 +1,5 @@
 # for testing
 pytest
 pytest-cov
-coveralls
+#coveralls
+requests-cache
