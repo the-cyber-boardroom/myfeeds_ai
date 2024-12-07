@@ -309,13 +309,13 @@ trio = ["trio (>=0.22.0,<1.0)"]
 
 [[package]]
 name = "httpx"
-version = "0.28.0"
+version = "0.28.1"
 description = "The next generation HTTP client."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "httpx-0.28.0-py3-none-any.whl", hash = "sha256:dc0b419a0cfeb6e8b34e85167c0da2671206f5095f1baa9663d23bcfd6b535fc"},
-    {file = "httpx-0.28.0.tar.gz", hash = "sha256:0858d3bab51ba7e386637f22a61d8ccddaeec5f3fe4209da3a6168dbb91573e0"},
+    {file = "httpx-0.28.1-py3-none-any.whl", hash = "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"},
+    {file = "httpx-0.28.1.tar.gz", hash = "sha256:75e98c5f16b0f35b567856f597f06ff2270a374470a5c2392242528e3e3e42fc"},
 ]
 
 [package.dependencies]
@@ -407,13 +407,13 @@ files = [
 
 [[package]]
 name = "osbot-aws"
-version = "2.37.13"
+version = "2.37.15"
 description = "OWASP Security Bot - AWS"
 optional = false
 python-versions = "<4.0,>=3.7"
 files = [
-    {file = "osbot_aws-2.37.13-py3-none-any.whl", hash = "sha256:6dfac3650b31c320a021d4c21b65095909fee3694d1aaa9dd34ab01d488011f9"},
-    {file = "osbot_aws-2.37.13.tar.gz", hash = "sha256:a3b386d858815b1ade33b079a224888579cbc77ac0acb16e3d4f411d3f7789ab"},
+    {file = "osbot_aws-2.37.15-py3-none-any.whl", hash = "sha256:7254873bf6881dc49714de5f949e5d54d52365f80250843e207c403c61329a78"},
+    {file = "osbot_aws-2.37.15.tar.gz", hash = "sha256:2100a155b39ac95ff3e85d4bf2439a80f12ba98b3e0f5f0000693408300d4788"},
 ]
 
 [package.dependencies]
