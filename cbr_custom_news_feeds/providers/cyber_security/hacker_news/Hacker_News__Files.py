@@ -2,7 +2,7 @@ from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Htt
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker__News__S3_DB                       import Hacker_News__S3_DB
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
 from osbot_utils.base_classes.Type_Safe                                                                   import Type_Safe
-from osbot_utils.context_managers.capture_duration import capture_duration
+from osbot_utils.context_managers.capture_duration                                                        import capture_duration
 
 
 RAW_FEED__CREATED__BY = 'Hacker_News__Files.xml_feed__current'
