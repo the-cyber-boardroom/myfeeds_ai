@@ -49,10 +49,5 @@ class test__live_lambda_function(TestCase):
             assert open_api_json.openapi                    =='3.1.0'
             assert open_api_json.info.title                 == 'FastAPI'
 
-    # def test_invoke_with_logs(self):
-    #     with self.lambda_function as _:
-    #         result = obj(_.invoke_return_logs())
-    #         pprint(result)
-
 
 obj = dict_to_obj

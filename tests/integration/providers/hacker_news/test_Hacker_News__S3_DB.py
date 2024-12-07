@@ -3,8 +3,9 @@ from unittest                                                                   
 from osbot_utils.utils.Misc                                                                               import random_text
 from tests.integration.news_feeds__objs_for_tests                                                         import cbr_website__assert_local_stack, NEWS_FEEDS__TEST__AWS_ACCOUNT_ID
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator            import Hacker_News__S3__Key_Generator, S3_FOLDER__ROOT_FOLDER__HACKER_NEWS
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker__News__S3_DB                       import Hacker_News__S3_DB, S3_BUCKET_PREFIX__NEWS_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS
+from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB, S3_BUCKET_PREFIX__NEWS_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
+from tests.integration.news_feeds__test_data                                                              import TEST_DATA__HACKER_NEWS__FEED_XML
 
 
 class test_Hacker_News__S3_DB(TestCase):
@@ -28,7 +29,7 @@ class test_Hacker_News__S3_DB(TestCase):
             with pytest.raises(ValueError, match="Parameter 'raw_data_feed' expected type <class 'cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed.Model__Hacker_News__Raw_Data__Feed'>, but got <class 'str'>"):
                 _.raw_data__feed__save('raw_data_feed')
             s3_path                = _.s3_path__raw_data__feed_xml__now()
-            feed_xml               = 'the feed_xml'
+            feed_xml               = TEST_DATA__HACKER_NEWS__FEED_XML
             raw_data_feed          = Model__Hacker_News__Raw_Data__Feed(feed_xml=feed_xml)
             result                 = _.raw_data__feed__save(raw_data_feed)
             year, month, day, hour = _.s3_key_generator.path__for_date_time__now_utc().split('/')

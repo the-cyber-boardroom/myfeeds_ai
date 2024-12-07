@@ -2,9 +2,6 @@ from unittest                                                                   
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Files   import Hacker_News__Files, RAW_FEED__CREATED__BY
 from tests.integration.news_feeds__objs_for_tests                                    import cbr_website__assert_local_stack
 
-from osbot_utils.utils.Dev import pprint
-
-
 class test_Hacker_News__Files(TestCase):
 
     @classmethod
@@ -20,5 +17,12 @@ class test_Hacker_News__Files(TestCase):
             assert xml_feed__raw_data.feed_xml.startswith('<?xml version="1.0" encoding="UTF-8" standalone="no"?>')
             year, month, day, hour = _.s3_db.s3_key_generator.path__for_date_time__now_utc().split('/')
             assert _.xml_feed__raw_data__from_date(year, month, day, hour).obj() == xml_feed__raw_data
+
+    def test_xml_feed__data__current(self):
+        with self.hacker_news__files as _:
+            data = _.xml_feed__data__current()
+            assert data.feed_data.title    == 'The Hacker News'
+            assert data.feed_data.language == 'en-us'
+
 
 

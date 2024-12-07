@@ -1,6 +1,6 @@
 from unittest                                                                                   import TestCase
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator  import Hacker_News__S3__Key_Generator, S3_FOLDER__ROOT_FOLDER__HACKER_NEWS
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker__News__S3_DB             import Hacker_News__S3_DB
+from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB              import Hacker_News__S3_DB
 from osbot_utils.helpers.Safe_Id                                                                import Safe_Id
 
 class test__security__Hacker_News__S3_DB(TestCase):
