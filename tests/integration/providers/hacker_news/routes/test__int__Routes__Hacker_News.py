@@ -4,8 +4,6 @@ from cbr_custom_news_feeds.providers.cyber_security.hacker_news.routes.Routes__H
 from tests.integration.news_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
 
 
-
-
 class test__int__Routes__Hacker_News(TestCase):
 
     @classmethod
@@ -53,5 +51,13 @@ class test__int__Routes__Hacker_News(TestCase):
             current_feed = _.raw_data_feed_current()
             year, month, day, hour = _.files.s3_db.s3_key_generator.path__for_date_time__now_utc().split('/')
             assert _.raw_data_feed(year, month, day, hour) == current_feed
+
+    def test_data_feed_current(self):
+        with self.routes_hacker_news as _:
+            current_feed = _.data_feed_current()
+            assert current_feed.get('status') == 'ok'
+
+            #year, month, day, hour = _.files.s3_db.s3_key_generator.path__for_date_time__now_utc().split('/')
+            #assert _.raw_data_feed(year, month, day, hour) == current_feed
 
 
