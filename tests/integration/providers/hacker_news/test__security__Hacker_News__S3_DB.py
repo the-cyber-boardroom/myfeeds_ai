@@ -1,5 +1,5 @@
 from unittest                                                                                   import TestCase
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator  import Hacker_News__S3__Key_Generator
+from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator  import Hacker_News__S3__Key_Generator, S3_FOLDER__ROOT_FOLDER__HACKER_NEWS
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker__News__S3_DB             import Hacker_News__S3_DB
 from osbot_utils.helpers.Safe_Id                                                                import Safe_Id
 
@@ -42,9 +42,9 @@ class test__security__Hacker_News__S3_DB(TestCase):
 
                 # Verify the final S3 key is properly sanitized
                 result = _.s3_key_generator.s3_key(area=safe_area, file_id=good_file_id)
-                assert result.startswith('public-data/'), f"Invalid S3 key structure: {result}"
+                assert result.startswith(f'{S3_FOLDER__ROOT_FOLDER__HACKER_NEWS}/'), f"Invalid S3 key structure: {result}"
                 assert result.endswith('.json'), f"Invalid S3 key extension: {result}"
-                assert result == f"public-data/{safe_area}/{when_path_elements}/{good_file_id}.json"
+                assert result == f"{S3_FOLDER__ROOT_FOLDER__HACKER_NEWS}/{safe_area}/{when_path_elements}/{good_file_id}.json"
 
     def test__security__s3_key__injection_attempts(self):                                                          # Test that injection attempts are properly handled
         with self.s3_db_hacker_news as _:
@@ -74,7 +74,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
                 result = _.s3_key_generator.s3_key(area=safe_id, file_id=good_file_id)                                 # Verify S3 key generation works with sanitized value
                 assert '//' not in result, f"Double slash found in S3 key: {result}"
                 assert result.count('/') >= 2, f"Invalid path structure in S3 key: {result}"
-                assert result == f"public-data/{safe_id}/{when_path_elements}/{good_file_id}.json"
+                assert result == f"{S3_FOLDER__ROOT_FOLDER__HACKER_NEWS}/{safe_id}/{when_path_elements}/{good_file_id}.json"
 
     def test__security__s3_key__type_safety(self):                                           # Test that non-string/non-int types are properly rejected
         with self.s3_db_hacker_news as _:
@@ -119,6 +119,6 @@ class test__security__Hacker_News__S3_DB(TestCase):
                     assert char not in safe_id, f"Control character found in {safe_id}"
 
                 result = _.s3_key_generator.s3_key(area=safe_id, file_id='valid-file')                               # Verify S3 key is properly formatted
-                assert result.startswith('public-data/'), f"Invalid S3 key prefix: {result}"
+                assert result.startswith(f'{S3_FOLDER__ROOT_FOLDER__HACKER_NEWS}/'), f"Invalid S3 key prefix: {result}"
                 assert len(result.split('/')) >= 3, f"Invalid path depth in S3 key: {result}"
-                assert result == f"public-data/{safe_id}/{when_path_elements}/valid-file.json"
+                assert result == f"{S3_FOLDER__ROOT_FOLDER__HACKER_NEWS}/{safe_id}/{when_path_elements}/valid-file.json"
