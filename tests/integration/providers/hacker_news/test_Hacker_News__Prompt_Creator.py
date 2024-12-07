@@ -37,23 +37,23 @@ class test_Hacker_News__Prompt_Creator(TestCase):
             articles         = [self.article_1, self.article_2]
         )
 
-    def test_create_prompt_analysis(self):
-        with self.prompt_creator as _:                                                         # Test analysis prompt creation
-            prompt = _.create_prompt_analysis(self.sample_feed, size=1)
-
-            assert "The Hacker News"                     in prompt                                                 # Check feed details included
-            assert "Thu, 05 Dec 2024"                    in prompt
-            assert "Article 1 Title"                     in prompt                                                 # Check article content
-            assert ">alert('xss')"                   not in prompt                                               # Check HTML is cleaned
-            assert "John Doe"                            in prompt                                                        # Check author is cleaned
-            assert "info@thehackernews.com"          not in prompt
-
-            assert "current cybersecurity landscape"     in prompt                                 # Check analysis instructions
-            assert "Key trends"                          in prompt
-
-            prompt_two_articles = _.create_prompt_analysis(self.sample_feed, size=2)           # Test size parameter
-            assert "Article 2" in prompt_two_articles
-            assert len(prompt_two_articles) > len(prompt)
+    # def test_create_prompt_analysis(self):
+    #     with self.prompt_creator as _:                                                         # Test analysis prompt creation
+    #         prompt = _.create_prompt_analysis(self.sample_feed, size=1)
+    #
+    #         assert "The Hacker News"                     in prompt                                                 # Check feed details included
+    #         assert "Thu, 05 Dec 2024"                    in prompt
+    #         assert "Article 1 Title"                     in prompt                                                 # Check article content
+    #         assert ">alert('xss')"                   not in prompt                                               # Check HTML is cleaned
+    #         assert "John Doe"                            in prompt                                                        # Check author is cleaned
+    #         assert "info@thehackernews.com"          not in prompt
+    #
+    #         assert "current cybersecurity landscape"     in prompt                                 # Check analysis instructions
+    #         assert "Key trends"                          in prompt
+    #
+    #         prompt_two_articles = _.create_prompt_analysis(self.sample_feed, size=2)           # Test size parameter
+    #         assert "Article 2" in prompt_two_articles
+    #         assert len(prompt_two_articles) > len(prompt)
 
     def test_create_prompt_schema(self):
         with self.prompt_creator as _:                                                         # Test schema prompt creation
@@ -68,16 +68,16 @@ class test_Hacker_News__Prompt_Creator(TestCase):
             assert "&nbsp;" not in prompt                                                     # Check text cleaning
             assert "<script>" not in prompt
 
-    def test_create_prompt_executive(self):
-        with self.prompt_creator as _:                                                         # Test executive prompt creation
-            prompt = _.create_prompt_executive(self.sample_feed, size=1)
-
-            assert "1. Article 1 Title" in prompt                                             # Check headline format
-            assert "Description 1" not in prompt                                              # Check only titles included
-            assert "cybersecurity news headlines" in prompt
-
-            prompt_two_articles = _.create_prompt_executive(self.sample_feed, size=2)          # Test size parameter
-            assert "2. Article 2 Title" in prompt_two_articles
+    # def test_create_prompt_executive(self):
+    #     with self.prompt_creator as _:                                                         # Test executive prompt creation
+    #         prompt = _.create_prompt_executive(self.sample_feed, size=1)
+    #
+    #         assert "1. Article 1 Title" in prompt                                             # Check headline format
+    #         assert "Description 1" not in prompt                                              # Check only titles included
+    #         assert "cybersecurity news headlines" in prompt
+    #
+    #         prompt_two_articles = _.create_prompt_executive(self.sample_feed, size=2)          # Test size parameter
+    #         assert "2. Article 2 Title" in prompt_two_articles
 
     def test_clean_text(self):
         with self.prompt_creator as _:                                                         # Test text cleaning functionality

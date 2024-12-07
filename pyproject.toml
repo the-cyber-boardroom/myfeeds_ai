@@ -1,6 +1,6 @@
 [tool.poetry]
 name        = "cbr_custom_news_feeds"
-version     = "v1.3.0"
+version     = "v1.3.4"
 description = "CBR Custom - News Feeds"
 authors     = ["Dinis Cruz <dinis.cruz@owasp.org>"]
 license     = "Apache 2.0"
@@ -9,16 +9,15 @@ homepage    = "https://github.com/the-cyber-boardroom/cbr-custom--news-feeds"
 repository  = "https://github.com/the-cyber-boardroom/cbr-custom--news-feeds"
 
 [tool.poetry.dependencies]
-python          = "^3.11"
-osbot-utils     = "*"
-osbot-aws       = "*"
-osbot-fast-api  = "*"
-mangum          = "*"
-httpx           = "*"
-uvicorn         = "*"
-bs4             = "*"
-pytest = "^8.3.4"
-
+python             = "^3.11"
+osbot-utils        = "*"
+osbot-aws          = "*"
+osbot-fast-api     = "*"
+osbot-local-stack  = "*"
+mangum             = "*"
+httpx              = "*"
+uvicorn            = "*"
+bs4                = "*"
 
 [build-system]
 requires        = ["poetry-core>=1.0.0"]

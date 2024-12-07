@@ -1,0 +1,21 @@
+# Reddit API
+
+notes on creating a data feed for Reddit
+
+## good subreddits
+
+ - /r/netsec
+ - r/cybersecurity
+ - r/InfoSecNews
+ - r/fulldisclosure
+ - r/AskNetsec
+ - r/malware
+## GET call to get latest and top posts
+
+https://www.reddit.com/r/netsec/new.json?
+https://www.reddit.com/r/netsec/new.json?limit=10
+https://www.reddit.com/r/netsec/new.json?limit=100
+
+https://www.reddit.com/r/netsec/top.json
+https://www.reddit.com/r/netsec/top.json?t=month
+
