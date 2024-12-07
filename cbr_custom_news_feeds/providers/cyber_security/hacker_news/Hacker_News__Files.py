@@ -29,14 +29,18 @@ class Hacker_News__Files(Type_Safe):
     def xml_feed__raw_data__from_date(self, year:int, month:int, day:int, hour:int):
         return self.s3_db.raw_data__feed__load__from_date(year, month, day, hour)
 
-    def xml_feed__data__current(self) -> Model__Hacker_News__Data__Feed:
-        feed_raw_data = self.xml_feed__raw_data__current()
-        if feed_raw_data:
-            parser = Hacker_News__Parser().setup(feed_raw_data.feed_xml)
-            kwargs = dict(created_by = feed_raw_data.created_by,
-                          duration   = feed_raw_data.duration  ,
-                          feed_data  = parser.parse_feed()    )
-            feed_data = Model__Hacker_News__Data__Feed(**kwargs)
-            return feed_data
+    def xml_feed__data__current(self, refresh=False) -> Model__Hacker_News__Data__Feed:
+        feed_data = self.s3_db.feed_data__load__current()
+        if refresh or not feed_data:
+            feed_raw_data = self.xml_feed__raw_data__current()
+            if feed_raw_data:
+                parser = Hacker_News__Parser().setup(feed_raw_data.feed_xml)
+                kwargs = dict(created_by = feed_raw_data.created_by,
+                              duration   = feed_raw_data.duration  ,
+                              feed_data  = parser.parse_feed()    )
+                feed_data = Model__Hacker_News__Data__Feed(**kwargs)
+                self.s3_db.feed_data__save(feed_data)
+                feed_data = self.s3_db.feed_data__load__current()
+        return feed_data
     def all_files(self):
         return self.s3_db.raw_data__all_files()
