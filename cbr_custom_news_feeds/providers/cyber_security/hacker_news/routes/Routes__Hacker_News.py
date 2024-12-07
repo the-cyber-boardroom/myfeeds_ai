@@ -4,7 +4,8 @@ from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Fil
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content import Hacker_News__Http_Content
 from osbot_utils.utils.Status                                                             import status_ok, status_error
 
-ROUTES_PATHS__HACKER_NEWS = [ '/hacker-news/data-feed-current'      ,
+ROUTES_PATHS__HACKER_NEWS = [ '/hacker-news/data-feed'              ,
+                              '/hacker-news/data-feed-current'      ,
                               '/hacker-news/feed'                   ,
                               '/hacker-news/feed-prompt'            ,
                               '/hacker-news/raw-data-all-files'     ,
@@ -27,8 +28,14 @@ class Routes__Hacker_News(Fast_API_Routes):
     def prompt_analysis(self, size:int=5):
         return { "prompt" : self.http_content.feed_prompt(size=size)}
 
+    def data_feed(self, year:int, month:int, day:int, hour:int):
+        data_feed = self.files.feed_data__from_date(year, month, day, hour)
+        if data_feed:
+            return status_ok(data=data_feed.json())
+        return status_error(f'No data found for {year}/{month}/{day}/{hour}')
+
     def data_feed_current(self):
-        data_feed = self.files.xml_feed__data__current()
+        data_feed = self.files.feed_data__current()
         if data_feed:
             return status_ok(data=data_feed.json())
         return status_error(f'No data found')
@@ -53,6 +60,7 @@ class Routes__Hacker_News(Fast_API_Routes):
         return status_error(f'No data found for {year}/{month}/{day}/{hour}')
 
     def setup_routes(self):
+        self.add_route_get(self.data_feed            )
         self.add_route_get(self.data_feed_current    )
         self.add_route_get(self.feed                 )
         self.add_route_get(self.feed_prompt          )

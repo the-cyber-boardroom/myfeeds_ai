@@ -26,7 +26,7 @@ class test_Hacker_News__Files(TestCase):
 
     def test_xml_feed__data__current(self):
         with self.hacker_news__files as _:
-            model     = _.xml_feed__data__current()
+            model     = _.feed_data__current(refresh=True)
             data_feed = model.obj()
 
             assert type(model)                  is Model__Hacker_News__Data__Feed
