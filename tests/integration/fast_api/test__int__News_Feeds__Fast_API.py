@@ -19,9 +19,11 @@ class test_News_Feeds__Fast_API(TestCase):
         self.fast_api.setup()
         routes = self.fast_api.routes_paths()
 
-        assert routes == sorted(['/', '/config/info', '/config/status', '/config/version']  \
-                                 + ROUTES_PATHS__INFO                                       \
-                                 + ROUTES_PATHS__HACKER_NEWS                                )
+        assert routes == sorted(['/',
+                                 '/static'                                              ,
+                                 '/config/info', '/config/status', '/config/version']  \
+                                 + ROUTES_PATHS__INFO                                  \
+                                 + ROUTES_PATHS__HACKER_NEWS                           )
 
 
 
