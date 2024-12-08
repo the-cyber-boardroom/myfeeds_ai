@@ -6,12 +6,18 @@ from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Ha
 from osbot_utils.base_classes.Type_Safe                                                                   import Type_Safe
 from osbot_utils.context_managers.capture_duration                                                        import capture_duration
 
-
 RAW_FEED__CREATED__BY = 'Hacker_News__Files.xml_feed__current'
 
 class Hacker_News__Files(Type_Safe):
     s3_db        : Hacker_News__S3_DB
     http_content : Hacker_News__Http_Content
+
+    def files_paths__latest(self):
+        with self.s3_db as _:
+            latest_feed_xml  = _.s3_path__raw_data__feed_xml__now()
+            latest_feed_data = _.s3_path__raw_data__feed_data__now()
+        return dict(latest_feed_xml  =latest_feed_xml  ,
+                    latest_feed_data =latest_feed_data )
 
     def xml_feed__raw_data__current(self, refresh=False):
         xml_feed = self.s3_db.raw_data__feed__load__current()
@@ -43,9 +49,9 @@ class Hacker_News__Files(Type_Safe):
                 feed_data = self.s3_db.feed_data__load__current()
         return feed_data
 
-    def feed_data__from_date(self, year:int, month:int, day:int, hour:int, refresh:bool=False):
+    def feed_data__from_date(self, year:int, month:int, day:int, hour:int):
         feed_data = self.s3_db.feed_data__load__from_date(year, month, day, hour)
-        if refresh or not feed_data:
+        if not feed_data:
             feed_raw_data = self.xml_feed__raw_data__from_date(year, month, day, hour)
             if feed_raw_data:
                 parser = Hacker_News__Parser().setup(feed_raw_data.feed_xml)

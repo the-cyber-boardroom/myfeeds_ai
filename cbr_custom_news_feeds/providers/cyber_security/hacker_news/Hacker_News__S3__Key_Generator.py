@@ -1,11 +1,10 @@
-from osbot_aws.aws.s3.S3__Key_Generator         import S3__Key_Generator
-from osbot_utils.decorators.methods.type_safe   import type_safe
-from osbot_utils.helpers.Safe_Id                import Safe_Id
+from cbr_custom_news_feeds.config.Custom_News__Shared_Constants import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
+from osbot_aws.aws.s3.S3__Key_Generator                         import S3__Key_Generator
+from osbot_utils.decorators.methods.type_safe                   import type_safe
+from osbot_utils.helpers.Safe_Id                                import Safe_Id
 
-S3_FOLDER__ROOT_FOLDER__HACKER_NEWS = 'hacker-news__rss-feed'
-
-class Hacker_News__S3__Key_Generator(S3__Key_Generator):
-    root_folder        = S3_FOLDER__ROOT_FOLDER__HACKER_NEWS
+class Hacker_News__S3__Key_Generator(S3__Key_Generator):                # todo: refactor this to a generic class (for multiple feeds)
+    root_folder        = S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
     split_when  : bool = True
     use_minutes : bool = False
 

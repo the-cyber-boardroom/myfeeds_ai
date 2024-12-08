@@ -1,15 +1,16 @@
 import pytest
 from unittest                                                                                               import TestCase
+from cbr_custom_news_feeds.config.Custom_News__Shared_Constants                                             import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA, S3_FILE_NAME__RAW__FEED_XML
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Parser                         import Hacker_News__Parser
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed       import Model__Hacker_News__Data__Feed
+from cbr_custom_news_feeds.providers.models.Model__News_Feeds__Providers                                    import Model__News_Feeds__Providers
 from osbot_utils.utils.Misc                                                                                 import random_text
 from tests.integration.news_feeds__objs_for_tests                                                           import cbr_website__assert_local_stack, NEWS_FEEDS__TEST__AWS_ACCOUNT_ID
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator              import Hacker_News__S3__Key_Generator, S3_FOLDER__ROOT_FOLDER__HACKER_NEWS
+from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator              import Hacker_News__S3__Key_Generator
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB                          import Hacker_News__S3_DB, S3_BUCKET_PREFIX__NEWS_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed   import Model__Hacker_News__Raw_Data__Feed
 from tests.integration.news_feeds__test_data                                                                import TEST_DATA__HACKER_NEWS__FEED_XML
 from tests.qa.test__live_lambda_function                                                                    import obj
-
 
 class test_Hacker_News__S3_DB(TestCase):
 
@@ -21,7 +22,7 @@ class test_Hacker_News__S3_DB(TestCase):
     def test__init__(self):
         with self.s3_db_hacker_news as _:
             assert _.bucket_name__prefix == 'news-feeds'
-            assert _.bucket_name__suffix == 'hacker-news'
+            assert _.bucket_name__suffix == 'data'
             assert _.save_as_gz             is False
             assert type(_.s3_key_generator) is Hacker_News__S3__Key_Generator
             assert _.s3_bucket()            == f'{S3_BUCKET_PREFIX__NEWS_FEEDS}-{NEWS_FEEDS__TEST__AWS_ACCOUNT_ID}-{S3_BUCKET_SUFFIX__HACKER_NEWS}'
@@ -34,32 +35,46 @@ class test_Hacker_News__S3_DB(TestCase):
             parser                 = Hacker_News__Parser().setup(raw_data_feed.feed_xml)
             data_feed              = Model__Hacker_News__Data__Feed    (feed_data=parser.parse_feed())                           # todo: fix this creation since there are values from Model__Hacker_News__Raw_Data__Feed that are missing here
             result                 = obj(_.feed_data__save(data_feed))
-            s3_path                = _.s3_path__raw_data__feed_data__now()
+            s3_path                = _.s3_path__raw_data__feed_data__now   ()
+            s3_path_latest         = _.s3_path__raw_data__feed_data__latest()
             year, month, day, hour = _.s3_key_generator.path__for_date_time__now_utc().split('/')
+            all_files              = _.raw_data__all_files()
+            file_data__current     = _.feed_data__load__current().obj()
+            file_data__from_data   = _.feed_data__load__from_date(year, month, day, hour).obj()
+            file_data__latest      = _.feed_data__load__from_path(s3_path_latest).obj()
 
-            file_data__current   = _.feed_data__load__current().obj()
-            file_data__from_data = _.feed_data__load__from_date(year, month, day, hour).obj()
-            assert result.save_status                     is True
+            assert s3_path                                in all_files
+            assert s3_path_latest                         in all_files
             assert result.s3_path                         == s3_path
             assert result.file_data.feed_data.description == 'Security News'
             assert file_data__current                     == result.file_data
             assert file_data__from_data                   == result.file_data
+            assert file_data__latest                      == result.file_data
 
     def test_raw_data__feed_xml__save(self):
         with self.s3_db_hacker_news as _:
             with pytest.raises(ValueError, match="Parameter 'raw_data_feed' expected type <class 'cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed.Model__Hacker_News__Raw_Data__Feed'>, but got <class 'str'>"):
                 _.raw_data__feed__save('raw_data_feed')
             feed_xml               = TEST_DATA__HACKER_NEWS__FEED_XML
-            raw_data_feed          = Model__Hacker_News__Raw_Data__Feed(feed_xml=feed_xml)                              # todo: this needs to be refactore to a helper class that creates these objects
+            raw_data_feed          = Model__Hacker_News__Raw_Data__Feed(feed_xml=feed_xml)                              # todo: this needs to be refactored to a helper class that creates these objects
+            raw_data_feed_json     = raw_data_feed.json()
             result                 = _.raw_data__feed__save(raw_data_feed)
             year, month, day, hour = _.s3_key_generator.path__for_date_time__now_utc().split('/')
             s3_path                = _.s3_key_generator.s3_path(year, month, day, hour, 'feed_xml')
+            s3_path_latest         = _.s3_path__raw_data__feed_xml__latest()
+            all_files              = _.raw_data__all_files()
+            file_data__current     = _.raw_data__feed__load__current  (              ).json()
+            file_data__from_path   = _.raw_data__feed__load__from_path(s3_path       ).json()
+            file_data__latest      = _.raw_data__feed__load__from_path(s3_path_latest).json()
+            expected_result        = dict( file_data= raw_data_feed.json(),
+                                           s3_path= s3_path               )
 
-            assert result                                            == dict(s3_path= s3_path, file_data= raw_data_feed.json(),save_status = True  )
-            assert s3_path                                           in _.raw_data__all_files()
-            assert _.raw_data__feed__load__current()         .json() == raw_data_feed.json()
-            assert _.raw_data__feed__load__from_path(s3_path).json() == raw_data_feed.json()
-
+            assert result               == expected_result
+            assert s3_path              in all_files
+            assert s3_path_latest       in all_files
+            assert file_data__current   == raw_data_feed_json
+            assert file_data__from_path == raw_data_feed_json
+            assert file_data__latest    == raw_data_feed_json
 
 
     def test_s3_key(self):
@@ -74,5 +89,5 @@ class test_Hacker_News__S3_DB(TestCase):
             s3_key    = _.s3_key__raw_data__feed_xml()
             when_path = _.s3_key_generator.path__for_date_time__now_utc().replace('-', '/')
             assert len(when_path.split('/')) == 4
-            assert s3_key == f'{S3_FOLDER__ROOT_FOLDER__HACKER_NEWS}/raw-data/{when_path}/feed_xml.json'
+            assert s3_key == f'{S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA}/{Model__News_Feeds__Providers.HACKER_NEWS.value}/{when_path}/{S3_FILE_NAME__RAW__FEED_XML}.json'
 
