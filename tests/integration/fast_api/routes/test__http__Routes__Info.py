@@ -17,7 +17,7 @@ class test__http__Routes__Info(TestCase):
         cls.fast_api_server.stop()
         assert cls.fast_api_server.is_port_open() is False
 
-    def test_http__uk__articles_html(self):
+    def test__info__version(self):
         response = self.fast_api_server.requests_get('/info/version')
         assert response.status_code == 200
         assert response.json()      == {'version': version__cbr_custom_news_feeds }

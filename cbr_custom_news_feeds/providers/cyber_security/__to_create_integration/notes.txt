@@ -35,6 +35,8 @@
             https://www.infosecurity-magazine.com/rss/news/
 
 
+    - ARS technica
+            https://arstechnica.com/rss-feeds/
 - List of other media APIs:
      - https://en.wikipedia.org/wiki/List_of_news_media_APIs
      - the BBC doesn't have a public API for their news: https://www.perplexity.ai/search/hi-does-the-bbc-have-an-api-to-SZDP2YDiT6ytCDuIpLUzkQ
