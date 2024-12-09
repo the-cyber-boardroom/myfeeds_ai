@@ -1,8 +1,6 @@
 import requests
-
 from osbot_utils.base_classes.Type_Safe import Type_Safe
-from osbot_utils.utils.Http import url_join_safe
-
+from osbot_utils.utils.Http             import url_join_safe
 
 class Data_Feeds__Http_Content(Type_Safe):
     server : str

@@ -1,5 +1,4 @@
-from typing import List
-
+from typing                                                                                      import List
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Base import Model_OSS__Base
 
 

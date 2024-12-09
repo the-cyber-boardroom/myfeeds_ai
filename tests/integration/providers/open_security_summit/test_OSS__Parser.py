@@ -1,9 +1,7 @@
-from unittest import TestCase
-
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content import OSS__Http_Content
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Parser import OSS__Parser
-from tests.integration.data_feeds__objs_for_tests import cbr_website__assert_local_stack
-
+from unittest                                                                               import TestCase
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Parser        import OSS__Parser
+from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
 
 class test_OSS__Parser(TestCase):
 
