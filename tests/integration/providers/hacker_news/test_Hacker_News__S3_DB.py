@@ -3,7 +3,7 @@ from unittest                                                                   
 from cbr_custom_data_feeds.config.Custom_News__Shared_Constants                                             import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA, S3_FILE_NAME__RAW__FEED_XML
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Parser                         import Hacker_News__Parser
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed       import Model__Hacker_News__Data__Feed
-from cbr_custom_data_feeds.providers.models.Model__Data_Feeds__Providers                                    import Model__Data_Feeds__Providers
+from cbr_custom_data_feeds.data_feeds.models.Model__Data_Feeds__Providers                                   import Model__Data_Feeds__Providers
 from osbot_utils.utils.Misc                                                                                 import random_text
 from osbot_utils.utils.Objects                                                                              import obj
 from tests.integration.data_feeds__objs_for_tests                                                           import cbr_website__assert_local_stack, DATA_FEEDS__TEST__AWS_ACCOUNT_ID
