@@ -1,4 +1,4 @@
-S3_BUCKET_PREFIX__NEWS_FEEDS        = 'news-feeds'
+S3_BUCKET_PREFIX__DATA_FEEDS        = 'data-feeds'
 S3_BUCKET_SUFFIX__HACKER_NEWS       = 'data'
 S3_FILE_NAME__RAW__FEED_XML         = 'feed-xml'
 S3_FILE_NAME__RAW__FEED_DATA        = 'feed-data'

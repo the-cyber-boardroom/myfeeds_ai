@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://news-feeds.dev.aws.cyber-boardroom.com/public-data/{site}",
+      "url": "https://data-feeds.dev.aws.cyber-boardroom.com/public-data/{site}",
       "description": "Development server",
       "variables": {
         "site": {
