@@ -15,6 +15,7 @@ def setup_local_stack() -> Local_Stack:                          # todo: refator
 
 def setup_requests_cache():
     requests_cache.install_cache(NEWS_FEEDS__REQUEST_CACHE__FILE)
+    # todo: add better support for removing cache entries from the cache, which is done by adding "expire_after=0" to the request.get
 
 data_feeds__local_stack      = setup_local_stack()
 data_feeds__fast_api         = Data_Feeds__Fast_API().setup()
