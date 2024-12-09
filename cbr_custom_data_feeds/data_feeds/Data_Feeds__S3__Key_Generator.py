@@ -3,10 +3,10 @@ from osbot_aws.aws.s3.S3__Key_Generator                         import S3__Key_G
 from osbot_utils.decorators.methods.type_safe                   import type_safe
 from osbot_utils.helpers.Safe_Id                                import Safe_Id
 
-class Hacker_News__S3__Key_Generator(S3__Key_Generator):                # todo: refactor this to a generic class (for multiple feeds)
-    root_folder        = S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
-    split_when  : bool = True
-    use_minutes : bool = False
+class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: refactor this to a generic class (for multiple feeds)
+    root_folder            = S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
+    split_when      : bool = True
+    use_minutes     : bool = False
 
     @type_safe
     def s3_path(self, year: int, month: int, day: int, hour: int, file_id: Safe_Id):

@@ -2,5 +2,6 @@ from enum import Enum
 
 
 class Model__Data_Feeds__Providers(Enum):
-    HACKER_NEWS  : str = 'hacker-news'      # todo: add more providers
+    HACKER_NEWS         : str = 'hacker-news'
+    OPEN_SECURITY_SUMMIT: str = 'open-security-summit'
 
