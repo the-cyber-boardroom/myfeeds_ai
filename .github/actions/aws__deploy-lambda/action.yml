@@ -16,4 +16,4 @@ runs:
       shell: bash
       run: |
         echo "Deploying lambda function"        
-        poetry run python ./deploy/lambdas/Deploy_Lambda__Cbr_Custom__News_Feeds.py
+        poetry run python ./deploy/lambdas/Deploy_Lambda__Cbr_Custom__Data_Feeds.py

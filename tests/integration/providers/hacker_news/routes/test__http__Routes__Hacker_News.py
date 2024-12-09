@@ -1,16 +1,16 @@
 from unittest                                                                               import TestCase
 from osbot_fast_api.utils.Fast_API_Server                                                   import Fast_API_Server
-from cbr_custom_news_feeds.config.Custom_News__Shared_Constants                             import S3_FILE_NAME__RAW__FEED_XML, S3_FILE_NAME__RAW__FEED_DATA
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.routes.Routes__Hacker_News  import ROUTE_PATH__HACKER_NEWS
-from tests.integration.news_feeds__objs_for_tests                                           import news_feeds__fast_api__app
-from tests.qa.test__live_lambda_function                                                    import obj
+from cbr_custom_data_feeds.config.Custom_News__Shared_Constants                             import S3_FILE_NAME__RAW__FEED_XML, S3_FILE_NAME__RAW__FEED_DATA
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.routes.Routes__Hacker_News  import ROUTE_PATH__HACKER_NEWS
+from osbot_utils.utils.Objects                                                              import obj
+from tests.integration.data_feeds__objs_for_tests                                           import data_feeds__fast_api__app
 
 
 class test__http__Routes__Hacker_News(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.fast_api_server = Fast_API_Server(app=news_feeds__fast_api__app)
+        cls.fast_api_server = Fast_API_Server(app=data_feeds__fast_api__app)
         cls.fast_api_server.start()
         assert cls.fast_api_server.is_port_open() is True
 

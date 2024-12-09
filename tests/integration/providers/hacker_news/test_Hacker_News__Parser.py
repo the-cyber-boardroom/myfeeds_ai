@@ -1,9 +1,9 @@
 import xml.etree.ElementTree  as ET
 from unittest                                                                                       import TestCase
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Parser                 import Hacker_News__Parser
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article  import Model__Hacker_News__Article
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed     import Model__Hacker_News__Feed
-from tests.integration.news_feeds__test_data                                                        import TEST_DATA__HACKER_NEWS__FEED_XML
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Parser                 import Hacker_News__Parser
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article  import Model__Hacker_News__Article
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed     import Model__Hacker_News__Feed
+from tests.integration.data_feeds__test_data                                                        import TEST_DATA__HACKER_NEWS__FEED_XML
 
 
 class test_Hacker_News__Parser(TestCase):

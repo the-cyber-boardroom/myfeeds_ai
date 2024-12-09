@@ -1,0 +1,218 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "The Cyber Boardroom -  News Feed API",
+    "description": "cyber-boardroom.com API for accessing news feed data in both XML and JSON formats for various sites",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://data-feeds.dev.aws.cyber-boardroom.com/public-data/{site}",
+      "description": "Development server",
+      "variables": {
+        "site": {
+          "default": "hacker-news",
+          "description": "The site identifier for the news feed",
+          "enum": ["hacker-news"]
+        }
+      }
+    }
+  ],
+  "paths": {
+    "/latest/feed-data.json": {
+      "get": {
+        "summary": "Get latest feed data in JSON format",
+        "description": "Returns the most recent feed data in JSON format",
+        "operationId": "getLatestFeedJson",
+        "responses": {
+          "200": {
+            "description": "Latest feed data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/latest/feed-xml.json": {
+      "get": {
+        "summary": "Get latest feed data in XML format",
+        "description": "Returns the most recent feed data in XML format",
+        "operationId": "getLatestFeedXml",
+        "responses": {
+          "200": {
+            "description": "Latest feed XML data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{year}/{month}/{day}/{hour}/feed-data.json": {
+      "get": {
+        "summary": "Get historical feed data in JSON format",
+        "description": "Returns feed data for a specific date and hour in JSON format",
+        "operationId": "getHistoricalFeedJson",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}$",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}$",
+              "example": "12"
+            }
+          },
+          {
+            "name": "day",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}$",
+              "example": "08"
+            }
+          },
+          {
+            "name": "hour",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}$",
+              "example": "02"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historical feed data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{year}/{month}/{day}/{hour}/feed-xml.json": {
+      "get": {
+        "summary": "Get historical feed data in XML format",
+        "description": "Returns feed data for a specific date and hour in XML format",
+        "operationId": "getHistoricalFeedXml",
+        "parameters": [
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{4}$",
+              "example": "2024"
+            }
+          },
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}$",
+              "example": "12"
+            }
+          },
+          {
+            "name": "day",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}$",
+              "example": "08"
+            }
+          },
+          {
+            "name": "hour",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^\\d{2}$",
+              "example": "02"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Historical feed XML data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedData"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "FeedData": {
+        "type": "object",
+        "description": "A placeholder schema for the feed data structure. Update this based on your actual data structure.",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp of when the feed was generated"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique identifier for the feed item"
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Title of the feed item"
+                },
+                "content": {
+                  "type": "string",
+                  "description": "Content of the feed item"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
