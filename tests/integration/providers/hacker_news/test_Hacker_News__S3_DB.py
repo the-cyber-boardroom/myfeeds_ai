@@ -28,6 +28,7 @@ class test_Hacker_News__S3_DB(TestCase):
             assert _.s3_bucket()            == f'{S3_BUCKET_PREFIX__NEWS_FEEDS}-{NEWS_FEEDS__TEST__AWS_ACCOUNT_ID}-{S3_BUCKET_SUFFIX__HACKER_NEWS}'
             assert _.bucket_exists()        is True
 
+    #@print_boto3_calls()
     def test_feed_data__save(self):
         with self.s3_db_hacker_news as _:
             feed_xml               = TEST_DATA__HACKER_NEWS__FEED_XML
@@ -37,6 +38,7 @@ class test_Hacker_News__S3_DB(TestCase):
             result                 = obj(_.feed_data__save(data_feed))
             s3_path                = _.s3_path__raw_data__feed_data__now   ()
             s3_path_latest         = _.s3_path__raw_data__feed_data__latest()
+
             year, month, day, hour = _.s3_key_generator.path__for_date_time__now_utc().split('/')
             all_files              = _.raw_data__all_files()
             file_data__current     = _.feed_data__load__current().obj()

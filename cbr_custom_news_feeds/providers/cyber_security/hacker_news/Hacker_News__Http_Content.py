@@ -1,19 +1,13 @@
 import requests
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB          import Hacker_News__S3_DB
-from osbot_utils.base_classes.Type_Safe                                                     import Type_Safe
-from osbot_utils.utils.Http                                                                 import url_join_safe
+
+from cbr_custom_news_feeds.news_feeds.News_Feeds__Http_Content                              import News_Feeds__Http_Content
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Parser         import Hacker_News__Parser
 from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator import Hacker_News__Prompt_Creator
 
 
-class Hacker_News__Http_Content(Type_Safe):                 # Handler for fetching and parsing Hacker News RSS feed
+class Hacker_News__Http_Content(News_Feeds__Http_Content):                 # Handler for fetching and parsing Hacker News RSS feed
     prompt_creator : Hacker_News__Prompt_Creator
     server         : str = 'https://feeds.feedburner.com'
-    s3_db          : Hacker_News__S3_DB
-
-    def requests_get(self, path='', params=None):          # Makes HTTP GET request to the server
-        url = url_join_safe(self.server, path)
-        return requests.get(url, params=params)
 
     def feed_content(self) -> str:                              # Fetch the RSS feed content
         path = 'TheHackersNews'
