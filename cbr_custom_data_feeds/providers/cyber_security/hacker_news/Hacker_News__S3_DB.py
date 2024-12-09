@@ -1,17 +1,14 @@
 from cbr_custom_data_feeds.config.Custom_News__Shared_Constants                                            import S3_BUCKET_PREFIX__DATA_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS, S3_FILE_NAME__RAW__FEED_XML, S3_FILE_NAME__RAW__FEED_DATA, S3_FOLDER_NAME__LATEST
+from cbr_custom_data_feeds.data_feeds.Data_Feeds__S3_DB                                                    import Data_Feeds__S3_DB
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator             import Hacker_News__S3__Key_Generator
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed      import Model__Hacker_News__Data__Feed
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed  import Model__Hacker_News__Raw_Data__Feed
 from cbr_custom_data_feeds.providers.models.Model__Data_Feeds__Providers                                   import Model__Data_Feeds__Providers
-from osbot_aws.aws.s3.S3__DB_Base                                                                          import S3__DB_Base
 from osbot_utils.decorators.methods.type_safe                                                              import type_safe
 from osbot_utils.utils.Http                                                                                import url_join_safe
 
 
-class Hacker_News__S3_DB(S3__DB_Base):
-    bucket_name__prefix   : str                = S3_BUCKET_PREFIX__DATA_FEEDS
-    bucket_name__suffix   : str                = S3_BUCKET_SUFFIX__HACKER_NEWS
-    save_as_gz            : bool
+class Hacker_News__S3_DB(Data_Feeds__S3_DB):
     s3_key_generator      : Hacker_News__S3__Key_Generator
 
     def feed_data__load__current(self):
