@@ -2,8 +2,8 @@ from unittest                                                                   
 from osbot_fast_api.utils.Fast_API_Server                                                   import Fast_API_Server
 from cbr_custom_data_feeds.config.Custom_News__Shared_Constants                             import S3_FILE_NAME__RAW__FEED_XML, S3_FILE_NAME__RAW__FEED_DATA
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.routes.Routes__Hacker_News  import ROUTE_PATH__HACKER_NEWS
+from osbot_utils.utils.Objects                                                              import obj
 from tests.integration.data_feeds__objs_for_tests                                           import data_feeds__fast_api__app
-from tests.qa.test__live_lambda_function                                                    import obj
 
 
 class test__http__Routes__Hacker_News(TestCase):

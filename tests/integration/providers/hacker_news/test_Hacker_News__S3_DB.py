@@ -5,12 +5,13 @@ from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Par
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed       import Model__Hacker_News__Data__Feed
 from cbr_custom_data_feeds.providers.models.Model__Data_Feeds__Providers                                    import Model__Data_Feeds__Providers
 from osbot_utils.utils.Misc                                                                                 import random_text
+from osbot_utils.utils.Objects                                                                              import obj
 from tests.integration.data_feeds__objs_for_tests                                                           import cbr_website__assert_local_stack, NEWS_FEEDS__TEST__AWS_ACCOUNT_ID
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator              import Hacker_News__S3__Key_Generator
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB                          import Hacker_News__S3_DB, S3_BUCKET_PREFIX__NEWS_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed   import Model__Hacker_News__Raw_Data__Feed
 from tests.integration.data_feeds__test_data                                                                import TEST_DATA__HACKER_NEWS__FEED_XML
-from tests.qa.test__live_lambda_function                                                                    import obj
+
 
 class test_Hacker_News__S3_DB(TestCase):
 
