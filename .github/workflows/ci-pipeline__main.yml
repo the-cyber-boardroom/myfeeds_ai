@@ -8,9 +8,9 @@ on:
 env:
   GIT__BRANCH      : 'main'
   RELEASE_TYPE     : 'major'
-  PACKAGE_NAME     : 'cbr_custom_news_feeds'
+  PACKAGE_NAME     : 'cbr_custom_data_feeds'
   DOCKER__CONTEXT  : "."
-  DOCKER__FILE     : './deploy/docker/cbr_custom_news_feeds/Dockerfile'
+  DOCKER__FILE     : './deploy/docker/cbr_custom_data_feeds/Dockerfile'
 
 jobs:
 

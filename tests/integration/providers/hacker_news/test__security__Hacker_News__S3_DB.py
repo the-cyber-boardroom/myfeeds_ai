@@ -1,8 +1,8 @@
 from unittest                                                                                   import TestCase
 
-from cbr_custom_news_feeds.config.Custom_News__Shared_Constants import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator  import Hacker_News__S3__Key_Generator
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB              import Hacker_News__S3_DB
+from cbr_custom_data_feeds.config.Custom_News__Shared_Constants import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator  import Hacker_News__S3__Key_Generator
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB              import Hacker_News__S3_DB
 from osbot_utils.helpers.Safe_Id                                                                import Safe_Id
 
 class test__security__Hacker_News__S3_DB(TestCase):

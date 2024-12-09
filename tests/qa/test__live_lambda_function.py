@@ -5,14 +5,14 @@ from osbot_aws.AWS_Config                                   import ENV_NAME__AWS
 from osbot_utils.utils.Env                                  import get_env
 from osbot_utils.utils.Json                                 import str_to_json
 from osbot_utils.utils.Objects                              import dict_to_obj, __, str_to_obj
-from deploy.lambdas.Deploy_Lambda__Cbr_Custom__News_Feeds   import Deploy_Lambda__Cbr_Custom_News_Feeds
+from deploy.lambdas.Deploy_Lambda__Cbr_Custom__Data_Feeds   import Deploy_Lambda__Cbr_Custom_Data_Feeds
 
 
 class test__live_lambda_function(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.deploy_lambda   = Deploy_Lambda__Cbr_Custom_News_Feeds()
+        cls.deploy_lambda   = Deploy_Lambda__Cbr_Custom_Data_Feeds()
         cls.lambda_function = cls.deploy_lambda.lambda_function
         if get_env(ENV_NAME__AWS_ENDPOINT_URL):
             pytest.skip("can't run these tests when using local stack")

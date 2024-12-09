@@ -1,7 +1,7 @@
 from unittest                                                                               import TestCase
 from osbot_utils.utils.Misc                                                                 import list_set
-from cbr_custom_news_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
-from tests.integration.news_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
+from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
 
 EXPECTED__OSS__RAW_CONTENT__FIELDS = ['content', 'date', 'description', 'dir', 'event', 'expirydate', 'fuzzywordcount',
                                       'hey_summit', 'kind', 'lang', 'lastmod', 'layout', 'objectID', 'organizers',

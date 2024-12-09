@@ -1,8 +1,8 @@
 from unittest                                                                                      import TestCase
 from unittest.mock                                                                                 import patch
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content          import Hacker_News__Http_Content
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
-from cbr_custom_news_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content          import Hacker_News__Http_Content
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
 
 class test_Hacker_News__Http_Content(TestCase):
 
@@ -71,7 +71,7 @@ class test_Hacker_News__Http_Content(TestCase):
             assert 'image_url'   in article
 
     # todo: remove this patch once we have added the DB_S3 support
-    @patch('cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.feed_data')
+    @patch('cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.feed_data')
     def test_get_prompt_schema(self, mock_feed_data):  # Test schema prompt creation
         mock_feed_data.return_value = self.sample_feed
 
@@ -84,7 +84,7 @@ class test_Hacker_News__Http_Content(TestCase):
 
             mock_feed_data.assert_called_once()  # Verify feed data was fetched
 
-    # @patch('cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
+    # @patch('cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
     # def test_get_prompt_analysis(self, mock_get_feed_data):  # Test analysis prompt creation
     #     mock_get_feed_data.return_value = self.sample_feed
     #
@@ -97,7 +97,7 @@ class test_Hacker_News__Http_Content(TestCase):
     #
     #         mock_get_feed_data.assert_called_once()  # Verify feed data was fetched
 
-    # @patch('cbr_custom_news_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
+    # @patch('cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.get_feed_data')
     # def test_get_prompt_executive(self, mock_get_feed_data):  # Test executive prompt creation
     #     mock_get_feed_data.return_value = self.sample_feed
     #
