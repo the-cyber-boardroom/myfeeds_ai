@@ -1,5 +1,6 @@
 from cbr_custom_data_feeds.data_feeds.Data_Feeds__Files                                                     import Data_Feeds__Files
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content                  import OSS__Http_Content
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Parser                        import OSS__Parser
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__S3_DB                         import OSS__S3_DB
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Latest_Versions import Model__OSS__Latest_Versions
 from osbot_utils.decorators.methods.type_safe                                                               import type_safe
@@ -7,8 +8,9 @@ from osbot_utils.decorators.methods.type_safe                                   
 RAW_FEED__CREATED__BY = 'OSS__Files.raw_content__current'
 
 class OSS__Files(Data_Feeds__Files):
-    s3_db        : OSS__S3_DB
-    http_content : OSS__Http_Content
+    s3_db       : OSS__S3_DB
+    oss_content : OSS__Http_Content
+    oss_parser  : OSS__Parser
 
     @type_safe
     def latest_versions__save(self, latest_versions: Model__OSS__Latest_Versions):      # todo: create helper method to handle cases like this of a file that saves a particular class
@@ -36,7 +38,19 @@ class OSS__Files(Data_Feeds__Files):
     def raw_content__current(self, refresh=False):
         raw_content = self.s3_db.raw_content__load__now()
         if refresh or not raw_content:
-            raw_content = self.http_content.raw_content()
+            raw_content = self.oss_content.raw_content()
             result      = self.s3_db.raw_content__save(raw_content)
             s3_path     = result.get('s3_path')
+            self.latest_versions__update(s3_path__raw_content=s3_path)
         return raw_content
+
+    def content__current(self, refresh=False):
+        content = self.s3_db.content__load__now()
+        if refresh or not content:
+            raw_content = self.oss_content.raw_content()
+            content     = self.oss_parser.parse_raw_content(raw_content.raw_data)
+            result     = self.s3_db.content__save(content)
+            s3_path     = result.get('s3_path')
+            self.latest_versions__update(s3_path__content=s3_path)
+
+        return content
