@@ -1,6 +1,5 @@
 from osbot_fast_api.api.Fast_API_Routes                                                     import Fast_API_Routes
-
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Events import OSS__Events
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Events        import OSS__Events
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Files         import OSS__Files
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
 
