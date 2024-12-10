@@ -36,6 +36,6 @@ class test_OSS__Files(TestCase):
             with self.oss_files as _:
                 content = _.content__current(refresh=True)
                 assert 500 > len(content.participants    ) > 200
-                assert 500 > len(content.working_sessions) > 300
+                assert 500 > len(content.sessions) > 300
 
 
