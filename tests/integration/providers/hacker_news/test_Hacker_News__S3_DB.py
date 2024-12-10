@@ -1,7 +1,7 @@
 import pytest
 from unittest                                                                                             import TestCase
-from cbr_custom_data_feeds.config.Custom_News__Shared_Constants                                           import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA, S3_FILE_NAME__RAW__FEED_XML, S3_BUCKET_PREFIX__DATA_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS
 from cbr_custom_data_feeds.data_feeds.Data_Feeds__S3__Key_Generator                                       import Data_Feeds__S3__Key_Generator
+from cbr_custom_data_feeds.data_feeds.Data__Feeds__Shared_Constants                                       import S3_BUCKET_SUFFIX__HACKER_NEWS, S3_BUCKET_PREFIX__DATA_FEEDS, S3_FILE_NAME__RAW__FEED_XML, S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Parser                       import Hacker_News__Parser
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from cbr_custom_data_feeds.data_feeds.models.Model__Data_Feeds__Providers                                 import Model__Data_Feeds__Providers
@@ -41,7 +41,7 @@ class test_Hacker_News__S3_DB(TestCase):
             s3_path_latest         = _.s3_path__raw_data__feed_data__latest()
 
             year, month, day, hour = _.s3_key_generator.path__for_date_time__now_utc().split('/')
-            all_files              = _.raw_data__all_files()
+            all_files              = _.provider__all_files()
             file_data__current     = _.feed_data__load__current().obj()
             file_data__from_data   = _.feed_data__load__from_date(year, month, day, hour).obj()
             file_data__latest      = _.feed_data__load__from_path(s3_path_latest).obj()
@@ -65,7 +65,7 @@ class test_Hacker_News__S3_DB(TestCase):
             year, month, day, hour = _.s3_key_generator.path__for_date_time__now_utc().split('/')
             s3_path                = _.s3_key_generator.s3_path(year, month, day, hour, S3_FILE_NAME__RAW__FEED_XML)
             s3_path_latest         = _.s3_path__raw_data__feed_xml__latest()
-            all_files              = _.raw_data__all_files()
+            all_files              = _.provider__all_files()
             file_data__current     = _.raw_data__feed__load__current  (              ).json()
             file_data__from_path   = _.raw_data__feed__load__from_path(s3_path       ).json()
             file_data__latest      = _.raw_data__feed__load__from_path(s3_path_latest).json()

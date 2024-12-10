@@ -14,8 +14,7 @@ class test_OSS__Parser(TestCase):
     def test_parse_raw_data(self):
         with self.oss_parser as _:
             raw_content = self.oss_content.raw_content()
-            assert len(raw_content) > 750
-            content          = _.parse_raw_content(raw_content)
+            content          = _.parse_raw_content(raw_content.raw_data)
             participants     = content.get('participants'    )
             working_sessions = content.get('working_sessions')
             assert len(participants    ) > 218
