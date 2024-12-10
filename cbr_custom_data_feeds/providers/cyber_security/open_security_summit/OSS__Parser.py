@@ -2,13 +2,14 @@ from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Participant     import Model__OSS__Participant
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Working_Session import Model__OSS__Working_Session
 from osbot_utils.base_classes.Type_Safe                                                                     import Type_Safe
+from osbot_utils.utils.Json                                                                                 import str_to_json
 from osbot_utils.utils.Misc                                                                                 import lower
 from osbot_utils.utils.Objects                                                                              import obj
-
 
 class OSS__Parser(Type_Safe):
 
     def parse_raw_content(self, raw_content):
+        raw_content = str_to_json(raw_content)
         participants     = []
         working_sessions = []
         content          = dict(participants     = participants    ,

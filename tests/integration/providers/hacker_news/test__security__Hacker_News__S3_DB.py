@@ -1,9 +1,8 @@
-from unittest                                                                                   import TestCase
-
-from cbr_custom_data_feeds.config.Custom_News__Shared_Constants import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3__Key_Generator  import Hacker_News__S3__Key_Generator
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB              import Hacker_News__S3_DB
-from osbot_utils.helpers.Safe_Id                                                                import Safe_Id
+from unittest                                                                       import TestCase
+from cbr_custom_data_feeds.data_feeds.Data_Feeds__S3__Key_Generator                 import Data_Feeds__S3__Key_Generator
+from cbr_custom_data_feeds.data_feeds.Data__Feeds__Shared_Constants                 import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
+from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB  import Hacker_News__S3_DB
+from osbot_utils.helpers.Safe_Id                                                    import Safe_Id
 
 class test__security__Hacker_News__S3_DB(TestCase):
 
@@ -14,7 +13,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
 
     def test__init__(self):
         with self.s3_db_hacker_news as _:
-            assert type(_.s3_key_generator) is Hacker_News__S3__Key_Generator
+            assert type(_.s3_key_generator) is Data_Feeds__S3__Key_Generator
 
     def test__security__s3_key__path_traversal_attempts(self):                                          # Test that path traversal attempts are properly sanitized by Safe_Id
         with self.s3_db_hacker_news as _:

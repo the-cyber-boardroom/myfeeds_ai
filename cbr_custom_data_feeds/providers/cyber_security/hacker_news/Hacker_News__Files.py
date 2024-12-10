@@ -1,14 +1,14 @@
+from cbr_custom_data_feeds.data_feeds.Data_Feeds__Files import Data_Feeds__Files
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Http_Content                 import Hacker_News__Http_Content
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Parser                       import Hacker_News__Parser
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
-from osbot_utils.base_classes.Type_Safe                                                                   import Type_Safe
 from osbot_utils.context_managers.capture_duration                                                        import capture_duration
 
 RAW_FEED__CREATED__BY = 'Hacker_News__Files.xml_feed__current'
 
-class Hacker_News__Files(Type_Safe):
+class Hacker_News__Files(Data_Feeds__Files):
     s3_db        : Hacker_News__S3_DB
     http_content : Hacker_News__Http_Content
 
@@ -62,6 +62,3 @@ class Hacker_News__Files(Type_Safe):
                 self.s3_db.feed_data__save(feed_data)
                 feed_data = self.s3_db.feed_data__load__current()
         return feed_data
-
-    def all_files(self):
-        return self.s3_db.raw_data__all_files()
