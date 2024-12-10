@@ -4,7 +4,7 @@ from osbot_fast_api.utils.Version                           import version__osbo
 from osbot_aws.AWS_Config                                   import ENV_NAME__AWS_ENDPOINT_URL
 from osbot_utils.utils.Env                                  import get_env
 from osbot_utils.utils.Json                                 import str_to_json
-from osbot_utils.utils.Objects                              import dict_to_obj, __, str_to_obj
+from osbot_utils.utils.Objects                              import __, str_to_obj, obj
 from deploy.lambdas.Deploy_Lambda__Cbr_Custom__Data_Feeds   import Deploy_Lambda__Cbr_Custom_Data_Feeds
 
 
