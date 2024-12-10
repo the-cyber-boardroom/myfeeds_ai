@@ -37,5 +37,6 @@ class OSS__Files(Data_Feeds__Files):
         raw_content = self.s3_db.raw_content__load__now()
         if refresh or not raw_content:
             raw_content = self.http_content.raw_content()
-            self.s3_db.raw_content__save(raw_content)
+            result      = self.s3_db.raw_content__save(raw_content)
+            s3_path     = result.get('s3_path')
         return raw_content

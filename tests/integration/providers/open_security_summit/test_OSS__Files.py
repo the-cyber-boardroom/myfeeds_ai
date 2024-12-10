@@ -31,3 +31,5 @@ class test_OSS__Files(TestCase):
                 assert len(raw_content.raw_data)  > 3500000
                 assert list_set(raw_content)     == ['created_timestamp', 'duration', 'raw_data', 'raw_data_id', 'source_url', 'storage_path']
                 assert raw_content.storage_path  in _.all_files()
+
+                #pprint(_.latest_versions__load().json())
