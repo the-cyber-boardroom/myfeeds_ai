@@ -1,7 +1,7 @@
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Content         import Model__OSS__Content
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Page_Type       import Model__OSS__Page_Type
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Participant     import Model__OSS__Participant
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Working_Session import Model__OSS__Working_Session
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Session         import Model__OSS__Session
 from osbot_utils.base_classes.Type_Safe                                                                     import Type_Safe
 from osbot_utils.utils.Json                                                                                 import str_to_json
 from osbot_utils.utils.Misc                                                                                 import lower
@@ -12,8 +12,8 @@ class OSS__Parser(Type_Safe):
     def parse_raw_content(self, raw_content):
         raw_content = str_to_json(raw_content)
         content     = Model__OSS__Content()
-        participants     = content.participants
-        working_sessions = content.working_sessions
+        participants = content.participants
+        sessions     = content.sessions
 
         for item_raw in raw_content:
             item = obj(item_raw)
@@ -22,8 +22,8 @@ class OSS__Parser(Type_Safe):
                 participant = self.parse_participant(item)
                 participants.append(participant)
             elif page_type == Model__OSS__Page_Type.WORKING_SESSION:
-                working_session = self.parse_working_session(item)
-                working_sessions.append(working_session)
+                session = self.parse_session(item)
+                sessions.append(session)
             # else:
             #    print('skiping page', item.title)
         return content
@@ -59,7 +59,7 @@ class OSS__Parser(Type_Safe):
                                         image       = item.image        )
                  
 
-    def parse_working_session(self, item) -> Model__OSS__Working_Session:    # Parse a working session entry
+    def parse_session(self, item) -> Model__OSS__Session:    # Parse a working session entry
         organizers = item.organizers
         if isinstance(organizers, str):
             organizers = [org.strip() for org in organizers.split(',') if org.strip()]
@@ -68,7 +68,7 @@ class OSS__Parser(Type_Safe):
         if isinstance(topics, str):
             topics = [topic.strip() for topic in topics.split(',') if topic.strip()]
 
-        return Model__OSS__Working_Session(
+        return Model__OSS__Session(
             title        = item.title       ,
             content      = item.content     ,
             description  = item.description ,
