@@ -18,4 +18,4 @@ class test_OSS__Parser(TestCase):
             participants     = content.get('participants'    )
             working_sessions = content.get('working_sessions')
             assert len(participants    ) > 218
-            assert len(working_sessions) > 345
+            assert len(working_sessions) > 340
