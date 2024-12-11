@@ -6,12 +6,13 @@ from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Ht
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Prompts       import OSS__Prompts
 
 ROUTE_PATH__OSS   = 'open-security-summit'
-ROUTES_PATHS__OSS = [ f'/{ROUTE_PATH__OSS}/all-data'            ,
-                      f'/{ROUTE_PATH__OSS}/all-files'           ,
-                      f'/{ROUTE_PATH__OSS}/current-event-data'  ,
-                      f'/{ROUTE_PATH__OSS}/current-event-prompt',
-                      f'/{ROUTE_PATH__OSS}/latest-versions'     ,
-                      f'/{ROUTE_PATH__OSS}/raw-data'            ]
+ROUTES_PATHS__OSS = [ f'/{ROUTE_PATH__OSS}/all-data'                 ,
+                      f'/{ROUTE_PATH__OSS}/all-files'                ,
+                      f'/{ROUTE_PATH__OSS}/current-event-data'       ,
+                      f'/{ROUTE_PATH__OSS}/current-event-prompt'     ,
+                      f'/{ROUTE_PATH__OSS}/current-event-prompt-text',
+                      f'/{ROUTE_PATH__OSS}/latest-versions'          ,
+                      f'/{ROUTE_PATH__OSS}/raw-data'                 ]
 
 
 class Routes__OSS(Fast_API_Routes):
@@ -38,6 +39,10 @@ class Routes__OSS(Fast_API_Routes):
     def current_event_prompt(self):
         return self.files.current_event_prompt().json()
 
+    def current_event_prompt_text(self, refresh=False):
+        prompt_text  = self.files.current_event_prompt(refresh=refresh).prompt_text
+        return PlainTextResponse(prompt_text)
+
     def latest_versions(self):
         return self.files.latest_versions()
 
@@ -45,9 +50,10 @@ class Routes__OSS(Fast_API_Routes):
         return self.files.raw_content__current().json()
 
     def setup_routes(self):
-        self.add_route_get(self.all_data          )
-        self.add_route_get(self.all_files         )
-        self.add_route_get(self.current_event_data)
-        self.add_route_get(self.current_event_prompt)
-        self.add_route_get(self.latest_versions   )
-        self.add_route_get(self.raw_data          )
+        self.add_route_get(self.all_data                 )
+        self.add_route_get(self.all_files                )
+        self.add_route_get(self.current_event_data       )
+        self.add_route_get(self.current_event_prompt     )
+        self.add_route_get(self.current_event_prompt_text)
+        self.add_route_get(self.latest_versions          )
+        self.add_route_get(self.raw_data                 )

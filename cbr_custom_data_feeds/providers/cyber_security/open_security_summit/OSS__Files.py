@@ -24,7 +24,7 @@ class OSS__Files(Data_Feeds__Files):
         current_event__prompt = self.s3_db.current_event__prompt__load()
         if not current_event__prompt or refresh:
             oss_prompts    = OSS__Prompts(oss_files=self)
-            current_event__prompt = oss_prompts.current_event()
+            current_event__prompt = oss_prompts.current_event(refresh=refresh)
             self.s3_db.current_event__prompt__save(current_event__prompt)
         return current_event__prompt
 
