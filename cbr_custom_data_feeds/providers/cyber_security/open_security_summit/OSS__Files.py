@@ -1,9 +1,7 @@
-from cbr_custom_data_feeds.data_feeds.Data_Feeds__Files                                                     import Data_Feeds__Files
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content                  import OSS__Http_Content
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Parser                        import OSS__Parser
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__S3_DB                         import OSS__S3_DB
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Latest_Versions import Model__OSS__Latest_Versions
-from osbot_utils.decorators.methods.type_safe                                                               import type_safe
+from cbr_custom_data_feeds.data_feeds.Data_Feeds__Files                                    import Data_Feeds__Files
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content import OSS__Http_Content
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Parser       import OSS__Parser
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__S3_DB        import OSS__S3_DB
 
 RAW_FEED__CREATED__BY = 'OSS__Files.raw_content__current'
 
@@ -12,36 +10,32 @@ class OSS__Files(Data_Feeds__Files):
     oss_content : OSS__Http_Content
     oss_parser  : OSS__Parser
 
-    @type_safe
-    def latest_versions__save(self, latest_versions: Model__OSS__Latest_Versions):      # todo: create helper method to handle cases like this of a file that saves a particular class
-        s3_path = self.s3_db.s3_path__latest_versions()
-        s3_key  = self.s3_db.s3_key__for_provider_path(s3_path)
-        self.s3_db.s3_save_data(latest_versions.json(), s3_key)
-        return s3_path
+    def current_event(self, refresh=False):
+        from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Events import OSS__Events
+        current_event = self.s3_db.current_event__load()
+        if not current_event or refresh:
+            oss_events    = OSS__Events(oss_files=self)
+            current_event = oss_events.current_event()
+            self.s3_db.current_event__save(current_event)
+        return current_event
 
-    def latest_versions__load(self) -> Model__OSS__Latest_Versions:
-        s3_path         = self.s3_db.s3_path__latest_versions()
-        s3_key          = self.s3_db.s3_key__for_provider_path(s3_path)
-        file_data       = self.s3_db.s3_file_data(s3_key)
-        latest_versions = Model__OSS__Latest_Versions.from_json(file_data)
-        if latest_versions:
-            return latest_versions
-        return Model__OSS__Latest_Versions()
+    def current_event_prompt(self, refresh=False):
+        from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Prompts import OSS__Prompts
+        current_event__prompt = self.s3_db.current_event__prompt__load()
+        if not current_event__prompt or refresh:
+            oss_prompts    = OSS__Prompts(oss_files=self)
+            current_event__prompt = oss_prompts.current_event()
+            self.s3_db.current_event__prompt__save(current_event__prompt)
+        return current_event__prompt
 
-    def latest_versions__update(self, **kwargs):
-        latest_versions__original = self.latest_versions__load()
-        latest_versions__json     = latest_versions__original.json()
-        latest_versions__json.update(**kwargs)
-        latest_versions__updated = Model__OSS__Latest_Versions.from_json(latest_versions__json)
-        return self.latest_versions__save(latest_versions__updated)
+    def latest_versions(self):
+        return self.s3_db.latest_versions__load()
 
     def raw_content__current(self, refresh=False):
         raw_content = self.s3_db.raw_content__load__now()
         if refresh or not raw_content:
             raw_content = self.oss_content.raw_content()
             result      = self.s3_db.raw_content__save(raw_content)
-            s3_path     = result.get('s3_path')
-            self.latest_versions__update(s3_path__raw_content=s3_path)
         return raw_content
 
     def content__current(self, refresh=False):
@@ -49,8 +43,5 @@ class OSS__Files(Data_Feeds__Files):
         if refresh or not content:
             raw_content = self.oss_content.raw_content()
             content     = self.oss_parser.parse_raw_content(raw_content.raw_data)
-            result     = self.s3_db.content__save(content)
-            s3_path     = result.get('s3_path')
-            self.latest_versions__update(s3_path__content=s3_path)
-
+            self.s3_db.content__save(content)
         return content

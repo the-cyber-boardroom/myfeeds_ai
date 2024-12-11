@@ -1,14 +1,17 @@
 from osbot_fast_api.api.Fast_API_Routes                                                     import Fast_API_Routes
+from starlette.responses                                                                    import PlainTextResponse
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Events        import OSS__Events
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Files         import OSS__Files
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
+from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Prompts       import OSS__Prompts
 
 ROUTE_PATH__OSS   = 'open-security-summit'
-ROUTES_PATHS__OSS = [ f'/{ROUTE_PATH__OSS}/all-data'       ,
-                      f'/{ROUTE_PATH__OSS}/all-files'      ,
-                      f'/{ROUTE_PATH__OSS}/current-event'  ,
-                      f'/{ROUTE_PATH__OSS}/latest-versions',
-                      f'/{ROUTE_PATH__OSS}/raw-data'       ]
+ROUTES_PATHS__OSS = [ f'/{ROUTE_PATH__OSS}/all-data'            ,
+                      f'/{ROUTE_PATH__OSS}/all-files'           ,
+                      f'/{ROUTE_PATH__OSS}/current-event-data'  ,
+                      f'/{ROUTE_PATH__OSS}/current-event-prompt',
+                      f'/{ROUTE_PATH__OSS}/latest-versions'     ,
+                      f'/{ROUTE_PATH__OSS}/raw-data'            ]
 
 
 class Routes__OSS(Fast_API_Routes):
@@ -16,6 +19,7 @@ class Routes__OSS(Fast_API_Routes):
     http_content: OSS__Http_Content
     files       : OSS__Files
     events      : OSS__Events
+    prompts     : OSS__Prompts
 
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
@@ -28,18 +32,22 @@ class Routes__OSS(Fast_API_Routes):
     def all_files(self):
         return self.files.all_files()
 
-    def current_event(self):
+    def current_event_data(self):
         return self.events.current_event()
 
+    def current_event_prompt(self):
+        return self.files.current_event_prompt().json()
+
     def latest_versions(self):
-        return self.files.latest_versions__load()
+        return self.files.latest_versions()
 
     def raw_data(self):
         return self.files.raw_content__current().json()
 
     def setup_routes(self):
-        self.add_route_get(self.all_data       )
-        self.add_route_get(self.all_files      )
-        self.add_route_get(self.current_event  )
-        self.add_route_get(self.latest_versions)
-        self.add_route_get(self.raw_data       )
+        self.add_route_get(self.all_data          )
+        self.add_route_get(self.all_files         )
+        self.add_route_get(self.current_event_data)
+        self.add_route_get(self.current_event_prompt)
+        self.add_route_get(self.latest_versions   )
+        self.add_route_get(self.raw_data          )

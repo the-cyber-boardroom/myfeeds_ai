@@ -19,6 +19,7 @@ class OSS__Events(Type_Safe):
     def add_participants_and_sessions(self, event):
         all_data = self.oss_files.content__current()
         organizers_names = []
+
         for session in all_data.sessions:
             if session.when_year == event.year and session.when_month == event.month:
                 organizers_names.extend(session.organizers)
