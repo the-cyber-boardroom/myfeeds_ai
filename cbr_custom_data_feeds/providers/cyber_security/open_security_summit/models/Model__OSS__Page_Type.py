@@ -18,5 +18,6 @@ class Model__OSS__Page_Type(Enum):
     TRACKS             : str = 'tracks'
     TRAINING           : str = 'training'
     TRAINING_SESSION   : str = 'training-session'
+    TRANSCRIPT         : str = 'transcript'
     USER_SESSION       : str = 'user-session'
     WORKING_SESSION    : str = 'working-session'
