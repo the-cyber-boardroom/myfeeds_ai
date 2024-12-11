@@ -90,7 +90,7 @@
             "schema": {
               "type": "string",
               "pattern": "^\\d{2}$",
-              "example": "08"
+              "example": "11"
             }
           },
           {
@@ -151,7 +151,7 @@
             "schema": {
               "type": "string",
               "pattern": "^\\d{2}$",
-              "example": "08"
+              "example": "11"
             }
           },
           {

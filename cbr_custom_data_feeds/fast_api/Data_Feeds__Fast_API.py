@@ -17,4 +17,4 @@ class Data_Feeds__Fast_API(Fast_API):
         self.add_routes(Routes__OSS        )
 
     def path_static_folder(self):
-        return path_combine(cbr_custom_data_feeds.path, 'open_api')
+        return path_combine(cbr_custom_data_feeds.path, 'static')
