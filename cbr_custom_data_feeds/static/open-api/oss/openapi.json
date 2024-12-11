@@ -1,0 +1,266 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "The Cyber Boardroom APIs -  Open Security Summit",
+    "description": "cyber-boardroom.com APIs for accessing Open Security Summit data",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://data-feeds.dev.aws.cyber-boardroom.com/public-data/open-security-summit",
+      "description": "Open Security Summit Development server"
+    }
+  ],
+  "paths": {
+    "/latest/current-event.json": {
+      "get": {
+        "tags": ["Open Security Summit"],
+        "summary": "Get current event information",
+        "description": "Returns information about the current Open Security Summit event",
+        "operationId": "getCurrentEvent",
+        "responses": {
+          "200": {
+            "description": "Current event information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventData"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/latest/current-event-prompt.json": {
+      "get": {
+        "tags": ["Open Security Summit"],
+        "summary": "Get current event prompt",
+        "description": "Returns the prompt for the current Open Security Summit event",
+        "operationId": "getCurrentEventPrompt",
+        "responses": {
+          "200": {
+            "description": "Current event prompt",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventPrompt"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/latest/latest-versions.json": {
+      "get": {
+        "tags": ["Open Security Summit"],
+        "summary": "Get latest versions information",
+        "description": "Returns information about the latest versions for Open Security Summit",
+        "operationId": "getLatestVersions",
+        "responses": {
+          "200": {
+            "description": "Latest versions information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LatestVersions"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{year}/{month}/{day}/{hour}/content.json": {
+      "get": {
+        "tags": ["Open Security Summit"],
+        "summary": "Get processed content for a specific time",
+        "description": "Returns processed content for a specific date and hour",
+        "operationId": "getProcessedContent",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/yearParameter"
+          },
+          {
+            "$ref": "#/components/parameters/monthParameter"
+          },
+          {
+            "$ref": "#/components/parameters/dayParameter"
+          },
+          {
+            "$ref": "#/components/parameters/hourParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Processed content data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessedContent"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{year}/{month}/{day}/{hour}/raw-content.json": {
+      "get": {
+        "tags": ["Open Security Summit"],
+        "summary": "Get raw content for a specific time",
+        "description": "Returns raw content for a specific date and hour",
+        "operationId": "getRawContent",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/yearParameter"
+          },
+          {
+            "$ref": "#/components/parameters/monthParameter"
+          },
+          {
+            "$ref": "#/components/parameters/dayParameter"
+          },
+          {
+            "$ref": "#/components/parameters/hourParameter"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Raw content data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RawContent"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "yearParameter": {
+        "name": "year",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^\\d{4}$",
+          "example": "2024"
+        }
+      },
+      "monthParameter": {
+        "name": "month",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^\\d{2}$",
+          "example": "12"
+        }
+      },
+      "dayParameter": {
+        "name": "day",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^\\d{2}$",
+          "example": "08"
+        }
+      },
+      "hourParameter": {
+        "name": "hour",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "pattern": "^\\d{2}$",
+          "example": "02"
+        }
+      }
+    },
+    "schemas": {
+      "EventData": {
+        "type": "object",
+        "description": "Current event information",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Unique identifier for the event"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the event"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current status of the event"
+          }
+        }
+      },
+      "EventPrompt": {
+        "type": "object",
+        "description": "Event prompt information",
+        "properties": {
+          "prompt": {
+            "type": "string",
+            "description": "The prompt text for the current event"
+          },
+          "parameters": {
+            "type": "object",
+            "description": "Additional parameters for the prompt"
+          }
+        }
+      },
+      "LatestVersions": {
+        "type": "object",
+        "description": "Latest versions information",
+        "properties": {
+          "versions": {
+            "type": "object",
+            "description": "Version information for different components"
+          }
+        }
+      },
+      "ProcessedContent": {
+        "type": "object",
+        "description": "Processed content data",
+        "properties": {
+          "content": {
+            "type": "object",
+            "description": "The processed content data"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Metadata about the processed content"
+          }
+        }
+      },
+      "RawContent": {
+        "type": "object",
+        "description": "Raw content data",
+        "properties": {
+          "content": {
+            "type": "object",
+            "description": "The raw content data"
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Metadata about the raw content"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Open Security Summit",
+      "description": "Endpoints specific to the Open Security Summit platform"
+    }
+  ]
+}
