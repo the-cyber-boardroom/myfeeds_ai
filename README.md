@@ -8,5 +8,5 @@ Repo for CBR Custom - News Feeds
 
 ## Repo details
 
-![Current Release](https://img.shields.io/badge/release-v1.16.0-blue)
+![Current Release](https://img.shields.io/badge/release-v1.16.1-blue)
 
