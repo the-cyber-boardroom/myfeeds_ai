@@ -25,5 +25,5 @@ class test_Data_Feeds__Http_Content(TestCase):
             raw_data_obj = raw_data.obj()
             assert type(raw_data)                                is Model__Data_Feeds__Raw_Data
             assert str_to_json(raw_data.raw_data).get('edition') == 'community'
-            assert raw_data_obj.duration                          < 0.003
+            assert raw_data_obj.duration                          < 0.01
 

@@ -39,7 +39,7 @@ class OSS__Parser(Type_Safe):
         else:
             fixed__linkedin = ''
 
-        return Model__OSS__Participant( title       = item.title             ,
+        return Model__OSS__Participant( title       = item.title        ,
                                         content     = item.content      ,
                                         description = item.description  ,
                                         type        = item.type         ,
