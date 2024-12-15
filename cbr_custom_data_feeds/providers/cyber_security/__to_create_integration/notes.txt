@@ -5,6 +5,8 @@
 
 ### with RSS feeds
 
+   - https://www.securityweek.com/
+
  - https://securityaffairs.com/ : https://feeder.co/discover/5f3bb36868/securityaffairs-co-wordpress
  - https://krebsonsecurity.com: https://krebsonsecurity.com/feed/
 
