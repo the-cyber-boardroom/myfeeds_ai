@@ -1,6 +1,6 @@
 [tool.poetry]
 name        = "cbr_custom_data_feeds"
-version     = "v1.18.0"
+version     = "v1.18.3"
 description = "CBR Custom - Data Feeds"
 authors     = ["Dinis Cruz <dinis.cruz@owasp.org>"]
 license     = "Apache 2.0"

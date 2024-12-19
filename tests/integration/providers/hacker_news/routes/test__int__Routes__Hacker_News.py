@@ -1,6 +1,7 @@
 from unittest                                                                               import TestCase
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator import PROMPT_SCHEMA__HACKER_NEWS
 from cbr_custom_data_feeds.providers.cyber_security.hacker_news.routes.Routes__Hacker_News  import Routes__Hacker_News
+from osbot_utils.utils.Objects                                                              import obj, __
 from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
 
 
@@ -41,6 +42,15 @@ class test__int__Routes__Hacker_News(TestCase):
         with self.routes_hacker_news as _:
             feed_prompt = _.feed_prompt()
             assert feed_prompt.body.decode().startswith(expected_start_text) is True
+
+    def test_files_paths(self):
+        with self.routes_hacker_news as _:
+            path_when = _.files.s3_db.s3_path__when()
+            assert obj(_.files_paths()) == __(data    =__(latest_feed_xml =f'{path_when}/feed-xml.json',
+                                                          latest_feed_data=f'{path_when}/feed-data.json'),
+                                              error   = None    ,
+                                              message =''       ,
+                                              status  ='ok'     )
 
     def test_raw_data__all_file(self):
         with self.routes_hacker_news as _:
