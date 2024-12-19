@@ -27,6 +27,16 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY__654654216424 }}
           AWS_DEFAULT_REGION   : ${{ secrets.AWS_DEFAULT_REGION__654654216424    }}
 
+  run-qunit-tests:
+    name: Run QUnit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run QUnit Tests
+        uses: ./.github/actions/run-qunit-tests
+        with:
+          node-version: '22.4.1'
+
   increment-tag:
     name: Increment Tag - Main
     runs-on: ubuntu-latest
@@ -38,6 +48,7 @@ jobs:
           release_type: ${{ env.RELEASE_TYPE }}
     needs:
       - run-tests
+      - run-qunit-tests
 
   publish-to-pypi:
     #if: False
