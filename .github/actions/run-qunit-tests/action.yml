@@ -14,12 +14,14 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
 
-    - name: Install dependencies
-      shell: bash
-      run: |
+    - name             : Install dependencies
+      shell            : bash
+      working-directory: ./cbr_custom_data_feeds_ui
+      run              : |
         npm install
 
-    - name: Run QUnit tests
-      shell: bash
-      run: |
+    - name             : Run QUnit tests
+      shell            : bash
+      working-directory: ./cbr_custom_data_feeds_ui
+      run              : |
         npm test
