@@ -6,7 +6,7 @@ from cbr_custom_data_feeds.utils.Version                  import version__cbr_cu
 from deploy.lambdas.Deploy_Lambda__Cbr_Custom__Data_Feeds import Deploy_Lambda__Cbr_Custom_Data_Feeds
 
 
-class test__qa__Routes__Info(TestCase):
+class test__qa__Routes__Info(TestCase): 
 
     @classmethod
     def setUpClass(cls):
