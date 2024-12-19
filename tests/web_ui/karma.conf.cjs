@@ -2,11 +2,11 @@ let path = require('path');
 
 module.exports = function(config) {
   config.set({
-    basePath: '',
+    basePath: '../../',
     frameworks: ['qunit'],
     files: [
-        { pattern: 'js/**/*.*'    , type: 'module' },
-        { pattern: 'qunit/**/*.*' , type: 'module' },
+        { pattern: 'cbr_custom_data_feeds/web_ui/js/**/*.*'    , type: 'module' },
+        { pattern: 'tests/web_ui/qunit/**/*.*' , type: 'module' },
     ],
     exclude: [],
     preprocessors: {

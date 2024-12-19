@@ -1,6 +1,6 @@
 import cbr_custom_data_feeds
-import cbr_custom_data_feeds_ui
 from osbot_fast_api.api.Fast_API                                                            import Fast_API
+from cbr_custom_data_feeds                                                                  import web_ui
 from osbot_utils.utils.Files                                                                import path_combine
 from cbr_custom_data_feeds.fast_api.routes.Routes__Info                                     import Routes__Info
 from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.routes.Routes__OSS import Routes__OSS
@@ -14,7 +14,7 @@ class Data_Feeds__Fast_API(Fast_API):
 
     def add_static_ui(self):
         from starlette.staticfiles import StaticFiles
-        path_static_folder = cbr_custom_data_feeds_ui.path
+        path_static_folder = web_ui.path
         path_name   = "ui"
         path_static = f"/{path_name}"
         self.app().mount(path_static, StaticFiles(directory=path_static_folder), name=path_name)

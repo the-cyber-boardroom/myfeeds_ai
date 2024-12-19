@@ -48,3 +48,9 @@ class test__live_lambda_function(TestCase):
             assert config_version                           == {"version": version__osbot_fast_api }
             assert open_api_json.openapi                    =='3.1.0'
             assert open_api_json.info.title                 == 'FastAPI'
+
+    # def test_invoke__return_logs(self):
+    #     with self.lambda_function as _:
+    #         result = _.invoke_return_logs()
+    #         from osbot_utils.utils.Dev import pprint
+    #         pprint(result)
