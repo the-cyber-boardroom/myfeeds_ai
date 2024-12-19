@@ -62,8 +62,8 @@ class Routes__Hacker_News(Fast_API_Routes):
             return list_filter_contains(all_files, only_with)
         return all_files
 
-    def raw_data_feed_current(self):
-        raw_data_feed = self.files.xml_feed__raw_data__current()
+    def raw_data_feed_current(self, refresh:bool=False):
+        raw_data_feed = self.files.xml_feed__raw_data__current(refresh=refresh)
         if raw_data_feed:
             return status_ok(data=raw_data_feed.json())
         return status_error(f'No data found')

@@ -71,10 +71,8 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
 
     # methods for s3 folders and files
 
-
-
-    def s3_key__raw_data__feed_xml(self):
-         return self.s3_key_generator.s3_key(area=Model__Data_Feeds__Providers.HACKER_NEWS, file_id=S3_FILE_NAME__RAW__FEED_XML)
+    def s3_path__when(self):
+        return self.s3_key_generator.path__for_date_time__now_utc()
 
     def s3_path__raw_data__feed_data__now(self):
         return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_DATA)
@@ -87,3 +85,6 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
 
     def s3_path__raw_data__feed_xml__latest(self):
         return f'{S3_FOLDER_NAME__LATEST}/{S3_FILE_NAME__RAW__FEED_XML}.json'
+
+    def s3_key__raw_data__feed_xml(self):
+         return self.s3_key_generator.s3_key(area=Model__Data_Feeds__Providers.HACKER_NEWS, file_id=S3_FILE_NAME__RAW__FEED_XML)
