@@ -5,7 +5,7 @@ module.exports = function(config) {
 
     frameworks: ['qunit'],
     files: [
-        { pattern: 'cbr_custom_data_feeds/web_ui/js/**/*.*'    , type: 'module' },
+        { pattern: 'myfeeds_ai/web_ui/js/**/*.*'    , type: 'module' },
         { pattern: 'tests/web_ui/qunit/**/*.*' , type: 'module' },
     ],
     exclude: [],

@@ -1,0 +1,8 @@
+services:
+  myfeeds_ai:
+    build:
+      context: ../../..
+      dockerfile: ./deploy/docker/myfeeds_ai/Dockerfile
+    platform: linux/amd64
+    container_name: myfeeds_ai
+    tty: true

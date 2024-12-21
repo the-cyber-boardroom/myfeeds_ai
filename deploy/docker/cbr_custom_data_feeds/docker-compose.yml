@@ -1,8 +1,0 @@
-services:
-  cbr_custom_data_feeds:
-    build:
-      context: ../../..
-      dockerfile: ./deploy/docker/cbr_custom_data_feeds/Dockerfile
-    platform: linux/amd64
-    container_name: cbr_custom_data_feeds
-    tty: true

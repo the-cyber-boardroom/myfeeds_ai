@@ -1,9 +1,9 @@
 ---
-title: CBR Custom - News Feeds
+title: MyFeeds.ai
 ---
 
 # cbr-xyz
-Repo for CBR Custom - News Feeds
+Repo for MyFeeds.ai
 
 
 ## Repo details

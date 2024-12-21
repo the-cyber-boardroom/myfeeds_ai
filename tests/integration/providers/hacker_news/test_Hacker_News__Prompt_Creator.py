@@ -1,7 +1,7 @@
 from unittest                                                                                      import TestCase
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator        import Hacker_News__Prompt_Creator
+from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
+from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator        import Hacker_News__Prompt_Creator
 
 class test_Hacker_News__Prompt_Creator(TestCase):
 
