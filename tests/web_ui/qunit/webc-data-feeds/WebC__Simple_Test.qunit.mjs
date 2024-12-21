@@ -30,4 +30,16 @@ module('WebC__Hacker_News', (hooks)=>{
         const h2_title = webc_hacker_news.title
         assert.equal(h2_title.innerText, 'The Hacker News Feed')
     })
+
+    only('load_data - check url', async (assert) => {
+        const url = webc_hacker_news.url__data_feed_current
+        assert.equal(url, 'https://dev.myfeeds.ai/public-data/hacker-news/latest/feed-data.json')
+        const result = await fetch(url)
+        assert.equal(result.status, 200)
+        const data = await result.json()
+        assert.ok   (data.feed_data)
+        assert.ok   (data.feed_data.title)
+        assert.equal(data.feed_data.title, 'The Hacker News')
+
+    })
 })
