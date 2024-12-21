@@ -1,17 +1,15 @@
-let path = require('path');
+
 
 module.exports = function(config) {
   config.set({
-    basePath: '../../',
+
     frameworks: ['qunit'],
     files: [
         { pattern: 'cbr_custom_data_feeds/web_ui/js/**/*.*'    , type: 'module' },
         { pattern: 'tests/web_ui/qunit/**/*.*' , type: 'module' },
     ],
     exclude: [],
-    preprocessors: {
-      // You can specify preprocessors here if necessary
-    },
+    preprocessors: { },
     reporters: ['progress'],
     port: 9876,
     colors: true,
@@ -25,3 +23,8 @@ module.exports = function(config) {
   });
 };
 
+// todo: figure out how to run this from the tests/web_ui folder , since it is annoying having to add this to the root of  the repo
+//       I was able to make it work ok for KarmaJS (using basePath) but wallabyJS was not working with files outside the tests/web_ui folder folder
+
+//let path = require('path');
+//    basePath: '../../',

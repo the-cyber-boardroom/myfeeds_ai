@@ -16,12 +16,12 @@ runs:
 
     - name             : Install dependencies
       shell            : bash
-      working-directory: ./cbr_custom_data_feeds/web_ui
+      #working-directory: ./cbr_custom_data_feeds/web_ui
       run              : |
         npm install
 
     - name             : Run QUnit tests
       shell            : bash
-      working-directory: ./cbr_custom_data_feeds/web_ui
+      #working-directory: ./cbr_custom_data_feeds/web_ui
       run              : |
         npm test

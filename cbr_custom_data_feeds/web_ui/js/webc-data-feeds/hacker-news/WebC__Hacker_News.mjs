@@ -15,9 +15,7 @@ export default class WebC__Hacker_News extends Web_Component {
     }
 
     async load_data() {
-        console.log('here', this.url__data_feed_current)
         const response = await this.fetch_url(this.url__data_feed_current)
-        console.log('after response')
         if (response.status === 200) {
             this.data_feed = await response.json()
             this.feed_data = this.data_feed.feed_data
@@ -30,8 +28,8 @@ export default class WebC__Hacker_News extends Web_Component {
         const header    = new Div({ class: 'feed-header'    })
 
         header.add_elements(
-            new Div({ class: 'feed-icon' , value: '📰'                     }),
-            new H  ({ level: 1, value   : 'Hacker News Feed'              })
+            new Div({ class: 'feed-icon'  , value: '📰'         }),
+            new H  ({ class: 'feed-title' , level: 1, value   : 'The Hacker News Feed'   })
         )
 
         container.add_element(header)
@@ -100,6 +98,8 @@ export default class WebC__Hacker_News extends Web_Component {
             ".read-more:hover"    : { textDecoration  : "underline"                  }         // Hover effect
         }
     }
+
+    get title () { return this.query_selector('.feed-title') }
 }
 
 WebC__Hacker_News.define()
