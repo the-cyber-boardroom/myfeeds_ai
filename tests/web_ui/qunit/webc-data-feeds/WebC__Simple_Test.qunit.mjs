@@ -5,13 +5,6 @@ module('WebC__Hacker_News', (hooks)=>{
 
     let host_div, webc_hacker_news
 
-    // test('find dependency', async (assert)=>{
-    //
-    //     const result = await fetch('../../../../myfeeds_ai/web_ui/js/webc-data-feeds/hacker-news/WebC__Hacker_News.mjs')
-    //     console.log(result.status)
-    //     console.log(WebC__Hacker_News.create())
-    //     assert.ok(1)
-    // })
     hooks.before(async (assert)=> {
         const timeout= 500
         assert.timeout(timeout)
