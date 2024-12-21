@@ -8,7 +8,7 @@ on:
 env:
   GIT__BRANCH      : 'dev'
   RELEASE_TYPE     : 'minor'
-  PACKAGE_NAME     : 'cbr_custom_data_feeds'
+  PACKAGE_NAME     : 'myfeeds_ai'
 
 jobs:
 

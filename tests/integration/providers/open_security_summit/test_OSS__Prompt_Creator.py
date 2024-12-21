@@ -1,6 +1,6 @@
 from unittest                                                                           import TestCase
-from cbr_custom_data_feeds.data_feeds.models.Model__Data_Feeds__Prompt                  import Model__Data_Feeds__Prompt
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Prompts   import OSS__Prompts, PROMPT__OSS__CURRENT_SESSIONS
+from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Prompt                  import Model__Data_Feeds__Prompt
+from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Prompts   import OSS__Prompts, PROMPT__OSS__CURRENT_SESSIONS
 from tests.integration.data_feeds__objs_for_tests                                       import cbr_website__assert_local_stack
 
 

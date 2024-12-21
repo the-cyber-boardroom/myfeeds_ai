@@ -1,6 +1,6 @@
 from unittest                                                                               import TestCase
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator import PROMPT_SCHEMA__HACKER_NEWS
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.routes.Routes__Hacker_News  import Routes__Hacker_News
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator import PROMPT_SCHEMA__HACKER_NEWS
+from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News  import Routes__Hacker_News
 from osbot_utils.utils.Objects                                                              import obj, __
 from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
 

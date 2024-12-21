@@ -1,12 +1,12 @@
 from unittest                                                                                       import TestCase
-from cbr_custom_data_feeds.data_feeds.Data__Feeds__Shared_Constants                                 import S3_FOLDER_NAME__LATEST
-from cbr_custom_data_feeds.data_feeds.models.Model__Data_Feeds__Prompt                              import Model__Data_Feeds__Prompt
-from cbr_custom_data_feeds.data_feeds.models.Model__Data_Feeds__Raw_Data                            import Model__Data_Feeds__Raw_Data
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Events                import OSS_EVENTS__CURRENT__YEAR, OSS_EVENTS__CURRENT__MONTH
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Files                 import OSS__Files
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Prompts               import PROMPT__OSS__CURRENT_SESSIONS
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__S3_DB                 import S3_FILE_NAME__OSS__CURRENT_EVENT, S3_FILE_NAME__OSS__CURRENT_EVENT__PROMPT
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.models.Model__OSS__Event   import Model__OSS__Event
+from myfeeds_ai.data_feeds.Data__Feeds__Shared_Constants                                 import S3_FOLDER_NAME__LATEST
+from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Prompt                              import Model__Data_Feeds__Prompt
+from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Raw_Data                            import Model__Data_Feeds__Raw_Data
+from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Events                import OSS_EVENTS__CURRENT__YEAR, OSS_EVENTS__CURRENT__MONTH
+from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Files                 import OSS__Files
+from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Prompts               import PROMPT__OSS__CURRENT_SESSIONS
+from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__S3_DB                 import S3_FILE_NAME__OSS__CURRENT_EVENT, S3_FILE_NAME__OSS__CURRENT_EVENT__PROMPT
+from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS__Event   import Model__OSS__Event
 from osbot_utils.utils.Env                                                                          import in_github_action
 from osbot_utils.utils.Misc                                                                         import list_set
 from tests.integration.data_feeds__objs_for_tests                                                   import cbr_website__assert_local_stack

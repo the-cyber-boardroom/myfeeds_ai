@@ -1,12 +1,12 @@
 [tool.poetry]
-name        = "cbr_custom_data_feeds"
-version     = "v1.21.0"
-description = "CBR Custom - Data Feeds"
+name        = "myfeeds_ai"
+version     = "v1.21.2"
+description = "MyFeeds.ai"
 authors     = ["Dinis Cruz <dinis.cruz@owasp.org>"]
 license     = "Apache 2.0"
 readme      = "README.md"
-homepage    = "https://github.com/the-cyber-boardroom/cbr-custom--data-feeds"
-repository  = "https://github.com/the-cyber-boardroom/cbr-custom--data-feeds"
+homepage    = "https://github.com/the-cyber-boardroom/myfeeds_ai"
+repository  = "https://github.com/the-cyber-boardroom/myfeeds_ai"
 
 [tool.poetry.dependencies]
 python             = "^3.11"

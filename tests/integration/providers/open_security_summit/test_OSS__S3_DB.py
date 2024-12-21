@@ -1,8 +1,8 @@
 from unittest                                                                               import TestCase
-from cbr_custom_data_feeds.data_feeds.Data__Feeds__Shared_Constants                         import S3_FILE_NAME__RAW__CONTENT, S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA, S3_BUCKET_SUFFIX__HACKER_NEWS, S3_BUCKET_PREFIX__DATA_FEEDS
-from cbr_custom_data_feeds.data_feeds.models.Model__Data_Feeds__Providers                   import Model__Data_Feeds__Providers
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__S3_DB         import OSS__S3_DB
+from myfeeds_ai.data_feeds.Data__Feeds__Shared_Constants                         import S3_FILE_NAME__RAW__CONTENT, S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA, S3_BUCKET_SUFFIX__HACKER_NEWS, S3_BUCKET_PREFIX__DATA_FEEDS
+from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                   import Model__Data_Feeds__Providers
+from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
+from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__S3_DB         import OSS__S3_DB
 from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack, DATA_FEEDS__TEST__AWS_ACCOUNT_ID
 
 

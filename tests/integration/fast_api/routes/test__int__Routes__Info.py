@@ -1,6 +1,6 @@
 from unittest                                           import TestCase
-from cbr_custom_data_feeds.fast_api.routes.Routes__Info import Routes__Info
-from cbr_custom_data_feeds.utils.Version                import version__cbr_custom_data_feeds
+from myfeeds_ai.fast_api.routes.Routes__Info import Routes__Info
+from myfeeds_ai.utils.Version                import version__myfeeds_ai
 
 
 class test__int__Routes__UK(TestCase):
@@ -17,4 +17,4 @@ class test__int__Routes__UK(TestCase):
 
     def test__version(self):
         with self.routes_data_feeds as _:
-            assert _.version() == { 'version': version__cbr_custom_data_feeds }
+            assert _.version() == { 'version': version__myfeeds_ai }

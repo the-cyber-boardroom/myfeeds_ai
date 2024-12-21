@@ -4,17 +4,17 @@
 module.exports = function (wallaby) {
 
   return {
-    files        : ['./cbr_custom_data_feeds/web_ui/js/**/*.*'],
+    files        : ['./myfeeds_ai/web_ui/js/**/*.*'],
     tests        : ['./tests/web_ui/qunit/**/*.*'             ],
     testFramework: 'qunit',
     env          : { kind: 'chrome'},
 
     // const path = require('path');
     // middleware: function (app, express) {
-    //   console.log(path.resolve(__dirname,'../../cbr_custom_data_feeds/web_ui/js/**/*.*'))
+    //   console.log(path.resolve(__dirname,'../../myfeeds_ai/web_ui/js/**/*.*'))
     //   app.use(
-    //     '/cbr_custom_data_feeds',
-    //     express.static(path.join(__dirname, '../../cbr_custom_data_feeds'))
+    //     '/myfeeds_ai',
+    //     express.static(path.join(__dirname, '../../myfeeds_ai'))
     //   );
     //},
 

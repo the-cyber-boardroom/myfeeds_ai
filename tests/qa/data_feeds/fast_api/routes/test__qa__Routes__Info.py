@@ -2,15 +2,15 @@ import pytest
 import requests
 from unittest                                             import TestCase
 from osbot_utils.utils.Env                                import not_in_github_action
-from cbr_custom_data_feeds.utils.Version                  import version__cbr_custom_data_feeds
-from deploy.lambdas.Deploy_Lambda__Cbr_Custom__Data_Feeds import Deploy_Lambda__Cbr_Custom_Data_Feeds
+from myfeeds_ai.utils.Version                  import version__myfeeds_ai
+from deploy.lambdas.Deploy_Lambda__MyFeeds_AI import Deploy_Lambda__MyFeeds_AI
 
 
 class test__qa__Routes__Info(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.deploy_lambda   = Deploy_Lambda__Cbr_Custom_Data_Feeds()
+        cls.deploy_lambda   = Deploy_Lambda__MyFeeds_AI()
         cls.lambda_function = cls.deploy_lambda.lambda_function
         cls.lambda_url      = cls.lambda_function.function_url()
         cls.session         = requests.Session()
@@ -26,4 +26,4 @@ class test__qa__Routes__Info(TestCase):
             pytest.skip("This test can only be executed in GH Actions after the deployment of the latest lambda")
         response = self.requests_get('info/version')
         assert response.status_code == 200
-        assert response.json() == {'version': version__cbr_custom_data_feeds}
+        assert response.json() == {'version': version__myfeeds_ai}

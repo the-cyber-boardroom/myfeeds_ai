@@ -1,7 +1,7 @@
 from unittest             import TestCase
 from starlette.testclient import TestClient
 
-from cbr_custom_data_feeds.lambdas.handler import app
+from myfeeds_ai.lambdas.handler import app
 
 
 class test__int__handler(TestCase):

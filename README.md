@@ -1,12 +1,12 @@
 ---
-title: CBR Custom - News Feeds
+title: MyFeeds.ai
 ---
 
 # cbr-xyz
-Repo for CBR Custom - News Feeds
+Repo for MyFeeds.ai
 
 
 ## Repo details
 
-![Current Release](https://img.shields.io/badge/release-v1.21.0-blue)
+![Current Release](https://img.shields.io/badge/release-v1.21.2-blue)
 

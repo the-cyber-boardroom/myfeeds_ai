@@ -1,8 +1,8 @@
 from unittest                                                                               import TestCase
-from cbr_custom_data_feeds.data_feeds.models.Model__Data_Feeds__Raw_Data                    import Model__Data_Feeds__Raw_Data
+from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Raw_Data                    import Model__Data_Feeds__Raw_Data
 from osbot_utils.utils.Json                                                                 import str_to_json
 from osbot_utils.utils.Misc                                                                 import list_set
-from cbr_custom_data_feeds.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
+from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
 from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
 
 EXPECTED__OSS__RAW_CONTENT__FIELDS = ['company', 'content', 'date', 'description', 'dir', 'event', 'expirydate',

@@ -1,15 +1,15 @@
 import pytest
 from unittest                                                                                             import TestCase
-from cbr_custom_data_feeds.data_feeds.Data_Feeds__S3__Key_Generator                                       import Data_Feeds__S3__Key_Generator
-from cbr_custom_data_feeds.data_feeds.Data__Feeds__Shared_Constants                                       import S3_BUCKET_SUFFIX__HACKER_NEWS, S3_BUCKET_PREFIX__DATA_FEEDS, S3_FILE_NAME__RAW__FEED_XML, S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__Parser                       import Hacker_News__Parser
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
-from cbr_custom_data_feeds.data_feeds.models.Model__Data_Feeds__Providers                                 import Model__Data_Feeds__Providers
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                       import Data_Feeds__S3__Key_Generator
+from myfeeds_ai.data_feeds.Data__Feeds__Shared_Constants                                       import S3_BUCKET_SUFFIX__HACKER_NEWS, S3_BUCKET_PREFIX__DATA_FEEDS, S3_FILE_NAME__RAW__FEED_XML, S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                       import Hacker_News__Parser
+from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
+from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                                 import Model__Data_Feeds__Providers
 from osbot_utils.utils.Misc                                                                               import random_text
 from osbot_utils.utils.Objects                                                                            import obj
 from tests.integration.data_feeds__objs_for_tests                                                         import cbr_website__assert_local_stack, DATA_FEEDS__TEST__AWS_ACCOUNT_ID
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB
-from cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB
+from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
 from tests.integration.data_feeds__test_data                                                              import TEST_DATA__HACKER_NEWS__FEED_XML
 
 
@@ -56,7 +56,7 @@ class test_Hacker_News__S3_DB(TestCase):
 
     def test_raw_data__feed_xml__save(self):
         with self.s3_db_hacker_news as _:
-            with pytest.raises(ValueError, match="Parameter 'raw_data_feed' expected type <class 'cbr_custom_data_feeds.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed.Model__Hacker_News__Raw_Data__Feed'>, but got <class 'str'>"):
+            with pytest.raises(ValueError, match="Parameter 'raw_data_feed' expected type <class 'myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed.Model__Hacker_News__Raw_Data__Feed'>, but got <class 'str'>"):
                 _.raw_data__feed__save('raw_data_feed')
             feed_xml               = TEST_DATA__HACKER_NEWS__FEED_XML
             raw_data_feed          = Model__Hacker_News__Raw_Data__Feed(feed_xml=feed_xml)                              # todo: this needs to be refactored to a helper class that creates these objects
