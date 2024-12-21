@@ -1,0 +1,19 @@
+{
+  "name": "cbr_web_components",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "test": "karma start karma.conf.cjs  --singleRun=true"
+  },
+  "devDependencies": {
+    "datatables.net": "*",
+    "jquery": "*",
+    "karma": "^6.4.3",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-qunit": "^4.2.0",
+    "qunit": "^2.21.0"
+  },
+  "dependencies": {
+    "highlight.js": "^11.10.0"
+  }
+}

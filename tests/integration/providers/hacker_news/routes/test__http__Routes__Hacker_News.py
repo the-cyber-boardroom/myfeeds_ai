@@ -27,3 +27,4 @@ class test__http__Routes__Hacker_News(TestCase):
         assert response_obj.status  == 'ok'
         assert response_obj.data.latest_feed_xml .endswith(f'{S3_FILE_NAME__RAW__FEED_XML }.json')
         assert response_obj.data.latest_feed_data.endswith(f'{S3_FILE_NAME__RAW__FEED_DATA}.json')
+

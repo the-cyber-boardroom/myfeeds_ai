@@ -5,6 +5,10 @@
 
 ### with RSS feeds
 
+   - https://www.securityweek.com/
+
+   - https://feeds.feedburner.com/cyber-security-news
+
  - https://securityaffairs.com/ : https://feeder.co/discover/5f3bb36868/securityaffairs-co-wordpress
  - https://krebsonsecurity.com: https://krebsonsecurity.com/feed/
 
@@ -37,8 +41,26 @@
 
     - ARS technica
             https://arstechnica.com/rss-feeds/
+
+    - https://www.cshub.com/rss-feeds
+
 - List of other media APIs:
      - https://en.wikipedia.org/wiki/List_of_news_media_APIs
      - the BBC doesn't have a public API for their news: https://www.perplexity.ai/search/hi-does-the-bbc-have-an-api-to-SZDP2YDiT6ytCDuIpLUzkQ
 
 
+- vulnerability data:
+   - https://securityvulnerability.io/ has great visualizations and analysis of vulnerability data , and good json feeds
+        - https://securityvulnerability.io/vulnerability/latest
+        - https://securityvulnerability.io/vulnerability/critical
+        - https://securityvulnerability.io/vulnerability/trending
+
+- other
+
+   - https://feeder.co/discover/security
+   - https://www.misp-project.org/feeds/
+   - good list of cyber security news providers https://cybernewswire.com/
+
+ - don't seem to have RSS feeds
+
+   - https://www.linkedin.com/company/the-cyber-security-hub/
