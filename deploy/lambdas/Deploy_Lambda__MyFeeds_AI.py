@@ -1,8 +1,9 @@
-from osbot_utils.utils.Env                  import get_env, load_dotenv
-from osbot_aws.AWS_Config                   import aws_config
-from osbot_utils.base_classes.Type_Safe     import Type_Safe
-from osbot_aws.deploy.Deploy_Lambda         import Deploy_Lambda
-from myfeeds_ai.utils.Version               import version__myfeeds_ai
+from osbot_aws.apis.test_helpers.Temp_Aws_Roles import Temp_Aws_Roles
+from osbot_utils.utils.Env                      import get_env, load_dotenv
+from osbot_aws.AWS_Config                       import aws_config
+from osbot_utils.base_classes.Type_Safe         import Type_Safe
+from osbot_aws.deploy.Deploy_Lambda             import Deploy_Lambda
+from myfeeds_ai.utils.Version                   import version__myfeeds_ai
 
 
 class Deploy_Lambda__MyFeeds_AI(Type_Safe):
@@ -15,6 +16,7 @@ class Deploy_Lambda__MyFeeds_AI(Type_Safe):
         self.lambda_function = self.deploy_lambda.lambda_function()
 
     def deploy(self):
+        #self.aws_setup()
         self.lambda_setup()
         self.deploy_lambda.deploy()
         self.lambda_setup_post_update()
@@ -23,6 +25,11 @@ class Deploy_Lambda__MyFeeds_AI(Type_Safe):
         with self.lambda_function as _:
             result = _.invoke()
             return result
+
+    # def aws_setup(self):
+    #     temp_aws_roles = Temp_Aws_Roles()
+    #     if temp_aws_roles.for_lambda_invocation__not_exists():
+    #         temp_aws_roles.for_lambda_invocation__create()
 
     def lambda_setup(self):
         self.deploy_lambda.set_container_image(self.ecr_image_uri())
