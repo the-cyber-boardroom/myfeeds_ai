@@ -22,10 +22,10 @@ jobs:
       - name: "run-tests"
         uses: ./.github/actions/run-tests
         env:
-          AWS_ACCOUNT_ID       : ${{ secrets.AWS_ACCOUNT_ID__654654216424        }}
-          AWS_ACCESS_KEY_ID    : ${{ secrets.AWS_ACCESS_KEY_ID__654654216424     }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY__654654216424 }}
-          AWS_DEFAULT_REGION   : ${{ secrets.AWS_DEFAULT_REGION__654654216424    }}
+          AWS_ACCOUNT_ID       : ${{ secrets.AWS_ACCOUNT_ID__774305572074        }}
+          AWS_ACCESS_KEY_ID    : ${{ secrets.AWS_ACCESS_KEY_ID__774305572074     }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY__774305572074 }}
+          AWS_DEFAULT_REGION   : ${{ secrets.AWS_DEFAULT_REGION__774305572074    }}
 
   run-qunit-tests:
     name: Run QUnit tests
@@ -79,10 +79,10 @@ jobs:
       - name: "Publish to: AWS ECR"
         uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/aws__publish__ecr@dev
         env:
-          AWS_ACCOUNT_ID       : ${{ secrets.AWS_ACCOUNT_ID__654654216424        }}
-          AWS_ACCESS_KEY_ID    : ${{ secrets.AWS_ACCESS_KEY_ID__654654216424     }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY__654654216424 }}
-          AWS_DEFAULT_REGION   : ${{ secrets.AWS_DEFAULT_REGION__654654216424    }}
+          AWS_ACCOUNT_ID       : ${{ secrets.AWS_ACCOUNT_ID__774305572074        }}
+          AWS_ACCESS_KEY_ID    : ${{ secrets.AWS_ACCESS_KEY_ID__774305572074     }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY__774305572074 }}
+          AWS_DEFAULT_REGION   : ${{ secrets.AWS_DEFAULT_REGION__774305572074    }}
     needs:
       - publish-to-pypi
 
@@ -94,10 +94,10 @@ jobs:
       - name: Run Tests and Integration Tests
         uses: ./.github/actions/aws__deploy-lambda
         env:
-          AWS_ACCOUNT_ID        : ${{ secrets.AWS_ACCOUNT_ID__654654216424        }}
-          AWS_ACCESS_KEY_ID     : ${{ secrets.AWS_ACCESS_KEY_ID__654654216424     }}
-          AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY__654654216424 }}
-          AWS_DEFAULT_REGION    : ${{ secrets.AWS_DEFAULT_REGION__654654216424    }}
+          AWS_ACCOUNT_ID        : ${{ secrets.AWS_ACCOUNT_ID__774305572074        }}
+          AWS_ACCESS_KEY_ID     : ${{ secrets.AWS_ACCESS_KEY_ID__774305572074     }}
+          AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY__774305572074 }}
+          AWS_DEFAULT_REGION    : ${{ secrets.AWS_DEFAULT_REGION__774305572074    }}
     needs:
       - publish-to-aws-ecr
 
@@ -109,9 +109,9 @@ jobs:
       - name: Run Tests and Integration Tests
         uses: ./.github/actions/aws__run-qa-tests
         env:
-          AWS_ACCOUNT_ID        : ${{ secrets.AWS_ACCOUNT_ID__654654216424        }}
-          AWS_ACCESS_KEY_ID     : ${{ secrets.AWS_ACCESS_KEY_ID__654654216424     }}
-          AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY__654654216424 }}
-          AWS_DEFAULT_REGION    : ${{ secrets.AWS_DEFAULT_REGION__654654216424    }}
+          AWS_ACCOUNT_ID        : ${{ secrets.AWS_ACCOUNT_ID__774305572074        }}
+          AWS_ACCESS_KEY_ID     : ${{ secrets.AWS_ACCESS_KEY_ID__774305572074     }}
+          AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY__774305572074 }}
+          AWS_DEFAULT_REGION    : ${{ secrets.AWS_DEFAULT_REGION__774305572074    }}
     needs:
       - deploy-lambda-function

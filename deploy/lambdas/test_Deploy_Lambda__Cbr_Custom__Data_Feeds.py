@@ -17,4 +17,4 @@ class test_Deploy_Lambda__Cbr_Custom__Data_Feeds(TestCase):
     def test_ecr_image_uri(self):
         with self.deploy_lambda as _:
             ecr_image_uri = _.ecr_image_uri()       # todo: change values below to aws_config.account_id() and aws_config.region_name()
-            assert ecr_image_uri == f'654654216424.dkr.ecr.eu-west-1.amazonaws.com/osbot_flows:{version__cbr_custom_data_feeds}'
+            assert ecr_image_uri == f'774305572074.dkr.ecr.eu-west-2.amazonaws.com/osbot_flows:{version__cbr_custom_data_feeds}'
