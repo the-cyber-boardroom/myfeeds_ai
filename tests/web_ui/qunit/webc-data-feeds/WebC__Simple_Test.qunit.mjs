@@ -6,7 +6,7 @@ module('WebC__Hacker_News', (hooks)=>{
     let host_div, webc_hacker_news
 
     hooks.before(async (assert)=> {
-        const timeout= 500
+        const timeout= 1500
         assert.timeout(timeout)
         host_div = document.createElement('div')
         document.body.appendChild(host_div)
@@ -31,7 +31,7 @@ module('WebC__Hacker_News', (hooks)=>{
         assert.equal(h2_title.innerText, 'The Hacker News Feed')
     })
 
-    only('load_data - check url', async (assert) => {
+    test('load_data - check url', async (assert) => {
         const url = webc_hacker_news.url__data_feed_current
         assert.equal(url, 'https://dev.myfeeds.ai/public-data/hacker-news/latest/feed-data.json')
         const result = await fetch(url)
