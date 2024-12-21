@@ -3,7 +3,8 @@ import { Div, H, P, Web_Component,
 
 export default class WebC__Hacker_News extends Web_Component {
 
-    url__data_feed_current = 'https://data-feeds.dev.aws.cyber-boardroom.com/public-data/hacker-news/latest/feed-data.json'
+    //url__data_feed_current = 'https://data-feeds.dev.aws.cyber-boardroom.com/public-data/hacker-news/latest/feed-data.json'
+    url__data_feed_current = 'https://dev.myfeeds.ai/public-data/hacker-news/latest/feed-data.json'
     data_feed              = null
     feed_data              = null
     articles               = null

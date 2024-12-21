@@ -11,7 +11,7 @@ class test_Deploy_Lambda__MyFeeds_AI(TestCase):
 
     def test_deploy_lambda(self):
         with self.deploy_lambda as _:
-            result = _.lambda_deploy()
+            result = _.deploy()
             assert result == {'body': 'Hello from Docker Lambda!', 'statusCode': 200}
 
     def test_ecr_image_uri(self):
