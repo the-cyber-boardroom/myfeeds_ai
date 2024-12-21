@@ -53,10 +53,10 @@ class Deploy_Lambda__MyFeeds_AI(Type_Safe):
 
 if __name__ == '__main__':
     print("****************************************************")
-    print("****   Deploy_Lambda__myfeeds_ai    ****")
+    print("****   Deploy_Lambda__MyFeeds_AI    ****")
     print("****************************************************")
     print()
-    with Deploy_Lambda__myfeeds_ai() as _:
+    with Deploy_Lambda__MyFeeds_AI() as _:
         print(f"... deploying lambda function: {_.lambda_name}")
         _.deploy()
         response = _.invoke()
