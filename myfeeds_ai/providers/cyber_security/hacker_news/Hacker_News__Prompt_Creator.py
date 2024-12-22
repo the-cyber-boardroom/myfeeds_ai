@@ -15,7 +15,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__
 # 3. Notable threats or vulnerabilities mentioned
 # 4. Potential implications for organizations and security professionals"""
 
-PROMPT_SCHEMA__HACKER_NEWS = """The following data is from {feed_title} feed collected at {last_build}. 
+PROMPT_SCHEMA__HACKER_NEWS = """The following data is from {feed_title} feed collected at {when}. 
 There are {article_count} articles using the Hacker News schema with fields: title, description, link, data, author, summary
 
 Current Articles:
@@ -46,7 +46,7 @@ class Hacker_News__Prompt_Creator(Type_Safe):
         formatted_articles = self.format_articles_full(articles)
 
         return PROMPT_SCHEMA__HACKER_NEWS.format(feed_title=feed.title,
-                                                 last_build=feed.last_build_date,
+                                                 when=feed.when.date_time_utc,
                                                  article_count=len(articles),
                                                  articles=formatted_articles)
 
@@ -66,7 +66,7 @@ class Hacker_News__Prompt_Creator(Type_Safe):
             formatted_articles += f"""
 Article {i}:
 Title: {self.clean_text(article.title)}
-Date: {article.pub_date}
+Date: {article.when.date_time_utc}
 Author: {self.clean_author(article.author)}
 Summary: {self.clean_text(article.description)}
 """

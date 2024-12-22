@@ -1,5 +1,9 @@
 import xml.etree.ElementTree  as ET
 from unittest                                                                                       import TestCase
+
+from osbot_utils.utils.Dev import pprint
+from osbot_utils.utils.Objects import __
+
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                 import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article  import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed     import Model__Hacker_News__Feed
@@ -41,13 +45,22 @@ class test_Hacker_News__Parser(TestCase):
     def test_parse_article(self):
         with self.parser as target:
             target.setup(TEST_DATA__HACKER_NEWS__FEED_XML)
-            item = target.channel.find('item')
-            article = target.parse_article(item)
+            item         = target.channel.find('item')
+            article      = target.parse_article(item)
+            publish_date = article.when
             assert isinstance(article, Model__Hacker_News__Article)
-            assert article.title == "Test Article"
-            assert article.description == "Test Description"
-            assert article.link == "https://thehackernews.com/2024/12/test-article.html"
-            assert article.image_url == "https://example.com/image.jpg"
+            assert article.title        == "Test Article"
+            assert article.description  == "Test Description"
+            assert article.link         == "https://thehackernews.com/2024/12/test-article.html"
+            assert article.image_url    == "https://example.com/image.jpg"
+
+            assert publish_date.obj() ==  __(date_time_utc = '2024-12-04 17:23:00 +0000'       ,
+                                             date_utc      = '2024-12-04'                      ,
+                                             raw_value     = 'Wed, 04 Dec 2024 22:53:00 +0530' ,
+                                             time_since    = publish_date.time_since           ,
+                                             time_utc      = '17:23'                           ,
+                                             timestamp_utc = 1733332980                        )
+            assert ' day(s) ago' in publish_date.time_since
 
     def test_error_handling(self):
         with self.parser as target:

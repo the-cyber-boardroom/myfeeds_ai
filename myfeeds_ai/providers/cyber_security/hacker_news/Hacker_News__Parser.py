@@ -1,10 +1,12 @@
-import xml.etree.ElementTree   as ET
-from typing                                                                                        import List
-from xml.etree.ElementTree                                                                         import Element
-from osbot_utils.base_classes.Type_Safe                                                            import Type_Safe
-from osbot_utils.utils.Dev                                                                         import pprint
+import xml.etree.ElementTree    as ET
+from datetime                                                                           import datetime, timezone
+from typing                                                                             import List
+from xml.etree.ElementTree                                                              import Element
+from osbot_utils.base_classes.Type_Safe                                                 import Type_Safe
+from osbot_utils.utils.Dev                                                              import pprint
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
+from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__When    import Model__Hacker_News__When
 
 XML__NAMESPACES__Hacker_News = { 'atom'   : 'http://www.w3.org/2005/Atom'                  ,
                                  'content': 'http://purl.org/rss/1.0/modules/content/'     ,
@@ -20,6 +22,39 @@ class Hacker_News__Parser(Type_Safe):                                           
         self.root        = ET.fromstring(xml_content)
         self.channel     = self.root.find('channel')
         return self
+
+    def parse_when(self, raw_value:str):
+        if not raw_value:
+            return Model__Hacker_News__When()
+
+        date_format = '%a, %d %b %Y %H:%M:%S %z'
+        local_time                 = datetime.strptime(raw_value, date_format)
+        date_time_utc              = local_time.astimezone(timezone.utc)
+        timestamp_utc              = int(date_time_utc.timestamp())
+
+
+        now_utc         = datetime.now(timezone.utc)                        # Calculate time difference
+        time_difference = now_utc - date_time_utc
+        days            = time_difference.days                              # Create a human-readable format
+        hours, remainder = divmod(time_difference.seconds, 3600)
+        minutes = remainder // 60
+
+        if days > 0:
+            time_since = f"{days} day(s) ago"
+        elif hours > 0:
+            time_since = f"{hours} hour(s) ago"
+        else:
+            time_since = f"{minutes} minute(s) ago"
+
+        kwargs = dict(raw_value     = raw_value                                         ,
+                      date_utc      = date_time_utc.strftime('%Y-%m-%d'            )    ,
+                      date_time_utc = date_time_utc.strftime('%Y-%m-%d %H:%M:%S %z')    ,
+                      time_utc      = date_time_utc.strftime('%H:%M'               )    ,
+                      time_since    = time_since                                        ,
+                      timestamp_utc = timestamp_utc                                     )
+
+        publish_data = Model__Hacker_News__When(**kwargs)
+        return publish_data
 
     def get_element_text(self, element: Element, tag: str, default: str = ""):    # Helper method to safely get text from an XML element
         elem = element.find(tag)
@@ -38,14 +73,21 @@ class Hacker_News__Parser(Type_Safe):                                           
         except ValueError:
             update_frequency = 1
 
-        return Model__Hacker_News__Feed(title           = self.get_element_text(self.channel, 'title'        )                  ,
-                                      link              = self.get_element_text(self.channel, 'link'         )                  ,
-                                      description       = self.get_element_text(self.channel, 'description'  )                  ,
-                                      language          = self.get_element_text(self.channel, 'language'     )                  ,
-                                      last_build_date   = self.get_element_text(self.channel, 'lastBuildDate')                  ,
-                                      update_period     = self.get_element_text_ns(self.channel, './/sy:updatePeriod', 'hourly'),
-                                      update_frequency  = update_frequency                                                      ,
-                                      articles          = self.parse_articles()                                                 )
+        title           = self.get_element_text(self.channel, 'title'        )
+        link            = self.get_element_text(self.channel, 'link'         )
+        description     = self.get_element_text(self.channel, 'description'  )
+        language        = self.get_element_text(self.channel, 'language'     )
+        last_build_date = self.get_element_text(self.channel, 'lastBuildDate')
+        when            = self.parse_when(last_build_date)
+
+        return Model__Hacker_News__Feed(title             = title            ,
+                                        link              = link             ,
+                                        description       = description      ,
+                                        language          = language         ,
+                                        update_period     = self.get_element_text_ns(self.channel, './/sy:updatePeriod', 'hourly'),
+                                        update_frequency  = update_frequency                                                      ,
+                                        when              = when                                                                  ,
+                                        articles          = self.parse_articles()                                                 )
 
     def parse_articles(self) -> List[Model__Hacker_News__Article]:               # Parse all articles in the feed
         articles = []
@@ -75,10 +117,17 @@ class Hacker_News__Parser(Type_Safe):                                           
             description = description[:-3]
         description = description.strip()
 
-        return Model__Hacker_News__Article(title       = self.get_element_text(item, 'title')      ,
-                                         description  = description                                 ,
-                                         link        = self.get_element_text(item, 'link')         ,
-                                         #guid        = self.get_element_text(item, 'guid')         ,       # todo: review this since in the current feed the guid is just the link
-                                         pub_date    = self.get_element_text(item, 'pubDate')      ,
-                                         author      = self.get_element_text(item, 'author')       ,
-                                         image_url   = image_url                                   )
+        title       = self.get_element_text(item, 'title')
+        description = description
+        link        = self.get_element_text(item, 'link')
+        #guid       = self.get_element_text(item, 'guid')
+        author      = self.get_element_text(item, 'author')
+        pub_date    = self.get_element_text(item, 'pubDate')
+        when        = self.parse_when(pub_date)
+        return Model__Hacker_News__Article(title       = title         ,
+                                           description  = description  ,
+                                           link         = link         ,
+                                           #guid        = guid         ,       # todo: review this since in the current feed the guid is just the link
+                                           when         = when         ,
+                                           author       = author       ,
+                                           image_url    = image_url    )
