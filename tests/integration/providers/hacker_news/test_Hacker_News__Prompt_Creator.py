@@ -1,6 +1,5 @@
-from unittest                                                                                      import TestCase
-
-from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser import Hacker_News__Parser
+from unittest                                                                           import TestCase
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator        import Hacker_News__Prompt_Creator

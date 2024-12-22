@@ -1,13 +1,10 @@
 import xml.etree.ElementTree  as ET
-from unittest                                                                                       import TestCase
-
-from osbot_utils.utils.Dev import pprint
-from osbot_utils.utils.Objects import __
-
+from osbot_utils.utils.Objects                                                           import __
+from unittest                                                                            import TestCase
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                 import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article  import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed     import Model__Hacker_News__Feed
-from tests.integration.data_feeds__test_data                                                        import TEST_DATA__HACKER_NEWS__FEED_XML
+from tests.integration.data_feeds__test_data                                             import TEST_DATA__HACKER_NEWS__FEED_XML
 
 
 class test_Hacker_News__Parser(TestCase):

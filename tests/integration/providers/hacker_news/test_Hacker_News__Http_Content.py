@@ -1,7 +1,7 @@
-from unittest                                                                                      import TestCase
-from unittest.mock                                                                                 import patch
+from unittest                                                                           import TestCase
+from unittest.mock                                                                      import patch
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content          import Hacker_News__Http_Content
-from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser import Hacker_News__Parser
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
 

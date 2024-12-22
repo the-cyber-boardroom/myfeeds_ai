@@ -1,8 +1,53 @@
 import { Div, H, A, Raw_Html, Web_Component,
          CSS__Cards, CSS__Typography }            from './../WebC.mjs'
 
+// Main web component class
+export default class WebC__Hacker_News extends Web_Component {
+
+    url__data_feed_current = 'https://dev.myfeeds.ai/public-data/hacker-news/latest/feed-data.json'
+    data_feed              = null
+    feed_data              = null
+    articles               = null
+
+    apply_css() {
+        new CSS__Cards     (this).apply_framework()
+        new CSS__Typography(this).apply_framework()
+        this.add_css_rules(CSS__Rules.get_rules())
+    }
+
+    async load_data() {
+        const response = await this.fetch_url(this.url__data_feed_current)
+        if (response.status === 200) {
+            this.data_feed = await response.json()
+            this.feed_data = this.data_feed.feed_data
+            this.articles  = this.feed_data.articles
+        }
+    }
+
+    html() {
+        const container = new Div({ class: 'feed-container' })
+
+        const header = new Header__Component(this)                      // Add header component
+        container.add_element(header.render())
+
+        const articles = new Articles__Component(this.articles)         // Add articles component
+        container.add_element(articles.render())
+
+        return container
+    }
+
+    async fetch_url(url) {
+        return await fetch(url)
+    }
+
+    get title() { return  this.query_selector('.feed-title') }
+}
+
 // Helper class for header section
 class Header__Component {
+
+    title_text = 'The Hacker News Feed'
+
     constructor(container) {
         this.container = container
     }
@@ -21,7 +66,7 @@ class Header__Component {
         const header = new Div({ class: 'feed-header' })
         const header_left = new Div({ class: 'header-left' }).add_elements(
             new Raw_Html({ class: 'feed-icon', value: this.news_icon_svg() }),
-            new H  ({ level: 1, class: 'feed-title', value: 'Hacker News Feed' })
+            new H  ({ level: 1, class: 'feed-title', value: this.title_text })
         )
 
         const header_links = new Div({ class: 'header-links' }).add_elements(
@@ -125,46 +170,5 @@ class CSS__Rules {
     }
 }
 
-// Main web component class
-export default class WebC__Hacker_News extends Web_Component {
-
-    url__data_feed_current = 'https://dev.myfeeds.ai/public-data/hacker-news/latest/feed-data.json'
-    data_feed              = null
-    feed_data              = null
-    articles               = null
-
-    apply_css() {
-        new CSS__Cards     (this).apply_framework()
-        new CSS__Typography(this).apply_framework()
-        this.add_css_rules(CSS__Rules.get_rules())
-    }
-
-    async load_data() {
-        const response = await this.fetch_url(this.url__data_feed_current)
-        if (response.status === 200) {
-            this.data_feed = await response.json()
-            this.feed_data = this.data_feed.feed_data
-            this.articles  = this.feed_data.articles
-        }
-    }
-
-    html() {
-        const container = new Div({ class: 'feed-container' })
-
-        // Add header component
-        const header = new Header__Component(this)
-        container.add_element(header.render())
-
-        // Add articles component
-        const articles = new Articles__Component(this.articles)
-        container.add_element(articles.render())
-
-        return container
-    }
-
-    async fetch_url(url) {
-        return await fetch(url)
-    }
-}
 
 WebC__Hacker_News.define()

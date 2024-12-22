@@ -1,4 +1,5 @@
 import WebC__Hacker_News from "../../../../myfeeds_ai/web_ui/js/webc-data-feeds/hacker-news/WebC__Hacker_News.mjs";
+
 const { module, test , only} = QUnit
 
 module('WebC__Hacker_News', (hooks)=>{
@@ -26,8 +27,11 @@ module('WebC__Hacker_News', (hooks)=>{
         assert.equal(articles.length , 50              )
     })
 
-    test('html', async (assert) => {
+    only('html', async (assert) => {
         const h2_title = webc_hacker_news.title
+
+        assert.ok(1)
+        console.log(h2_title)
         assert.equal(h2_title.innerText, 'The Hacker News Feed')
     })
 
