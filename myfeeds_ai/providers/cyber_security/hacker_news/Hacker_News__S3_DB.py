@@ -3,7 +3,7 @@ from myfeeds_ai.data_feeds.Data__Feeds__Shared_Constants                        
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed      import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed  import Model__Hacker_News__Raw_Data__Feed
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                                  import Model__Data_Feeds__Providers
-from osbot_utils.decorators.methods.type_safe                                                              import type_safe
+from osbot_utils.decorators.methods.type_safe                                                   import type_safe
 
 
 class Hacker_News__S3_DB(Data_Feeds__S3_DB):

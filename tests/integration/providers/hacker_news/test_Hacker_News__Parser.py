@@ -46,17 +46,18 @@ class test_Hacker_News__Parser(TestCase):
             article      = target.parse_article(item)
             publish_date = article.when
             assert isinstance(article, Model__Hacker_News__Article)
-            assert article.title        == "Test Article"
-            assert article.description  == "Test Description"
-            assert article.link         == "https://thehackernews.com/2024/12/test-article.html"
-            assert article.image_url    == "https://example.com/image.jpg"
-
-            assert publish_date.obj() ==  __(date_time_utc = '2024-12-04 17:23:00 +0000'       ,
-                                             date_utc      = '2024-12-04'                      ,
-                                             raw_value     = 'Wed, 04 Dec 2024 22:53:00 +0530' ,
-                                             time_since    = publish_date.time_since           ,
-                                             time_utc      = '17:23'                           ,
-                                             timestamp_utc = 1733332980                        )
+            assert article.obj()  == __(author      = 'info@thehackernews.com (The Hacker News)',
+                                        description = 'Test Description',
+                                        article_id  = 'aef30063-2e5f-59e1-930a-69397b4ab0c0',
+                                        image_url   = 'https://example.com/image.jpg',
+                                        link        = 'https://thehackernews.com/2024/12/test-article.html',
+                                        when        = __(date_time_utc = '2024-12-04 17:23:00 +0000'       ,
+                                                         date_utc      = '2024-12-04'                      ,
+                                                         raw_value     = 'Wed, 04 Dec 2024 22:53:00 +0530' ,
+                                                         time_since    = publish_date.time_since           ,
+                                                         time_utc      = '17:23'                           ,
+                                                         timestamp_utc = 1733332980                        ),
+                                        title       ='Test Article')
             assert ' day(s) ago' in publish_date.time_since
 
     def test_error_handling(self):
