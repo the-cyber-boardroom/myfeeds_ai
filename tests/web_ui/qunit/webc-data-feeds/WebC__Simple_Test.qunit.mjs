@@ -27,12 +27,9 @@ module('WebC__Hacker_News', (hooks)=>{
         assert.equal(articles.length , 50              )
     })
 
-    only('html', async (assert) => {
-        const h2_title = webc_hacker_news.title
-
-        assert.ok(1)
-        console.log(h2_title)
-        assert.equal(h2_title.innerText, 'The Hacker News Feed')
+    test('html', async (assert) => {
+        const h2_title = webc_hacker_news.dom_title
+        assert.equal(h2_title.innerText, 'The Hacker News')
     })
 
     test('load_data - check url', async (assert) => {
@@ -44,6 +41,11 @@ module('WebC__Hacker_News', (hooks)=>{
         assert.ok   (data.feed_data)
         assert.ok   (data.feed_data.title)
         assert.equal(data.feed_data.title, 'The Hacker News')
-
+    })
+    test('feed_title, feed_description', async (assert) => {
+        assert.equal(webc_hacker_news.feed_title      , 'The Hacker News'                          )
+        assert.equal(webc_hacker_news.feed_title      , webc_hacker_news.dom_title      .innerText )
+        assert.equal(webc_hacker_news.feed_description, webc_hacker_news.dom_description.innerText )
+        assert.ok   (webc_hacker_news.feed_description.includes('Most trusted, widely-read independent cybersecurity news source'))
     })
 })

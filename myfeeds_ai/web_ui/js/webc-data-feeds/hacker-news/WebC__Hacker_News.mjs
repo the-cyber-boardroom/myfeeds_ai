@@ -40,22 +40,23 @@ export default class WebC__Hacker_News extends Web_Component {
         return await fetch(url)
     }
 
-    get title() { return  this.query_selector('.feed-title') }
+    get feed_title       () { return this.feed_data.title                      }
+    get feed_description () { return this.feed_data.description                }
+    get dom_title        () { return  this.query_selector('.feed-title'      ) }
+    get dom_description  () { return  this.query_selector('.feed-description') }
 }
 
 // Helper class for header section
 class Header__Component {
-
-    title_text = 'The Hacker News Feed'
 
     constructor(container) {
         this.container = container
     }
 
     news_icon_svg() {
-        return `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
+        return `<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 24 24" fill="none" 
                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
-                     class="lucide lucide-newspaper w-8 h-8 text-blue-600">
+                     class="news-icon">
                     <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path>
                     <path d="M18 14h-8"></path><path d="M15 18h-5"></path>
                     <path d="M10 6h8v4h-8V6Z"></path>
@@ -63,25 +64,27 @@ class Header__Component {
     }
 
     render() {
-        const header = new Div({ class: 'feed-header' })
-        const header_left = new Div({ class: 'header-left' }).add_elements(
-            new Raw_Html({ class: 'feed-icon', value: this.news_icon_svg() }),
-            new H  ({ level: 1, class: 'feed-title', value: this.title_text })
-        )
+        const header         = new Div     ({ class: 'feed-header'                                               })
+        const header_content = new Div     ({ class: 'header-content'                                            })
+        const feed_icon      = new Raw_Html({ class: 'feed-icon'        , value: this.news_icon_svg()            })
+        const feed_title     = new Div     ({ class: 'feed-title'       , value: this.container.feed_title       })
+        const header_left    = new Div     ({ class: 'header-left'                                               })
+        const description    = new Div     ({ class: 'feed-description' , value: this.container.feed_description })
+        const link_visit_hn  = new A       ({ class: 'nav-link', href: 'https://thehackernews.com/'  , value: 'Visit Hacker News'   , target: '_blank' })
+        const link_api_docs  = new A       ({ class: 'nav-link', href: 'https://dev.myfeeds.ai/docs' , value: 'API Documentation'   , target: '_blank' })
+        const header_links   = new Div     ({ class: 'header-links' })
 
-        const header_links = new Div({ class: 'header-links' }).add_elements(
-            new A({ class: 'nav-link', href: 'https://thehackernews.com/'  , value: 'Visit Hacker News'   , target: '_blank' }),
-            new A({ class: 'nav-link', href: 'https://dev.myfeeds.ai/docs' , value: 'API Documentation'   , target: '_blank' })
-        )
+        const powered_by     = new Div    ({ class:'powered-by', value:"powered by"})
+        const cbr_logo       = new Div    ({ tag: 'img',  class: 'cbr-logo',  src: 'https://static.dev.aws.cyber-boardroom.com/cbr-static/latest/assets/cbr/cbr-logo-beta.png',  alt: 'Cyber Boardroom Logo' })
+        const cbr_link       = new A      ({ href: 'https://thecyberboardroom.com' , target:'_blank' })
+        const header_logo    = new Div    ({ class: 'header-logo' })
 
-        const logo = new A({ href: 'https://thecyberboardroom.com' }).add_element(
-            new Div({ tag: 'img',
-                     class: 'cbr-logo',
-                     src: 'https://static.dev.aws.cyber-boardroom.com/cbr-static/latest/assets/cbr/cbr-logo-beta.png',
-                     alt: 'Cyber Boardroom Logo' })
-        )
-
-        header.add_elements(header_left, header_links, logo)
+        header_left   .add_elements(feed_icon     , feed_title               )
+        header_links  .add_elements(link_visit_hn , link_api_docs            )
+        cbr_link      .add_elements(cbr_logo)
+        header_logo   .add_elements(powered_by, cbr_link)
+        header_content.add_elements(header_left   , description, header_links)
+        header        .add_elements(header_content, header_logo              )
         return header
     }
 }
@@ -120,39 +123,40 @@ class Articles__Component {
 class CSS__Rules {
     static get_rules() {
         return {
-            ".feed-container"     : { padding          : "2rem"                      ,         // Main container
-                                    maxWidth          : "1200px"                     ,
-                                    margin           : "0 auto"                      },
-
-            ".feed-header"        : { display          : "flex"                      ,         // Header section
+            ".feed-container"   : { padding          : "2rem"                       ,         // Main container
+                                    maxWidth          : "1200px"                    ,
+                                    margin           : "0 auto"                     },
+            ".header-content"   : { display          : "flex"                       ,
+                                    flexDirection    : "column"                     },
+            ".feed-header"      : { display          : "flex"                       ,         // Header section
                                     justifyContent   : "space-between"              ,
                                     alignItems       : "center"                     ,
-                                    marginBottom     : "2rem"                       },
+                                    padding          : "20px"                       },
 
-            ".header-left"        : { display          : "flex"                      ,         // Left header content
+            ".header-left"      : { display          : "flex"                       ,         // Left header content
                                     alignItems       : "center"                     ,
-                                    gap             : "1rem"                        },
+                                    gap              : "1rem"                       },
 
-            ".header-links"       : { display          : "flex"                      ,         // Header links
+            ".header-links"     : { display          : "flex"                      ,         // Header links
                                     gap              : "2rem"                        },
 
-            ".nav-link"           : { color            : "#4285f4"                   ,         // Navigation links
+            ".nav-link"         : { color            : "#4285f4"                   ,         // Navigation links
                                     textDecoration   : "none"                       ,
-                                    display         : "flex"                        ,
-                                    alignItems      : "center"                      ,
-                                    gap             : "0.5rem"                      },
-
-            ".articles-area"      : { backgroundColor : "#f8f9fa"                    ,         // Articles container
+                                    display          : "flex"                        ,
+                                    alignItems       : "center"                      ,
+                                    gap              : "0.5rem"                      },
+            ".feed-title"       : { fontSize         : "2.0rem"                      },
+            ".articles-area"    : { backgroundColor: "#f8f9fa"                    ,         // Articles container
                                     borderRadius     : "0.5rem"                      ,
                                     padding         : "2rem"                         },
 
-            ".article-card"       : { backgroundColor : "#ffffff"                    ,         // Article cards
+            ".article-card"     : { backgroundColor : "#ffffff"                    ,         // Article cards
                                     borderRadius     : "0.5rem"                      ,
                                     padding         : "1.5rem"                       ,
                                     marginBottom    : "1rem"                         ,
                                     boxShadow       : "0 2px 4px rgba(0,0,0,0.05)"  },
 
-            ".article-title"      : { fontSize         : "1.25rem"                   ,         // Article title
+            ".article-title"    : { fontSize         : "1.25rem"                   ,         // Article title
                                     fontWeight       : "500"                         ,
                                     marginBottom     : "0.75rem"                     },
 
@@ -165,7 +169,12 @@ class CSS__Rules {
                                     textDecoration   : "none"                        },
 
             ".cbr-logo"           : { height           : "5.5rem"                    ,         // Logo styling
-                                      marginLeft       : "auto"                        }
+                                      marginLeft       : "auto"                      },
+            ".news-icon"          : { color            : "rgb(37 99 235)"            },
+            ".powered-by"         : { textAlign        : "center"                    },
+            ".feed-description"   : { padding          : "20px"                      ,
+                                      fontStyle        : "italic"                     }
+
         }
     }
 }
