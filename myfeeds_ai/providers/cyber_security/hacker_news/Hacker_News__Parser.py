@@ -3,6 +3,7 @@ from datetime                                                                   
 from typing                                                                             import List
 from xml.etree.ElementTree                                                              import Element
 from osbot_utils.base_classes.Type_Safe                                                 import Type_Safe
+from osbot_utils.helpers.Guid                                                           import Guid
 from osbot_utils.utils.Dev                                                              import pprint
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
@@ -120,14 +121,14 @@ class Hacker_News__Parser(Type_Safe):                                           
         title       = self.get_element_text(item, 'title')
         description = description
         link        = self.get_element_text(item, 'link')
-        #guid       = self.get_element_text(item, 'guid')
+        article_id = Guid(self.get_element_text(item, 'guid'))
         author      = self.get_element_text(item, 'author')
         pub_date    = self.get_element_text(item, 'pubDate')
         when        = self.parse_when(pub_date)
-        return Model__Hacker_News__Article(title       = title         ,
+        return Model__Hacker_News__Article(article_id   = article_id   ,
+                                           title        = title        ,
                                            description  = description  ,
                                            link         = link         ,
-                                           #guid        = guid         ,       # todo: review this since in the current feed the guid is just the link
                                            when         = when         ,
                                            author       = author       ,
                                            image_url    = image_url    )
