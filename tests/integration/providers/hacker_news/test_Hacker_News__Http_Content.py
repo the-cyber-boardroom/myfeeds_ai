@@ -1,6 +1,7 @@
-from unittest                                                                                      import TestCase
-from unittest.mock                                                                                 import patch
+from unittest                                                                           import TestCase
+from unittest.mock                                                                      import patch
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content          import Hacker_News__Http_Content
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
 
@@ -9,19 +10,20 @@ class test_Hacker_News__Http_Content(TestCase):
     @classmethod
     def setUpClass(cls):
         cls.http_content = Hacker_News__Http_Content()
-        cls.sample_feed = Model__Hacker_News__Feed( title="The Hacker News",
-                                                    link="https://thehackernews.com",
-                                                    description="Most trusted cybersecurity news source",
-                                                    language="en-us",
-                                                    last_build_date="Thu, 05 Dec 2024 02:15:56 +0530",
-                                                    update_period="hourly",
-                                                    update_frequency=1,
-                                                    articles=[Model__Hacker_News__Article( title="Test Article",
-                                                                                           description="Test Description",
-                                                                                           link="https://example.com",
-                                                                                           pub_date="Wed, 04 Dec 2024 22:53:00 +0530",
-                                                                                           author="Test Author",
-                                                                                           image_url="https://example.com/image.jpg" )])
+        cls.parser       = Hacker_News__Parser()
+        cls.sample_feed = Model__Hacker_News__Feed( title            = "The Hacker News",
+                                                    link             = "https://thehackernews.com",
+                                                    description      = "Most trusted cybersecurity news source",
+                                                    language         = "en-us"      ,
+                                                    when             = cls.parser.parse_when("Thu, 05 Dec 2024 02:15:56 +0530"),
+                                                    update_period    = "hourly"     ,
+                                                    update_frequency = 1            ,
+                                                    articles         = [Model__Hacker_News__Article(title       = "Test Article",
+                                                                                                    description = "Test Description",
+                                                                                                    link        = "https://example.com",
+                                                                                                    when        = cls.parser.parse_when("Wed, 04 Dec 2024 22:53:00 +0530"),
+                                                                                                    author      = "Test Author",
+                                                                                                    image_url   = "https://example.com/image.jpg" )])
 
     def test_requests_get(self):
         with self.http_content as target:
@@ -63,12 +65,12 @@ class test_Hacker_News__Http_Content(TestCase):
             # Check structure of first article
             article = data['articles'][0]
             assert 'title'        in article
-            assert 'description' in article
-            assert 'link'        in article
+            assert 'description'  in article
+            assert 'link'         in article
             #assert 'guid'        in article
-            assert 'pub_date'    in article
-            assert 'author'      in article
-            assert 'image_url'   in article
+            assert 'when'         in article
+            assert 'author'       in article
+            assert 'image_url'    in article
 
     # todo: remove this patch once we have added the DB_S3 support
     @patch('myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content.Hacker_News__Http_Content.feed_data')

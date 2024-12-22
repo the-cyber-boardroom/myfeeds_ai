@@ -1,4 +1,5 @@
-from unittest                                                                                      import TestCase
+from unittest                                                                           import TestCase
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed    import Model__Hacker_News__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator        import Hacker_News__Prompt_Creator
@@ -7,12 +8,12 @@ class test_Hacker_News__Prompt_Creator(TestCase):
 
     def setUp(self):
         self.prompt_creator = Hacker_News__Prompt_Creator()
-
+        self.parser         = Hacker_News__Parser()
         self.article_1 = Model__Hacker_News__Article(
             title       = "Article 1 Title <script>alert('xss')</script>",
             description = "Description 1 &nbsp; with HTML",
             link        = "https://example.com/1",
-            pub_date    = "Wed, 04 Dec 2024 22:53:00 +0530",
+            when        = self.parser.parse_when("Wed, 04 Dec 2024 22:53:00 +0530"),
             author      = "info@thehackernews.com (John Doe)",
             image_url   = "https://example.com/image1.jpg"
         )
@@ -21,7 +22,7 @@ class test_Hacker_News__Prompt_Creator(TestCase):
             title       = "Article 2 Title",
             description = "Description 2",
             link        = "https://example.com/2",
-            pub_date    = "Wed, 04 Dec 2024 21:53:00 +0530",
+            when        = self.parser.parse_when("Wed, 04 Dec 2024 21:53:00 +0530"),
             author      = "Jane Smith",
             image_url   = "https://example.com/image2.jpg"
         )
@@ -31,7 +32,7 @@ class test_Hacker_News__Prompt_Creator(TestCase):
             link             = "https://thehackernews.com",
             description      = "Most trusted cybersecurity news source",
             language         = "en-us",
-            last_build_date  = "Thu, 05 Dec 2024 02:15:56 +0530",
+            when             = self.parser.parse_when("Thu, 05 Dec 2024 02:15:56 +0530"),
             update_period    = "hourly",
             update_frequency = 1,
             articles         = [self.article_1, self.article_2]
@@ -59,17 +60,15 @@ class test_Hacker_News__Prompt_Creator(TestCase):
         with self.prompt_creator as _:                                                         # Test schema prompt creation
             prompt = _.create_prompt_schema(self.sample_feed, size=2)
 
-            assert "Hacker News schema with fields: title, description" in prompt              # Check schema description
-            assert "2 articles" in prompt                                                      # Check article count
-
-            assert "The Hacker News" in prompt                                                # Check feed metadata
-            assert "Thu, 05 Dec 2024" in prompt
-
-            assert "&nbsp;" not in prompt                                                     # Check text cleaning
-            assert "<script>" not in prompt
+            assert "Hacker News schema with fields: title, description" in prompt               # Check schema description
+            assert "2 articles"         in prompt                                               # Check article count
+            assert "The Hacker News"    in prompt                                               # Check feed metadata
+            assert "2024-12-04"         in prompt
+            assert "&nbsp;"         not in prompt                                               # Check text cleaning
+            assert "<script>"       not in prompt
 
     # def test_create_prompt_executive(self):
-    #     with self.prompt_creator as _:                                                         # Test executive prompt creation
+    #     with self.prompt_creator as _:                                                        # Test executive prompt creation
     #         prompt = _.create_prompt_executive(self.sample_feed, size=1)
     #
     #         assert "1. Article 1 Title" in prompt                                             # Check headline format

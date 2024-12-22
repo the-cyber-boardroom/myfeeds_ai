@@ -1,9 +1,8 @@
-from unittest                                                                               import TestCase
+from unittest                                                                    import TestCase
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator import PROMPT_SCHEMA__HACKER_NEWS
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News  import Routes__Hacker_News
-from osbot_utils.utils.Objects                                                              import obj, __
-from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
-
+from osbot_utils.utils.Objects                                                   import obj, __
+from tests.integration.data_feeds__objs_for_tests                                import cbr_website__assert_local_stack
 
 class test__int__Routes__Hacker_News(TestCase):
 
@@ -33,7 +32,7 @@ class test__int__Routes__Hacker_News(TestCase):
                 assert 'description'  in article
                 assert 'link'         in article
                 #assert 'guid'         in article
-                assert 'pub_date'     in article
+                assert 'when'         in article
                 assert 'author'       in article
                 assert 'image_url'    in article
 
