@@ -1,4 +1,6 @@
 import myfeeds_ai
+from starlette.staticfiles                                                       import StaticFiles
+from myfeeds_ai.fast_api.public_data.Public_Data__Fast_API                       import Public_Data__Fast_API
 from osbot_utils.utils.Env                                                       import get_env, load_dotenv
 from osbot_fast_api.api.Fast_API                                                 import Fast_API
 from myfeeds_ai                                                                  import web_ui
@@ -14,22 +16,22 @@ class Data_Feeds__Fast_API(Fast_API):
     enable_cors: bool = True
 
     def add_static_ui(self):
-        from starlette.staticfiles import StaticFiles
         path_static_folder = web_ui.path
         path_name   = "ui"
         path_static = f"/{path_name}"
         self.app().mount(path_static, StaticFiles(directory=path_static_folder), name=path_name)
 
     def setup_routes(self):
-        self.add_routes(Routes__Info)
+        self.add_routes(Routes__Info       )
         self.add_routes(Routes__Hacker_News)
         self.add_routes(Routes__OSS        )
+
+        Public_Data__Fast_API().setup().mount(self.app())
 
     def path_static_folder(self):
         return path_combine(myfeeds_ai.path, 'static')
 
     def setup(self):
-        load_dotenv()
         self.setup_local_stack()
         super().setup()
         self.add_static_ui()
@@ -37,6 +39,7 @@ class Data_Feeds__Fast_API(Fast_API):
 
 
     def setup_local_stack(self):
+        load_dotenv()
         if get_env('MY_FEEDS__USE_LOCALSTACK') == 'True':
             from osbot_aws.testing.Temp__Random__AWS_Credentials import Temp_AWS_Credentials
             from osbot_local_stack.local_stack.Local_Stack       import Local_Stack

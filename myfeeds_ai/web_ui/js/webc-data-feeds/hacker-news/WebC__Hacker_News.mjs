@@ -3,8 +3,14 @@ import { Div, H, A, Raw_Html, Web_Component,
 
 // Main web component class
 export default class WebC__Hacker_News extends Web_Component {
-
-    url__data_feed_current = 'https://dev.myfeeds.ai/public-data/hacker-news/latest/feed-data.json'
+    //server__data         = 'https://dev.myfeeds.ai'
+    //server__static       = 'https://static.dev.aws.cyber-boardroom.com/cbr-static/latest'
+    server__data           = 'http://localhost:7777'
+    server__static         = '/static'
+    url__data_feed_current = `${this.server__data}/public-data/hacker-news/latest/feed-data.json`
+    url__cbr_logo          = `${this.server__static}/assets/cbr/cbr-logo-beta.png`
+    url__hacker_news_com   = 'https://thehackernews.com/'
+    url__api_documentation = '/docs'
     data_feed              = null
     feed_data              = null
     articles               = null
@@ -28,9 +34,9 @@ export default class WebC__Hacker_News extends Web_Component {
         const container = new Div({ class: 'feed-container' })
 
         const header = new Header__Component(this)                      // Add header component
-        container.add_element(header.render())
-
         const articles = new Articles__Component(this.articles)         // Add articles component
+
+        container.add_element(header.render  ())
         container.add_element(articles.render())
 
         return container
@@ -64,18 +70,19 @@ class Header__Component {
     }
 
     render() {
+
         const header         = new Div     ({ class: 'feed-header'                                               })
         const header_content = new Div     ({ class: 'header-content'                                            })
         const feed_icon      = new Raw_Html({ class: 'feed-icon'        , value: this.news_icon_svg()            })
         const feed_title     = new Div     ({ class: 'feed-title'       , value: this.container.feed_title       })
         const header_left    = new Div     ({ class: 'header-left'                                               })
         const description    = new Div     ({ class: 'feed-description' , value: this.container.feed_description })
-        const link_visit_hn  = new A       ({ class: 'nav-link', href: 'https://thehackernews.com/'  , value: 'Visit Hacker News'   , target: '_blank' })
-        const link_api_docs  = new A       ({ class: 'nav-link', href: 'https://dev.myfeeds.ai/docs' , value: 'API Documentation'   , target: '_blank' })
-        const header_links   = new Div     ({ class: 'header-links' })
+        const header_links   = new Div     ({ class: 'header-links'                                              })
+        const link_visit_hn  = new A       ({ class: 'nav-link'         , value: 'Visit Hacker News' , href: this.container.url__hacker_news_com   , target: '_blank' })
+        const link_api_docs  = new A       ({ class: 'nav-link'         , value: 'API Documentation' , href: this.container.url__api_documentation , target: '_blank' })
 
         const powered_by     = new Div    ({ class:'powered-by', value:"powered by"})
-        const cbr_logo       = new Div    ({ tag: 'img',  class: 'cbr-logo',  src: 'https://static.dev.aws.cyber-boardroom.com/cbr-static/latest/assets/cbr/cbr-logo-beta.png',  alt: 'Cyber Boardroom Logo' })
+        const cbr_logo       = new Div    ({ class: 'cbr-logo',  tag: 'img',  src: this.container.url__cbr_logo,  alt: 'Cyber Boardroom Logo' })
         const cbr_link       = new A      ({ href: 'https://thecyberboardroom.com' , target:'_blank' })
         const header_logo    = new Div    ({ class: 'header-logo' })
 

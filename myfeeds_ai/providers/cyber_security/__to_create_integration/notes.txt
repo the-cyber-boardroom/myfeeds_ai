@@ -5,9 +5,9 @@
 
 ### with RSS feeds
 
-   - https://www.securityweek.com/
+   - https://www.securityweek.com/  - https://www.securityweek.com/feed/
 
-   - https://feeds.feedburner.com/cyber-security-news
+
 
  - https://securityaffairs.com/ : https://feeder.co/discover/5f3bb36868/securityaffairs-co-wordpress
  - https://krebsonsecurity.com: https://krebsonsecurity.com/feed/
@@ -64,3 +64,7 @@
  - don't seem to have RSS feeds
 
    - https://www.linkedin.com/company/the-cyber-security-hub/
+
+
+ - https://cybersecuritynews.com/
+     - https://feeds.feedburner.com/cyber-security-news  (not up-to-date)
