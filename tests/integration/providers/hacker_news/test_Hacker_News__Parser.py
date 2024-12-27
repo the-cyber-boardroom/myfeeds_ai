@@ -9,20 +9,18 @@ from tests.integration.data_feeds__test_data                                    
 
 class test_Hacker_News__Parser(TestCase):
 
-    def setUp(self):
-        self.parser      = Hacker_News__Parser()
+    @classmethod
+    def setUpClass(cls):
+        cls.parser      = Hacker_News__Parser().setup(TEST_DATA__HACKER_NEWS__FEED_XML)
 
-
-    def test_setup(self):
+    def test_get_element_text(self):
         with self.parser as target:
-            target.setup(TEST_DATA__HACKER_NEWS__FEED_XML)
-            assert isinstance(target.root, ET.Element)
-            assert target.xml_content   == TEST_DATA__HACKER_NEWS__FEED_XML
-            assert target.channel       is not None
+            assert target.get_element_text(target.channel, 'title') == "The Hacker News"
+            assert target.get_element_text(target.channel, 'nonexistent') == ""
+            assert target.get_element_text(target.channel, 'nonexistent', 'default') == "default"
 
     def test_parse_feed(self):
         with self.parser as target:
-            target.setup(TEST_DATA__HACKER_NEWS__FEED_XML)
             feed = target.parse_feed()
             assert isinstance(feed, Model__Hacker_News__Feed)
             assert feed.title == "The Hacker News"
@@ -33,7 +31,6 @@ class test_Hacker_News__Parser(TestCase):
 
     def test_parse_articles(self):
         with self.parser as target:
-            target.setup(TEST_DATA__HACKER_NEWS__FEED_XML)
             articles = target.parse_articles()
             assert isinstance(articles, list)
             assert len(articles) == 1
@@ -41,7 +38,6 @@ class test_Hacker_News__Parser(TestCase):
 
     def test_parse_article(self):
         with self.parser as target:
-            target.setup(TEST_DATA__HACKER_NEWS__FEED_XML)
             item         = target.channel.find('item')
             article      = target.parse_article(item)
             publish_date = article.when
@@ -60,12 +56,19 @@ class test_Hacker_News__Parser(TestCase):
                                         title       ='Test Article')
             assert ' day(s) ago' in publish_date.time_since
 
-    def test_error_handling(self):
+    def test_setup(self):
+        with self.parser as target:
+            assert isinstance(target.root, ET.Element)
+            assert target.xml_content   == TEST_DATA__HACKER_NEWS__FEED_XML
+            assert target.channel       is not None
+
+    # run these two a the end since they reset the target value
+    def test_z_error_handling(self):
         with self.parser as target:
             with self.assertRaises(ET.ParseError):
                 target.setup('<rss><channel><title>Test</title></channel>')
 
-    def test_missing_elements(self):
+    def test_z_missing_elements(self):
         with self.parser as target:
             minimal_xml = '''<?xml version="1.0"?>
                 <rss><channel>
@@ -83,10 +86,3 @@ class test_Hacker_News__Parser(TestCase):
             assert articles[0].title == "Test"
             assert articles[0].description == ""
             assert articles[0].author == ""
-
-    def test_get_element_text(self):
-        with self.parser as target:
-            target.setup(TEST_DATA__HACKER_NEWS__FEED_XML)
-            assert target.get_element_text(target.channel, 'title') == "The Hacker News"
-            assert target.get_element_text(target.channel, 'nonexistent') == ""
-            assert target.get_element_text(target.channel, 'nonexistent', 'default') == "default"

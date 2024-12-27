@@ -1,11 +1,16 @@
+from osbot_aws.aws.cloud_front.Cloud_Front import Cloud_Front
+
+from osbot_utils.utils.Env import get_env
+
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator         import Data_Feeds__S3__Key_Generator
-from myfeeds_ai.data_feeds.Data__Feeds__Shared_Constants         import S3_FOLDER_NAME__LATEST, S3_BUCKET_PREFIX__DATA_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS, S3_FILE_NAME__LATEST__VERSIONS
+from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants          import S3_FOLDER_NAME__LATEST, S3_BUCKET_PREFIX__DATA_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS, S3_FILE_NAME__LATEST__VERSIONS
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers   import Model__Data_Feeds__Providers
 from osbot_aws.aws.s3.S3__DB_Base                                           import S3__DB_Base
 from osbot_utils.decorators.methods.type_safe                               import type_safe
 from osbot_utils.helpers.Safe_Id                                            import Safe_Id
 from osbot_utils.utils.Http                                                 import url_join_safe
 
+ENV_NAME__AWS__CLOUDFRONT__DISTRIBUTION_ID = 'AWS__CLOUDFRONT__DISTRIBUTION_ID'
 
 class Data_Feeds__S3_DB(S3__DB_Base):
     bucket_name__prefix   : str                          = S3_BUCKET_PREFIX__DATA_FEEDS
@@ -16,6 +21,14 @@ class Data_Feeds__S3_DB(S3__DB_Base):
 
     def provider__all_files(self):
         return sorted(self.s3_folder_files__all(folder=self.s3_folder__for_provider(), full_path=False))
+
+    # todo: refactor this to a better location and wire this up to the latest folder
+    def invalidate_cache(self):
+        distribution_id = get_env(ENV_NAME__AWS__CLOUDFRONT__DISTRIBUTION_ID)
+        target_path = '/public-data/hacker-news/latest/*'
+        cloud_front = Cloud_Front()
+        result = cloud_front.invalidate_path(distribution_id, target_path)
+        return result.get('Invalidation')
 
     # methods for s3 folders and files
     def s3_folder__for_provider(self):

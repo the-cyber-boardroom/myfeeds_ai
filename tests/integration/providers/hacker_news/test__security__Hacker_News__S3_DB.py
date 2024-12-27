@@ -1,6 +1,6 @@
 from unittest                                                                       import TestCase
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                 import Data_Feeds__S3__Key_Generator
-from myfeeds_ai.data_feeds.Data__Feeds__Shared_Constants                 import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
+from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                  import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB  import Hacker_News__S3_DB
 from osbot_utils.helpers.Safe_Id                                                    import Safe_Id
 
