@@ -3,10 +3,10 @@ import { Div, H, A, Raw_Html, Web_Component,
 
 // Main web component class
 export default class WebC__Hacker_News extends Web_Component {
-    //server__data         = 'https://dev.myfeeds.ai'
-    //server__static       = 'https://static.dev.aws.cyber-boardroom.com/cbr-static/latest'
-    server__data           = 'http://localhost:7777'
-    server__static         = '/static'
+    server__data         = 'https://dev.myfeeds.ai'
+    server__static       = 'https://static.dev.aws.cyber-boardroom.com/cbr-static/latest'
+    // server__data           = 'http://localhost:7777'
+    // server__static         = '/static'
     url__data_feed_current = `${this.server__data}/public-data/hacker-news/latest/feed-data.json`
     url__cbr_logo          = `${this.server__static}/assets/cbr/cbr-logo-beta.png`
     url__hacker_news_com   = 'https://thehackernews.com/'
