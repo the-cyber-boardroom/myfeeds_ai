@@ -5,8 +5,9 @@ module.exports = function(config) {
 
     frameworks: ['qunit'],
     files: [
+        { pattern: 'myfeeds_ai/static/**/*.mjs'       , type: 'module' },
         { pattern: 'myfeeds_ai/web_ui/js/**/*.*'    , type: 'module' },
-        { pattern: 'tests/web_ui/qunit/**/*.*' , type: 'module' },
+        { pattern: 'tests/web_ui/qunit/**/*.*'      , type: 'module' },
     ],
     exclude: [],
     preprocessors: { },
@@ -19,7 +20,7 @@ module.exports = function(config) {
     browsers: ['ChromeHeadless'],
     singleRun: false,
     concurrency: Infinity,
-    proxies: {}
+    // proxies: { '/myfeeds_ai/': '/base/myfeeds_ai/web_ui' }
   });
 };
 

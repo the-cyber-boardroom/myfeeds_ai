@@ -4,19 +4,15 @@
 module.exports = function (wallaby) {
 
   return {
-    files        : ['./myfeeds_ai/web_ui/js/**/*.*'],
-    tests        : ['./tests/web_ui/qunit/**/*.*'             ],
+    files        : [ './myfeeds_ai/web_ui/js/**/*.*',
+                     './myfeeds_ai/static/**/*.mjs' ],
+    tests        : [ './tests/web_ui/qunit/**/*.*'  ],
     testFramework: 'qunit',
     env          : { kind: 'chrome'},
 
-    // const path = require('path');
     // middleware: function (app, express) {
-    //   console.log(path.resolve(__dirname,'../../myfeeds_ai/web_ui/js/**/*.*'))
-    //   app.use(
-    //     '/myfeeds_ai',
-    //     express.static(path.join(__dirname, '../../myfeeds_ai'))
-    //   );
-    //},
+    //   app.use('/static', express.static(require('path').join(__dirname, 'myfeeds_ai/static')));
+    // }
 
   };
 };

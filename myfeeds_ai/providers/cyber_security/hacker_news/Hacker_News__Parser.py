@@ -1,8 +1,7 @@
-import xml.etree.ElementTree    as ET
 from datetime                                                                           import datetime, timezone
 from typing                                                                             import List
 from xml.etree.ElementTree                                                              import Element
-from osbot_utils.base_classes.Type_Safe                                                 import Type_Safe
+from myfeeds_ai.data_feeds.Data_Feeds__Parser                                           import Data_Feeds__Parser
 from osbot_utils.helpers.Guid                                                           import Guid
 from osbot_utils.utils.Dev                                                              import pprint
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
@@ -13,16 +12,7 @@ XML__NAMESPACES__Hacker_News = { 'atom'   : 'http://www.w3.org/2005/Atom'       
                                  'content': 'http://purl.org/rss/1.0/modules/content/'     ,
                                  'sy'     : 'http://purl.org/rss/1.0/modules/syndication/' }
 
-class Hacker_News__Parser(Type_Safe):                                             # Parser for The Hacker News RSS feed
-    root            : Element = None
-    xml_content     : str     = None
-    channel         : Element = None
-
-    def setup(self, xml_content: str):                                            # Store and parse the XML content
-        self.xml_content = xml_content
-        self.root        = ET.fromstring(xml_content)
-        self.channel     = self.root.find('channel')
-        return self
+class Hacker_News__Parser(Data_Feeds__Parser):                                             # Parser for The Hacker News RSS feed
 
     def parse_when(self, raw_value:str):
         if not raw_value:
@@ -56,10 +46,6 @@ class Hacker_News__Parser(Type_Safe):                                           
 
         publish_data = Model__Hacker_News__When(**kwargs)
         return publish_data
-
-    def get_element_text(self, element: Element, tag: str, default: str = ""):    # Helper method to safely get text from an XML element
-        elem = element.find(tag)
-        return elem.text if elem is not None else default
 
     def get_element_text_ns(self, element: Element, tag: str, default: str = ""): # Helper method to get text from an XML element with namespace
         elem = element.find(tag, XML__NAMESPACES__Hacker_News)
