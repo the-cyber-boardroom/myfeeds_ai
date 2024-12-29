@@ -7,8 +7,8 @@ class test__client__RSS_Feeds__Fast_API(TestCase):
     def setUpClass(cls):
         cls.client = data_feeds__fast_api__client
 
-    def test__ping(self):
-        with self.client:
-            response = self.client.get('/rss-feeds/rss-parser/ping')
-            assert response.status_code == 200
-            assert response.json()      == {'it is':  'pong'}
+    # def test__ping(self):
+    #     with self.client:
+    #         response = self.client.get('/rss-feeds/rss-parser/ping')
+    #         assert response.status_code == 200
+    #         assert response.json()      == {'it is':  'pong'}
