@@ -1,9 +1,5 @@
-from unittest import TestCase
-
-from osbot_utils.utils.Dev import pprint
-
+from unittest                                     import TestCase
 from tests.integration.data_feeds__objs_for_tests import data_feeds__fast_api__client
-
 
 class test__client__RSS_Feeds__Fast_API(TestCase):
 

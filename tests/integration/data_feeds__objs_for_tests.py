@@ -1,6 +1,6 @@
 import requests_cache
 from osbot_local_stack.local_stack.Local_Stack           import Local_Stack
-from myfeeds_ai.fast_api.Data_Feeds__Fast_API import Data_Feeds__Fast_API
+from myfeeds_ai.fast_api.Data_Feeds__Fast_API            import Data_Feeds__Fast_API
 from osbot_aws.testing.Temp__Random__AWS_Credentials     import Temp_AWS_Credentials
 from osbot_utils.utils.Env                               import set_env
 

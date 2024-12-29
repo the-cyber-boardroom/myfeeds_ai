@@ -1,0 +1,15 @@
+[providers.hacker-news]
+provider_id = '49a0b7d7-6b33-4dfa-a993-5ab4be295ef2'
+name        = 'hacker-news'
+title       = 'The Hacker News'
+url_website = 'https://thehackernews.com'
+url_feed    = 'https://feeds.feedburner.com/TheHackersNews'
+date_added  = '2024-10-01'
+
+[providers.cso-online]
+provider_id = '66932952-5a30-4325-b42b-14ee62bb6360'
+name        = 'cso-online'
+title       = 'CSO Online'
+url_website = 'https://www.csoonline.com/uk/'
+url_feed    = 'https://www.csoonline.com/feed/'
+date_added  = '2021-09-01'
