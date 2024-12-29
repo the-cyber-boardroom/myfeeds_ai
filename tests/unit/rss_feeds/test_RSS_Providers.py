@@ -5,6 +5,9 @@ from osbot_utils.utils.Files                            import file_exists
 from myfeeds_ai.providers.models.Model__RSS_Providers   import Model__RSS_Providers
 from myfeeds_ai.providers.RSS_Providers                 import RSS_Providers, FILE_NAME__RSS_PROVIDERS_DATA
 
+
+RSS_PROVIDERS__NAMES = ['cso-online', 'hacker-news', 'ncsc-news']
+
 class test_RSS_Providers(TestCase):
 
     @classmethod
@@ -16,7 +19,7 @@ class test_RSS_Providers(TestCase):
             data = _.data()
             assert type(data)               is Model__RSS_Providers
             assert data.json()              == toml_load(_.path_rss_providers_data())
-            assert list_set(data.providers) == ['cso-online', 'hacker-news']
+            assert list_set(data.providers) == RSS_PROVIDERS__NAMES
 
     def test_path_rss_providers_data(self):
         with self.rss_providers as _:
