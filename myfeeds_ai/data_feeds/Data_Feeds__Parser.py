@@ -1,6 +1,6 @@
 from xml.etree                              import ElementTree
 from xml.etree.ElementTree                  import Element
-from osbot_utils.base_classes.Type_Safe     import Type_Safe
+from osbot_utils.type_safe.Type_Safe         import Type_Safe
 
 class Data_Feeds__Parser(Type_Safe):
     channel         : Element = None

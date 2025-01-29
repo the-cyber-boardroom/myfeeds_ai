@@ -1,7 +1,7 @@
 import requests
 
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Raw_Data import Model__Data_Feeds__Raw_Data
-from osbot_utils.base_classes.Type_Safe                                  import Type_Safe
+from osbot_utils.type_safe.Type_Safe                                      import Type_Safe
 from osbot_utils.context_managers.capture_duration                       import capture_duration
 from osbot_utils.utils.Http                                              import url_join_safe
 

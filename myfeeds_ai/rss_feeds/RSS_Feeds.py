@@ -2,7 +2,7 @@ import requests
 
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Raw_Data   import Model__Data_Feeds__Raw_Data
 from osbot_utils.context_managers.capture_duration              import capture_duration
-from osbot_utils.base_classes.Type_Safe                         import Type_Safe
+from osbot_utils.type_safe.Type_Safe                             import Type_Safe
 from osbot_utils.helpers.xml.Xml__File__Load                    import Xml__File__Load
 from osbot_utils.helpers.xml.Xml__File__To_Dict                 import Xml__File__To_Dict
 from osbot_utils.helpers.xml.rss.RSS__Feed__Parser              import RSS__Feed__Parser

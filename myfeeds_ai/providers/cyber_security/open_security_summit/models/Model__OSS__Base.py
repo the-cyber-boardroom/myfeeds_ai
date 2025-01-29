@@ -1,4 +1,4 @@
-from osbot_utils.base_classes.Type_Safe import Type_Safe
+from osbot_utils.type_safe.Type_Safe     import Type_Safe
 
 
 class Model_OSS__Base(Type_Safe):                                         # Base model with common fields

@@ -1,7 +1,7 @@
 from osbot_aws.apis.test_helpers.Temp_Aws_Roles import Temp_Aws_Roles
 from osbot_utils.utils.Env                      import get_env, load_dotenv
 from osbot_aws.AWS_Config                       import aws_config
-from osbot_utils.base_classes.Type_Safe         import Type_Safe
+from osbot_utils.type_safe.Type_Safe             import Type_Safe
 from osbot_aws.deploy.Deploy_Lambda             import Deploy_Lambda
 from myfeeds_ai.utils.Version                   import version__myfeeds_ai
 

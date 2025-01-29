@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Prompt                  import Model__Data_Feeds__Prompt
 from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Files     import OSS__Files
-from osbot_utils.base_classes.Type_Safe                                                 import Type_Safe
+from osbot_utils.type_safe.Type_Safe                                                     import Type_Safe
 
 PROMPT__OSS__CURRENT_SESSIONS   =  ("The following data is from the Open Security Summit events collected at {current_time}. \n"
                                   "There are {sessions_size} sessions scheduled for {event_month} {event_year}.")
