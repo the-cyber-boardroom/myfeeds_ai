@@ -1,7 +1,8 @@
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
 from osbot_aws.aws.s3.S3__Key_Generator                 import S3__Key_Generator
-from osbot_utils.decorators.methods.type_safe           import type_safe
 from osbot_utils.helpers.Safe_Id                        import Safe_Id
+from osbot_utils.type_safe.decorators.type_safe         import type_safe
+
 
 class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: refactor this to a generic class (for multiple feeds)
     root_folder            = S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA

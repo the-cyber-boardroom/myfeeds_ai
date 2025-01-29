@@ -1,6 +1,6 @@
-from unittest                                      import TestCase
-from myfeeds_ai.utils.Version           import version__myfeeds_ai
-from tests.integration.data_feeds__objs_for_tests  import data_feeds__fast_api__client
+from unittest                                       import TestCase
+from myfeeds_ai.utils.Version                       import version__myfeeds_ai
+from tests.integration.data_feeds__objs_for_tests   import data_feeds__fast_api__client
 
 
 class test__client__Routes__Info(TestCase):

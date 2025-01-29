@@ -14,7 +14,7 @@ class test_RSS_Feeds(TestCase):
         cbr_website__assert_local_stack()
         cls.rss_feeds     = RSS_Feeds()
         cls.rss_providers = RSS_Providers().data()
-        cls.provider_id   = 'hacker-news'
+        cls.provider_id   = 'hacker-news' # 'cso-online'
         cls.rss_provider  = cls.rss_providers.providers[cls.provider_id]
         cls.rss_url_feed  = cls.rss_provider.url_feed
 

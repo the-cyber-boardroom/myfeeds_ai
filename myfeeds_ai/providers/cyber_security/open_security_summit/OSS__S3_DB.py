@@ -6,7 +6,7 @@ from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Raw_Data                   
 from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS__Content         import Model__OSS__Content
 from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS__Event           import Model__OSS__Event
 from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS__Latest_Versions import Model__OSS__Latest_Versions
-from osbot_utils.decorators.methods.type_safe                                                               import type_safe
+from osbot_utils.type_safe.decorators.type_safe                                                              import type_safe
 
 S3_FILE_NAME__OSS__CURRENT_EVENT         = 'current-event'
 S3_FILE_NAME__OSS__CURRENT_EVENT__PROMPT = 'current-event-prompt'

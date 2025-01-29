@@ -1,6 +1,6 @@
 from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Files                 import OSS__Files
 from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS__Event   import Model__OSS__Event
-from osbot_utils.base_classes.Type_Safe                                                             import Type_Safe
+from osbot_utils.type_safe.Type_Safe                                                                 import Type_Safe
 from osbot_utils.utils.Lists                                                                        import unique
 
 OSS_EVENTS__CURRENT__YEAR  = 2024

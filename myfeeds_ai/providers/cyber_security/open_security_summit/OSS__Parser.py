@@ -2,7 +2,7 @@ from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS_
 from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS__Page_Type       import Model__OSS__Page_Type
 from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS__Participant     import Model__OSS__Participant
 from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS__Session         import Model__OSS__Session
-from osbot_utils.base_classes.Type_Safe                                                                     import Type_Safe
+from osbot_utils.type_safe.Type_Safe                                                                         import Type_Safe
 from osbot_utils.utils.Json                                                                                 import str_to_json
 from osbot_utils.utils.Misc                                                                                 import lower
 from osbot_utils.utils.Objects                                                                              import obj

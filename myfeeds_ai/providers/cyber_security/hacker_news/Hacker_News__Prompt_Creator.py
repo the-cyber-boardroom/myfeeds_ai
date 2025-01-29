@@ -1,6 +1,6 @@
 import re
 from typing                                                                                         import List
-from osbot_utils.base_classes.Type_Safe                                                             import Type_Safe
+from osbot_utils.type_safe.Type_Safe                                                                 import Type_Safe
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article  import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed     import Model__Hacker_News__Feed
 
