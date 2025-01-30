@@ -3,7 +3,7 @@ from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                         
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed      import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed  import Model__Hacker_News__Raw_Data__Feed
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                                  import Model__Data_Feeds__Providers
-from osbot_utils.type_safe.decorators.type_safe                                                  import type_safe
+from osbot_utils.type_safe.decorators.type_safe                                                 import type_safe
 
 
 class Hacker_News__S3_DB(Data_Feeds__S3_DB):
@@ -16,8 +16,9 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
     def feed_data__load__from_path(self, s3_path):
         s3_key    = self.s3_key__for_provider_path(s3_path)
         file_data = self.s3_file_data(s3_key)
-        data_feed = Model__Hacker_News__Data__Feed.from_json(file_data)
-        return data_feed
+        if file_data:
+            data_feed = Model__Hacker_News__Data__Feed.from_json(file_data)
+            return data_feed
 
     def feed_data__load__from_date(self, year:int, month:int, day:int, hour:int):
         s3_path = self.s3_key_generator.s3_path(year, month, day, hour, S3_FILE_NAME__RAW__FEED_DATA)

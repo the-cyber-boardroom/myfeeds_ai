@@ -1,4 +1,4 @@
-from myfeeds_ai.data_feeds.Data_Feeds__Files import Data_Feeds__Files
+from myfeeds_ai.data_feeds.Data_Feeds__Files                                                   import Data_Feeds__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content                 import Hacker_News__Http_Content
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                       import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB
@@ -21,7 +21,7 @@ class Hacker_News__Files(Data_Feeds__Files):
 
     def xml_feed__raw_data__current(self, refresh=False):
         xml_feed = self.s3_db.raw_data__feed__load__current()
-        if refresh or not xml_feed:
+        if refresh or not xml_feed or not xml_feed.feed_xml:
             with capture_duration() as duration:
                 feed_xml      = self.http_content.feed_content()
             kwargs = dict(created_by = RAW_FEED__CREATED__BY,
@@ -38,12 +38,17 @@ class Hacker_News__Files(Data_Feeds__Files):
     def feed_data__current(self, refresh=False) -> Model__Hacker_News__Data__Feed:
         feed_data = self.s3_db.feed_data__load__current()
         if refresh or not feed_data:
-            feed_raw_data = self.xml_feed__raw_data__current()
+            feed_raw_data = self.xml_feed__raw_data__current(refresh=refresh)
+            if feed_raw_data.feed_xml == "":
+                raise ValueError("in feed_data__current, the feed_raw_data.feed_xml was empty")
             if feed_raw_data:
-                parser = Hacker_News__Parser().setup(feed_raw_data.feed_xml)
+                parser           = Hacker_News__Parser().setup(feed_raw_data.feed_xml)
+                parsed_feed_data = parser.parse_feed()
+                if len(parsed_feed_data.articles) ==0:
+                    raise ValueError("in feed_data__current len(parsed_feed_data.articles) was zero")
                 kwargs = dict(created_by = feed_raw_data.created_by,
                               duration   = feed_raw_data.duration  ,
-                              feed_data  = parser.parse_feed()    )
+                              feed_data  = parsed_feed_data )
                 feed_data = Model__Hacker_News__Data__Feed(**kwargs)
                 self.s3_db.feed_data__save(feed_data)
                 feed_data = self.s3_db.feed_data__load__current()
