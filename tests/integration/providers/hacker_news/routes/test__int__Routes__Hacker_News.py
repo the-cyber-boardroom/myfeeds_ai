@@ -57,7 +57,6 @@ class test__int__Routes__Hacker_News(TestCase):
         with self.routes_hacker_news as _:
             assert type(_.raw_data_all_files()) is list
 
-    @pytest.mark.skip("has race-condition with test data load (test passes on 2nd test run")  # todo: fix this
     def test_raw_data_feed_current(self):
         with self.routes_hacker_news as _:
             current_feed = _.raw_data_feed_current()
