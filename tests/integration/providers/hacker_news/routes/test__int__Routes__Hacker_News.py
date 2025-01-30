@@ -1,11 +1,10 @@
-from unittest                                                                    import TestCase
-
 import pytest
-
+from unittest                                                                    import TestCase
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator import PROMPT_SCHEMA__HACKER_NEWS
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News  import Routes__Hacker_News
 from osbot_utils.utils.Objects                                                   import obj, __
 from tests.integration.data_feeds__objs_for_tests                                import cbr_website__assert_local_stack
+
 
 class test__int__Routes__Hacker_News(TestCase):
 
@@ -69,6 +68,8 @@ class test__int__Routes__Hacker_News(TestCase):
         with self.routes_hacker_news as _:
             current_feed = _.data_feed_current()
             assert current_feed.get('status') == 'ok'
+            assert len(obj(current_feed).data.feed_data.articles) >0
+
 
             #year, month, day, hour = _.files.s3_db.s3_key_generator.path__for_date_time__now_utc().split('/')
             #assert _.raw_data_feed(year, month, day, hour) == current_feed

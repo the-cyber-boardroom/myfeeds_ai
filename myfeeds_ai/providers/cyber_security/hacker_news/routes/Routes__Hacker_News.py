@@ -1,9 +1,9 @@
-from osbot_fast_api.api.Fast_API_Routes                                                   import Fast_API_Routes
-from starlette.responses                                                                  import PlainTextResponse
+from osbot_fast_api.api.Fast_API_Routes                                        import Fast_API_Routes
+from starlette.responses                                                       import PlainTextResponse
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files        import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content import Hacker_News__Http_Content
-from osbot_utils.utils.Lists                                                              import list_filter_contains
-from osbot_utils.utils.Status                                                             import status_ok, status_error
+from osbot_utils.utils.Lists                                                   import list_filter_contains
+from osbot_utils.utils.Status                                                  import status_ok, status_error
 
 ROUTE_PATH__HACKER_NEWS = 'hacker-news'
 
@@ -47,7 +47,7 @@ class Routes__Hacker_News(Fast_API_Routes):
         return status_error(f'No data found for {year}/{month}/{day}/{hour}')
 
     def data_feed_current(self):
-        data_feed = self.files.feed_data__current()
+        data_feed = self.files.feed_data__current(refresh=False)
         if data_feed:
             return status_ok(data=data_feed.json())
         return status_error(f'No data found')

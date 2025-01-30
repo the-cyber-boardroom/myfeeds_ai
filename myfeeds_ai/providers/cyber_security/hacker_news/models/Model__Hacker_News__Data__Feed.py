@@ -1,6 +1,6 @@
-from osbot_utils.type_safe.Type_Safe                                                             import Type_Safe
-from osbot_utils.helpers.Random_Guid                                                            import Random_Guid
-from osbot_utils.helpers.Timestamp_Now                                                          import Timestamp_Now
+from osbot_utils.type_safe.Type_Safe                                                 import Type_Safe
+from osbot_utils.helpers.Random_Guid                                                 import Random_Guid
+from osbot_utils.helpers.Timestamp_Now                                               import Timestamp_Now
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Feed import Model__Hacker_News__Feed
 
 class Model__Hacker_News__Data__Feed(Type_Safe):

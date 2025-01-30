@@ -22,7 +22,7 @@ data_feeds__fast_api         = Data_Feeds__Fast_API().setup()
 data_feeds__fast_api__app    = data_feeds__fast_api.app()
 data_feeds__fast_api__client = data_feeds__fast_api.client()
 
-setup_requests_cache()
+#setup_requests_cache()
 
 def cbr_website__assert_local_stack():
     assert data_feeds__local_stack.is_local_stack_configured_and_available() is True
