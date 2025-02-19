@@ -7,14 +7,15 @@ from osbot_utils.utils.Status                                                  i
 
 ROUTE_PATH__HACKER_NEWS = 'hacker-news'
 
-ROUTES_PATHS__HACKER_NEWS = [ f'/{ROUTE_PATH__HACKER_NEWS}/data-feed'              ,
-                              f'/{ROUTE_PATH__HACKER_NEWS}/data-feed-current'      ,
-                              f'/{ROUTE_PATH__HACKER_NEWS}/feed'                   ,
-                              f'/{ROUTE_PATH__HACKER_NEWS}/feed-prompt'            ,
-                              f'/{ROUTE_PATH__HACKER_NEWS}/files-paths'            ,
-                              f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-all-files'     ,
-                              f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-feed'          ,
-                              f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-feed-current'  ]
+ROUTES_PATHS__HACKER_NEWS = [ f'/{ROUTE_PATH__HACKER_NEWS}/data-feed'                 ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/data-feed-current'         ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/data-feed-current-timeline',
+                              f'/{ROUTE_PATH__HACKER_NEWS}/feed'                      ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/feed-prompt'               ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/files-paths'               ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-all-files'        ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-feed'             ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-feed-current'     ]
 
 
 class Routes__Hacker_News(Fast_API_Routes):
@@ -52,6 +53,12 @@ class Routes__Hacker_News(Fast_API_Routes):
             return status_ok(data=data_feed.json())
         return status_error(f'No data found')
 
+    def data_feed_current_timeline(self):
+        timeline = self.files.feed_data__current__timeline()
+        if timeline:
+            return status_ok(data=timeline.json__compress())
+        return status_error(f'No data found')
+
     def feed_prompt(self, size:int=5):
         #return { "prompt" : self.http_content.get_prompt_schema(size=size) }
         return PlainTextResponse(self.http_content.feed_prompt(size=size))
@@ -75,11 +82,12 @@ class Routes__Hacker_News(Fast_API_Routes):
         return status_error(f'No data found for {year}/{month}/{day}/{hour}')
 
     def setup_routes(self):
-        self.add_route_get(self.data_feed            )
-        self.add_route_get(self.data_feed_current    )
-        self.add_route_get(self.files_paths          )
-        self.add_route_get(self.feed                 )
-        self.add_route_get(self.feed_prompt          )
-        self.add_route_get(self.raw_data_all_files   )
-        self.add_route_get(self.raw_data_feed_current)
-        self.add_route_get(self.raw_data_feed        )
+        self.add_route_get(self.data_feed                 )
+        self.add_route_get(self.data_feed_current         )
+        self.add_route_get(self.data_feed_current_timeline)
+        self.add_route_get(self.files_paths               )
+        self.add_route_get(self.feed                      )
+        self.add_route_get(self.feed_prompt               )
+        self.add_route_get(self.raw_data_all_files        )
+        self.add_route_get(self.raw_data_feed_current     )
+        self.add_route_get(self.raw_data_feed             )

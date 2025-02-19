@@ -4,7 +4,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser        
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
-from osbot_utils.context_managers.capture_duration                                                        import capture_duration
+from osbot_utils.context_managers.capture_duration                                             import capture_duration
 
 RAW_FEED__CREATED__BY = 'Hacker_News__Files.xml_feed__current'
 
@@ -52,14 +52,17 @@ class Hacker_News__Files(Data_Feeds__Files):
                 feed_data = Model__Hacker_News__Data__Feed(**kwargs)
                 self.s3_db.feed_data__save(feed_data)
                 feed_data = self.s3_db.feed_data__load__current()
-
-                # create timeline       # todo: refactor this to a workflow about parse latest
-                from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create_MGraph__Articles__Timeline import Flow__Hacker_News__Create_MGraph__Articles__Timeline
-                with Flow__Hacker_News__Create_MGraph__Articles__Timeline() as _:
-                    _.setup(data_feed=feed_data)
-                    _.execute_flow()
-
+                self.feed_data__current__timeline(feed_data=feed_data)   # create timeline       # todo: refactor this to a workflow about parse latest
         return feed_data
+
+    def feed_data__current__timeline(self, feed_data=None) -> Model__Hacker_News__Data__Feed:
+        if feed_data is None:
+            feed_data = self.s3_db.feed_data__load__current()
+        from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create_MGraph__Articles__Timeline import Flow__Hacker_News__Create_MGraph__Articles__Timeline
+        with Flow__Hacker_News__Create_MGraph__Articles__Timeline() as _:
+            _.setup(data_feed=feed_data)
+            _.execute_flow()
+            return _.mgraph_timeseries
 
     def feed_data__from_date(self, year:int, month:int, day:int, hour:int):
         feed_data = self.s3_db.feed_data__load__from_date(year, month, day, hour)

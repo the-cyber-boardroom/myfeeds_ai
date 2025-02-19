@@ -1,5 +1,4 @@
-from osbot_fast_api.api.Fast_API_Routes import Fast_API_Routes
-
+from osbot_fast_api.api.Fast_API_Routes                                 import Fast_API_Routes
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files import Hacker_News__Files
 
 ROUTES__TAG__PUBLIC__HACKER_NEWS   = 'hacker-news'
