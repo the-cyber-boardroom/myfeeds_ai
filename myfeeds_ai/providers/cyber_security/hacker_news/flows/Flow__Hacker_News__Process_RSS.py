@@ -1,4 +1,3 @@
-from mgraph_db.providers.time_chain.MGraph__Time_Chain                                                          import MGraph__Time_Chain
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                                         import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed                      import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create_MGraph__Articles__Timeline import Flow__Hacker_News__Create_MGraph__Articles__Timeline
@@ -36,9 +35,13 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
         timeline__s3_path__now    = self.flow_timeline.s3_path
         timeline__s3_path__latest = self.flow_timeline.s3_path_latest
         timeline__stats           = self.flow_timeline.mgraph_timeseries.index().stats()
+        timeline__dot_code__size  = len(self.flow_timeline.dot_code )
+        timeline__png__size       = len(self.flow_timeline.png_bytes)
         self.output               = dict(articles_loaded = len(self.data_feed.feed_data.articles),
                                          feed__s3_path__latest     = feed__s3_path__latest       ,
                                          feed__s3_path__now        = feed__s3_path__now          ,
+                                         timeline__dot_code__size  = timeline__dot_code__size     ,
+                                         timeline__png__size       = timeline__png__size          ,
                                          timeline__s3_path__latest = timeline__s3_path__latest   ,
                                          timeline__s3_path__now    = timeline__s3_path__now      ,
                                          timeline__stats           = timeline__stats             )
