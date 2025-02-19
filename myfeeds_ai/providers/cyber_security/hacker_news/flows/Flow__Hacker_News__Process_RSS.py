@@ -37,11 +37,13 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
         timeline__stats           = self.flow_timeline.mgraph_timeseries.index().stats()
         timeline__dot_code__size  = len(self.flow_timeline.dot_code )
         timeline__png__size       = len(self.flow_timeline.png_bytes)
+        timeline__durations       = self.flow_timeline.durations
         self.output               = dict(articles_loaded = len(self.data_feed.feed_data.articles),
                                          feed__s3_path__latest     = feed__s3_path__latest       ,
                                          feed__s3_path__now        = feed__s3_path__now          ,
-                                         timeline__dot_code__size  = timeline__dot_code__size     ,
-                                         timeline__png__size       = timeline__png__size          ,
+                                         timeline__dot_code__size  = timeline__dot_code__size    ,
+                                         timeline__durations       = timeline__durations         ,
+                                         timeline__png__size       = timeline__png__size         ,
                                          timeline__s3_path__latest = timeline__s3_path__latest   ,
                                          timeline__s3_path__now    = timeline__s3_path__now      ,
                                          timeline__stats           = timeline__stats             )
