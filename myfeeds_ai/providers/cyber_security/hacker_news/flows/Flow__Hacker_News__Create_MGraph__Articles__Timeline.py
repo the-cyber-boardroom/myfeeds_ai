@@ -3,19 +3,19 @@ from mgraph_db.mgraph.actions.MGraph__Screenshot                                
 from mgraph_db.providers.time_chain.MGraph__Time_Chain                                      import MGraph__Time_Chain
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Edge                import Schema__MGraph__Time_Chain__Edge__Day, Schema__MGraph__Time_Chain__Edge__Hour, Schema__MGraph__Time_Chain__Edge__Source, Schema__MGraph__Time_Chain__Edge__Month
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types               import Time_Chain__Year, Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File_Extensions
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                    import S3_Key__File_Extensions
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                     import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                     import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article     import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed  import Model__Hacker_News__Data__Feed
-from osbot_utils.context_managers.capture_duration import capture_duration
-from osbot_utils.helpers.Safe_Id import Safe_Id
+from osbot_utils.context_managers.capture_duration                                          import capture_duration
+from osbot_utils.helpers.Safe_Id                                                            import Safe_Id
 from osbot_utils.helpers.flows.Flow                                                         import Flow
 from osbot_utils.helpers.flows.decorators.task                                              import task
 from osbot_utils.utils.Env                                                                  import get_env
 from osbot_utils.utils.Misc                                                                 import timestamp_to_datetime
 
-S3_FILE_NAME__MGRAPH__TIMELINE            = 'feed-timeline__mgraph'
+
 FILE__SCREENSHOT__MGRAPH__TIME_SERIES   = './hacker_news-timeline.png'
 
 class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
@@ -48,7 +48,7 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
     def create_mgraph(self):
         with capture_duration() as duration:
             with self.mgraph_timeseries.create() as _:
-                for article in self.articles[0:10]:
+                for article in self.articles: # [0:10]:
                     timestamp_utc = article.when.timestamp_utc * 1000
                     date_time     = timestamp_to_datetime(timestamp_utc)
                     _.create_from_datetime(dt=date_time, source_id=article.article_obj_id)
@@ -59,8 +59,8 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
         with capture_duration() as duration:
             mgraph_json = self.mgraph_timeseries.json__compress()
             with self.s3_db as _:
-                self.s3_path        = _.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__MGRAPH__TIMELINE)
-                self.s3_path_latest = _.s3_path__latest              (file_id=S3_FILE_NAME__MGRAPH__TIMELINE)
+                self.s3_path        = _.s3_path__timeline__now__mgraph__json()
+                self.s3_path_latest = _.s3_path__timeline__latest__mgraph__json()
                 s3_key              = _.s3_key__for_provider_path    (self.s3_path)
                 s3_key_latest       = _.s3_key__for_provider_path    (self.s3_path_latest)
                 result              = _.s3_save_data                 (data=mgraph_json, s3_key=s3_key       )
@@ -101,7 +101,7 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
             with screenshot.export().export_dot() as _:
                 _.show_edge__type                ()
                 _.show_node__value               ()
-                _.set_graph__rank_dir__lr()
+                _.set_graph__rank_dir__tb        ()
                 _.set_graph__rank_sep            (0.2)
                 _.set_graph__node_sep            (0.1)
                 _.set_node__shape__type__box     (   )

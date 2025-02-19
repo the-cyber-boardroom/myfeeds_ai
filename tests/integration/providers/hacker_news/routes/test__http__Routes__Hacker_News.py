@@ -25,6 +25,6 @@ class test__http__Routes__Hacker_News(TestCase):
         response_obj = obj(response.json())
         assert response.status_code == 200
         assert response_obj.status  == 'ok'
-        assert response_obj.data.latest_feed_xml .endswith(f'{S3_FILE_NAME__RAW__FEED_XML }.json')
-        assert response_obj.data.latest_feed_data.endswith(f'{S3_FILE_NAME__RAW__FEED_DATA}.json')
+        assert response_obj.data.latest.feed_xml .endswith(f'{S3_FILE_NAME__RAW__FEED_XML }.json')
+        assert response_obj.data.latest.feed_data.endswith(f'{S3_FILE_NAME__RAW__FEED_DATA}.json')
 

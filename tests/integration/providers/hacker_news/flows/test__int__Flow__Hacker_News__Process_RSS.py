@@ -35,7 +35,7 @@ class test__int__Flow__Hacker_News__Process_RSS(TestCase):
                                          timeline__durations       = timeline__durations                ,
                                          timeline__dot_code__size  = timeline__dot_code__size           ,
                                          timeline__png__size       = timeline__png__size                ,
-                                         timeline__s3_path__latest = 'latest/feed-timeline__mgraph.json',
+                                         timeline__s3_path__latest = 'latest/feed-timeline.mgraph.json',
                                          timeline__s3_path__now    = timeline__s3_path__now             ,
                                          timeline__stats           = timeline__stats                    ,
                                          flow_timeline__traces     = flow_timeline__traces              )

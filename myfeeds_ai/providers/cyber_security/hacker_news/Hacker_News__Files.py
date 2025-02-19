@@ -14,10 +14,18 @@ class Hacker_News__Files(Data_Feeds__Files):
 
     def files_paths__latest(self):
         with self.s3_db as _:
-            latest_feed_xml  = _.s3_path__raw_data__feed_xml__now()
-            latest_feed_data = _.s3_path__raw_data__feed_data__now()
-        return dict(latest_feed_xml  =latest_feed_xml  ,
-                    latest_feed_data =latest_feed_data )
+            now    = dict( feed_xml             = _.s3_path__raw_data__feed_xml__now       (),
+                           feed_data            = _.s3_path__raw_data__feed_data__now      (),
+                           timeline_mgraph_dot  = _.s3_path__timeline__now__mgraph__dot    (),
+                           timeline_mgraph_json = _.s3_path__timeline__now__mgraph__json   (),
+                           timeline_mgraph_png  = _.s3_path__timeline__now__mgraph__png    ())
+            latest = dict( feed_xml             = _.s3_path__raw_data__feed_xml__latest    (),
+                           feed_data            = _.s3_path__raw_data__feed_data__latest   (),
+                           timeline_mgraph_dot  = _.s3_path__timeline__latest__mgraph__dot (),
+                           timeline_mgraph_json = _.s3_path__timeline__latest__mgraph__json(),
+                           timeline_mgraph_png  = _.s3_path__timeline__latest__mgraph__png ())
+        return dict(now    = now    ,
+                    latest = latest )
 
     def xml_feed__raw_data__current(self, refresh=False):
         xml_feed = self.s3_db.raw_data__feed__load__current()

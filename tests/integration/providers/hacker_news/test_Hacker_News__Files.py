@@ -17,8 +17,10 @@ class test_Hacker_News__Files(TestCase):
     def test_files_paths__latest(self):
         with self.hacker_news__files as _:
             paths = _.files_paths__latest()
-            assert paths.get('latest_feed_xml' ) == self.hacker_news__files.s3_db.s3_path__raw_data__feed_xml__now ()
-            assert paths.get('latest_feed_data') == self.hacker_news__files.s3_db.s3_path__raw_data__feed_data__now()
+            assert paths.get('latest').get('feed_xml' ) == self.hacker_news__files.s3_db.s3_path__raw_data__feed_xml__latest  ()
+            assert paths.get('latest').get('feed_data') == self.hacker_news__files.s3_db.s3_path__raw_data__feed_data__latest ()
+            assert paths.get('now'   ).get('feed_xml' ) == self.hacker_news__files.s3_db.s3_path__raw_data__feed_xml__now     ()
+            assert paths.get('now'   ).get('feed_data') == self.hacker_news__files.s3_db.s3_path__raw_data__feed_data__now    ()
 
     def test_xml_feed__raw_data__current(self):
         with self.hacker_news__files as _:
