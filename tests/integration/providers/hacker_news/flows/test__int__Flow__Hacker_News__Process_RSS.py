@@ -44,5 +44,5 @@ class test__int__Flow__Hacker_News__Process_RSS(TestCase):
         assert index_data.edge_to_nodes  > 1
         assert result.flow_return_value  == expected_return_value
 
-        from osbot_utils.utils.Dev import pprint
-        pprint(result.flow_return_value)
+        #from osbot_utils.utils.Dev import pprint
+        #pprint(result.flow_return_value)

@@ -6,9 +6,11 @@ from osbot_utils.helpers.Safe_Id                        import Safe_Id
 from osbot_utils.type_safe.decorators.type_safe         import type_safe
 
 class S3_Key__File_Extensions(Enum):
-    JSON   : str  = 'json'
-    PNG    : str = 'png'
-    MGRAPH : str  = 'mgraph.json'
+    JSON         : str = 'json'
+    PNG          : str = 'png'
+    MGRAPH__DOT  : str = 'mgraph.dot'
+    MGRAPH__JSON : str = 'mgraph.json'
+    MGRAPH__PNG  : str = 'mgraph.png'
 
 
 class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: refactor this to a generic class (for multiple feeds)

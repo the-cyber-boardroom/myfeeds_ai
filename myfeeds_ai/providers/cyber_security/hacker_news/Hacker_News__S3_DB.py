@@ -1,4 +1,5 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3_DB                                                    import Data_Feeds__S3_DB
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File_Extensions
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                                         import S3_FILE_NAME__RAW__FEED_DATA, S3_FILE_NAME__RAW__FEED_XML, S3_FOLDER_NAME__LATEST, S3_FOLDER_NAME__ARTICLES
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed      import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed  import Model__Hacker_News__Raw_Data__Feed
@@ -86,8 +87,9 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
     def s3_path__when(self):
         return self.s3_key_generator.path__for_date_time__now_utc()
 
-    def s3_path__latest(self, file_id):
-        return url_join_safe(S3_FOLDER_NAME__LATEST, file_id + '.json')
+    @type_safe
+    def s3_path__latest(self, file_id, extension: S3_Key__File_Extensions=S3_Key__File_Extensions.JSON):
+        return url_join_safe(S3_FOLDER_NAME__LATEST, file_id + f'.{extension.value}')
 
     def s3_path__raw_data__feed_data__now(self):
         return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_DATA)

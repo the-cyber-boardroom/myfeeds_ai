@@ -48,7 +48,7 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
     def create_mgraph(self):
         with capture_duration() as duration:
             with self.mgraph_timeseries.create() as _:
-                for article in self.articles[0:150]:
+                for article in self.articles[0:10]:
                     timestamp_utc = article.when.timestamp_utc * 1000
                     date_time     = timestamp_to_datetime(timestamp_utc)
                     _.create_from_datetime(dt=date_time, source_id=article.article_obj_id)
@@ -78,7 +78,7 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
         pass
 
     @task()
-    def create_dot_code(self):
+    def create_dot_code(self):                          # todo: there is a weird performance issue which only happens on an lambda where this takes about 5 secs to complete (for 50 articles)
         with capture_duration() as duration:
             year_color   = '#E6EEF8'      # Light steel blue
             month_color  = '#D1E2F4'      # Lighter powder blue
