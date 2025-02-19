@@ -5,7 +5,7 @@ import pytest
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                        import Hacker_News__Files, RAW_FEED__CREATED__BY
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
-from tests.integration.data_feeds__objs_for_tests                                                         import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                              import cbr_website__assert_local_stack
 
 class test_Hacker_News__Files(TestCase):
 

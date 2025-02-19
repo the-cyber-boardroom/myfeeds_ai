@@ -4,9 +4,9 @@ from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants import S3_FILE_NAME__RAW
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed      import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed  import Model__Hacker_News__Raw_Data__Feed
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                                  import Model__Data_Feeds__Providers
-from osbot_utils.helpers.Obj_Id import Obj_Id
+from osbot_utils.helpers.Obj_Id                     import Obj_Id
 from osbot_utils.type_safe.decorators.type_safe                                                 import type_safe
-from osbot_utils.utils.Http import url_join_safe
+from osbot_utils.utils.Http                         import url_join_safe
 
 S3_FILE_NAME__ARTICLE__FEED_ARTICLE = 'feed-article'
 
@@ -86,6 +86,9 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
 
     def s3_path__when(self):
         return self.s3_key_generator.path__for_date_time__now_utc()
+
+    def s3_path__latest(self, file_id):
+        return url_join_safe(S3_FOLDER_NAME__LATEST, file_id + '.json')
 
     def s3_path__raw_data__feed_data__now(self):
         return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_DATA)
