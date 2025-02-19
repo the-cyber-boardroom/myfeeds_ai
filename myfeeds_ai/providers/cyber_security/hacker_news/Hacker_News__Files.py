@@ -38,22 +38,26 @@ class Hacker_News__Files(Data_Feeds__Files):
     def feed_data__current(self, refresh=False) -> Model__Hacker_News__Data__Feed:
         feed_data = self.s3_db.feed_data__load__current()
         if refresh or not feed_data:
-            feed_raw_data = self.xml_feed__raw_data__current(refresh=refresh)
-            if feed_raw_data.feed_xml == "":
-                raise ValueError("in feed_data__current, the feed_raw_data.feed_xml was empty")
-            if feed_raw_data:
-                parser           = Hacker_News__Parser().setup(feed_raw_data.feed_xml)
-                parsed_feed_data = parser.parse_feed()
-                if len(parsed_feed_data.articles) ==0:
-                    raise ValueError("in feed_data__current len(parsed_feed_data.articles) was zero")
-                kwargs = dict(created_by = feed_raw_data.created_by,
-                              duration   = feed_raw_data.duration  ,
-                              feed_data  = parsed_feed_data )
-                feed_data = Model__Hacker_News__Data__Feed(**kwargs)
-                self.s3_db.feed_data__save(feed_data)
-                feed_data = self.s3_db.feed_data__load__current()
-                self.feed_data__current__timeline(feed_data=feed_data)   # create timeline       # todo: refactor this to a workflow about parse latest
+            feed_data = self.feed_data__load_rss_and_parse()
+            #self.feed_data__current__timeline(feed_data=feed_data)   # create timeline       # todo: refactor this to a workflow about parse latest
         return feed_data
+
+    def feed_data__load_rss_and_parse(self, refresh=False):
+        feed_raw_data = self.xml_feed__raw_data__current(refresh=refresh)
+        if feed_raw_data.feed_xml == "":
+            raise ValueError("in feed_data__current, the feed_raw_data.feed_xml was empty")
+        if feed_raw_data:
+            parser           = Hacker_News__Parser().setup(feed_raw_data.feed_xml)
+            parsed_feed_data = parser.parse_feed()
+            if len(parsed_feed_data.articles) ==0:
+                raise ValueError("in feed_data__current len(parsed_feed_data.articles) was zero")
+            kwargs = dict(created_by = feed_raw_data.created_by,
+                          duration   = feed_raw_data.duration  ,
+                          feed_data  = parsed_feed_data )
+            feed_data = Model__Hacker_News__Data__Feed(**kwargs)
+            self.s3_db.feed_data__save(feed_data)
+            feed_data = self.s3_db.feed_data__load__current()
+            return feed_data
 
     def feed_data__current__timeline(self, feed_data=None) -> Model__Hacker_News__Data__Feed:
         if feed_data is None:
