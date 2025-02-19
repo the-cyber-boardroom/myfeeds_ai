@@ -15,6 +15,9 @@ class test__int__Flow__Hacker_News__Process_RSS(TestCase):
         durations                =  dict(fetch_rss_feed  = self.flow_process_rss.duration__fetch_rss_feed ,
                                          create_timeline = self.flow_process_rss.duration__create_timeline,
                                          create_output   = self.flow_process_rss.duration__create_output  )
+
+        flow_timeline__traces    = self.flow_process_rss.flow_timeline__traces
+
         feed__s3_path__now       = self.flow_process_rss.files.s3_db.s3_path__raw_data__feed_xml__now()
         timeline__dot_code__size = len(self.flow_process_rss.flow_timeline.dot_code)
         timeline__durations      = self.flow_process_rss.flow_timeline.durations
@@ -32,7 +35,8 @@ class test__int__Flow__Hacker_News__Process_RSS(TestCase):
                                          timeline__png__size       = timeline__png__size                ,
                                          timeline__s3_path__latest = 'latest/feed-timeline__mgraph.json',
                                          timeline__s3_path__now    = timeline__s3_path__now             ,
-                                         timeline__stats           = timeline__stats                    )
+                                         timeline__stats           = timeline__stats                    ,
+                                         flow_timeline__traces     = flow_timeline__traces              )
 
         assert articles_loaded           > 0
         assert index_data.edge_to_nodes  > 1

@@ -3,11 +3,13 @@ from mgraph_db.mgraph.actions.MGraph__Screenshot                                
 from mgraph_db.providers.time_chain.MGraph__Time_Chain                                      import MGraph__Time_Chain
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Edge                import Schema__MGraph__Time_Chain__Edge__Day, Schema__MGraph__Time_Chain__Edge__Hour, Schema__MGraph__Time_Chain__Edge__Source, Schema__MGraph__Time_Chain__Edge__Month
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types               import Time_Chain__Year, Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File_Extensions
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                     import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                     import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article     import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed  import Model__Hacker_News__Data__Feed
 from osbot_utils.context_managers.capture_duration import capture_duration
+from osbot_utils.helpers.Safe_Id import Safe_Id
 from osbot_utils.helpers.flows.Flow                                                         import Flow
 from osbot_utils.helpers.flows.decorators.task                                              import task
 from osbot_utils.utils.Env                                                                  import get_env
@@ -71,6 +73,9 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
         #pprint(file_size(FILE__DATA__MGRAPH__TIMELINE))
         # scheme_name = MGraph__Export__Dot__Time_Series__Colors__Scheme.SUNSET
         # MGraph__Export__Dot__Time_Series__Colors(dot_export=_).apply_color_scheme(scheme_name=scheme_name)
+
+    def save_to_s3__now_and_latest(self, data: dict, file_id:Safe_Id, extension: S3_Key__File_Extensions):
+        pass
 
     @task()
     def create_dot_code(self):
@@ -158,6 +163,6 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
         self.load_articles           ()
         self.create_mgraph           ()
         self.save_mgraph             ()
-        self.create_dot_code         ()
-        self.create_png              ()
+        # self.create_dot_code         ()
+        # self.create_png              ()
         self.map_durations           ()
