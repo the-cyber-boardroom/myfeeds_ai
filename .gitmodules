@@ -4,3 +4,6 @@
 [submodule "modules/OSBot-Utils"]
 	path = modules/OSBot-Utils
 	url = git@github.com:owasp-sbot/OSBot-Utils.git
+[submodule "modules/MGraph-DB"]
+	path = modules/MGraph-DB
+	url = git@github.com:owasp-sbot/MGraph-DB.git

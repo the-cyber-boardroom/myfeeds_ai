@@ -17,4 +17,11 @@ class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: r
         year, month, day, hour = self.path__for_date_time__now_utc().split('/')
         return self.s3_path(year, month, day, hour, file_id)
 
+    def s3_path_folder(self, year: int, month: int, day: int, hour: int, folder_id: Safe_Id):
+        return f'{year:04}/{month:02}/{day:02}/{hour:02}/{folder_id}'
+
+    def s3_path__folder__now(self, folder_id: Safe_Id):
+        year, month, day, hour = self.path__for_date_time__now_utc().split('/')
+        return self.s3_path_folder(year, month, day, hour, folder_id)
+
 

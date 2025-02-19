@@ -52,6 +52,13 @@ class Hacker_News__Files(Data_Feeds__Files):
                 feed_data = Model__Hacker_News__Data__Feed(**kwargs)
                 self.s3_db.feed_data__save(feed_data)
                 feed_data = self.s3_db.feed_data__load__current()
+
+                # create timeline       # todo: refactor this to a workflow about parse latest
+                from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create_MGraph__Articles__Timeline import Flow__Hacker_News__Create_MGraph__Articles__Timeline
+                with Flow__Hacker_News__Create_MGraph__Articles__Timeline() as _:
+                    _.setup(data_feed=feed_data)
+                    _.execute_flow()
+
         return feed_data
 
     def feed_data__from_date(self, year:int, month:int, day:int, hour:int):
