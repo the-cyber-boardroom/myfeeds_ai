@@ -79,3 +79,9 @@ class Hacker_News__Files(Data_Feeds__Files):
                 self.s3_db.feed_data__save(feed_data)
                 feed_data = self.s3_db.feed_data__load__current()
         return feed_data
+
+    def timeline_png__latest(self):
+        with self.s3_db as _:
+            s3_path = _.s3_path__timeline__latest__mgraph__png()
+            s3_key  = _.s3_key__for_provider_path(s3_path)
+            return _.s3_file_bytes(s3_key)
