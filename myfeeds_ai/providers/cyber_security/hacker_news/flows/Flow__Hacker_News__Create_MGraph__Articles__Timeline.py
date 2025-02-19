@@ -1,5 +1,8 @@
 from datetime                                                                               import datetime
 from typing                                                                                 import List
+
+from mgraph_db.mgraph.actions.MGraph__Screenshot import ENV_NAME__URL__MGRAPH_DB_SERVERLESS
+
 from mgraph_db.mgraph.schemas.Schema__MGraph__Node__Value                                   import Schema__MGraph__Node__Value
 from mgraph_db.providers.time_chain.MGraph__Time_Chain import MGraph__Time_Chain
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Edge import \
@@ -19,6 +22,7 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.helpers.flows.decorators.task                                              import task
 from osbot_utils.type_safe.decorators.type_safe import type_safe
 from osbot_utils.utils.Dev                                                                  import pprint
+from osbot_utils.utils.Env import get_env
 from osbot_utils.utils.Files                                                                import file_create, file_size
 from osbot_utils.utils.Json                                                                 import json_file_create
 from osbot_utils.utils.Misc                                                                 import wait_for, timestamp_to_datetime
@@ -35,6 +39,8 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
     mgraph_timeseries : MGraph__Time_Chain
     s3_path           : str
     s3_path_latest    : str
+    dot_code          : str
+    png_bytes         : bytes
 
     @task()
     def load_articles(self):
@@ -70,7 +76,7 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
     # MGraph__Export__Dot__Time_Series__Colors(dot_export=_).apply_color_scheme(scheme_name=scheme_name)
 
     @task()
-    def save_mgraph_screenshot(self):
+    def create_dot_code(self):
         year_color   = '#E6EEF8'      # Light steel blue
         month_color  = '#D1E2F4'      # Lighter powder blue
         day_color    = '#B3D1F8'      # Soft sky blue
@@ -122,17 +128,28 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
             _.set_edge__type_color(Schema__MGraph__Time_Chain__Edge__Hour   , link_color_hour   )
             _.set_edge__type_color(Schema__MGraph__Time_Chain__Edge__Source , link_color_source )
 
+        self.dot_code = screenshot.export().to__dot()
 
+    @task()
+    def create_png(self):
+        with self.mgraph_timeseries.screenshot() as _:
+            if get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS):
+                self.png_bytes = _.dot_to_png(self.dot_code)
 
-        with screenshot as _:
-            _.save_to(FILE__SCREENSHOT__MGRAPH__TIME_SERIES)
-            #_.export().export_dot().show_node__value()
-            _.dot(print_dot_code=True)
+        # with screenshot as _:
+        #     #_.save_to(FILE__SCREENSHOT__MGRAPH__TIME_SERIES)
+        #     #_.export().export_dot().show_node__value()
+        #     self.dot_code = _.export().to__dot()
+        #     self.png_bytes = _.dot_to_png(self.dot_code)
+        #     print(len(self.dot_code ))
+        #     print(len(self.png_bytes))
+        #     #_.dot(print_dot_code=False)
 
     #@type_safe
     def main(self, data_feed: Model__Hacker_News__Data__Feed):
         self.data_feed = data_feed
-        self.load_articles()
-        self.create_mgraph()
-        self.save_mgraph()
-        #self.save_mgraph_screenshot()
+        self.load_articles           ()
+        self.create_mgraph           ()
+        self.save_mgraph             ()
+        self.create_dot_code         ()
+        self.create_png              ()
