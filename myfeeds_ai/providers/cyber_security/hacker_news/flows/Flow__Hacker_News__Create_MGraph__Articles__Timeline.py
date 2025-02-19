@@ -163,6 +163,6 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
         self.load_articles           ()
         self.create_mgraph           ()
         self.save_mgraph             ()
-        # self.create_dot_code         ()
-        # self.create_png              ()
+        self.create_dot_code         ()
+        self.create_png              ()
         self.map_durations           ()
