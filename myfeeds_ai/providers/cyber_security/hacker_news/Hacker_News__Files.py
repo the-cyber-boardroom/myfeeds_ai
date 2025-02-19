@@ -39,7 +39,6 @@ class Hacker_News__Files(Data_Feeds__Files):
         feed_data = self.s3_db.feed_data__load__current()
         if refresh or not feed_data:
             feed_data = self.feed_data__load_rss_and_parse()
-            #self.feed_data__current__timeline(feed_data=feed_data)   # create timeline       # todo: refactor this to a workflow about parse latest
         return feed_data
 
     def feed_data__load_rss_and_parse(self, refresh=False):
@@ -58,15 +57,6 @@ class Hacker_News__Files(Data_Feeds__Files):
             self.s3_db.feed_data__save(feed_data)
             feed_data = self.s3_db.feed_data__load__current()
             return feed_data
-
-    def feed_data__current__timeline(self, feed_data=None) -> Model__Hacker_News__Data__Feed:
-        if feed_data is None:
-            feed_data = self.s3_db.feed_data__load__current()
-        from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create_MGraph__Articles__Timeline import Flow__Hacker_News__Create_MGraph__Articles__Timeline
-        with Flow__Hacker_News__Create_MGraph__Articles__Timeline() as _:
-            _.setup(data_feed=feed_data)
-            _.execute_flow()
-            return _.mgraph_timeseries
 
     def feed_data__from_date(self, year:int, month:int, day:int, hour:int):
         feed_data = self.s3_db.feed_data__load__from_date(year, month, day, hour)
