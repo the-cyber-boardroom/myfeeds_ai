@@ -12,9 +12,11 @@ class test__int__Flow__Hacker_News__Process_RSS(TestCase):
     def test_process_flow(self):
         result                   = self.flow_process_rss.run()
 
-        durations                =  dict(fetch_rss_feed  = self.flow_process_rss.duration__fetch_rss_feed ,
-                                         create_timeline = self.flow_process_rss.duration__create_timeline,
-                                         create_output   = self.flow_process_rss.duration__create_output  )
+        durations                =  dict(fetch_rss_feed                     = self.flow_process_rss.duration__fetch_rss_feed ,
+                                         create_timeline                    = self.flow_process_rss.duration__create_timeline,
+                                         duration__create_timeline__setup   = self.flow_process_rss.duration__create_timeline__setup,
+                                         duration__create_timeline__execute = self.flow_process_rss.duration__create_timeline__execute,
+                                         create_output                      = self.flow_process_rss.duration__create_output  )
 
         flow_timeline__traces    = self.flow_process_rss.flow_timeline__traces
 
@@ -41,3 +43,6 @@ class test__int__Flow__Hacker_News__Process_RSS(TestCase):
         assert articles_loaded           > 0
         assert index_data.edge_to_nodes  > 1
         assert result.flow_return_value  == expected_return_value
+
+        from osbot_utils.utils.Dev import pprint
+        pprint(result.flow_return_value)
