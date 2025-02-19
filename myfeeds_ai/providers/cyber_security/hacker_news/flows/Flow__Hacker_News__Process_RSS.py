@@ -17,9 +17,11 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
     output                   : dict
     flow_timeline            : Flow__Hacker_News__Create_MGraph__Articles__Timeline
     flow_timeline__traces    : str
-    duration__fetch_rss_feed : float
-    duration__create_timeline: float
-    duration__create_output  : float
+    duration__fetch_rss_feed           : float
+    duration__create_timeline          : float
+    duration__create_timeline__setup   : float
+    duration__create_timeline__execute : float
+    duration__create_output            : float
 
     @task()
     def fetch_rss_feed(self):
@@ -34,22 +36,26 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
 
     @task()
     def create_timeline(self):
-        with Trace_Call__Config() as _:
-            _.capture(starts_with=['myfeeds_ai', 'osbot_utils'])
-            _.duration(bigger_than=1, padding=150)
-            _.up_to_depth(10)
-            #_.print_on_exit(True)
-            trace_call = Trace_Call(config=_)
+        # with Trace_Call__Config() as _:
+        #     _.capture(starts_with=['myfeeds_ai', 'osbot_utils'])
+        #     _.duration(bigger_than=1, padding=150)
+        #     _.up_to_depth(10)
+        #     #_.print_on_exit(True)
+        #     trace_call = Trace_Call(config=_)
 
-        with trace_call:
-            with capture_duration() as duration:
-                with self.flow_timeline as _:
+        #with trace_call:
+        with capture_duration() as duration:
+            with self.flow_timeline as _:
+                with capture_duration() as duration__setup:
                     _.setup(data_feed=self.data_feed)
+                with capture_duration() as duration__execute:
                     _.execute_flow()
-            self.duration__create_timeline = duration.seconds
-        with Stdout() as stdout:
-            trace_call.print()
-        self.flow_timeline__traces = stdout.value()
+        self.duration__create_timeline          = duration.seconds
+        self.duration__create_timeline__setup   = duration__setup.seconds
+        self.duration__create_timeline__execute = duration__execute.seconds
+        # with Stdout() as stdout:
+        #     trace_call.print()
+        #self.flow_timeline__traces = stdout.value()
 
     @task()
     def create_output(self):
@@ -73,9 +79,11 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
                                              timeline__stats           = timeline__stats             ,
                                              flow_timeline__traces     = self.flow_timeline__traces)
         self.duration__create_output = duration.seconds
-        self.output['durations'] = dict(fetch_rss_feed  = self.duration__fetch_rss_feed ,
-                                        create_timeline = self.duration__create_timeline,
-                                        create_output   = self.duration__create_output  )
+        self.output['durations'] = dict(fetch_rss_feed                     = self.duration__fetch_rss_feed           ,
+                                        create_timeline                    = self.duration__create_timeline          ,
+                                        duration__create_timeline__setup   = self.duration__create_timeline__setup   ,
+                                        duration__create_timeline__execute = self.duration__create_timeline__execute ,
+                                        create_output                      = self.duration__create_output            )
 
     @flow()
     def process_rss(self) -> Flow:
