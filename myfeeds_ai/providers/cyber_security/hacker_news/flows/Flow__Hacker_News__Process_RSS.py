@@ -9,6 +9,7 @@ from osbot_utils.helpers.flows.decorators.flow                                  
 from osbot_utils.helpers.flows.decorators.task                                                                  import task
 from osbot_utils.type_safe.Type_Safe                                                                            import Type_Safe
 from osbot_utils.utils.Misc                                                                                     import str_to_bytes
+from osbot_utils.utils.Objects import obj
 
 S3_FILE_NAME__FEED__TIMELINE = 'feed-timeline'
 
@@ -28,6 +29,7 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
     s3_png_bytes__path__latest         : str
     s3_dot_code__path__now             : str
     s3_dot_code__path__latest          : str
+    invalidation_paths                 : list
 
     @task()
     def fetch_rss_feed(self):
@@ -99,7 +101,8 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
                                              timeline__s3_path__latest = timeline__s3_path__latest   ,
                                              timeline__s3_path__now    = timeline__s3_path__now      ,
                                              timeline__stats           = timeline__stats             ,
-                                             flow_timeline__traces     = self.flow_timeline__traces)
+                                             flow_timeline__traces     = self.flow_timeline__traces  ,
+                                             invalidation_paths        = self.invalidation_paths     )
         self.duration__create_output = duration.seconds
         self.output['durations'] = dict(fetch_rss_feed                     = self.duration__fetch_rss_feed           ,
                                         create_timeline                    = self.duration__create_timeline          ,
@@ -107,13 +110,23 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
                                         duration__create_timeline__execute = self.duration__create_timeline__execute ,
                                         create_output                      = self.duration__create_output            )
 
+    @task()
+    def invalidate_cache(self):
+        try:
+            result = obj(self.s3_db.invalidate_cache())
+            self.invalidation_paths = result.InvalidationBatch.Paths.Items
+        except Exception:
+            pass
+
     @flow()
     def process_rss(self) -> Flow:
         with self as _:
-            _.fetch_rss_feed ()
-            _.create_timeline()
-            _.save_timeline  ()
-            _.create_output  ()
+            _.fetch_rss_feed  ()
+            _.create_timeline ()
+            _.save_timeline   ()
+            _.invalidate_cache()
+            _.create_output   ()
+
         return self.output
 
     def run(self):

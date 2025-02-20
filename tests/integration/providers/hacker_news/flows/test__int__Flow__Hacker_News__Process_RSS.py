@@ -1,4 +1,6 @@
 from unittest                                                                             import TestCase
+
+from myfeeds_ai.data_feeds.Data_Feeds__S3_DB import CLOUDFRONT__INVALIDATION__TARGET_PATH
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_RSS import Flow__Hacker_News__Process_RSS
 from osbot_utils.utils.Objects                                                            import obj
 
@@ -29,16 +31,17 @@ class test__int__Flow__Hacker_News__Process_RSS(TestCase):
         timeline__stats          = self.flow_process_rss.flow_timeline.mgraph_timeseries.index().stats()
         index_data               = obj(timeline__stats).index_data
         expected_return_value    =  dict(articles_loaded           = articles_loaded                    ,
-                                         durations                 = durations                          ,
-                                         feed__s3_path__latest     = 'latest/feed-data.json'            ,
-                                         feed__s3_path__now        = feed__s3_path__now                 ,
-                                         timeline__durations       = timeline__durations                ,
-                                         timeline__dot_code__size  = timeline__dot_code__size           ,
-                                         timeline__png__size       = timeline__png__size                ,
+                                         durations                 = durations                              ,
+                                         feed__s3_path__latest     = 'latest/feed-data.json'                ,
+                                         feed__s3_path__now        = feed__s3_path__now                     ,
+                                         timeline__durations       = timeline__durations                    ,
+                                         timeline__dot_code__size  = timeline__dot_code__size               ,
+                                         timeline__png__size       = timeline__png__size                    ,
                                          timeline__s3_path__latest = 'latest/feed-timeline.mgraph.json',
-                                         timeline__s3_path__now    = timeline__s3_path__now             ,
-                                         timeline__stats           = timeline__stats                    ,
-                                         flow_timeline__traces     = flow_timeline__traces              )
+                                         timeline__s3_path__now    = timeline__s3_path__now                 ,
+                                         timeline__stats           = timeline__stats                        ,
+                                         flow_timeline__traces     = flow_timeline__traces                  ,
+                                         invalidation_paths        = [])
 
         assert articles_loaded           > 0
         assert index_data.edge_to_nodes  > 1

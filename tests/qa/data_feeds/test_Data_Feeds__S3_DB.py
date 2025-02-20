@@ -12,7 +12,7 @@ class test_Data_Feeds__S3_DB(TestCase):
         load_dotenv()
         cls.s3_db = Data_Feeds__S3_DB()
 
-    @pytest.mark.skip("this needs to wired as part of the update")
+    @pytest.mark.skip("this is not wired to the update, see the best way to test this")
     def test_invalidate_cache(self):
         with self.s3_db as _:
             result = obj(_.invalidate_cache())
