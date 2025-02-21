@@ -59,18 +59,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.36.24"
+version = "1.36.25"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "boto3-1.36.24-py3-none-any.whl", hash = "sha256:c9055fe6a33f79c43053c06db432092cfcf88f4b4181950f5ca8f2f0cb6abb87"},
-    {file = "boto3-1.36.24.tar.gz", hash = "sha256:777ec08a6fe0ad77fa0607b431542c51d2d2e4145fecd512bee9f383ee4184f2"},
+    {file = "boto3-1.36.25-py3-none-any.whl", hash = "sha256:41fb90a516995946563ec91b9d891e2516c58617e9556d5e86dfa62da3fdebe6"},
+    {file = "boto3-1.36.25.tar.gz", hash = "sha256:a057c19adffb48737c192bdb10f9d85e0d9dcecd21327f51520c15db9022a835"},
 ]
 
 [package.dependencies]
-botocore = ">=1.36.24,<1.37.0"
+botocore = ">=1.36.25,<1.37.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.11.0,<0.12.0"
 
@@ -79,14 +79,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.36.24"
+version = "1.36.25"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "botocore-1.36.24-py3-none-any.whl", hash = "sha256:b8b2ad60e6545aaef3a40163793c39555fcfd67fb081a38695018026c4f4db25"},
-    {file = "botocore-1.36.24.tar.gz", hash = "sha256:7d35ba92ccbed7aa7e1563b12bb339bde612d5f845c89bfdd79a6db8c26b9f2e"},
+    {file = "botocore-1.36.25-py3-none-any.whl", hash = "sha256:04c8ff03531e8d92baa8c98d1850bdf01668a805467f4222b65e5325f94aa8af"},
+    {file = "botocore-1.36.25.tar.gz", hash = "sha256:3b0a857d2621c336fb82a36cb6da4b6e062d346451ac46d110b074e5e5fd7cfc"},
 ]
 
 [package.dependencies]
@@ -415,14 +415,14 @@ files = [
 
 [[package]]
 name = "mgraph-db"
-version = "1.1.4"
+version = "1.1.5"
 description = "MGraph-DB"
 optional = false
 python-versions = "<4.0,>=3.11"
 groups = ["main"]
 files = [
-    {file = "mgraph_db-1.1.4-py3-none-any.whl", hash = "sha256:374ec699635c9b4b4da7d4d0ca0361b34039a648239ee94befac7284b949affe"},
-    {file = "mgraph_db-1.1.4.tar.gz", hash = "sha256:c99e491507bb35c573a2a3653097196cabb9111afaf5ee0cdb30dde538136815"},
+    {file = "mgraph_db-1.1.5-py3-none-any.whl", hash = "sha256:6ee206f1854ec961d023709ab014d62b2e66cb9038a5814198d6cf253a3b00d6"},
+    {file = "mgraph_db-1.1.5.tar.gz", hash = "sha256:36e4b2277edac83d8e03647dca4a3e9fcf0412a12deea098de42c930c08f3a72"},
 ]
 
 [package.dependencies]
@@ -480,14 +480,14 @@ osbot-aws = "*"
 
 [[package]]
 name = "osbot-utils"
-version = "2.27.0"
+version = "2.28.0"
 description = "OWASP Security Bot - Utils"
 optional = false
 python-versions = "<4.0,>=3.7"
 groups = ["main"]
 files = [
-    {file = "osbot_utils-2.27.0-py3-none-any.whl", hash = "sha256:8ef04d954a73e04efbdb17450ffbc897aa4b93a9c90c8dc56e959c5207bc6f7d"},
-    {file = "osbot_utils-2.27.0.tar.gz", hash = "sha256:7a2fe9bf9f32d5f2bb560a81c9532a0fb7ceab7dc3e4ba77fb829ed9482f7ac2"},
+    {file = "osbot_utils-2.28.0-py3-none-any.whl", hash = "sha256:b00093ee625df1e2af6e5dd43dedebbb549abb9b3c4510b1eac1387ae09672f5"},
+    {file = "osbot_utils-2.28.0.tar.gz", hash = "sha256:78403eb5cc500cf8300f632216de6a10d3c89c271c8d3e3370f6e3e7bf73746f"},
 ]
 
 [[package]]
