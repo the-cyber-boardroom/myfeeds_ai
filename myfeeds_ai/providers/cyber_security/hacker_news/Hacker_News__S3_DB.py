@@ -1,5 +1,5 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3_DB                                                    import Data_Feeds__S3_DB
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                        import S3_Key__File_Extensions
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                        import S3_Key__File_Extension
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                                         import S3_FILE_NAME__RAW__FEED_DATA, S3_FILE_NAME__RAW__FEED_XML, S3_FOLDER_NAME__LATEST, S3_FOLDER_NAME__ARTICLES
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed      import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed  import Model__Hacker_News__Raw_Data__Feed
@@ -26,7 +26,7 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
             return data_feed
 
     def feed_data__load__from_date(self, year:int, month:int, day:int, hour:int):
-        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, S3_FILE_NAME__RAW__FEED_DATA)
+        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, S3_FILE_NAME__RAW__FEED_DATA, S3_Key__File_Extension.JSON)
         return self.feed_data__load__from_path(s3_path)
 
 
@@ -72,7 +72,7 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
         return raw_data_feed
 
     def raw_data__feed__load__from_date(self, year:int, month:int, day:int, hour:int):
-        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, S3_FILE_NAME__RAW__FEED_XML)
+        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, S3_FILE_NAME__RAW__FEED_XML, S3_Key__File_Extension.JSON)
         return self.raw_data__feed__load__from_path(s3_path)
 
     # methods for s3 folders and files
@@ -88,15 +88,11 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
     def s3_path__when(self):
         return self.s3_key_generator.path__for_date_time__now_utc()
 
-    @type_safe
-    def s3_path__latest(self, file_id, extension: S3_Key__File_Extensions=S3_Key__File_Extensions.JSON):
-        return url_join_safe(S3_FOLDER_NAME__LATEST, file_id + f'.{extension.value}')
-
     def s3_path__raw_data__feed_data__now(self):
-        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_DATA)
+        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_DATA, extension=S3_Key__File_Extension.JSON)
 
     def s3_path__raw_data__feed_xml__now(self):
-        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_XML)
+        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_XML, extension=S3_Key__File_Extension.JSON)
 
     def s3_path__raw_data__feed_data__latest(self):
         return f'{S3_FOLDER_NAME__LATEST}/{S3_FILE_NAME__RAW__FEED_DATA}.json'
@@ -111,13 +107,13 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
     def s3_key__raw_data__feed_xml(self):
          return self.s3_key_generator.s3_key(area=Model__Data_Feeds__Providers.HACKER_NEWS, file_id=S3_FILE_NAME__RAW__FEED_XML)
 
-    def s3_path__timeline__now                 (self, extension:S3_Key__File_Extensions): return self.s3_key_generator.s3_path__now (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)
-    def s3_path__timeline__latest              (self, extension:S3_Key__File_Extensions): return self.s3_path__latest               (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)
+    def s3_path__timeline__now                 (self, extension:S3_Key__File_Extension): return self.s3_key_generator.s3_path__now (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)
+    def s3_path__timeline__latest              (self, extension:S3_Key__File_Extension): return self.s3_path__latest               (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)
 
-    def s3_path__timeline__now__mgraph__dot    (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extensions.MGRAPH__DOT)
-    def s3_path__timeline__now__mgraph__json   (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extensions.MGRAPH__JSON)
-    def s3_path__timeline__now__mgraph__png    (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extensions.MGRAPH__PNG )
+    def s3_path__timeline__now__mgraph__dot    (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extension.MGRAPH__DOT)
+    def s3_path__timeline__now__mgraph__json   (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extension.MGRAPH__JSON)
+    def s3_path__timeline__now__mgraph__png    (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extension.MGRAPH__PNG)
 
-    def s3_path__timeline__latest__mgraph__dot (self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extensions.MGRAPH__DOT)
-    def s3_path__timeline__latest__mgraph__json(self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extensions.MGRAPH__JSON)
-    def s3_path__timeline__latest__mgraph__png (self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extensions.MGRAPH__PNG)
+    def s3_path__timeline__latest__mgraph__dot (self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extension.MGRAPH__DOT)
+    def s3_path__timeline__latest__mgraph__json(self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extension.MGRAPH__JSON)
+    def s3_path__timeline__latest__mgraph__png (self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extension.MGRAPH__PNG)

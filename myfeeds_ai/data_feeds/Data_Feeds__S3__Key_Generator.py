@@ -1,16 +1,19 @@
+from datetime import datetime
 from enum                                               import Enum
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
 from osbot_aws.aws.s3.S3__Key_Generator                 import S3__Key_Generator
 from osbot_utils.helpers.Safe_Id                        import Safe_Id
 from osbot_utils.type_safe.decorators.type_safe         import type_safe
 
-class S3_Key__File_Extensions(Enum):
+
+class S3_Key__File_Extension(Enum):
     JSON         : str = 'json'
     PNG          : str = 'png'
     MGRAPH__DOT  : str = 'mgraph.dot'
     MGRAPH__JSON : str = 'mgraph.json'
     MGRAPH__PNG  : str = 'mgraph.png'
 
+DEFAULT__S3_Key__FILE_EXTENSION = S3_Key__File_Extension.JSON
 
 class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: refactor this to a generic class (for multiple feeds)
     root_folder            = S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
@@ -23,13 +26,19 @@ class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: r
                       day      : int,
                       hour     : int,
                       file_id  : Safe_Id,
-                      extension: S3_Key__File_Extensions = S3_Key__File_Extensions.JSON
+                      extension: S3_Key__File_Extension
                  ) -> str:
         return f'{year:04}/{month:02}/{day:02}/{hour:02}/{file_id}.{extension.value}'
 
-    def s3_path__now(self, file_id: Safe_Id, extension: S3_Key__File_Extensions = S3_Key__File_Extensions.JSON):
+    def s3_path__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension):                # todo:refactor the name of this method which is not consistent with the other s3_path__now__** methods
         year, month, day, hour = self.path__for_date_time__now_utc().split('/')
         return self.s3_path(year, month, day, hour, file_id=file_id, extension=extension)
+
+    def s3_path__now__date_time(self, date_time: datetime):
+        return self.path__for_date_time(date_time)
+
+    def s3_path__now__utc(self):
+        return self.path__for_date_time__now_utc()
 
     def s3_path_folder(self, year: int, month: int, day: int, hour: int, folder_id: Safe_Id):
         return f'{year:04}/{month:02}/{day:02}/{hour:02}/{folder_id}'
@@ -37,5 +46,6 @@ class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: r
     def s3_path__folder__now(self, folder_id: Safe_Id):
         year, month, day, hour = self.path__for_date_time__now_utc().split('/')
         return self.s3_path_folder(year, month, day, hour, folder_id)
+
 
 
