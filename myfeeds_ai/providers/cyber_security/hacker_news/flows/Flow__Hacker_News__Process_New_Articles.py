@@ -79,7 +79,7 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
         #         self.png_bytes = _.dot_to_png(self.dot_code)
     @task()
     def create_output(self):
-        return {}
+        return {} 
 
 
     @flow()
