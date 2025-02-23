@@ -32,6 +32,7 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             #pprint(_.timeline_diff.json())
 
     def test_resolve__previous__path(self):
+
         with Flow__Hacker_News__Process_New_Articles() as _:                                           # Use-case 1: no paths provided
             assert _.current__path  is None
             assert _.previous__path is None
@@ -44,7 +45,7 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             _.current__path = self.current_path
             _.resolve__previous__path()
             assert _.current__path  == self.current_path                                                # current path is unchanged
-            assert _.previous__path == self.current_path                                                # previous path should have not changed
+            assert _.previous__path == _.current__config_new_articles.path__current                                                # previous path should have not changed
 
         with self.flow_process_new_articles as _:                                                       # Use-case 3: with no current_path
             _.previous__path = self.previous_path
@@ -146,3 +147,25 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             #     _.save_to(screenshot_file)
             #     _.dot()
 
+    # def test__bug__previous__path__not_picked_up(self):
+    #     with Flow__Hacker_News__Process_New_Articles() as _:
+    #         _.current__path = '2025/02/20/16'
+    #         _.resolve__previous__path()
+    #         print()
+    #         print('current' , _.current__path )
+    #         print('previous', _.previous__path)
+    #
+    #         _.load_and_diff_timeline_data()
+    #         # pprint(_.timeline_diff.json())
+    #         # return
+    #         # assert _.current__path  == '2025/02/23/22'
+    #         # assert _.previous__path == '2025/02/20/16'
+    #
+    #         _.save__config_new_articles__current()
+    #         _.save__config_new_articles__latest()
+    #         pprint(_.path__new_articles__current)
+    #         pprint(_.path__new_articles__latest)
+    #
+    #         pprint(_.hacker_news_storage.load_from__path('2025/02/23/22','new-articles','json'))
+    #         #
+    #         pprint(_.hacker_news_storage.load_from__latest('new-articles','json'))

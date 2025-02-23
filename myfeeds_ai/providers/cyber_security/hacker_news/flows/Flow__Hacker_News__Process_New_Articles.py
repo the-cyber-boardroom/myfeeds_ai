@@ -40,15 +40,11 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
 
     @task()
     def resolve__previous__path(self):
-        if self.current__path:
-            self.current__config_new_articles = self.hacker_news_data.new_articles__for_path(self.current__path)
-        else:
-            self.current__path = self.hacker_news_storage.path_to__now_utc()
-            self.current__config_new_articles = self.hacker_news_data.new_articles()
-
-        if self.current__config_new_articles:                                               # if a current__config_new_articles was found,
-            if not self.previous__path:                                                     # and we have not set the previous path
-                self.previous__path = self.current__config_new_articles.path__current       # then set the previous path to the current__config_new_articles.path__current (since that is the one we want to compare with)
+        self.current__config_new_articles = self.hacker_news_data.new_articles()  # get latest version
+        if self.previous__path is None:
+            self.previous__path           = self.current__config_new_articles.path__current
+        if self.current__path is None:
+            self.current__path =  self.hacker_news_storage.path_to__now_utc()
 
     @task()
     def load_and_diff_timeline_data(self):
@@ -117,12 +113,13 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
     def process_rss(self) -> Flow:
         #with Flow_Events__To__Open_Observe():
             with self as _:
+                _.resolve__previous__path           ()
                 _.load_and_diff_timeline_data       ()
-                _.process_diff                      ()
-                _.create_screenshot                 ()
+                #_.process_diff                      ()
+                #_.create_screenshot                 ()
                 _.save__config_new_articles__current()
                 _.save__config_new_articles__latest ()
-                _.create_output                     ()
+                #_.create_output                     ()
 
         #return self.timeline_diff
         #return self.output
