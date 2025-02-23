@@ -93,10 +93,13 @@ class Hacker_News__Storage(Type_Safe):
             return _.s3_path__load_Data(s3_path)
 
     def path_to_date_time(self, path):
-        date_format = '%Y/%m/%d/%H'                         # Format corresponding to yyyy/mm/dd/hh
-        date_time   = datetime.strptime(path, date_format)  # Convert to datetime object
-        date_time   = date_time.replace(tzinfo=timezone.utc)
-        return date_time
+        try:
+            date_format = '%Y/%m/%d/%H'                         # Format corresponding to yyyy/mm/dd/hh
+            date_time   = datetime.strptime(path, date_format)  # Convert to datetime object
+            date_time   = date_time.replace(tzinfo=timezone.utc)
+            return date_time
+        except Exception:
+            return None
 
 
     # def load_by__article_id(self, article_id: Obj_Id                  ,           # Load article-specific data
