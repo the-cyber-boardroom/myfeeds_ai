@@ -4,32 +4,31 @@ from mgraph_db.providers.time_chain.MGraph__Time_Chain                          
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types       import Time_Chain__Year, Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File_Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data      import Hacker_News__Data, FILE_NAME__NEW_ARTICLES
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Live_Data import Hacker_News__Live_Data
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage   import Hacker_News__Storage
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import \
+    Schema__Feed__Config__New_Articles
 from osbot_utils.context_managers.capture_duration                                  import capture_duration
 from osbot_utils.helpers.flows.Flow                                                 import Flow
 from osbot_utils.helpers.flows.decorators.flow                                      import flow
 from osbot_utils.helpers.flows.decorators.task                                      import task
 from osbot_utils.type_safe.Type_Safe                                                import Type_Safe
-from osbot_utils.utils.Http                                                         import GET_json
+from osbot_utils.utils.Dev import pprint
+FILE_NAME__FEED_TIMELINE_MGRAPH = 'feed-timeline.mgraph.json'
 
-MY_FEEDS__SERVER              = 'https://dev.myfeeds.ai'
-WEB_PATH__PUBLIC__HACKER_NEWS = "public-data/hacker-news"
-
-
-class Schema__Feed__Config__New_Articles(Type_Safe):
-    path__current               : str                          = None
-    path__previous              : str                          = None
-    path__timeline__current     : str                          = None           # todo: remove since we can figure this value out from the _.path__current
-    path__timeline__previous    : str                          = None
-    timeline_diff               : Schema__MGraph__Diff__Values = None
 
 class Flow__Hacker_News__Process_New_Articles(Type_Safe):
     hacker_news_storage            : Hacker_News__Storage
+    hacker_news_live_data          : Hacker_News__Live_Data
     hacker_news_data               : Hacker_News__Data
+
+
+    current__path                  : str                                = None
+    current__config_new_articles   : Schema__Feed__Config__New_Articles = None
+    previous__path                 : str                                = None
+    new__config_new_articles       : Schema__Feed__Config__New_Articles = None
+
     output                         : dict
-    config_new_articles            : Schema__Feed__Config__New_Articles
-    # path__timeline__current     : str = None
-    # path__timeline__previous    : str = None
     mgraph__diff                   : MGraph__Diff
     mgraph__timeline__current      : MGraph__Time_Chain          = None
     mgraph__timeline__previous     : MGraph__Time_Chain          = None
@@ -40,46 +39,52 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
     path__new_articles__latest     : str
 
     @task()
+    def resolve__previous__path(self):
+        if self.current__path:
+            self.current__config_new_articles = self.hacker_news_data.new_articles__for_path(self.current__path)
+        else:
+            self.current__path = self.hacker_news_storage.path_to__now_utc()
+            self.current__config_new_articles = self.hacker_news_data.new_articles()
+
+        if self.current__config_new_articles:                                               # if a current__config_new_articles was found,
+            if not self.previous__path:                                                     # and we have not set the previous path
+                self.previous__path = self.current__config_new_articles.path__current       # then set the previous path to the current__config_new_articles.path__current (since that is the one we want to compare with)
+
+    @task()
     def load_and_diff_timeline_data(self):
 
-        with self.config_new_articles as _:
-            if _.path__timeline__current is None:
-                raise ValueError("in load_timeline_data, the new_articles.path__timeline__current was not set")
-            if _.path__timeline__previous is None:
-                raise ValueError("in load_timeline_data, the new_articles.path__timeline__previous was not set")
-            json__config_new_articles = self.hacker_news_data.new_articles__for_path(_.path__current)                           # check if already exists
-            if json__config_new_articles:
-                self.config_new_articles = Schema__Feed__Config__New_Articles.from_json(json__config_new_articles)                  # if it does just deserialise it
-            else:
-                url__timeline_current   = f"{MY_FEEDS__SERVER}/{WEB_PATH__PUBLIC__HACKER_NEWS}/{_.path__timeline__current }"        # todo: change this to be from the local server
-                url__timeline_previous  = f"{MY_FEEDS__SERVER}/{WEB_PATH__PUBLIC__HACKER_NEWS}/{_.path__timeline__previous}"
-                with capture_duration() as duration:
-                    data__timeline_current  = GET_json(url__timeline_current)                                                       # todo: since we really shouldn't be getting this data from the dev server
-                    data__timeline_previous = GET_json(url__timeline_previous)
-                    self.mgraph__timeline__current  = MGraph__Time_Chain.from_json__compressed(data__timeline_current )
-                    self.mgraph__timeline__previous = MGraph__Time_Chain.from_json__compressed(data__timeline_previous)
+        with capture_duration() as duration:
+            data__timeline_current  = self.hacker_news_live_data.get_json(self.current__path , FILE_NAME__FEED_TIMELINE_MGRAPH)
+            data__timeline_previous = self.hacker_news_live_data.get_json(self.previous__path, FILE_NAME__FEED_TIMELINE_MGRAPH)
+            self.mgraph__timeline__current  = MGraph__Time_Chain.from_json__compressed(data__timeline_current )
+            self.mgraph__timeline__previous = MGraph__Time_Chain.from_json__compressed(data__timeline_previous)
 
-                    differ = MGraph__Diff__Values(graph1=self.mgraph__timeline__current,
-                                                  graph2=self.mgraph__timeline__previous)
+            differ = MGraph__Diff__Values(graph1=self.mgraph__timeline__current,
+                                          graph2=self.mgraph__timeline__previous)
 
-                    self.config_new_articles.timeline_diff = differ.compare([ Time_Chain__Year,Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source])
+            self.timeline_diff = differ.compare([ Time_Chain__Year,Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source])
 
 
-                self.duration__load_timeline_data = duration.seconds
+            self.duration__load_timeline_data = duration.seconds
 
     @task()
     def save__config_new_articles__current(self):
-        data        = self.config_new_articles.json()
-        file_id     = FILE_NAME__NEW_ARTICLES
-        extension   = S3_Key__File_Extension.JSON.value
-        with self.hacker_news_storage as _:
-            self.path__new_articles__current = _.save_to__path(data=data, path=self.config_new_articles.path__current, file_id=file_id, extension=extension)
+        if self.current__path:
+            kwargs = dict(path__current  = self.current__path  ,
+                          path__previous = self.previous__path ,
+                          timeline_diff  = self.timeline_diff  )
+            self.new__config_new_articles = Schema__Feed__Config__New_Articles(**kwargs)          # create new object
+            data        = self.new__config_new_articles.json()
+            file_id     = FILE_NAME__NEW_ARTICLES
+            extension   = S3_Key__File_Extension.JSON.value
+            with self.hacker_news_storage as _:
+                self.path__new_articles__current = _.save_to__path(data=data, path=self.current__path, file_id=file_id, extension=extension)
 
     @task()
     def save__config_new_articles__latest(self):
         # todo add logic to only update latest when we are in now
 
-        data        = self.config_new_articles.json()
+        data        = self.new__config_new_articles.json()
         file_id     = FILE_NAME__NEW_ARTICLES
         extension   = S3_Key__File_Extension.JSON.value
         with self.hacker_news_storage as _:

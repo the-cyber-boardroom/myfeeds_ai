@@ -42,7 +42,7 @@ class Hacker_News__Storage(Type_Safe):
                             file_id: Safe_Id,
                             extension: S3_Key__File_Extension
                        ) -> str:
-        date_time = self.path_to_date_time(path)
+        date_time = self.path_to__date_time(path)
         return self.save_to__date_time(data=data, date_time=date_time, file_id=file_id, extension=extension)
 
     def save_to__date_time(self, data     : Dict     ,
@@ -74,8 +74,9 @@ class Hacker_News__Storage(Type_Safe):
             return s3_path
 
     def load_from__path(self, path: str, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Optional[Dict]:
-        date_time = self.path_to_date_time(path)
-        return self.load_from__date_time(date_time=date_time, file_id=file_id, extension=extension)
+        if path:
+            date_time = self.path_to__date_time(path)
+            return self.load_from__date_time(date_time=date_time, file_id=file_id, extension=extension)
 
     def load_from__date_time(self, date_time: datetime, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Optional[Dict]:
         with self.s3_db as _:
@@ -92,7 +93,7 @@ class Hacker_News__Storage(Type_Safe):
             s3_path = _.s3_path__now(file_id=file_id, extension=extension)
             return _.s3_path__load_Data(s3_path)
 
-    def path_to_date_time(self, path):
+    def path_to__date_time(self, path):
         try:
             date_format = '%Y/%m/%d/%H'                         # Format corresponding to yyyy/mm/dd/hh
             date_time   = datetime.strptime(path, date_format)  # Convert to datetime object
@@ -101,6 +102,8 @@ class Hacker_News__Storage(Type_Safe):
         except Exception:
             return None
 
+    def path_to__now_utc(self):
+        return self.s3_db.s3_path__now_utc()
 
     # def load_by__article_id(self, article_id: Obj_Id                  ,           # Load article-specific data
     #                              extension : S3_Key__File_Extensions ) -> Optional[Dict]:
