@@ -3,6 +3,7 @@ from osbot_fast_api.api.Fast_API_Routes                                         
 from starlette.responses                                                                    import PlainTextResponse, StreamingResponse
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                     import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content              import Hacker_News__Http_Content
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data import Hacker_News__Data
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_RSS   import Flow__Hacker_News__Process_RSS
 from osbot_utils.utils.Lists                                                                import list_filter_contains
 from osbot_utils.utils.Status                                                               import status_ok, status_error
@@ -16,15 +17,18 @@ ROUTES_PATHS__HACKER_NEWS = [ f'/{ROUTE_PATH__HACKER_NEWS}/data-feed'           
                               f'/{ROUTE_PATH__HACKER_NEWS}/feed-prompt'           ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/flow-process-rss'      ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/files-paths'           ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/new-articles'          ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-all-files'    ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-feed'         ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-feed-current' ]
 
 
 class Routes__Hacker_News(Fast_API_Routes):
-    tag         : str                       = 'hacker-news'
-    http_content: Hacker_News__Http_Content
-    files       : Hacker_News__Files
+    tag                 : str                       = 'hacker-news'
+    http_content        : Hacker_News__Http_Content
+    files               : Hacker_News__Files
+    hacker_news_data    : Hacker_News__Data
+
 
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
@@ -63,6 +67,9 @@ class Routes__Hacker_News(Fast_API_Routes):
         #return { "prompt" : self.http_content.get_prompt_schema(size=size) }
         return PlainTextResponse(self.http_content.feed_prompt(size=size))
 
+    def new_articles(self):
+        return self.hacker_news_data.new_articles()
+
     def timeline_latest_png(self):
         bytes__timeline = self.files.timeline_png__latest()
         img_io          = BytesIO(bytes__timeline)  # Wrap in memory stream
@@ -94,6 +101,7 @@ class Routes__Hacker_News(Fast_API_Routes):
         self.add_route_get(self.flow_process_rss      )
         self.add_route_get(self.feed                  )
         self.add_route_get(self.feed_prompt           )
+        self.add_route_get(self.new_articles          )
         self.add_route_get(self.timeline_latest_png   )
         self.add_route_get(self.raw_data_all_files    )
         self.add_route_get(self.raw_data_feed_current )

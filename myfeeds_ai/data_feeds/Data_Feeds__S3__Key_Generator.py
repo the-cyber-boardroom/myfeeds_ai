@@ -30,12 +30,19 @@ class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: r
                  ) -> str:
         return f'{year:04}/{month:02}/{day:02}/{hour:02}/{file_id}.{extension.value}'
 
+    def s3_path__date_time(self, date_time: datetime, file_id: Safe_Id, extension: S3_Key__File_Extension):
+        kwargs = dict(year    = date_time.year ,
+                      month   = date_time.month,
+                      day     = date_time.day  ,
+                      hour    = date_time.hour ,
+                      file_id = file_id        ,
+                      extension = extension    )
+        return self.s3_path(**kwargs)
+
     def s3_path__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension):                # todo:refactor the name of this method which is not consistent with the other s3_path__now__** methods
         year, month, day, hour = self.path__for_date_time__now_utc().split('/')
         return self.s3_path(year, month, day, hour, file_id=file_id, extension=extension)
 
-    def s3_path__now__date_time(self, date_time: datetime):
-        return self.path__for_date_time(date_time)
 
     def s3_path__now__utc(self):
         return self.path__for_date_time__now_utc()

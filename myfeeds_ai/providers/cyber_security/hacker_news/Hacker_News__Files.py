@@ -8,6 +8,7 @@ from osbot_utils.context_managers.capture_duration                              
 
 RAW_FEED__CREATED__BY = 'Hacker_News__Files.xml_feed__current'
 
+# todo: this entire class needs to be refactored with just about all the logic moved into Flows
 class Hacker_News__Files(Data_Feeds__Files):
     s3_db        : Hacker_News__S3_DB
     http_content : Hacker_News__Http_Content

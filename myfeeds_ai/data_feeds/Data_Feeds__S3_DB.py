@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from osbot_aws.aws.cloud_front.Cloud_Front                      import Cloud_Front
 from osbot_utils.utils.Env                                      import get_env
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator        import Data_Feeds__S3__Key_Generator, S3_Key__File_Extension
@@ -72,6 +74,9 @@ class Data_Feeds__S3_DB(S3__DB_Base):
     # methods for s3 folders
     def s3_folder__for_provider(self):
         return self.s3_key_generator.s3_folder__for_area(area=self.provider_name)
+
+    def s3_folder__for_date_time(self, date_time: datetime):
+        return self.s3_key_generator.s3_folder__for_date_time(date_time=date_time)
 
     def s3_folder__for_latest(self):
         return S3_FOLDER_NAME__LATEST
