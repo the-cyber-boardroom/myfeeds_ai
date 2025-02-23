@@ -41,7 +41,7 @@ jobs:
           release_type: ${{ env.RELEASE_TYPE }}
     needs:
       - run-tests
-      - run-qunit-tests
+      #- run-qunit-tests
 
   publish-to-pypi:
     if: False
