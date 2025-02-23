@@ -1,5 +1,6 @@
 from unittest                                                                             import TestCase
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_RSS import Flow__Hacker_News__Process_RSS
+from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Objects                                                            import obj
 
 
@@ -47,3 +48,8 @@ class test__int__Flow__Hacker_News__Process_RSS(TestCase):
 
         #from osbot_utils.utils.Dev import pprint
         #pprint(result.flow_return_value)
+
+    # def test_invalidate_cache(self):
+    #     with self.flow_process_rss as _:
+    #         _.invalidate_cache()
+    #         pprint(_.invalidation_paths)

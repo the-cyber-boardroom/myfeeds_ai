@@ -1,92 +1,130 @@
-from mgraph_db.mgraph.actions.MGraph__Diff              import MGraph__Diff
-from mgraph_db.mgraph.actions.MGraph__Diff__Values      import Schema__MGraph__Diff__Values, MGraph__Diff__Values
-from mgraph_db.mgraph.schemas.Schema__MGraph__Diff      import Schema__MGraph__Diff
-from mgraph_db.providers.time_chain.MGraph__Time_Chain  import MGraph__Time_Chain
-from osbot_utils.context_managers.capture_duration      import capture_duration
-from osbot_utils.helpers.flows.Flow                     import Flow
-from osbot_utils.helpers.flows.decorators.flow          import flow
-from osbot_utils.helpers.flows.decorators.task          import task
-from osbot_utils.type_safe.Type_Safe                    import Type_Safe
-from osbot_utils.utils.Http                             import GET_json
+from mgraph_db.mgraph.actions.MGraph__Diff                                          import MGraph__Diff
+from mgraph_db.mgraph.actions.MGraph__Diff__Values                                  import Schema__MGraph__Diff__Values, MGraph__Diff__Values
+from mgraph_db.providers.time_chain.MGraph__Time_Chain                              import MGraph__Time_Chain
+from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types       import Time_Chain__Year, Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File_Extension
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data      import Hacker_News__Data, FILE_NAME__NEW_ARTICLES
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Live_Data import Hacker_News__Live_Data
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage   import Hacker_News__Storage
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import \
+    Schema__Feed__Config__New_Articles
+from osbot_utils.context_managers.capture_duration                                  import capture_duration
+from osbot_utils.helpers.flows.Flow                                                 import Flow
+from osbot_utils.helpers.flows.decorators.flow                                      import flow
+from osbot_utils.helpers.flows.decorators.task                                      import task
+from osbot_utils.type_safe.Type_Safe                                                import Type_Safe
+from osbot_utils.utils.Dev import pprint
+FILE_NAME__FEED_TIMELINE_MGRAPH = 'feed-timeline.mgraph.json'
 
-MY_FEEDS__SERVER              = 'https://dev.myfeeds.ai'
-WEB_PATH__PUBLIC__HACKER_NEWS = "public-data/hacker-news"
-
-class Schema__Feeds_New_Articles(Type_Safe):
-    path__timeline__current     : str                  = None
-    path__timeline__previous    : str                  = None
-    timeline_diff               : Schema__MGraph__Diff = None
 
 class Flow__Hacker_News__Process_New_Articles(Type_Safe):
-    output                      : dict
-    new_articles                : Schema__Feeds_New_Articles
-    path__timeline__current     : str = None
-    path__timeline__previous    : str = None
-    mgraph__diff                : MGraph__Diff
-    mgraph__timeline__current   : MGraph__Time_Chain          = None
-    mgraph__timeline__previous  : MGraph__Time_Chain          = None
-    duration__load_timeline_data: float
-    durations                   : dict
-    timeline_diff               : Schema__MGraph__Diff__Values
+    hacker_news_storage            : Hacker_News__Storage
+    hacker_news_live_data          : Hacker_News__Live_Data
+    hacker_news_data               : Hacker_News__Data
+
+
+    current__path                  : str                                = None
+    current__config_new_articles   : Schema__Feed__Config__New_Articles = None
+    previous__path                 : str                                = None
+    new__config_new_articles       : Schema__Feed__Config__New_Articles = None
+
+    output                         : dict
+    mgraph__diff                   : MGraph__Diff
+    mgraph__timeline__current      : MGraph__Time_Chain          = None
+    mgraph__timeline__previous     : MGraph__Time_Chain          = None
+    duration__load_timeline_data   : float
+    durations                      : dict
+    timeline_diff                  : Schema__MGraph__Diff__Values = None
+    path__new_articles__current    : str
+    path__new_articles__latest     : str
+
+    @task()
+    def resolve__previous__path(self):
+        if self.current__path:
+            self.current__config_new_articles = self.hacker_news_data.new_articles__for_path(self.current__path)
+        else:
+            self.current__path = self.hacker_news_storage.path_to__now_utc()
+            self.current__config_new_articles = self.hacker_news_data.new_articles()
+
+        if self.current__config_new_articles:                                               # if a current__config_new_articles was found,
+            if not self.previous__path:                                                     # and we have not set the previous path
+                self.previous__path = self.current__config_new_articles.path__current       # then set the previous path to the current__config_new_articles.path__current (since that is the one we want to compare with)
 
     @task()
     def load_and_diff_timeline_data(self):
-        with self.new_articles as _:
-            if _.path__timeline__current is None:
-                raise ValueError("in load_timeline_data, the new_articles.path__timeline__current was not set")
-            if _.path__timeline__previous is None:
-                raise ValueError("in load_timeline_data, the new_articles.path__timeline__previous was not set")
 
-            url__timeline_current   = f"{MY_FEEDS__SERVER}/{WEB_PATH__PUBLIC__HACKER_NEWS}/{_.path__timeline__current }"
-            url__timeline_previous  = f"{MY_FEEDS__SERVER}/{WEB_PATH__PUBLIC__HACKER_NEWS}/{_.path__timeline__previous}"
-            with capture_duration() as duration:
-                data__timeline_current  = GET_json(url__timeline_current)
-                data__timeline_previous = GET_json(url__timeline_previous)
-                self.mgraph__timeline__current  = MGraph__Time_Chain.from_json__compressed(data__timeline_current )
-                self.mgraph__timeline__previous = MGraph__Time_Chain.from_json__compressed(data__timeline_previous)
-                # self.mgraph__diff               = MGraph__Diff(graph_a = self.mgraph__timeline__current.graph ,
-                #                                                graph_b = self.mgraph__timeline__previous.graph)
-                # self.timeline_diff              = self.mgraph__diff.diff_graphs()
+        with capture_duration() as duration:
+            data__timeline_current  = self.hacker_news_live_data.get_json(self.current__path , FILE_NAME__FEED_TIMELINE_MGRAPH)
+            data__timeline_previous = self.hacker_news_live_data.get_json(self.previous__path, FILE_NAME__FEED_TIMELINE_MGRAPH)
+            self.mgraph__timeline__current  = MGraph__Time_Chain.from_json__compressed(data__timeline_current )
+            self.mgraph__timeline__previous = MGraph__Time_Chain.from_json__compressed(data__timeline_previous)
+
+            differ = MGraph__Diff__Values(graph1=self.mgraph__timeline__current,
+                                          graph2=self.mgraph__timeline__previous)
+
+            self.timeline_diff = differ.compare([ Time_Chain__Year,Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source])
 
 
+            self.duration__load_timeline_data = duration.seconds
 
-                from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types import Time_Chain__Year
-                from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types import Time_Chain__Month
-                from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types import Time_Chain__Day
-                from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types import Time_Chain__Hour
-                from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types import Time_Chain__Source
+    @task()
+    def save__config_new_articles__current(self):
+        if self.current__path:
+            kwargs = dict(path__current  = self.current__path  ,
+                          path__previous = self.previous__path ,
+                          timeline_diff  = self.timeline_diff  )
+            self.new__config_new_articles = Schema__Feed__Config__New_Articles(**kwargs)          # create new object
+            data        = self.new__config_new_articles.json()
+            file_id     = FILE_NAME__NEW_ARTICLES
+            extension   = S3_Key__File_Extension.JSON.value
+            with self.hacker_news_storage as _:
+                self.path__new_articles__current = _.save_to__path(data=data, path=self.current__path, file_id=file_id, extension=extension)
 
-                differ = MGraph__Diff__Values(graph1=self.mgraph__timeline__current,
-                                              graph2=self.mgraph__timeline__previous)
+    @task()
+    def save__config_new_articles__latest(self):
+        # todo add logic to only update latest when we are in now
 
-                self.timeline_diff = differ.compare([ Time_Chain__Year,
-                                                      Time_Chain__Month,
-                                                      Time_Chain__Day,
-                                                      Time_Chain__Hour,
-                                                      Time_Chain__Source])
-
-
-        self.duration__load_timeline_data = duration.seconds
+        data        = self.new__config_new_articles.json()
+        file_id     = FILE_NAME__NEW_ARTICLES
+        extension   = S3_Key__File_Extension.JSON.value
+        with self.hacker_news_storage as _:
+            self.path__new_articles__latest = _.save_to__latest(data=data, file_id=file_id, extension=extension)
 
     @task()
     def process_diff(self):
-        print("process diff will go here")
+        #pprint(self.config_new_articles)
+        #print("process diff will go here")
+        pass
+
+
+
+    @task()
+    def create_screenshot(self):
+        #pprint(self.timeline_diff.json())
+        #print("creating screenshot")
+        # with self.mgraph__diff.screenshot() as _:
+        #     if get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS):
+        #         self.png_bytes = _.dot_to_png(self.dot_code)
+        pass
+
     @task()
     def create_output(self):
-        return {}
+        #return {}
+        pass
 
 
     @flow()
     def process_rss(self) -> Flow:
-        with self as _:
-            _.load_and_diff_timeline_data()
-            # _.fetch_rss_feed()
-            # _.create_timeline()
-            # _.save_timeline()
-            # _.invalidate_cache()
-            _.create_output()
+        #with Flow_Events__To__Open_Observe():
+            with self as _:
+                _.load_and_diff_timeline_data       ()
+                _.process_diff                      ()
+                _.create_screenshot                 ()
+                _.save__config_new_articles__current()
+                _.save__config_new_articles__latest ()
+                _.create_output                     ()
 
-        return self.timeline_diff
+        #return self.timeline_diff
         #return self.output
 
     def run(self):

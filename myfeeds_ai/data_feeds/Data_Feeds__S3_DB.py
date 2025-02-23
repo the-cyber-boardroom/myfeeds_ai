@@ -1,6 +1,8 @@
+from datetime import datetime
+
 from osbot_aws.aws.cloud_front.Cloud_Front                      import Cloud_Front
 from osbot_utils.utils.Env                                      import get_env
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator        import Data_Feeds__S3__Key_Generator
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator        import Data_Feeds__S3__Key_Generator, S3_Key__File_Extension
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants         import S3_FOLDER_NAME__LATEST, S3_BUCKET_PREFIX__DATA_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS, S3_FILE_NAME__LATEST__VERSIONS
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers  import Model__Data_Feeds__Providers
 from osbot_aws.aws.s3.S3__DB_Base                               import S3__DB_Base
@@ -28,23 +30,57 @@ class Data_Feeds__S3_DB(S3__DB_Base):
         result = cloud_front.invalidate_path(distribution_id, target_path)
         return result.get('Invalidation')
 
-    # methods for s3 folders and files
-    def s3_folder__for_provider(self):
-        return self.s3_key_generator.s3_folder__for_area(area=self.provider_name)
-
-    def s3_folder__for_latest(self):
-        return S3_FOLDER_NAME__LATEST
-
-    def s3_path__exists(self, s3_path):
-        s3_key= self.s3_key__for_provider_path(s3_path)
-        return self.s3_file_exists(s3_key)
+    # methods for paths
+    @type_safe
+    def s3_path__latest(self, file_id, extension: S3_Key__File_Extension = S3_Key__File_Extension.JSON):
+        return url_join_safe(S3_FOLDER_NAME__LATEST, file_id + f'.{extension.value}')
 
     @type_safe
     def s3_path__in_latest(self, file_id: Safe_Id):
         return url_join_safe(self.s3_folder__for_latest(), file_id + '.json')
 
     def s3_path__latest_versions(self):
-        return url_join_safe(self.s3_folder__for_latest(), S3_FILE_NAME__LATEST__VERSIONS + '.json')
+        return url_join_safe(self.s3_folder__for_latest(), S3_FILE_NAME__LATEST__VERSIONS + '.json')        # todo remove and use s3_path__in_latest
 
-    def s3_key__for_provider_path(self, s3_path):
+    @type_safe
+    def s3_path__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
+        return self.s3_key_generator.s3_path__now(file_id=file_id, extension=extension)
+
+    def s3_path__now_utc(self):
+        return self.s3_key_generator.s3_path__now__utc()
+
+    def s3_path__delete(self, s3_path):
+        s3_key = self.s3_key__for_provider_path(s3_path)
+        result = self.s3_file_delete(s3_key=s3_key)
+        return result
+
+    def s3_path__files(self, s3_path):
+        s3_key__now_utc = self.s3_key__for_provider_path(s3_path)
+        return self.s3_folder_files(s3_key__now_utc)
+
+    def s3_path__save_data(self, data, s3_path):
+        s3_key = self.s3_key__for_provider_path(s3_path)
+        result = self.s3_save_data(data=data, s3_key=s3_key)
+        return result
+
+    def s3_path__load_Data(self, s3_path):
+        s3_key = self.s3_key__for_provider_path(s3_path)
+        return self.s3_file_data(s3_key)
+
+    def s3_path__exists(self, s3_path):
+        s3_key= self.s3_key__for_provider_path(s3_path)
+        return self.s3_file_exists(s3_key)
+
+    # methods for s3 folders
+    def s3_folder__for_provider(self):
+        return self.s3_key_generator.s3_folder__for_area(area=self.provider_name)
+
+    def s3_folder__for_date_time(self, date_time: datetime):
+        return self.s3_key_generator.s3_folder__for_date_time(date_time=date_time)
+
+    def s3_folder__for_latest(self):
+        return S3_FOLDER_NAME__LATEST
+
+    # methods for s3 keys
+    def s3_key__for_provider_path(self, s3_path) -> str:
         return url_join_safe(self.s3_folder__for_provider(), s3_path)
