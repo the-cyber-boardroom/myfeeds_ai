@@ -12,7 +12,9 @@ from osbot_utils.utils.Status                                                   
 
 ROUTE_PATH__HACKER_NEWS = 'hacker-news'
 
-ROUTES_PATHS__HACKER_NEWS = [ f'/{ROUTE_PATH__HACKER_NEWS}/data-feed'             ,
+ROUTES_PATHS__HACKER_NEWS = [
+                              f'/{ROUTE_PATH__HACKER_NEWS}/current-articles'      ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/data-feed'             ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/data-feed-current'     ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/timeline-latest-png'   ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/feed'                  ,
@@ -48,7 +50,10 @@ class Routes__Hacker_News(Fast_API_Routes):
         return status_ok(data=data)
 
     def flow_process_rss(self):
-        return Flow__Hacker_News__Process_RSS().run().flow_return_value
+        flow_process_rss  = Flow__Hacker_News__Process_RSS().run().flow_return_value
+        flow_new_articles = Flow__Hacker_News__Process_New_Articles().run().flow_return_value
+        return dict(flow_process_rss  = flow_process_rss ,
+                    flow_new_articles = flow_new_articles)
 
     def flow_new_articles(self, current__path:str ='2025/02/23/16'):
         flow = Flow__Hacker_News__Process_New_Articles(current__path=current__path)
@@ -74,6 +79,9 @@ class Routes__Hacker_News(Fast_API_Routes):
     def feed_prompt(self, size:int=5):
         #return { "prompt" : self.http_content.get_prompt_schema(size=size) }
         return PlainTextResponse(self.http_content.feed_prompt(size=size))
+
+    def current_articles(self):
+        return self.hacker_news_data.current_articles().json()
 
     def new_articles(self):
         return self.hacker_news_data.new_articles().json()
@@ -103,6 +111,7 @@ class Routes__Hacker_News(Fast_API_Routes):
         return status_error(f'No data found for {year}/{month}/{day}/{hour}')
 
     def setup_routes(self):
+        self.add_route_get(self.current_articles      )
         self.add_route_get(self.data_feed             )
         self.add_route_get(self.data_feed_current     )
         self.add_route_get(self.files_paths           )

@@ -1,6 +1,5 @@
 from osbot_utils.type_safe.Type_Safe import Type_Safe
-from osbot_utils.utils.Dev import pprint
-from osbot_utils.utils.Http import url_join_safe, GET_json
+from osbot_utils.utils.Http          import GET_json
 
 MY_FEEDS__SERVER                = 'https://dev.myfeeds.ai'
 WEB_PATH__PUBLIC__HACKER_NEWS   = "public-data/hacker-news"

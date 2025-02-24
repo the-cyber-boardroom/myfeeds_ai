@@ -8,7 +8,7 @@ from osbot_utils.helpers.flows.decorators.flow                                  
 from osbot_utils.helpers.flows.decorators.task                                                                  import task
 from osbot_utils.type_safe.Type_Safe                                                                            import Type_Safe
 from osbot_utils.utils.Misc                                                                                     import str_to_bytes
-from osbot_utils.utils.Objects import obj
+from osbot_utils.utils.Objects                                                                                  import obj
 
 S3_FILE_NAME__FEED__TIMELINE = 'feed-timeline'
 
