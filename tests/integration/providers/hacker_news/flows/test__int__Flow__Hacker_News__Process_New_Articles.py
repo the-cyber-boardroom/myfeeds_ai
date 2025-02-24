@@ -4,10 +4,11 @@ from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types   
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                            import S3_Key__File_Extension
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                                             import S3_FOLDER_NAME__LATEST
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_New_Articles  import Flow__Hacker_News__Process_New_Articles, FILE_NAME__NEW_ARTICLES
-from osbot_utils.utils.Dev import pprint
+from osbot_utils.context_managers.print_duration                                                    import print_duration
+from osbot_utils.utils.Dev                                                                          import pprint
 from osbot_utils.utils.Json                                                                         import json__equals__list_and_set
-from osbot_utils.utils.Misc import list_set
-from osbot_utils.utils.Objects import type_full_name, __
+from osbot_utils.utils.Misc                                                                         import list_set
+from osbot_utils.utils.Objects                                                                      import type_full_name, __
 from tests.integration.data_feeds__objs_for_tests                                                   import cbr_website__assert_local_stack
 
 class test_Flow__Hacker_News__Process_New_Articles(TestCase):
@@ -72,6 +73,12 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
                                                                        'removed_values': { type_full_name(Time_Chain__Day)    : [ '10'],
                                                                                            type_full_name(Time_Chain__Source) : [ '468bfcf6', 'f2082031', '08ec0110', 'ea2a87d4',
                                                                                                                                  '0a68e403','d0ca70d4', '5f6bf957'             ]}})
+    def test_update_current_articles(self):
+        with self.flow_process_new_articles as _:
+            _.current__path =  self.current_path
+            _.previous__path = self.previous_path
+            _.load_and_diff_timeline_data()
+            _.update_current_articles()
 
     def test_load_and_diff_timeline_data___without_any_paths(self):
         with Flow__Hacker_News__Process_New_Articles() as _:
@@ -115,6 +122,7 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             _.current__path = self.current_path
             _.load_and_diff_timeline_data()
             _.save__config_new_articles__current()
+            #pprint(_.new__config_new_articles.json())
             assert _.path__new_articles__current      == f'{_.new__config_new_articles.path__current}/{FILE_NAME__NEW_ARTICLES}.{S3_Key__File_Extension.JSON.value}'
             assert _.new__config_new_articles.json()  == _.hacker_news_storage.load_from__path(path=_.new__config_new_articles.path__current, file_id=FILE_NAME__NEW_ARTICLES, extension=S3_Key__File_Extension.JSON.value)
 
@@ -147,16 +155,50 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             #     _.save_to(screenshot_file)
             #     _.dot()
 
-    # def test__bug__previous__path__not_picked_up(self):
+    # def test__experiment__load_article(self):
     #     with Flow__Hacker_News__Process_New_Articles() as _:
-    #         _.current__path = '2025/02/20/16'
+    #         _.current__path  = '2025/02/23/16'
+    #         _.previous__path = '2025/02/19/22'
     #         _.resolve__previous__path()
     #         print()
     #         print('current' , _.current__path )
     #         print('previous', _.previous__path)
     #
     #         _.load_and_diff_timeline_data()
-    #         # pprint(_.timeline_diff.json())
+    #         new_articles = _.timeline_diff.added_values.get(Time_Chain__Source,{})
+    #         removed_values = _.timeline_diff.removed_values.get(Time_Chain__Source, {})
+    #         pprint(removed_values)
+    #         return
+    #         source_id__value  = list(new_articles)[2]
+    #         #new_article_id = '5d2f8952'
+    #         #pprint(new_article_id)
+    #         # pprint(_.mgraph__timeline__current.json())
+    #         # return
+    #         #pprint(_.mgraph__timeline__current.json())
+    #
+    #         with print_duration():
+    #             with _.mgraph__timeline__current as mgraph:
+    #                 #pprint(mgraph.values().get_by_value(str   , new_article_id))
+    #                 #domain_node = mgraph.values().get_by_value(Time_Chain__Source, source_id__value)
+    #                 #node_id = domain_node.node_id
+    #                 #print('node_id', node_id)
+    #                 #pprint(domain_node.node.json())
+    #                 #pprint(domain_node.models__to_edges()[0].data.json())
+    #                 with mgraph.data() as data:
+    #                     with mgraph.index() as index:
+    #                         node_hour_id  = list(index.get_nodes_connected_to_value(Time_Chain__Source(source_id__value)))[0]
+    #                         node_hour     = data.node(node_hour_id)
+    #                         pprint(node_hour.node.json())
+    #                         print('node_hour', node_hour_id)
+    #                         print('source_id__value', source_id__value)
+    #
+    #                 #pprint(mgraph.index().nodes_to_incoming_edges_by_type())
+    #                 #pprint(mgraph.data().node(new_article_id))
+    #                 #pprint(mgraph.data().edge(new_article_id))
+    #                 #pprint(mgraph.values().mgraph_edit.index().index_data.json())
+    #
+    #         #pprint(_.timeline_diff.json())
+    #         return
     #         # return
     #         # assert _.current__path  == '2025/02/23/22'
     #         # assert _.previous__path == '2025/02/20/16'
