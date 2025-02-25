@@ -4,6 +4,7 @@ from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File_Ext
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB import S3_FILE_NAME__ARTICLE__FEED_ARTICLE
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data              import Hacker_News__Data
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Edit import Hacker_News__Edit
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Live_Data import Hacker_News__Live_Data
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage           import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article import \
@@ -22,6 +23,7 @@ from osbot_utils.utils.Lists import list_index_by
 
 class Flow__Hacker_News__Process_Articles(Type_Safe):
     hacker_news_data      : Hacker_News__Data
+    hacker_news_edit      : Hacker_News__Edit
     hacker_news_storage   : Hacker_News__Storage
 
     current_articles   : Schema__Feed__Current_Articles
@@ -37,42 +39,33 @@ class Flow__Hacker_News__Process_Articles(Type_Safe):
 
     @task()
     def process_articles__create_article_file(self):
-        #pprint(self.current_articles.json())
-
-        articles_by_location = {}
-        for article_id, article_data in self.articles_to_process.items():
-            location               = article_data.location
+        articles_by_location = {}                                           # todo: refactor this file load cache into a better location
+        for article_id, article in self.articles_to_process.items():
+            location               = article.location
             articles_by_article_id = articles_by_location.get(location)
-            if articles_by_article_id is None:
+            if articles_by_article_id is None:                              # only load once
                 print(f'loading data for location: {location}')
                 path_data              = self.hacker_news_data.feed_data__in_path(path=location, load_from_live=True)
                 articles_list          = path_data.feed_data.json().get('articles')
                 articles_by_article_id = list_index_by(articles_list, 'article_obj_id')
                 articles_by_location[location] = articles_by_article_id
-                #print(f'loaded {len(articles_by_article_id)} articles')
-            #pprint(articles_by_article_id)
-            # pprint(self.hacker_news_storage.load_from__path(location))
-            # pprint(self.hacker_news_storage.files_in__path(location))
-            #pprint(article_id)
-            #pprint(article_data.json())
+
             if article_id in articles_by_article_id:
-                article_storage = Hacker_News__Storage__Article(article_id=article_id)
-                print(f'found: {article_id}')
+                article_storage             = Hacker_News__Storage__Article(article_id=article_id)
+                s3_path                     = article_storage.path__path(path=location, file_id=S3_FILE_NAME__ARTICLE__FEED_ARTICLE, extension=S3_Key__File_Extension.JSON)
+                article.path__feed_article  = s3_path
+                file_exists                 = article_storage.path__exists(s3_path=s3_path)
+                if file_exists is False:
+                    #s3_path = article_storage.path__path(path=location, file_id=S3_FILE_NAME__ARTICLE__FEED_ARTICLE, extension=S3_Key__File_Extension.JSON)
+                    article_data = articles_by_article_id.get(article_id)
+                    s3_path      = article_storage.save_to__path(data=article_data, path=location, file_id=S3_FILE_NAME__ARTICLE__FEED_ARTICLE, extension=S3_Key__File_Extension.JSON)
+                    print(f"created file {s3_path}")
 
-                pprint(article_storage.load_from__path(location, S3_FILE_NAME__ARTICLE__FEED_ARTICLE, S3_Key__File_Extension.JSON))
-                return
-                article_data = articles_by_article_id.get(article_id)
+                    #pprint(article_storage.load_from__path(location, S3_FILE_NAME__ARTICLE__FEED_ARTICLE, S3_Key__File_Extension.JSON))
 
 
-                self.hacker_news_storage
-                with self.hacker_news_storage.s3_db as _:
-                    s3_path__article    = _.s3_key___article__feed_article__now(article_id)
-                    s3_raw_path_article = _.s3_key__for_provider_path(s3_path__article)
-                    print(s3_path__article)
-                    print(s3_raw_path_article)
-            break
+        self.hacker_news_edit.save__current_articles(self.current_articles)
 
-            #break
 
     @flow()
     def process_articles(self) -> Flow:

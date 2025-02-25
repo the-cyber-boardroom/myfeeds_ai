@@ -1,8 +1,6 @@
-from datetime import datetime, timezone
-from typing import Dict, Optional, List
-
-from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants import S3_FOLDER_NAME__LATEST
-from osbot_utils.decorators.methods.cache_on_self import cache_on_self
+from datetime                                                            import datetime, timezone
+from typing                                                              import Dict, Optional, List
+from osbot_utils.decorators.methods.cache_on_self                        import cache_on_self
 from osbot_utils.helpers.Safe_Id                                         import Safe_Id
 from osbot_utils.type_safe.Type_Safe                                     import Type_Safe
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                 import S3_Key__File_Extension
@@ -23,7 +21,7 @@ class Hacker_News__Storage(Type_Safe):
 
     def delete_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
         with self.s3_db as _:
-            s3_path = self.s3_path__now(file_id=file_id, extension=extension)
+            s3_path = self.path__now(file_id=file_id, extension=extension)
             _.s3_path__delete(s3_path)
             return s3_path
 
@@ -61,7 +59,7 @@ class Hacker_News__Storage(Type_Safe):
                                  extension: S3_Key__File_Extension
                             ) -> str:
         with self.s3_db as _:
-            s3_path = self.s3_path__date_time(date_time=date_time, file_id=file_id, extension=extension)
+            s3_path = self.path__date_time(date_time=date_time, file_id=file_id, extension=extension)
             _.s3_path__save_data(data=data, s3_path=s3_path)
             return s3_path
 
@@ -70,7 +68,7 @@ class Hacker_News__Storage(Type_Safe):
                            extension: S3_Key__File_Extension
                       ) -> str:
         with self.s3_db as _:
-            s3_path = self.s3_path__now(file_id=file_id, extension=extension)
+            s3_path = self.path__now(file_id=file_id, extension=extension)
             _.s3_path__save_data(data=data, s3_path=s3_path)
             return s3_path
 
@@ -88,23 +86,20 @@ class Hacker_News__Storage(Type_Safe):
             date_time = self.path_to__date_time(path)
             return self.load_from__date_time(date_time=date_time, file_id=file_id, extension=extension)
 
-    def s3_path__load_Data(self, s3_path):
-        return self.s3_db.s3_path__load_Data(s3_path)
-
     def load_from__date_time(self, date_time: datetime, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Optional[Dict]:
-        s3_path = self.s3_path__date_time(date_time=date_time, file_id=file_id, extension=extension)
-        data    = self.s3_path__load_Data(s3_path)
+        s3_path = self.path__date_time(date_time=date_time, file_id=file_id, extension=extension)
+        data    = self.path__load_Data(s3_path)
         return data
 
 
     def load_from__latest(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Optional[Dict]:
         s3_path = self.s3_db.s3_path__latest(file_id=file_id, extension=extension)
-        data    = self.s3_path__load_Data(s3_path)
+        data    = self.path__load_Data(s3_path)
         return data
 
     def load_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Optional[Dict]:
-        s3_path = self.s3_path__now(file_id=file_id, extension=extension)
-        data    = self.s3_path__load_Data(s3_path)
+        s3_path = self.path__now(file_id=file_id, extension=extension)
+        data    = self.path__load_Data(s3_path)
         return data
 
     def path_to__date_time(self, path):
@@ -116,22 +111,42 @@ class Hacker_News__Storage(Type_Safe):
         except Exception:
             return None
 
-    def path_to__now_utc(self):
-        return self.s3_db.s3_path__now_utc()
+    def path__exists(self, s3_path:str) -> bool:
+        return self.s3_db.s3_path__exists(s3_path)
 
-    def s3_path__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
-        return self.s3_db.s3_path__now(file_id=file_id, extension=extension)
-
-    def s3_path__date_time(self, date_time: datetime,
+    def path__exists__path(self, path: str,
                                  file_id  : Safe_Id                = None,
                                  extension: S3_Key__File_Extension = None
                             ) -> str:
+        s3_path = self.path__path(path=path,file_id=file_id, extension=extension)
+        return self.path__exists(s3_path)
+
+    def path__load_Data(self, s3_path):
+        return self.s3_db.s3_path__load_Data(s3_path)
+
+    def path_to__now_utc(self):
+        return self.s3_db.s3_path__now_utc()
+
+    def path__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
+        return self.s3_db.s3_path__now(file_id=file_id, extension=extension)
+
+    def path__date_time(self, date_time: datetime,
+                              file_id  : Safe_Id                = None,
+                              extension: S3_Key__File_Extension = None
+                         ) -> str:
         kwargs = dict(date_time  = date_time    ,
                       areas      = self.areas() ,
                       file_id    = file_id      ,
                       extension  = extension    )
         return self.s3_db.s3_key_generator.s3_path__date_time(**kwargs)
 
+    def path__path(self, path: str,
+                         file_id  : Safe_Id                = None,
+                         extension: S3_Key__File_Extension = None
+                    ) -> str:
+        date_time = self.path_to__date_time(path)
+        s3_path   = self.path__date_time(date_time=date_time, file_id=file_id, extension=extension)
+        return s3_path
     # def load_by__article_id(self, article_id: Obj_Id                  ,           # Load article-specific data
     #                              extension : S3_Key__File_Extensions ) -> Optional[Dict]:
     #     with self.s3_db as _:

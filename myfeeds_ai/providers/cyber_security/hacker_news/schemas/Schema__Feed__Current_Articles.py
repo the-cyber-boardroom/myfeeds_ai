@@ -12,10 +12,11 @@ class Schema__Feed__Current_Article__Status(Enum):
 
 
 class Schema__Feed__Current_Article(Type_Safe):
-    knowledge_graph : bool
-    llm_prompt      : bool
-    location        : str
-    status          : Schema__Feed__Current_Article__Status = Schema__Feed__Current_Article__Status.TO_PROCESS
+    knowledge_graph   : bool
+    llm_prompt        : bool
+    location          : str
+    status            : Schema__Feed__Current_Article__Status = Schema__Feed__Current_Article__Status.TO_PROCESS
+    path__feed_article: str = None
 
 
 class Schema__Feed__Current_Articles(Type_Safe):
