@@ -6,6 +6,8 @@ from osbot_utils.type_safe.Type_Safe    import Type_Safe
 
 class Schema__Feed__Current_Article__Status(Enum):
     TO_PROCESS         : str = 'to-process'
+    TO_EXTRACT_TEXT    : str = 'to-extract-text'
+    TO_CREATE_GRAPH    : str = 'to-create-graph'
     PROCESSED          : str = 'processed'
     ERROR__NO_FEED_DATA: str = 'error-no-feed-data'
     ERROR__IN_PROCESS  : str = 'error-in-process'

@@ -1,32 +1,38 @@
-from typing                                                                                 import Dict
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                    import S3_Key__File_Extension
-from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                     import S3_FILE_NAME__ARTICLE__FEED_ARTICLE
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data              import Hacker_News__Data
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Edit              import Hacker_News__Edit
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage           import Hacker_News__Storage
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article  import Hacker_News__Storage__Article
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles import Schema__Feed__Current_Articles, Schema__Feed__Current_Article, Schema__Feed__Current_Article__Status
-from osbot_utils.helpers.Obj_Id                                                             import Obj_Id
-from osbot_utils.helpers.flows.Flow                                                         import Flow
-from osbot_utils.helpers.flows.decorators.flow                                              import flow
-from osbot_utils.helpers.flows.decorators.task                                              import task
-from osbot_utils.type_safe.Type_Safe                                                        import Type_Safe
-from osbot_utils.utils.Lists                                                                import list_index_by
+from typing                                                                                  import Dict
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                     import S3_Key__File_Extension
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                      import S3_FILE_NAME__ARTICLE__FEED_ARTICLE, S3_FILE_NAME__ARTICLE__TEXT_ENTITIES
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data               import Hacker_News__Data
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Edit               import Hacker_News__Edit
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage            import Hacker_News__Storage
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article   import Hacker_News__Storage__Article
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Entities import Schema__Feed__Article__Entities, Schema__Feed__Text__Entities
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles  import Schema__Feed__Current_Articles, Schema__Feed__Current_Article, Schema__Feed__Current_Article__Status
+from osbot_utils.context_managers.capture_duration                                           import capture_duration
+from osbot_utils.helpers.Obj_Id                                                              import Obj_Id
+from osbot_utils.helpers.flows.Flow                                                          import Flow
+from osbot_utils.helpers.flows.decorators.flow                                               import flow
+from osbot_utils.helpers.flows.decorators.task                                               import task
+from osbot_utils.type_safe.Type_Safe                                                         import Type_Safe
+from osbot_utils.utils.Env import env_value
+from osbot_utils.utils.Lists                                                                 import list_index_by
+
+from osbot_utils.utils.Dev import pprint
 
 class Flow__Hacker_News__Process_Articles(Type_Safe):
-    hacker_news_data      : Hacker_News__Data
-    hacker_news_edit      : Hacker_News__Edit
-    hacker_news_storage   : Hacker_News__Storage
+    hacker_news_data            : Hacker_News__Data
+    hacker_news_edit            : Hacker_News__Edit
+    hacker_news_storage         : Hacker_News__Storage
 
-    current_articles   : Schema__Feed__Current_Articles
-    articles_to_process: Dict[Obj_Id,Schema__Feed__Current_Article]
+    current_articles            : Schema__Feed__Current_Articles
+    articles_to_process         : Dict[Obj_Id,Schema__Feed__Current_Article]
+    result__create_text_entities: dict
 
     @task()
     def load_new_articles(self):
         self.current_articles = self.hacker_news_data.current_articles()
-        for article_id, article_data in self.current_articles.articles.items():
-            if article_data.status == Schema__Feed__Current_Article__Status.TO_PROCESS:
-                self.articles_to_process[article_id]=article_data
+        for article_id, article in self.current_articles.articles.items():
+            if article.status == Schema__Feed__Current_Article__Status.TO_PROCESS:
+                self.articles_to_process[article_id]=article
         print(f"There are {len(self.articles_to_process)} articles to process")
 
     @task()
@@ -54,15 +60,69 @@ class Flow__Hacker_News__Process_Articles(Type_Safe):
                     print(f"created file {s3_path}")
 
                     #pprint(article_storage.load_from__path(location, S3_FILE_NAME__ARTICLE__FEED_ARTICLE, S3_Key__File_Extension.JSON))
+                article.status = Schema__Feed__Current_Article__Status.TO_EXTRACT_TEXT
 
+        self.hacker_news_edit.save__current_articles(self.current_articles)
 
+    def extract_entities_from_text(self, text):                             # todo: move this to a separate class
+        from mgraph_db.providers.llms.utils.API__LLM                              import API__LLM
+        from mgraph_db.providers.graph_rag.actions.Graph_RAG__Document__Processor import Graph_RAG__Document__Processor
+        api_llm       = API__LLM()
+        processor     = Graph_RAG__Document__Processor(api_llm=api_llm)                 # GraphRAG Create processor instance
+        entities      = processor.extract_entities(text=text)
+        text_entities = Schema__Feed__Text__Entities(text=text, entities=entities)
+        return text_entities
+
+    @task()
+    def process_articles__create_text_entities(self):
+        if env_value('OPEN_AI__API_KEY') is None:
+            print("OpenAi key not available")
+            self.result__create_text_entities['error'] = "OpenAi key not available"
+            return
+
+        for article_id, article in self.current_articles.articles.items():
+            if article.status == Schema__Feed__Current_Article__Status.TO_EXTRACT_TEXT:
+                article_storage = Hacker_News__Storage__Article(article_id=article_id)
+                path__feed_article    = article.path__feed_article
+                article_data          = article_storage.path__load_Data(path__feed_article)     # todo: we shouldn't be using a dict here (we should be using .data() and get the correct schema file
+                article_title         = article_data.get('title'     )
+                article_description   = article_data.get('description')
+
+                with capture_duration() as duration__title:
+                    entities__title       = self.extract_entities_from_text  (article_title    )
+                with capture_duration() as duration__description:
+                    entities__description = self.extract_entities_from_text(article_description)
+
+                article_entities      = Schema__Feed__Article__Entities(entities__title=entities__title, entities__description=entities__description)
+
+                location = article.location
+                data     = article_entities.json()
+                s3_path  = article_storage.save_to__path(data      = data                                 ,
+                                                         path      = location                             ,
+                                                         file_id   = S3_FILE_NAME__ARTICLE__TEXT_ENTITIES ,
+                                                         extension = S3_Key__File_Extension.JSON          )
+
+                result = dict(article_id             = article_id                                         ,
+                              s3_path                = s3_path                                            ,
+                              duration__title        = duration__title.seconds                            ,
+                              duration__description  = duration__description.seconds                      ,
+                              entities__title        = len(article_entities.entities__title.entities      ),
+                              entities__description  = len(article_entities.entities__description.entities))
+
+                self.result__create_text_entities[article_id] = result
+                article.status = Schema__Feed__Current_Article__Status.TO_CREATE_GRAPH
+                #pprint(article_entities.json())
+
+                break
         self.hacker_news_edit.save__current_articles(self.current_articles)
 
 
     @flow()
     def process_articles(self) -> Flow:
         self.load_new_articles()
-        self.process_articles__create_article_file()
+        self.process_articles__create_article_file   ()
+        self.process_articles__create_text_entities()
+
 
     def run(self):
         return self.process_articles().execute_flow()
