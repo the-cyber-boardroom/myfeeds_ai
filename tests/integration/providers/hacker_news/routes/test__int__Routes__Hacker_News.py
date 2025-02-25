@@ -4,7 +4,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News  import Routes__Hacker_News
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import \
     Schema__Feed__Config__New_Articles
-from osbot_utils.utils.Dev import pprint
+#from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Objects                                                   import obj, __
 from tests.integration.data_feeds__objs_for_tests                                import cbr_website__assert_local_stack
 
@@ -22,6 +22,15 @@ class test__int__Routes__Hacker_News(TestCase):
             _.setup_routes()
             assert '/feed'      in _.routes_paths()
             #assert '/articles'  in _.routes_paths()
+
+    def test_data_feed(self):
+        kwargs = dict(year  = 2025,
+                      month = 2  ,
+                      day   = 20  ,
+                      hour  = 22  )
+        with self.routes_hacker_news as _:
+            feed_data = _.data_feed(**kwargs)
+            assert feed_data
 
     def test_get_feed(self):
         with self.routes_hacker_news as _:
@@ -67,7 +76,8 @@ class test__int__Routes__Hacker_News(TestCase):
 
     def test_flow_new_articles(self):
         with self.routes_hacker_news as _:
-            data         = _.flow_new_articles()
+            current_path = '2025/02/19/22'
+            data         = _.flow_new_articles(current__path=current_path)
             new_articles = Schema__Feed__Config__New_Articles.from_json(data)
             assert type(new_articles) is Schema__Feed__Config__New_Articles
 

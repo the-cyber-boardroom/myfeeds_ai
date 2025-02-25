@@ -71,7 +71,7 @@ class Hacker_News__Files(Data_Feeds__Files):
         feed_data = self.s3_db.feed_data__load__from_date(year, month, day, hour)
         if not feed_data:
             feed_raw_data = self.xml_feed__raw_data__from_date(year, month, day, hour)
-            if feed_raw_data:
+            if feed_raw_data and feed_raw_data.feed_xml:
                 parser = Hacker_News__Parser().setup(feed_raw_data.feed_xml)
                 kwargs = dict(created_by = feed_raw_data.created_by,
                               duration   = feed_raw_data.duration  ,

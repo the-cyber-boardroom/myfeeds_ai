@@ -1,14 +1,14 @@
-from io import BytesIO
-from osbot_fast_api.api.Fast_API_Routes                                                     import Fast_API_Routes
-from starlette.responses                                                                    import PlainTextResponse, StreamingResponse
-from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                     import Hacker_News__Files
-from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content              import Hacker_News__Http_Content
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data import Hacker_News__Data
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_New_Articles import \
-    Flow__Hacker_News__Process_New_Articles
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_RSS   import Flow__Hacker_News__Process_RSS
-from osbot_utils.utils.Lists                                                                import list_filter_contains
-from osbot_utils.utils.Status                                                               import status_ok, status_error
+from io                                                                                            import BytesIO
+from osbot_fast_api.api.Fast_API_Routes                                                            import Fast_API_Routes
+from starlette.responses                                                                           import PlainTextResponse, StreamingResponse
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                            import Hacker_News__Files
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content                     import Hacker_News__Http_Content
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                     import Hacker_News__Data
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Extract_New_Articles import Flow__Hacker_News__Extract_New_Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_Articles     import Flow__Hacker_News__Process_Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_RSS          import Flow__Hacker_News__Process_RSS
+from osbot_utils.utils.Lists                                                                       import list_filter_contains
+from osbot_utils.utils.Status                                                                      import status_ok, status_error
 
 ROUTE_PATH__HACKER_NEWS = 'hacker-news'
 
@@ -20,6 +20,7 @@ ROUTES_PATHS__HACKER_NEWS = [
                               f'/{ROUTE_PATH__HACKER_NEWS}/feed'                  ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/feed-prompt'           ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/flow-new-articles'     ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/flow-process-articles' ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/flow-process-rss'      ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/files-paths'           ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/new-articles'          ,
@@ -51,14 +52,19 @@ class Routes__Hacker_News(Fast_API_Routes):
 
     def flow_process_rss(self):
         flow_process_rss  = Flow__Hacker_News__Process_RSS().run().flow_return_value
-        flow_new_articles = Flow__Hacker_News__Process_New_Articles().run().flow_return_value
+        flow_new_articles = Flow__Hacker_News__Extract_New_Articles().run().flow_return_value
         return dict(flow_process_rss  = flow_process_rss ,
                     flow_new_articles = flow_new_articles)
 
-    def flow_new_articles(self, current__path:str ='2025/02/23/16'):
-        flow = Flow__Hacker_News__Process_New_Articles(current__path=current__path)
+    def flow_new_articles(self, current__path:str ='2025/02/23/22'):
+        flow = Flow__Hacker_News__Extract_New_Articles(current__path=current__path)
         flow.run()
         return flow.new__config_new_articles.json()
+
+    def flow_process_articles(self):
+        flow = Flow__Hacker_News__Process_Articles()
+        flow.run()
+        return flow.current_articles.json()
 
     def data_feed(self, year:int, month:int, day:int, hour:int):
         kwargs = dict(year   = year ,
@@ -116,6 +122,7 @@ class Routes__Hacker_News(Fast_API_Routes):
         self.add_route_get(self.data_feed_current     )
         self.add_route_get(self.files_paths           )
         self.add_route_get(self.flow_new_articles     )
+        self.add_route_get(self.flow_process_articles )
         self.add_route_get(self.flow_process_rss      )
         self.add_route_get(self.feed                  )
         self.add_route_get(self.feed_prompt           )

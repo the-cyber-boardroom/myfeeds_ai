@@ -1,5 +1,7 @@
 from datetime import datetime
 from enum                                               import Enum
+from typing import Optional, List
+
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
 from osbot_aws.aws.s3.S3__Key_Generator                 import S3__Key_Generator
 from osbot_utils.helpers.Safe_Id                        import Safe_Id
@@ -25,16 +27,30 @@ class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: r
                       month    : int,
                       day      : int,
                       hour     : int,
-                      file_id  : Safe_Id,
-                      extension: S3_Key__File_Extension
+                      areas    : List[Safe_Id]          = None,
+                      file_id  : Safe_Id                = None,
+                      extension: S3_Key__File_Extension = None
                  ) -> str:
-        return f'{year:04}/{month:02}/{day:02}/{hour:02}/{file_id}.{extension.value}'
+        path = f'{year:04}/{month:02}/{day:02}/{hour:02}'
 
-    def s3_path__date_time(self, date_time: datetime, file_id: Safe_Id, extension: S3_Key__File_Extension):
+        if areas:
+            path += '/' + '/'.join(str(area) for area in areas)
+
+        if file_id and extension:
+            path += f'/{file_id}.{extension.value}'
+
+        return path
+
+    def s3_path__date_time(self, date_time: datetime,
+                                 areas    : List[Safe_Id]          = None,
+                                 file_id  : Safe_Id                = None,
+                                 extension: S3_Key__File_Extension = None
+                            ) -> str:
         kwargs = dict(year    = date_time.year ,
                       month   = date_time.month,
                       day     = date_time.day  ,
                       hour    = date_time.hour ,
+                      areas   = areas          ,
                       file_id = file_id        ,
                       extension = extension    )
         return self.s3_path(**kwargs)

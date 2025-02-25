@@ -12,7 +12,8 @@ class Data_Feeds__Parser(Type_Safe):
         return elem.text if elem is not None else default
 
     def setup(self, xml_content: str):                                            # Store and parse the XML content
-        self.xml_content = xml_content
-        self.root        = ElementTree.fromstring(xml_content)
-        self.channel     = self.root.find('channel')
+        if xml_content:
+            self.xml_content = xml_content
+            self.root        = ElementTree.fromstring(xml_content)
+            self.channel     = self.root.find('channel')
         return self

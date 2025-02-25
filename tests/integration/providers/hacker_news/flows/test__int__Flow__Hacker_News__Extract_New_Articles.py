@@ -3,15 +3,13 @@ from mgraph_db.mgraph.schemas.Schema__MGraph__Diff__Values                      
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types                       import Time_Chain__Day, Time_Chain__Source, Time_Chain__Hour, Time_Chain__Year, Time_Chain__Month
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                            import S3_Key__File_Extension
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                                             import S3_FOLDER_NAME__LATEST
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_New_Articles  import Flow__Hacker_News__Process_New_Articles, FILE_NAME__NEW_ARTICLES
-from osbot_utils.context_managers.print_duration                                                    import print_duration
-from osbot_utils.utils.Dev                                                                          import pprint
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Extract_New_Articles  import Flow__Hacker_News__Extract_New_Articles, FILE_NAME__NEW_ARTICLES
 from osbot_utils.utils.Json                                                                         import json__equals__list_and_set
 from osbot_utils.utils.Misc                                                                         import list_set
 from osbot_utils.utils.Objects                                                                      import type_full_name, __
 from tests.integration.data_feeds__objs_for_tests                                                   import cbr_website__assert_local_stack
 
-class test_Flow__Hacker_News__Process_New_Articles(TestCase):
+class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -20,21 +18,22 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
         cls.previous_path = '2025/02/19/22'
 
     def setUp(self):
-        self.flow_process_new_articles = Flow__Hacker_News__Process_New_Articles()                      # new object on every test run
+        self.flow_extract_new_articles = Flow__Hacker_News__Extract_New_Articles()                      # new object on every test run
         # with self.flow_process_new_articles as _:
         #     _.config_new_articles.path__current            = self.path__current
         #     _.config_new_articles.path__previous           = self.path__previous
 
     def test_process_flow(self):
-        with self.flow_process_new_articles as _:
+        with self.flow_extract_new_articles as _:
             _.current__path = self.current_path
-            result = self.flow_process_new_articles.run()
+            result = self.flow_extract_new_articles.run()
+            #pprint(_.current__articles.json())
             #pprint(result)
             #pprint(_.timeline_diff.json())
 
     def test_resolve__previous__path(self):
 
-        with Flow__Hacker_News__Process_New_Articles() as _:                                           # Use-case 1: no paths provided
+        with Flow__Hacker_News__Extract_New_Articles() as _:                                           # Use-case 1: no paths provided
             assert _.current__path  is None
             assert _.previous__path is None
             _.resolve__previous__path()
@@ -42,19 +41,19 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             if _.current__config_new_articles:
                 assert _.previous__path == _.current__config_new_articles.path__current
 
-        with Flow__Hacker_News__Process_New_Articles() as _:                                           # Use-case 1:  with current_path
+        with Flow__Hacker_News__Extract_New_Articles() as _:                                           # Use-case 1:  with current_path
             _.current__path = self.current_path
             _.resolve__previous__path()
             assert _.current__path  == self.current_path                                                # current path is unchanged
             assert _.previous__path == _.current__config_new_articles.path__current                                                # previous path should have not changed
 
-        with self.flow_process_new_articles as _:                                                       # Use-case 3: with no current_path
+        with self.flow_extract_new_articles as _:                                                       # Use-case 3: with no current_path
             _.previous__path = self.previous_path
             _.resolve__previous__path()
             assert _.current__path  == _.hacker_news_storage.path_to__now_utc()                         # current path should now be latest
             assert _.previous__path == self.previous_path                                               # previous path is unchanged
 
-        with self.flow_process_new_articles as _:                                                       # Use-case 4: with both current and previous
+        with self.flow_extract_new_articles as _:                                                       # Use-case 4: with both current and previous
             _.current__path  = self.current_path
             _.previous__path = self.previous_path
             _.resolve__previous__path()
@@ -62,7 +61,7 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             assert _.previous__path == self.previous_path                                               # previous path is unchanged
 
     def test_load_and_diff_timeline_data(self):
-        with self.flow_process_new_articles as _:
+        with self.flow_extract_new_articles as _:
             _.current__path  = self.current_path                                                        # simulate the current and previous path config
             _.previous__path = self.previous_path
             _.load_and_diff_timeline_data()                                     # since we are using cached data , these will always be the ame
@@ -74,21 +73,21 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
                                                                                            type_full_name(Time_Chain__Source) : [ '468bfcf6', 'f2082031', '08ec0110', 'ea2a87d4',
                                                                                                                                  '0a68e403','d0ca70d4', '5f6bf957'             ]}})
     def test_update_current_articles(self):
-        with self.flow_process_new_articles as _:
+        with self.flow_extract_new_articles as _:
             _.current__path =  self.current_path
             _.previous__path = self.previous_path
             _.load_and_diff_timeline_data()
             _.update_current_articles()
 
     def test_load_and_diff_timeline_data___without_any_paths(self):
-        with Flow__Hacker_News__Process_New_Articles() as _:
+        with Flow__Hacker_News__Extract_New_Articles() as _:
             _.load_and_diff_timeline_data()
             assert _.timeline_diff.json()                      == {'added_values': {}, 'removed_values': {}}
             assert _.mgraph__timeline__current .data().stats() == {'edges_ids': 0, 'nodes_ids': 0}
             assert _.mgraph__timeline__previous.data().stats() == {'edges_ids': 0, 'nodes_ids': 0}
 
     def test_load_and_diff_timeline_data___without_previous(self):
-        with Flow__Hacker_News__Process_New_Articles() as _:
+        with Flow__Hacker_News__Extract_New_Articles() as _:
             _.current__path = self.current_path
             _.load_and_diff_timeline_data()
             assert _.mgraph__timeline__current .data().stats() == {'edges_ids': 97, 'nodes_ids': 98}
@@ -102,7 +101,7 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             assert timeline_diff.removed_values         == __()
 
     def test_load_and_diff_timeline_data___without_current(self):
-        with Flow__Hacker_News__Process_New_Articles() as _:
+        with Flow__Hacker_News__Extract_New_Articles() as _:
             _.previous__path = self.previous_path
             _.load_and_diff_timeline_data()
             assert _.mgraph__timeline__current .data().stats() == {'edges_ids': 0  , 'nodes_ids': 0  }
@@ -118,7 +117,7 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             #assert _.config_new_articles.timeline_diff.json () == {'added_values': {}, 'removed_values': {}}
 
     def test_save__config_new_articles__current(self):
-        with self.flow_process_new_articles as _:
+        with self.flow_extract_new_articles as _:
             _.current__path = self.current_path
             _.load_and_diff_timeline_data()
             _.save__config_new_articles__current()
@@ -128,7 +127,7 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
 
 
     def test_save__config_new_articles__latest(self):
-        with self.flow_process_new_articles as _:
+        with self.flow_extract_new_articles as _:
             _.current__path = self.current_path
             _.load_and_diff_timeline_data()
             _.save__config_new_articles__current()      # todo: improve logic so that we don't need to call this one before
@@ -138,7 +137,7 @@ class test_Flow__Hacker_News__Process_New_Articles(TestCase):
             assert json__equals__list_and_set(_.new__config_new_articles.json(), _.hacker_news_data.new_articles().json())
 
     def test_create_screenshot(self):
-        with self.flow_process_new_articles as _:
+        with self.flow_extract_new_articles as _:
             _.load_and_diff_timeline_data()
             _.create_screenshot()
             # load_dotenv()

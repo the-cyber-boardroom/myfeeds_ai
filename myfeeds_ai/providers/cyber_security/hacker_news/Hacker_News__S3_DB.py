@@ -26,7 +26,7 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
             return data_feed
 
     def feed_data__load__from_date(self, year:int, month:int, day:int, hour:int):
-        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, S3_FILE_NAME__RAW__FEED_DATA, S3_Key__File_Extension.JSON)
+        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, file_id=S3_FILE_NAME__RAW__FEED_DATA, extension=S3_Key__File_Extension.JSON)
         return self.feed_data__load__from_path(s3_path)
 
 
@@ -72,7 +72,7 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
         return raw_data_feed
 
     def raw_data__feed__load__from_date(self, year:int, month:int, day:int, hour:int):
-        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, S3_FILE_NAME__RAW__FEED_XML, S3_Key__File_Extension.JSON)
+        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, file_id=S3_FILE_NAME__RAW__FEED_XML, extension=S3_Key__File_Extension.JSON)
         return self.raw_data__feed__load__from_path(s3_path)
 
     # methods for s3 folders and files

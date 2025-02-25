@@ -4,6 +4,7 @@ from mgraph_db.providers.time_chain.MGraph__Time_Chain                          
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types                   import Time_Chain__Year, Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                        import S3_Key__File_Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                  import Hacker_News__Data, FILE_NAME__NEW_ARTICLES, FILE_NAME__CURRENT_ARTICLES
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Edit                  import Hacker_News__Edit
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Live_Data             import Hacker_News__Live_Data
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage               import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import Schema__Feed__Config__New_Articles
@@ -18,10 +19,11 @@ from osbot_utils.type_safe.Type_Safe                                            
 FILE_NAME__FEED_TIMELINE_MGRAPH = 'feed-timeline.mgraph.json'
 
 
-class Flow__Hacker_News__Process_New_Articles(Type_Safe):
+class Flow__Hacker_News__Extract_New_Articles(Type_Safe):
     hacker_news_storage            : Hacker_News__Storage
     hacker_news_live_data          : Hacker_News__Live_Data
     hacker_news_data               : Hacker_News__Data
+    hacker_news_edit               : Hacker_News__Edit
 
     current__articles              : Schema__Feed__Current_Articles     = None
     current__config_new_articles   : Schema__Feed__Config__New_Articles = None
@@ -72,7 +74,6 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
         new_articles_ids     = self.timeline_diff.added_values  .get(Time_Chain__Source, set())
         removed_articles_ids = self.timeline_diff.removed_values.get(Time_Chain__Source, set())
         for new_article_id in new_articles_ids:
-            #print('added', removed_articles_ids)
             kwargs = dict(location = self.current__path)
             current_article = Schema__Feed__Current_Article(**kwargs)
             if Obj_Id(new_article_id) not in current_articles.articles:
@@ -80,14 +81,14 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
 
         for removed_article_id in removed_articles_ids:
             if Obj_Id(removed_article_id) in current_articles.articles:
-                #print('removed', removed_article_id)
                 del current_articles.articles[Obj_Id(removed_article_id)]
 
-        data      = current_articles.json()
-        file_id   = FILE_NAME__CURRENT_ARTICLES
-        extension = S3_Key__File_Extension.JSON.value
-        with self.hacker_news_storage as _:
-            self.path__current_articles = _.save_to__latest(data=data, file_id=file_id, extension=extension)
+        self.path__current_articles = self.hacker_news_edit.save__current_articles(current_articles)
+        # data      = current_articles.json()
+        # file_id   = FILE_NAME__CURRENT_ARTICLES
+        # extension = S3_Key__File_Extension.JSON.value
+        # with self.hacker_news_storage as _:
+        #     self.path__current_articles = _.save_to__latest(data=data, file_id=file_id, extension=extension)
         self.current__articles = current_articles
 
     @task()
@@ -101,6 +102,7 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
                           )
 
             self.new__config_new_articles = Schema__Feed__Config__New_Articles(**kwargs)          # create new object
+
             data        = self.new__config_new_articles.json()
             file_id     = FILE_NAME__NEW_ARTICLES
             extension   = S3_Key__File_Extension.JSON.value
@@ -133,7 +135,7 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
 
 
     @flow()
-    def process_rss(self) -> Flow:
+    def extract_new_articles(self) -> Flow:
         with self as _:
             _.resolve__previous__path           ()
             _.load_and_diff_timeline_data       ()
@@ -148,6 +150,4 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
         return self.new__config_new_articles.json()
 
     def run(self):
-        flow = self.process_rss()
-        flow.flow_config.print_error_stack_trace = True
-        return flow.execute_flow()
+        return self.extract_new_articles().execute_flow()
