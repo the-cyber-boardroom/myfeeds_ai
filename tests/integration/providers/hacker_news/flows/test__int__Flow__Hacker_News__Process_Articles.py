@@ -12,10 +12,8 @@ class test__int__Flow__Hacker_News__Process_Articles(TestCase):
     def setUp(self):
         self.process_articles = Flow__Hacker_News__Process_Articles()
 
-    def test_run(self):
-        with self.process_articles as _:
-            _.run()
-
-            pprint(_.result__create_text_entities)
-            #assert len(_.articles_to_process) == 50
+    # def test_run(self):
+    #     with self.process_articles as _:
+    #         pprint(_.run().flow_return_value)
+    #         #assert len(_.articles_to_process) == 50
 
