@@ -63,7 +63,7 @@ class test_Hacker_News__S3_DB(TestCase):
             raw_data_feed_json     = raw_data_feed.json()
             result                 = _.raw_data__feed__save(raw_data_feed)
             year, month, day, hour = _.s3_key_generator.path__for_date_time__now_utc().split('/')
-            s3_path                = _.s3_key_generator.s3_path(year, month, day, hour, S3_FILE_NAME__RAW__FEED_XML, S3_Key__File_Extension.JSON)
+            s3_path                = _.s3_key_generator.s3_path(year, month, day, hour, file_id=S3_FILE_NAME__RAW__FEED_XML,extension=S3_Key__File_Extension.JSON)
             s3_path_latest         = _.s3_path__raw_data__feed_xml__latest()
             all_files              = _.provider__all_files()
             file_data__current     = _.raw_data__feed__load__current  (              ).json()

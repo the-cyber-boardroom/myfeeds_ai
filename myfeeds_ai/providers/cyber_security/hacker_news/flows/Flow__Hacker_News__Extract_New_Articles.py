@@ -18,7 +18,7 @@ from osbot_utils.type_safe.Type_Safe                                            
 FILE_NAME__FEED_TIMELINE_MGRAPH = 'feed-timeline.mgraph.json'
 
 
-class Flow__Hacker_News__Process_New_Articles(Type_Safe):
+class Flow__Hacker_News__Extract_New_Articles(Type_Safe):
     hacker_news_storage            : Hacker_News__Storage
     hacker_news_live_data          : Hacker_News__Live_Data
     hacker_news_data               : Hacker_News__Data
@@ -133,7 +133,7 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
 
 
     @flow()
-    def process_rss(self) -> Flow:
+    def extract_new_articles(self) -> Flow:
         with self as _:
             _.resolve__previous__path           ()
             _.load_and_diff_timeline_data       ()
@@ -148,6 +148,4 @@ class Flow__Hacker_News__Process_New_Articles(Type_Safe):
         return self.new__config_new_articles.json()
 
     def run(self):
-        flow = self.process_rss()
-        flow.flow_config.print_error_stack_trace = True
-        return flow.execute_flow()
+        return self.extract_new_articles().execute_flow()
