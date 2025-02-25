@@ -64,7 +64,7 @@ class Routes__Hacker_News(Fast_API_Routes):
     def flow_process_articles(self):
         flow = Flow__Hacker_News__Process_Articles()
         flow.run()
-        return flow.current_articles.json()
+        return flow.result__create_text_entities
 
     def data_feed(self, year:int, month:int, day:int, hour:int):
         kwargs = dict(year   = year ,

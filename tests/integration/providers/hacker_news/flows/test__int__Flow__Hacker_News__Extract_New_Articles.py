@@ -19,17 +19,11 @@ class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
 
     def setUp(self):
         self.flow_extract_new_articles = Flow__Hacker_News__Extract_New_Articles()                      # new object on every test run
-        # with self.flow_process_new_articles as _:
-        #     _.config_new_articles.path__current            = self.path__current
-        #     _.config_new_articles.path__previous           = self.path__previous
 
     def test_process_flow(self):
         with self.flow_extract_new_articles as _:
             _.current__path = self.current_path
             result = self.flow_extract_new_articles.run()
-            #pprint(_.current__articles.json())
-            #pprint(result)
-            #pprint(_.timeline_diff.json())
 
     def test_resolve__previous__path(self):
 
