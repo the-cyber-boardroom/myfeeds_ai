@@ -138,6 +138,11 @@ class Flow__Hacker_News__Extract_New_Articles(Type_Safe):
     def extract_new_articles(self) -> Flow:
         with self as _:
             _.resolve__previous__path           ()
+        if self.current__path == self.previous__path:
+            return {'error': { 'source'       :'current__path == previous_path',
+                               'current__path': self.current__path,
+                               'previous__path': self.previous__path}}
+        with self as _:
             _.load_and_diff_timeline_data       ()
             _.update_current_articles           ()
             #_.create_screenshot                ()
