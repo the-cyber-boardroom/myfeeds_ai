@@ -13,10 +13,12 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.helpers.flows.decorators.flow                                               import flow
 from osbot_utils.helpers.flows.decorators.task                                               import task
 from osbot_utils.type_safe.Type_Safe                                                         import Type_Safe
-from osbot_utils.utils.Env import env_value
+from osbot_utils.utils.Env                                                                   import env_value
 from osbot_utils.utils.Lists                                                                 import list_index_by
 
 from osbot_utils.utils.Dev import pprint
+
+DEFAULT__MAX_ARTICLES_TO_PROCESS = 1
 
 class Flow__Hacker_News__Process_Articles(Type_Safe):
     hacker_news_data            : Hacker_News__Data
@@ -111,17 +113,17 @@ class Flow__Hacker_News__Process_Articles(Type_Safe):
 
                 self.result__create_text_entities[article_id] = result
                 article.status = Schema__Feed__Current_Article__Status.TO_CREATE_GRAPH
-                #pprint(article_entities.json())
-
-                break
+                if len(self.result__create_text_entities) >= DEFAULT__MAX_ARTICLES_TO_PROCESS:
+                    break
         self.hacker_news_edit.save__current_articles(self.current_articles)
 
 
     @flow()
     def process_articles(self) -> Flow:
         self.load_new_articles()
-        self.process_articles__create_article_file   ()
+        self.process_articles__create_article_file ()
         self.process_articles__create_text_entities()
+        return self.result__create_text_entities
 
 
     def run(self):
