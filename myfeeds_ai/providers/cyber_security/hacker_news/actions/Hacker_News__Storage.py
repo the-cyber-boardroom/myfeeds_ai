@@ -25,20 +25,20 @@ class Hacker_News__Storage(Type_Safe):
             _.s3_path__delete(s3_path)
             return s3_path
 
-    def files_in__date_time(self, date_time:datetime):
+    def files_in__date_time(self, date_time:datetime, include_sub_folders=False):
         with self.s3_db as _:
             path__latest = _.s3_folder__for_date_time(date_time)
-            return _.s3_path__files(path__latest)
+            return _.s3_path__files(path__latest, include_sub_folders=include_sub_folders)
 
     def files_in__latest(self):
         with self.s3_db as _:
             path__latest = _.s3_folder__for_latest()
             return _.s3_path__files(path__latest)
 
-    def files_in__path(self, path):
+    def files_in__path(self, path, include_sub_folders=False):
         with self.s3_db as _:
             date_time = self.path_to__date_time(path)
-            return self.files_in__date_time(date_time)
+            return self.files_in__date_time(date_time, include_sub_folders=include_sub_folders)
 
     def files_in__now(self):
         with self.s3_db as _:

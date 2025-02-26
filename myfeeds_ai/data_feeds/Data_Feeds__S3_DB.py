@@ -54,9 +54,9 @@ class Data_Feeds__S3_DB(S3__DB_Base):
         result = self.s3_file_delete(s3_key=s3_key)
         return result
 
-    def s3_path__files(self, s3_path):
+    def s3_path__files(self, s3_path, include_sub_folders=False):
         s3_key__now_utc = self.s3_key__for_provider_path(s3_path)
-        return self.s3_folder_files(s3_key__now_utc)
+        return self.s3_folder_files(s3_key__now_utc, include_sub_folders=include_sub_folders)
 
     def s3_path__save_data(self, data, s3_path):
         s3_key = self.s3_key__for_provider_path(s3_path)
