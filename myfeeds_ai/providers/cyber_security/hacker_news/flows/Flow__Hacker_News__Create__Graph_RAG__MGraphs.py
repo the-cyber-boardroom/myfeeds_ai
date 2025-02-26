@@ -72,10 +72,12 @@ class Flow__Hacker_News__Create__Graph_RAG__MGraphs(Type_Safe):
                                                                      file_id   = S3_FILE_NAME__ARTICLE__GRAPH_ENTITIES,
                                                                      extension = S3_Key__File_Extension.MGRAPH__JSON  )
 
-            path_entities_mgraph_png = article_storage.save_to__path(data      = entity_mgraph_bytes                  ,
-                                                                     path      = location                             ,
-                                                                     file_id   = S3_FILE_NAME__ARTICLE__GRAPH_ENTITIES,
-                                                                     extension = S3_Key__File_Extension.MGRAPH__PNG   )
+            content_type__png = "image/png"
+            path_entities_mgraph_png = article_storage.save_to__path(data        = entity_mgraph_bytes                  ,
+                                                                     path        = location                             ,
+                                                                     file_id     = S3_FILE_NAME__ARTICLE__GRAPH_ENTITIES,
+                                                                     extension    = S3_Key__File_Extension.MGRAPH__PNG   ,
+                                                                     content_type = content_type__png)
 
             result__processed_file = dict( entities             = len(entities)                  ,
                                            mgraph_stats         = entity_mgraph.data().stats()   ,
