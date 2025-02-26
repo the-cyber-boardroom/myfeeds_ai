@@ -8,9 +8,10 @@ from osbot_utils.helpers.Obj_Id                                                 
 from osbot_utils.type_safe.decorators.type_safe                                                 import type_safe
 from osbot_utils.utils.Http                                                                     import url_join_safe
 
-S3_FILE_NAME__ARTICLE__FEED_ARTICLE  = 'feed-article'
-S3_FILE_NAME__ARTICLE__TEXT_ENTITIES = 'text-entities'
-S3_FILE_NAME__MGRAPH__TIMELINE       = 'feed-timeline'
+S3_FILE_NAME__ARTICLE__FEED_ARTICLE   = 'feed-article'
+S3_FILE_NAME__ARTICLE__TEXT_ENTITIES  = 'text-entities'
+S3_FILE_NAME__ARTICLE__GRAPH_ENTITIES = 'graph-entities'
+S3_FILE_NAME__MGRAPH__TIMELINE        = 'feed-timeline'
 
 class Hacker_News__S3_DB(Data_Feeds__S3_DB):
     provider_name = Model__Data_Feeds__Providers.HACKER_NEWS

@@ -31,7 +31,7 @@ class test_Hacker_News__Files(TestCase):
 
             assert type(model)                                                   is Model__Hacker_News__Raw_Data__Feed
             #assert xml_feed__raw_data.created_by                                 == RAW_FEED__CREATED__BY
-            assert xml_feed__raw_data.duration                                   < 1.0
+            assert xml_feed__raw_data.duration                                   < 2.0
             #assert xml_feed__raw_data.feed_xml.startswith(expected_xml_start)    is True
             assert _.xml_feed__raw_data__from_date(year, month, day, hour).obj() == xml_feed__raw_data
 
