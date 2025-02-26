@@ -48,19 +48,21 @@ class Hacker_News__Storage(Type_Safe):
     def save_to__path(self, data: Dict      ,
                             path : str      ,
                             file_id: Safe_Id,
-                            extension: S3_Key__File_Extension
+                            extension: S3_Key__File_Extension,
+                            content_type : str  = None
                        ) -> str:
         date_time = self.path_to__date_time(path)
-        return self.save_to__date_time(data=data, date_time=date_time, file_id=file_id, extension=extension)
+        return self.save_to__date_time(data=data, date_time=date_time, file_id=file_id, extension=extension, content_type=content_type)
 
     def save_to__date_time(self, data     : Dict     ,
                                  date_time: datetime ,
                                  file_id  : Safe_Id  ,
-                                 extension: S3_Key__File_Extension
+                                 extension: S3_Key__File_Extension,
+                                 content_type: str = None
                             ) -> str:
         with self.s3_db as _:
             s3_path = self.path__date_time(date_time=date_time, file_id=file_id, extension=extension)
-            _.s3_path__save_data(data=data, s3_path=s3_path)
+            _.s3_path__save_data(data=data, s3_path=s3_path, content_type=content_type)
             return s3_path
 
     def save_to__now(self, data     : Dict                    ,                  # Save data with current timestamp
