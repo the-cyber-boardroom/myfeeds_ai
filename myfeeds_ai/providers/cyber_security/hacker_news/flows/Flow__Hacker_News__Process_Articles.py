@@ -86,7 +86,7 @@ class Flow__Hacker_News__Process_Articles(Type_Safe):
             if article.status == Schema__Feed__Current_Article__Status.TO_EXTRACT_TEXT:
                 article_storage = Hacker_News__Storage__Article(article_id=article_id)
                 path__feed_article    = article.path__feed_article
-                article_data          = article_storage.path__load_Data(path__feed_article)     # todo: we shouldn't be using a dict here (we should be using .data() and get the correct schema file
+                article_data          = article_storage.path__load_data(path__feed_article)     # todo: we shouldn't be using a dict here (we should be using .data() and get the correct schema file
                 article_title         = article_data.get('title'     )
                 article_description   = article_data.get('description')
 

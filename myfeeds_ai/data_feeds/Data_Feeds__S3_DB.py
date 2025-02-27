@@ -63,7 +63,11 @@ class Data_Feeds__S3_DB(S3__DB_Base):
         result = self.s3_save_data(data=data, s3_key=s3_key, content_type=content_type)
         return result
 
-    def s3_path__load_Data(self, s3_path):
+    def s3_path__load_bytes(self, s3_path):
+        s3_key = self.s3_key__for_provider_path(s3_path)
+        return self.s3_file_bytes(s3_key)
+
+    def s3_path__load_data(self, s3_path):
         s3_key = self.s3_key__for_provider_path(s3_path)
         return self.s3_file_data(s3_key)
 

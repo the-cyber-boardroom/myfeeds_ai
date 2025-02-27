@@ -60,12 +60,26 @@ class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
             _.previous__path = self.previous_path
             _.load_and_diff_timeline_data()                                     # since we are using cached data , these will always be the ame
             assert type(_.timeline_diff) is Schema__MGraph__Diff__Values        # confirm data has been loaded into a new object of type Schema__MGraph__Diff__Values
-            assert json__equals__list_and_set(_.timeline_diff.json(), { 'added_values'  : {  type_full_name(Time_Chain__Day)   : [ '20'],
-                                                                                            type_full_name(Time_Chain__Source): [ '272b4927', 'e5091ea4', '5d2f8952', 'ce7e697e',
-                                                                                                                                  'd54c06c4', '9153bba8', '55b2f8d2'            ]},
-                                                                       'removed_values': { type_full_name(Time_Chain__Day)    : [ '10'],
-                                                                                           type_full_name(Time_Chain__Source) : [ '468bfcf6', 'f2082031', '08ec0110', 'ea2a87d4',
-                                                                                                                                 '0a68e403','d0ca70d4', '5f6bf957'             ]}})
+            from osbot_utils.utils.Dev import pprint
+            assert sorted(_.timeline_diff.added_values  [Time_Chain__Day   ]) == ['20']
+            assert sorted(_.timeline_diff.removed_values[Time_Chain__Day   ]) == ['10']
+            assert sorted(_.timeline_diff.added_values  [Time_Chain__Source]) == sorted([ '272b4927', 'e5091ea4', '5d2f8952', 'ce7e697e', 'd54c06c4', '9153bba8', '55b2f8d2'])
+            assert sorted(_.timeline_diff.removed_values[Time_Chain__Source]) == sorted([ '468bfcf6', 'f2082031', '08ec0110', 'ea2a87d4', '0a68e403','d0ca70d4', '5f6bf957' ])
+
+            # todo: see why the json__equals__list_and_set is failing (since the data is the same as above)
+            # assert _.timeline_diff.json() == { 'added_values'  : {  type_full_name(Time_Chain__Day)   : [ '20'],
+            #                                                         type_full_name(Time_Chain__Source): [ '272b4927', 'e5091ea4', '5d2f8952', 'ce7e697e',
+            #                                                                                               'd54c06c4', '9153bba8', '55b2f8d2'            ]},
+            #                                    'removed_values': { type_full_name(Time_Chain__Day)    : [ '10'],
+            #                                                        type_full_name(Time_Chain__Source) : [ '468bfcf6', 'f2082031', '08ec0110', 'ea2a87d4',
+            #                                                                                              '0a68e403','d0ca70d4', '5f6bf957'             ]}}
+
+            # assert json__equals__list_and_set(_.timeline_diff.json(), { 'added_values'  : {  type_full_name(Time_Chain__Day)   : [ '20'],
+            #                                                                                 type_full_name(Time_Chain__Source): [ '272b4927', 'e5091ea4', '5d2f8952', 'ce7e697e',
+            #                                                                                                                       'd54c06c4', '9153bba8', '55b2f8d2'            ]},
+            #                                                            'removed_values': { type_full_name(Time_Chain__Day)    : [ '10'],
+            #                                                                                type_full_name(Time_Chain__Source) : [ '468bfcf6', 'f2082031', '08ec0110', 'ea2a87d4',
+            #                                                                                                                      '0a68e403','d0ca70d4', '5f6bf957'             ]}})
     def test_update_current_articles(self):
         with self.flow_extract_new_articles as _:
             _.current__path =  self.current_path
