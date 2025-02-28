@@ -60,7 +60,6 @@ class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
             _.previous__path = self.previous_path
             _.load_and_diff_timeline_data()                                     # since we are using cached data , these will always be the ame
             assert type(_.timeline_diff) is Schema__MGraph__Diff__Values        # confirm data has been loaded into a new object of type Schema__MGraph__Diff__Values
-            from osbot_utils.utils.Dev import pprint
             assert sorted(_.timeline_diff.added_values  [Time_Chain__Day   ]) == ['20']
             assert sorted(_.timeline_diff.removed_values[Time_Chain__Day   ]) == ['10']
             assert sorted(_.timeline_diff.added_values  [Time_Chain__Source]) == sorted([ '272b4927', 'e5091ea4', '5d2f8952', 'ce7e697e', 'd54c06c4', '9153bba8', '55b2f8d2'])
@@ -129,7 +128,6 @@ class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
             _.current__path = self.current_path
             _.load_and_diff_timeline_data()
             _.save__config_new_articles__current()
-            #pprint(_.new__config_new_articles.json())
             assert _.path__new_articles__current      == f'{_.new__config_new_articles.path__current}/{FILE_NAME__NEW_ARTICLES}.{S3_Key__File_Extension.JSON.value}'
             assert _.new__config_new_articles.json()  == _.hacker_news_storage.load_from__path(path=_.new__config_new_articles.path__current, file_id=FILE_NAME__NEW_ARTICLES, extension=S3_Key__File_Extension.JSON.value)
 

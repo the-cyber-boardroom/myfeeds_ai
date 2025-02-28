@@ -100,7 +100,7 @@ class Flow__Hacker_News__Create_MGraph__Articles__Timeline(Flow):
             # _.set_graph__title("50 THN Articles published dates")
             with screenshot.export().export_dot() as _:
                 _.show_edge__type__str           ()
-                _.show_node__value__str          ()
+                _.show_node__value               ()
                 _.set_graph__rank_dir__tb        ()
                 _.set_graph__rank_sep            (0.2)
                 _.set_graph__node_sep            (0.1)
