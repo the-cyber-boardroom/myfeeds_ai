@@ -29,6 +29,14 @@ class Hacker_News__Storage(Type_Safe):
         if self.delete_from__path(s3_path):
             return s3_path
 
+    def file_info_in__latest(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Dict:
+        s3_path = self.path__latest(file_id=file_id, extension=extension)
+        return self.path__file_info(s3_path)
+
+    def file_info_in__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Dict:
+        s3_path = self.path__now(file_id=file_id, extension=extension)
+        return self.path__file_info(s3_path)
+
     def files_in__date_time(self, date_time:datetime, include_sub_folders=False):
         with self.s3_db as _:
             path__latest = _.s3_folder__for_date_time(date_time)
@@ -69,13 +77,14 @@ class Hacker_News__Storage(Type_Safe):
             _.s3_path__save_data(data=data, s3_path=s3_path, content_type=content_type)
             return s3_path
 
-    def save_to__now(self, data     : Dict                    ,                  # Save data with current timestamp
-                           file_id  : Safe_Id                 ,
-                           extension: S3_Key__File_Extension
+    def save_to__now(self, data         : Dict                    ,                  # Save data with current timestamp
+                           file_id      : Safe_Id                 ,
+                           extension    : S3_Key__File_Extension  ,
+                           content_type : str   = None
                       ) -> str:
         with self.s3_db as _:
             s3_path = self.path__now(file_id=file_id, extension=extension)
-            _.s3_path__save_data(data=data, s3_path=s3_path)
+            _.s3_path__save_data    (data=data, s3_path=s3_path, content_type=content_type)
             return s3_path
 
     def save_to__now__json(self, data: Dict, file_id: Safe_Id) -> str:          # Save json data with current timestamp
@@ -86,13 +95,14 @@ class Hacker_News__Storage(Type_Safe):
         data = mgraph.json__compress()
         return self.save_to__now(data=data, file_id=file_id, extension=S3_Key__File_Extension.MGRAPH__JSON)
 
-    def save_to__latest(self, data     : Dict                    ,                # Save data to latest version
-                              file_id  : Safe_Id                 ,
-                              extension: S3_Key__File_Extension
+    def save_to__latest(self, data        : Dict                    ,                # Save data to latest version
+                              file_id     : Safe_Id                 ,
+                              extension   : S3_Key__File_Extension  ,
+                              content_type: str = None
                          ) -> str:
         with self.s3_db as _:
             s3_path = _.s3_path__latest(file_id=file_id, extension=extension)
-            _.s3_path__save_data(data=data, s3_path=s3_path)
+            _.s3_path__save_data(data=data, s3_path=s3_path, content_type=content_type)
             return s3_path
 
     @type_safe
@@ -116,9 +126,9 @@ class Hacker_News__Storage(Type_Safe):
         data    = self.path__load_data(s3_path)
         return data
 
-    def load_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Optional[Dict]:
+    def load_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension, content_type: str=None) -> Optional[Dict]:
         s3_path = self.path__now(file_id=file_id, extension=extension)
-        data    = self.path__load_data(s3_path)
+        data    = self.path__load_data(s3_path, content_type=content_type)
         return data
 
     def path_to__date_time(self, path):
@@ -140,14 +150,20 @@ class Hacker_News__Storage(Type_Safe):
         s3_path = self.path__path(path=path,file_id=file_id, extension=extension)
         return self.path__exists(s3_path)
 
+    def path__file_info(self, s3_path):
+        return self.s3_db.s3_path__file_info(s3_path)
+
     def path__latest(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
         return self.s3_db.s3_path__latest(file_id=file_id, extension=extension)
 
     def path__load_bytes(self, s3_path):
         return self.s3_db.s3_path__load_bytes(s3_path)
 
-    def path__load_data(self, s3_path):
-        return self.s3_db.s3_path__load_data(s3_path)
+    def path__load_data(self, s3_path, content_type=None):
+        if content_type:
+            return self.s3_db.s3_path__load_bytes(s3_path)
+        else:
+            return self.s3_db.s3_path__load_data(s3_path)
 
     def path_to__now_utc(self):
         return self.s3_db.s3_path__now_utc()

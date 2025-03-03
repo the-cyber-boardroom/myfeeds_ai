@@ -3,6 +3,7 @@ from unittest                                                                   
 from mgraph_db.providers.time_chain.MGraph__Time_Chain                                                          import MGraph__Time_Chain
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                                         import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File                                    import Hacker_News__File
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Dot_Code                import CONTENT_TYPE__MGRAPH__DOT
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline       import Flow__Hacker_News__2__Create_Articles_Timeline, FILE_NAME__MGRAPH__TIMELINE
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph                                import Hacker_News__MGraph
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph__Timeline                      import Hacker_News__MGraph__Timeline, FILE_ID__MGRAPH__TIMELINE
@@ -11,10 +12,9 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.helpers.flows.decorators.flow                                                                  import flow
 from osbot_utils.type_safe.Type_Safe                                                                            import Type_Safe
 from osbot_utils.utils.Misc                                                                                     import list_set
-from osbot_utils.utils.Objects                                                                                  import base_types
+from osbot_utils.utils.Objects                                                                                  import base_types, obj
 from tests.integration.data_feeds__objs_for_tests                                                               import cbr_website__assert_local_stack
 
-from osbot_utils.utils.Dev import pprint
 
 class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
 
@@ -97,6 +97,23 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             assert _.exists     () is True
             assert _.file_name  () in _.hacker_news_storage.files_in__latest()
 
+            assert obj(_.file_info__latest()).ContentType == CONTENT_TYPE__MGRAPH__DOT
+
+    def test_task__5__create_png(self):
+        with self.flow__articles_timeline as _:
+            _.task__2__create_mgraph()
+            _.task__4__create_dot_code()
+            _.task__5__create_png   ()
+
+        with self.flow__articles_timeline.hacker_news_timeline_png as _:
+            assert _.file_name() == 'feed-timeline.mgraph.png'
+            assert _.file_name() in _.hacker_news_storage.files_in__latest()
+            assert _.exists   () is True
+
+            assert _.content_type                         == 'image/png'
+            assert obj(_.file_info__latest()).ContentType == _.content_type
+            assert obj(_.file_info__now   ()).ContentType == _.content_type
+
 
     @pytest.mark.skip(reason='needs fix to take into account latest refactoring')
     def test_execute(self):
@@ -106,7 +123,7 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             assert flow.flow_return_value == {'durations': _.durations }
             assert list_set(_.durations)  == [ 'create_dot_code', 'create_mgraph','create_png',
                                                'load_articles'  , 'save_mgraph'               ]
-            pprint(flow.durations())
+            #pprint(flow.durations())
 
             #_.print_log_messages()
 

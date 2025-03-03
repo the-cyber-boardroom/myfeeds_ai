@@ -3,7 +3,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News 
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File    import Hacker_News__File
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Edge    import Schema__MGraph__Time_Chain__Edge__Day, Schema__MGraph__Time_Chain__Edge__Hour, Schema__MGraph__Time_Chain__Edge__Source, Schema__MGraph__Time_Chain__Edge__Month
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types   import Time_Chain__Year, Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source
-
+from osbot_utils.utils.Misc import bytes_to_str
 
 year_color        = '#E6EEF8'       # Light steel blue
 month_color       = '#D1E2F4'       # Lighter powder blue
@@ -16,9 +16,12 @@ link_color_day    = '#3B4B89'       # Navy blue
 link_color_hour   = '#4A5491'       # Dark slate blue
 link_color_source = '#5A5C98'       # Dark purple blue
 
+CONTENT_TYPE__MGRAPH__DOT = "text/vnd.graphviz"
+
 class Hacker_News__File__Timeline__Dot_Code(Hacker_News__File):
-    file_id = FILE_ID__MGRAPH__TIMELINE
-    extension = S3_Key__File_Extension.MGRAPH__DOT
+    file_id      = FILE_ID__MGRAPH__TIMELINE
+    extension    = S3_Key__File_Extension.MGRAPH__DOT
+    content_type = CONTENT_TYPE__MGRAPH__DOT
 
     def create_dot_code(self, mgraph_timeline):
 
@@ -58,3 +61,7 @@ class Hacker_News__File__Timeline__Dot_Code(Hacker_News__File):
             _.set_edge__type_color(Schema__MGraph__Time_Chain__Edge__Source , link_color_source )
 
         return screenshot.export().to__dot()
+
+    def load(self):
+        file_bytes = super().load()            # because content_type is set, the data is stored as bytes
+        return bytes_to_str(file_bytes)     # so we need to convert it back into an str

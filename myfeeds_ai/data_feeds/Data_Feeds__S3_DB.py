@@ -75,6 +75,10 @@ class Data_Feeds__S3_DB(S3__DB_Base):
         s3_key= self.s3_key__for_provider_path(s3_path)
         return self.s3_file_exists(s3_key)
 
+    def s3_path__file_info(self, s3_path):
+        s3_key= self.s3_key__for_provider_path(s3_path)
+        return self.s3_file_info(s3_key)
+
     # methods for s3 folders
     def s3_folder__for_provider(self):
         return self.s3_key_generator.s3_folder__for_area(area=self.provider_name)

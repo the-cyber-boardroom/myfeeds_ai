@@ -4,6 +4,8 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files         
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                          import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage                import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Dot_Code import Hacker_News__File__Timeline__Dot_Code
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Png import \
+    Hacker_News__File__Timeline__Png
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph__Timeline       import Hacker_News__MGraph__Timeline
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article          import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed       import Model__Hacker_News__Data__Feed
@@ -25,6 +27,7 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
     files                               : Hacker_News__Files
     hacker_news_timeline                : Hacker_News__MGraph__Timeline
     hacker_news_timeline_dot_code       : Hacker_News__File__Timeline__Dot_Code
+    hacker_news_timeline_png            : Hacker_News__File__Timeline__Png
 
     data_feed                           : Model__Hacker_News__Data__Feed      = None
     articles                            : List[Model__Hacker_News__Article]   = None
@@ -73,33 +76,26 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
 
 
     @task()
-    def create_png(self):
+    def task__5__create_png(self):
+        if self.hacker_news_timeline_png.exists() is False:
+            with self.hacker_news_timeline.mgraph.screenshot() as _:
+                if get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS):
+                    self.png_bytes = _.dot_to_png(self.dot_code)
+                    self.hacker_news_timeline_png.save_data(file_data=self.png_bytes)
 
-        with self.hacker_news_timeline.mgraph.screenshot() as _:
-            if get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS):
-                self.png_bytes = _.dot_to_png(self.dot_code)
-
-    @task()
-    def map_durations(self):
-        self.durations = dict(  load_articles   = self.duration__load_articles   ,
-                                create_mgraph   = self.duration__create_mgraph   ,
-                                save_mgraph     = self.duration__save_mgraph     ,
-                                create_dot_code = self.duration__create_dot_code ,
-                                create_png      = self.duration__create_png      )
 
     @task()
-    def create_output(self):
-        self.output = dict(durations = self.durations)
+    def task__6__create_output(self):
+        self.output = {}                    # todo: see what we want to show in the output of this Flow
 
     @flow()
     def create_articles_timeline(self) -> Flow:
         self.task__1__load_articles  ()
         self.task__2__create_mgraph  ()
         self.task__3__save_mgraph    ()
-        self.create_dot_code         ()
-        self.create_png              ()
-        self.map_durations           ()
-        self.create_output           ()
+        self.task__4__create_dot_code()
+        self.task__5__create_png     ()
+        self.task__6__create_output  ()
         return self.output
 
     def run(self):
