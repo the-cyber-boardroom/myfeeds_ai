@@ -2,11 +2,14 @@ from osbot_fast_api.api.Fast_API_Routes                                         
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Flows import Hacker_News__Flows
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed import \
     Flow__Hacker_News__1__Download_RSS_Feed
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline import \
+    Flow__Hacker_News__2__Create_Articles_Timeline
 
 ROUTE_PATH__HACKER_NEWS__FLOWS = 'hacker-news-flows'
 
-ROUTES_PATHS__HACKER_NEWS__FLOWS = [f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/current-articles'         ,
-                                    f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-1-download-rss-feed' ]
+ROUTES_PATHS__HACKER_NEWS__FLOWS = [f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/current-articles'                ,
+                                    f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-1-download-rss-feed'        ,
+                                    f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-2-create-articles-timeline' ]
 
 class Routes__Hacker_News__Flows(Fast_API_Routes):
     tag                 : str                = 'hacker-news-flows'
@@ -19,6 +22,10 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
         return Flow__Hacker_News__1__Download_RSS_Feed().run().flow_return_value
 
 
+    def flow_2_create_articles_timeline(self):
+        return Flow__Hacker_News__2__Create_Articles_Timeline().run().flow_return_value
+
     def setup_routes(self):
-        self.add_route_get(self.current_articles        )
-        self.add_route_get(self.flow_1_download_rss_feed)
+        self.add_route_get(self.current_articles               )
+        self.add_route_get(self.flow_1_download_rss_feed       )
+        self.add_route_get(self.flow_2_create_articles_timeline)

@@ -99,5 +99,5 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
         self.task__6__create_output  ()
         return self.output
 
-    def run(self):
+    def run(self) -> Flow:
         return self.create_articles_timeline().execute_flow()
