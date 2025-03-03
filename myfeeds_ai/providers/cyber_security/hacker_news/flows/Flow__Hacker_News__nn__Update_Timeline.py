@@ -1,8 +1,7 @@
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                                         import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                                         import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed                      import Model__Hacker_News__Data__Feed
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create_MGraph__Articles__Timeline import Flow__Hacker_News__Create_MGraph__Articles__Timeline
-from osbot_utils.context_managers.capture_duration                                                              import capture_duration
+from osbot_utils.helpers.duration.decorators.capture_duration                                                   import capture_duration
 from osbot_utils.helpers.flows.Flow                                                                             import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                                  import flow
 from osbot_utils.helpers.flows.decorators.task                                                                  import task
@@ -10,20 +9,16 @@ from osbot_utils.type_safe.Type_Safe                                            
 from osbot_utils.utils.Misc                                                                                     import str_to_bytes
 from osbot_utils.utils.Objects                                                                                  import obj
 
-S3_FILE_NAME__FEED__TIMELINE = 'feed-timeline'
 
-class Flow__Hacker_News__Process_RSS(Type_Safe):
-    s3_db                              : Hacker_News__S3_DB
+class Flow__Hacker_News__nn__Update_Timeline(Type_Safe):
     files                              : Hacker_News__Files
+    s3_db                              : Hacker_News__S3_DB
     data_feed                          : Model__Hacker_News__Data__Feed
-    output                             : dict
-    flow_timeline                      : Flow__Hacker_News__Create_MGraph__Articles__Timeline
+    #flow_timeline                      : Flow__Hacker_News__2__Create_Articles_Timeline
     flow_timeline__traces              : str
-    duration__fetch_rss_feed           : float
+    output                             : dict
     duration__create_timeline          : float
-    duration__create_timeline__setup   : float
-    duration__create_timeline__execute : float
-    duration__create_output            : float
+
     s3_png_bytes__path__now            : str
     s3_png_bytes__path__latest         : str
     s3_dot_code__path__now             : str
@@ -31,27 +26,12 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
     invalidation_paths                 : list
 
     @task()
-    def fetch_rss_feed(self):
-        with capture_duration() as duration:
-            data_feed = self.files.feed_data__load_rss_and_parse()
-            if data_feed is None:
-                raise ValueError("in fetch_rss_feed failed to fetch data_feed")
-            if len(data_feed.feed_data.articles) == 0:
-                raise ValueError("in fetch_rss_feed there were no articles in the fetched data feed")
-            self.data_feed = data_feed
-        self.duration__fetch_rss_feed = duration.seconds
-
-    @task()
     def create_timeline(self):
         with capture_duration() as duration:
             with self.flow_timeline as _:
-                with capture_duration() as duration__setup:
-                    _.setup(data_feed=self.data_feed)
-                with capture_duration() as duration__execute:
-                    _.execute_flow()
+                _.setup(data_feed=self.data_feed)
+                _.execute_flow()
         self.duration__create_timeline          = duration.seconds
-        self.duration__create_timeline__setup   = duration__setup.seconds
-        self.duration__create_timeline__execute = duration__execute.seconds
 
     @task()
     def save_timeline(self):
@@ -79,7 +59,6 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
             print(s3_key__dot_code__now)
             print(s3_key__dot_code__latest)
 
-
     @task()
     def create_output(self):
         with capture_duration() as duration:
@@ -92,22 +71,17 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
             timeline__png__size       = len(self.flow_timeline.png_bytes)
             timeline__durations       = self.flow_timeline.durations
             self.output               = dict(articles_loaded = len(self.data_feed.feed_data.articles),
-                                             feed__s3_path__latest     = feed__s3_path__latest       ,
-                                             feed__s3_path__now        = feed__s3_path__now          ,
-                                             timeline__dot_code__size  = timeline__dot_code__size    ,
-                                             timeline__durations       = timeline__durations         ,
-                                             timeline__png__size       = timeline__png__size         ,
-                                             timeline__s3_path__latest = timeline__s3_path__latest   ,
-                                             timeline__s3_path__now    = timeline__s3_path__now      ,
-                                             timeline__stats           = timeline__stats             ,
-                                             flow_timeline__traces     = self.flow_timeline__traces  ,
-                                             invalidation_paths        = self.invalidation_paths     )
-        self.duration__create_output = duration.seconds
-        self.output['durations'] = dict(fetch_rss_feed                     = self.duration__fetch_rss_feed           ,
-                                        create_timeline                    = self.duration__create_timeline          ,
-                                        duration__create_timeline__setup   = self.duration__create_timeline__setup   ,
-                                        duration__create_timeline__execute = self.duration__create_timeline__execute ,
-                                        create_output                      = self.duration__create_output            )
+                                             feed__s3_path__latest     = feed__s3_path__latest         ,
+                                             feed__s3_path__now        = feed__s3_path__now            ,
+                                             timeline__dot_code__size  = timeline__dot_code__size      ,
+                                             timeline__durations       = timeline__durations           ,
+                                             timeline__png__size       = timeline__png__size           ,
+                                             timeline__s3_path__latest = timeline__s3_path__latest     ,
+                                             timeline__s3_path__now    = timeline__s3_path__now        ,
+                                             timeline__stats           = timeline__stats               ,
+                                             flow_timeline__traces     = self.flow_timeline__traces    ,
+                                             invalidation_paths        = self.invalidation_paths       ,
+                                             duration__create_timeline = self.duration__create_timeline)
 
     @task()
     def invalidate_cache(self):
@@ -118,9 +92,8 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
             pass
 
     @flow()
-    def process_rss(self) -> Flow:
+    def download_rss_feed(self) -> Flow:
         with self as _:
-            _.fetch_rss_feed  ()
             _.create_timeline ()
             _.save_timeline   ()
             _.invalidate_cache()
@@ -129,4 +102,4 @@ class Flow__Hacker_News__Process_RSS(Type_Safe):
         return self.output
 
     def run(self):
-        return self.process_rss().execute_flow()
+        return self.download_rss_feed().execute_flow()

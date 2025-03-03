@@ -44,12 +44,12 @@ class test_remote_shell_lambda(TestCase):
     def test__dev_server__flow_process_rss(self):
 
         def flow_process_rss():
-            from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_RSS import Flow__Hacker_News__Process_RSS
+            from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_RSS import Flow__Hacker_News__1__Process_RSS
             #process_rss  = Flow__Hacker_News__Process_RSS()
             #return_value = process_rss.run().flow_return_value
-            from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create_MGraph__Articles__Timeline import Flow__Hacker_News__Create_MGraph__Articles__Timeline
+            from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create_MGraph__Articles__Timeline import Flow__Hacker_News__2__Create_Articles_Timeline
             from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                                         import Hacker_News__Files
-            flow_timeline = Flow__Hacker_News__Create_MGraph__Articles__Timeline()
+            flow_timeline = Flow__Hacker_News__2__Create_Articles_Timeline()
             files         =  Hacker_News__Files()
             data_feed     = files.feed_data__load_rss_and_parse()
             data_feed.feed_data.articles = data_feed.feed_data.articles[0:10]
@@ -57,7 +57,7 @@ class test_remote_shell_lambda(TestCase):
             flow_timeline.setup(data_feed=data_feed)
             #return_value  = flow_timeline.execute_flow()#.flow_return_value
             #flow_timeline.main(data_feed=data_feed)
-            from osbot_utils.context_managers.capture_duration import capture_duration
+            from osbot_utils.helpers.duration.decorators.capture_duration import capture_duration
             with capture_duration() as duration:
                 with flow_timeline as _:
                     _.data_feed = data_feed

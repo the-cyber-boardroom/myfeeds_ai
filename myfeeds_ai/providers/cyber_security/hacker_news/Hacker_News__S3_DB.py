@@ -11,8 +11,9 @@ from osbot_utils.utils.Http                                                     
 S3_FILE_NAME__ARTICLE__FEED_ARTICLE   = 'feed-article'
 S3_FILE_NAME__ARTICLE__TEXT_ENTITIES  = 'text-entities'
 S3_FILE_NAME__ARTICLE__GRAPH_ENTITIES = 'graph-entities'
-S3_FILE_NAME__MGRAPH__TIMELINE        = 'feed-timeline'
+#S3_FILE_NAME__MGRAPH__TIMELINE        = 'feed-timeline'
 
+# todo: refactor out from this file anything that is related to specific files, this class should only have hacker_news related s3 helper methods
 class Hacker_News__S3_DB(Data_Feeds__S3_DB):
     provider_name = Model__Data_Feeds__Providers.HACKER_NEWS
 

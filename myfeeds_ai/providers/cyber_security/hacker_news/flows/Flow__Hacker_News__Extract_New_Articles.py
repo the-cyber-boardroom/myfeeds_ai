@@ -9,7 +9,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Live_D
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage               import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import Schema__Feed__Config__New_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles     import Schema__Feed__Current_Articles, Schema__Feed__Current_Article
-from osbot_utils.context_managers.capture_duration                                              import capture_duration
+from osbot_utils.helpers.duration.decorators.capture_duration                                   import capture_duration
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
 from osbot_utils.helpers.flows.Flow                                                             import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                  import flow
@@ -74,7 +74,7 @@ class Flow__Hacker_News__Extract_New_Articles(Type_Safe):
         new_articles_ids     = self.timeline_diff.added_values  .get(Time_Chain__Source, set())
         removed_articles_ids = self.timeline_diff.removed_values.get(Time_Chain__Source, set())
         for new_article_id in new_articles_ids:
-            kwargs = dict(location = self.current__path)
+            kwargs = dict(location = self.current__path, article_id = new_article_id)
             current_article = Schema__Feed__Current_Article(**kwargs)
             if Obj_Id(new_article_id) not in current_articles.articles:
                 current_articles.articles[Obj_Id(new_article_id)] = current_article
@@ -84,11 +84,7 @@ class Flow__Hacker_News__Extract_New_Articles(Type_Safe):
                 del current_articles.articles[Obj_Id(removed_article_id)]
 
         self.path__current_articles = self.hacker_news_edit.save__current_articles(current_articles)
-        # data      = current_articles.json()
-        # file_id   = FILE_NAME__CURRENT_ARTICLES
-        # extension = S3_Key__File_Extension.JSON.value
-        # with self.hacker_news_storage as _:
-        #     self.path__current_articles = _.save_to__latest(data=data, file_id=file_id, extension=extension)
+
         self.current__articles = current_articles
 
     @task()

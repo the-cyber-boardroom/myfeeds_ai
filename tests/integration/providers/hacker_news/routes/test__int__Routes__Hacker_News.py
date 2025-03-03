@@ -57,15 +57,15 @@ class test__int__Routes__Hacker_News(TestCase):
         with self.routes_hacker_news as _:
             path_when = _.files.s3_db.s3_path__when()
             assert obj(_.files_paths()) == __(data    = __( now    =__(feed_xml             = f'{path_when}/feed-xml.json'            ,
-                                                                       feed_data            = f'{path_when}/feed-data.json'           ,
-                                                                       timeline_mgraph_dot  = f'{path_when}/feed-timeline.mgraph.dot' ,
-                                                                       timeline_mgraph_json = f'{path_when}/feed-timeline.mgraph.json',
-                                                                       timeline_mgraph_png  = f'{path_when}/feed-timeline.mgraph.png' ),
+                                                                       feed_data            = f'{path_when}/feed-data.json'           ,),
+                                                                       # timeline_mgraph_dot  = f'{path_when}/feed-timeline.mgraph.dot' ,
+                                                                       # timeline_mgraph_json = f'{path_when}/feed-timeline.mgraph.json',
+                                                                       # timeline_mgraph_png  = f'{path_when}/feed-timeline.mgraph.png' ),
                                                             latest =__(feed_xml             = 'latest/feed-xml.json'                   ,
-                                                                       feed_data            = 'latest/feed-data.json'                  ,
-                                                                       timeline_mgraph_dot  = 'latest/feed-timeline.mgraph.dot'        ,
-                                                                       timeline_mgraph_json = 'latest/feed-timeline.mgraph.json'       ,
-                                                                       timeline_mgraph_png  = 'latest/feed-timeline.mgraph.png'        )),
+                                                                       feed_data            = 'latest/feed-data.json'                  ,)),
+                                                                       # timeline_mgraph_dot  = 'latest/feed-timeline.mgraph.dot'        ,
+                                                                       # timeline_mgraph_json = 'latest/feed-timeline.mgraph.json'       ,
+                                                                       # timeline_mgraph_png  = 'latest/feed-timeline.mgraph.png'        )),
 
                                               error   = None    ,
                                               message =''       ,

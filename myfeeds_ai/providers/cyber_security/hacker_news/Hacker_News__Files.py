@@ -4,7 +4,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser        
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
-from osbot_utils.context_managers.capture_duration                                             import capture_duration
+from osbot_utils.helpers.duration.decorators.capture_duration                                  import capture_duration
 
 RAW_FEED__CREATED__BY = 'Hacker_News__Files.xml_feed__current'
 
@@ -16,15 +16,15 @@ class Hacker_News__Files(Data_Feeds__Files):
     def files_paths__latest(self):
         with self.s3_db as _:
             now    = dict( feed_xml             = _.s3_path__raw_data__feed_xml__now       (),
-                           feed_data            = _.s3_path__raw_data__feed_data__now      (),
-                           timeline_mgraph_dot  = _.s3_path__timeline__now__mgraph__dot    (),
-                           timeline_mgraph_json = _.s3_path__timeline__now__mgraph__json   (),
-                           timeline_mgraph_png  = _.s3_path__timeline__now__mgraph__png    ())
+                           feed_data            = _.s3_path__raw_data__feed_data__now      ())
+                           # timeline_mgraph_dot  = _.s3_path__timeline__now__mgraph__dot    (),
+                           # timeline_mgraph_json = _.s3_path__timeline__now__mgraph__json   (),
+                           # timeline_mgraph_png  = _.s3_path__timeline__now__mgraph__png    ())
             latest = dict( feed_xml             = _.s3_path__raw_data__feed_xml__latest    (),
-                           feed_data            = _.s3_path__raw_data__feed_data__latest   (),
-                           timeline_mgraph_dot  = _.s3_path__timeline__latest__mgraph__dot (),
-                           timeline_mgraph_json = _.s3_path__timeline__latest__mgraph__json(),
-                           timeline_mgraph_png  = _.s3_path__timeline__latest__mgraph__png ())
+                           feed_data            = _.s3_path__raw_data__feed_data__latest   ())
+                           # timeline_mgraph_dot  = _.s3_path__timeline__latest__mgraph__dot (),
+                           # timeline_mgraph_json = _.s3_path__timeline__latest__mgraph__json(),
+                           # timeline_mgraph_png  = _.s3_path__timeline__latest__mgraph__png ())
         return dict(now    = now    ,
                     latest = latest )
 

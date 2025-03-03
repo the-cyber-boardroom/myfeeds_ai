@@ -1,10 +1,13 @@
 from datetime                                                            import datetime, timezone
 from typing                                                              import Dict, Optional, List
+from mgraph_db.mgraph.MGraph                                             import MGraph
 from osbot_utils.decorators.methods.cache_on_self                        import cache_on_self
 from osbot_utils.helpers.Safe_Id                                         import Safe_Id
 from osbot_utils.type_safe.Type_Safe                                     import Type_Safe
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                 import S3_Key__File_Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB  import Hacker_News__S3_DB
+from osbot_utils.type_safe.decorators.type_safe                          import type_safe
+
 
 class Hacker_News__Storage(Type_Safe):
     s3_db : Hacker_News__S3_DB
@@ -14,15 +17,16 @@ class Hacker_News__Storage(Type_Safe):
         return []
 
     def delete_from__latest(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
-        with self.s3_db as _:
-            s3_path = _.s3_path__latest(file_id=file_id, extension=extension)
-            _.s3_path__delete(s3_path)
+        s3_path = self.path__latest(file_id=file_id, extension=extension)
+        if self.delete_from__path(s3_path):
             return s3_path
 
+    def delete_from__path(self, s3_path) -> bool:
+        return  self.s3_db.s3_path__delete(s3_path)
+
     def delete_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
-        with self.s3_db as _:
-            s3_path = self.path__now(file_id=file_id, extension=extension)
-            _.s3_path__delete(s3_path)
+        s3_path = self.path__now(file_id=file_id, extension=extension)
+        if self.delete_from__path(s3_path):
             return s3_path
 
     def files_in__date_time(self, date_time:datetime, include_sub_folders=False):
@@ -74,6 +78,14 @@ class Hacker_News__Storage(Type_Safe):
             _.s3_path__save_data(data=data, s3_path=s3_path)
             return s3_path
 
+    def save_to__now__json(self, data: Dict, file_id: Safe_Id) -> str:          # Save json data with current timestamp
+        return self.save_to__now(data=data, file_id=file_id, extension=S3_Key__File_Extension.JSON)
+
+    @type_safe
+    def save_to__now__mgraph(self, mgraph: MGraph, file_id: Safe_Id) -> str:          # Save json data with current timestamp
+        data = mgraph.json__compress()
+        return self.save_to__now(data=data, file_id=file_id, extension=S3_Key__File_Extension.MGRAPH__JSON)
+
     def save_to__latest(self, data     : Dict                    ,                # Save data to latest version
                               file_id  : Safe_Id                 ,
                               extension: S3_Key__File_Extension
@@ -82,6 +94,11 @@ class Hacker_News__Storage(Type_Safe):
             s3_path = _.s3_path__latest(file_id=file_id, extension=extension)
             _.s3_path__save_data(data=data, s3_path=s3_path)
             return s3_path
+
+    @type_safe
+    def save_to__latest__mgraph(self, mgraph: MGraph, file_id: Safe_Id) -> str:          # Save json data with current timestamp
+        data = mgraph.json__compress()
+        return self.save_to__latest(data=data, file_id=file_id, extension=S3_Key__File_Extension.MGRAPH__JSON)
 
     def load_from__path(self, path: str, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Optional[Dict]:
         if path:
@@ -122,6 +139,9 @@ class Hacker_News__Storage(Type_Safe):
                             ) -> str:
         s3_path = self.path__path(path=path,file_id=file_id, extension=extension)
         return self.path__exists(s3_path)
+
+    def path__latest(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
+        return self.s3_db.s3_path__latest(file_id=file_id, extension=extension)
 
     def path__load_bytes(self, s3_path):
         return self.s3_db.s3_path__load_bytes(s3_path)

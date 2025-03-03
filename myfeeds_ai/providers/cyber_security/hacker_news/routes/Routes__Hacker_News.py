@@ -7,7 +7,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data  
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create__Graph_RAG__MGraphs import Flow__Hacker_News__Create__Graph_RAG__MGraphs
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Extract_New_Articles       import Flow__Hacker_News__Extract_New_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_Articles           import Flow__Hacker_News__Process_Articles
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_RSS                import Flow__Hacker_News__Process_RSS
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed       import Flow__Hacker_News__1__Download_RSS_Feed
 from osbot_utils.utils.Lists                                                                             import list_filter_contains
 from osbot_utils.utils.Status                                                                            import status_ok, status_error
 
@@ -51,7 +51,7 @@ class Routes__Hacker_News(Fast_API_Routes):
         return status_ok(data=data)
 
     def flow_process_rss(self):
-        flow_process_rss      = Flow__Hacker_News__Process_RSS         ().run().flow_return_value
+        flow_process_rss      = Flow__Hacker_News__1__Download_RSS_Feed         ().run().flow_return_value
         flow_new_articles     = Flow__Hacker_News__Extract_New_Articles().run().flow_return_value
         flow_process_articles = Flow__Hacker_News__Process_Articles    ().run().flow_return_value
         return dict(flow_process_rss      = flow_process_rss        ,
