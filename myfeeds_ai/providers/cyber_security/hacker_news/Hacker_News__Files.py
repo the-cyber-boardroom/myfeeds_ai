@@ -2,6 +2,7 @@ from myfeeds_ai.data_feeds.Data_Feeds__Files                                    
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content                 import Hacker_News__Http_Content
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                       import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Png    import Hacker_News__File__Timeline__Png
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
 from osbot_utils.helpers.duration.decorators.capture_duration                                  import capture_duration
@@ -82,7 +83,6 @@ class Hacker_News__Files(Data_Feeds__Files):
         return feed_data
 
     def timeline_png__latest(self):
-        with self.s3_db as _:
-            s3_path = _.s3_path__timeline__latest__mgraph__png()
-            s3_key  = _.s3_key__for_provider_path(s3_path)
-            return _.s3_file_bytes(s3_key)
+        with Hacker_News__File__Timeline__Png() as _:
+            if _.exists():
+                return _.load()
