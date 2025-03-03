@@ -114,6 +114,14 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             assert obj(_.file_info__latest()).ContentType == _.content_type
             assert obj(_.file_info__now   ()).ContentType == _.content_type
 
+    # def test_task__6__create_output(self):
+    #     with self.flow__articles_timeline as _:
+    #         _.task__1__load_articles()
+    #         _.task__6__create_output()
+    #
+    #         from osbot_utils.utils.Dev import pprint
+    #         pprint(_.output)
+
 
     @pytest.mark.skip(reason='needs fix to take into account latest refactoring')
     def test_execute(self):

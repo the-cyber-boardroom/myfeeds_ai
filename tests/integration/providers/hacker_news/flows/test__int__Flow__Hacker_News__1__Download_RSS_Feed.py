@@ -1,4 +1,5 @@
 from unittest                                                                                       import TestCase
+
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed  import Flow__Hacker_News__1__Download_RSS_Feed
 from osbot_utils.helpers.flows.Flow                                                                 import Flow
 from tests.integration.data_feeds__objs_for_tests                                                   import cbr_website__assert_local_stack
@@ -10,6 +11,13 @@ class test__int__Flow__Hacker_News__1__Download_RSS_Feed(TestCase):
     def setUpClass(cls):
         cbr_website__assert_local_stack()
         cls.download_rss_feed = Flow__Hacker_News__1__Download_RSS_Feed()
+
+    def test__confirm_that_we_have_the_version_with_50_articles(self):
+        with self.download_rss_feed as _:
+            data_feed               = _.files.feed_data__current()
+            if len(data_feed.feed_data.articles) != 50:                                     # if the feed_data__current was not created from live data, reload it
+                data_feed = _.files.feed_data__current(True)
+            assert len (data_feed.feed_data.articles)== 50
 
     def test_run(self):
 

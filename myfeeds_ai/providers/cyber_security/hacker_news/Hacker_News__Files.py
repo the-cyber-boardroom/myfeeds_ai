@@ -47,7 +47,7 @@ class Hacker_News__Files(Data_Feeds__Files):
     def feed_data__current(self, refresh=False) -> Model__Hacker_News__Data__Feed:
         feed_data = self.s3_db.feed_data__load__current()
         if refresh or not feed_data:
-            feed_data = self.feed_data__load_rss_and_parse()
+            feed_data = self.feed_data__load_rss_and_parse(refresh=refresh)
         return feed_data
 
     def feed_data__load_rss_and_parse(self, refresh=False):

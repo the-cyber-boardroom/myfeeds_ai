@@ -3,7 +3,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News 
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File    import Hacker_News__File
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Edge    import Schema__MGraph__Time_Chain__Edge__Day, Schema__MGraph__Time_Chain__Edge__Hour, Schema__MGraph__Time_Chain__Edge__Source, Schema__MGraph__Time_Chain__Edge__Month
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types   import Time_Chain__Year, Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source
-from osbot_utils.utils.Misc import bytes_to_str
+from osbot_utils.utils.Misc                                                     import bytes_to_str
 
 year_color        = '#E6EEF8'       # Light steel blue
 month_color       = '#D1E2F4'       # Lighter powder blue

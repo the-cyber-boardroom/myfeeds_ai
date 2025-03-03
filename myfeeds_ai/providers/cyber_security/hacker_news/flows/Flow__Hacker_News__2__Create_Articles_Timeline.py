@@ -4,8 +4,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files         
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                          import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage                import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Dot_Code import Hacker_News__File__Timeline__Dot_Code
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Png import \
-    Hacker_News__File__Timeline__Png
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Png      import Hacker_News__File__Timeline__Png
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph__Timeline       import Hacker_News__MGraph__Timeline
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article          import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed       import Model__Hacker_News__Data__Feed
@@ -35,11 +34,11 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
     path__now__timeline__mgraph_json    : str = None
     path__latest__timeline__mgraph_json : str = None
     
-    s3_path            : str
-    s3_path_latest     : str
-    dot_code           : str
-    png_bytes          : bytes
-    output                   : dict
+    # s3_path                             : str
+    # s3_path_latest                      : str
+    dot_code                            : str
+    png_bytes                           : bytes
+    output                              : dict
 
     @task()
     def task__1__load_articles(self):
@@ -84,9 +83,11 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
                     self.hacker_news_timeline_png.save_data(file_data=self.png_bytes)
 
 
-    @task()
+    #@task()
     def task__6__create_output(self):
-        self.output = {}                    # todo: see what we want to show in the output of this Flow
+        pprint(self.articles)
+        self.output = dict(articles_processed = len(self.articles))
+
 
     @flow()
     def create_articles_timeline(self) -> Flow:
