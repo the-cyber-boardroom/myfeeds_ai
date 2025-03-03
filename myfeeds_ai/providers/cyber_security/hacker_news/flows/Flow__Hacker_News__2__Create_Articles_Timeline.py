@@ -83,10 +83,15 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
                     self.hacker_news_timeline_png.save_data(file_data=self.png_bytes)
 
 
-    #@task()
+    @task()
     def task__6__create_output(self):
-        pprint(self.articles)
-        self.output = dict(articles_processed = len(self.articles))
+        with self.hacker_news_timeline as _:
+            hacker_news_timeline = dict(exists      = _.exists(),
+                                        path_latest = _.path_latest(),
+                                        path_now    = _.path_now  ())
+        pprint(self.hacker_news_timeline.path_now())
+        self.output = dict(articles_processed   = len(self.articles)  ,
+                           hacker_news_timeline = hacker_news_timeline)
 
 
     @flow()
