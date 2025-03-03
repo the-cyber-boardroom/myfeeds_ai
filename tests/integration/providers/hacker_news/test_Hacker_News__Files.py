@@ -1,5 +1,5 @@
-from unittest                                                                                             import TestCase
-from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                        import Hacker_News__Files, RAW_FEED__CREATED__BY
+from unittest                                                                                  import TestCase
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                        import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
 from tests.integration.data_feeds__objs_for_tests                                              import cbr_website__assert_local_stack
@@ -40,4 +40,13 @@ class test_Hacker_News__Files(TestCase):
             assert type(model)                  is Model__Hacker_News__Data__Feed
             assert data_feed.feed_data.title    == 'The Hacker News'
             assert data_feed.feed_data.language == 'en-us'
+
+    def test_timeline_png__latest(self):
+        with self.hacker_news__files as _:
+            png_bytes = _.timeline_png__latest()
+            if png_bytes:
+                assert len(png_bytes) > 0
+                assert type(png_bytes) is bytes
+                assert png_bytes.startswith(b'\x89PNG\r\n')
+
 

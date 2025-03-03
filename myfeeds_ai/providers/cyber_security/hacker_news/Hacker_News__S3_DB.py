@@ -11,8 +11,9 @@ from osbot_utils.utils.Http                                                     
 S3_FILE_NAME__ARTICLE__FEED_ARTICLE   = 'feed-article'
 S3_FILE_NAME__ARTICLE__TEXT_ENTITIES  = 'text-entities'
 S3_FILE_NAME__ARTICLE__GRAPH_ENTITIES = 'graph-entities'
-S3_FILE_NAME__MGRAPH__TIMELINE        = 'feed-timeline'
+#S3_FILE_NAME__MGRAPH__TIMELINE        = 'feed-timeline'
 
+# todo: refactor out from this file anything that is related to specific files, this class should only have hacker_news related s3 helper methods
 class Hacker_News__S3_DB(Data_Feeds__S3_DB):
     provider_name = Model__Data_Feeds__Providers.HACKER_NEWS
 
@@ -109,13 +110,13 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
     def s3_key__raw_data__feed_xml(self):
          return self.s3_key_generator.s3_key(area=Model__Data_Feeds__Providers.HACKER_NEWS, file_id=S3_FILE_NAME__RAW__FEED_XML)
 
-    def s3_path__timeline__now                 (self, extension:S3_Key__File_Extension): return self.s3_key_generator.s3_path__now (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)
-    def s3_path__timeline__latest              (self, extension:S3_Key__File_Extension): return self.s3_path__latest               (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)
+    # def s3_path__timeline__now                 (self, extension:S3_Key__File_Extension): return self.s3_key_generator.s3_path__now (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)
+    # def s3_path__timeline__latest              (self, extension:S3_Key__File_Extension): return self.s3_path__latest               (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)
 
-    def s3_path__timeline__now__mgraph__dot    (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extension.MGRAPH__DOT)
-    def s3_path__timeline__now__mgraph__json   (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extension.MGRAPH__JSON)
-    def s3_path__timeline__now__mgraph__png    (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extension.MGRAPH__PNG)
+    # def s3_path__timeline__now__mgraph__dot    (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extension.MGRAPH__DOT)
+    # def s3_path__timeline__now__mgraph__json   (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extension.MGRAPH__JSON)
+    # def s3_path__timeline__now__mgraph__png    (self): return self.s3_path__timeline__now    (extension=S3_Key__File_Extension.MGRAPH__PNG)
 
-    def s3_path__timeline__latest__mgraph__dot (self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extension.MGRAPH__DOT)
-    def s3_path__timeline__latest__mgraph__json(self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extension.MGRAPH__JSON)
-    def s3_path__timeline__latest__mgraph__png (self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extension.MGRAPH__PNG)
+    # def s3_path__timeline__latest__mgraph__dot (self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extension.MGRAPH__DOT)
+    # def s3_path__timeline__latest__mgraph__json(self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extension.MGRAPH__JSON)
+    # def s3_path__timeline__latest__mgraph__png (self): return self.s3_path__timeline__latest (extension=S3_Key__File_Extension.MGRAPH__PNG)

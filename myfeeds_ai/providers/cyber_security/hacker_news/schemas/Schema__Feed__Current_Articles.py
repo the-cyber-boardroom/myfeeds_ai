@@ -15,6 +15,7 @@ class Schema__Feed__Current_Article__Status(Enum):
 
 
 class Schema__Feed__Current_Article(Type_Safe):
+    article_id                 : Obj_Id
     knowledge_graph            : bool
     llm_prompt                 : bool
     location                   : str

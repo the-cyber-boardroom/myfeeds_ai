@@ -5,7 +5,7 @@
 
 ### with RSS feeds
 
-
+- https://cybersecuritynews.com     : https://feeds.feedburner.com/cyber-security-news
 
 
 
@@ -72,4 +72,4 @@
 # not up-to-date
 
     - We Live Security RSS Feed         : https://feeds.feedburner.com/eset/blog
-    - https://cybersecuritynews.com     : https://feeds.feedburner.com/cyber-security-news
+

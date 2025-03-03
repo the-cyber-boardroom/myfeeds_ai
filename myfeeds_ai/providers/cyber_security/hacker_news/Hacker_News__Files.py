@@ -2,9 +2,10 @@ from myfeeds_ai.data_feeds.Data_Feeds__Files                                    
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content                 import Hacker_News__Http_Content
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                       import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Png    import Hacker_News__File__Timeline__Png
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
-from osbot_utils.context_managers.capture_duration                                             import capture_duration
+from osbot_utils.helpers.duration.decorators.capture_duration                                  import capture_duration
 
 RAW_FEED__CREATED__BY = 'Hacker_News__Files.xml_feed__current'
 
@@ -16,15 +17,15 @@ class Hacker_News__Files(Data_Feeds__Files):
     def files_paths__latest(self):
         with self.s3_db as _:
             now    = dict( feed_xml             = _.s3_path__raw_data__feed_xml__now       (),
-                           feed_data            = _.s3_path__raw_data__feed_data__now      (),
-                           timeline_mgraph_dot  = _.s3_path__timeline__now__mgraph__dot    (),
-                           timeline_mgraph_json = _.s3_path__timeline__now__mgraph__json   (),
-                           timeline_mgraph_png  = _.s3_path__timeline__now__mgraph__png    ())
+                           feed_data            = _.s3_path__raw_data__feed_data__now      ())
+                           # timeline_mgraph_dot  = _.s3_path__timeline__now__mgraph__dot    (),
+                           # timeline_mgraph_json = _.s3_path__timeline__now__mgraph__json   (),
+                           # timeline_mgraph_png  = _.s3_path__timeline__now__mgraph__png    ())
             latest = dict( feed_xml             = _.s3_path__raw_data__feed_xml__latest    (),
-                           feed_data            = _.s3_path__raw_data__feed_data__latest   (),
-                           timeline_mgraph_dot  = _.s3_path__timeline__latest__mgraph__dot (),
-                           timeline_mgraph_json = _.s3_path__timeline__latest__mgraph__json(),
-                           timeline_mgraph_png  = _.s3_path__timeline__latest__mgraph__png ())
+                           feed_data            = _.s3_path__raw_data__feed_data__latest   ())
+                           # timeline_mgraph_dot  = _.s3_path__timeline__latest__mgraph__dot (),
+                           # timeline_mgraph_json = _.s3_path__timeline__latest__mgraph__json(),
+                           # timeline_mgraph_png  = _.s3_path__timeline__latest__mgraph__png ())
         return dict(now    = now    ,
                     latest = latest )
 
@@ -47,7 +48,7 @@ class Hacker_News__Files(Data_Feeds__Files):
     def feed_data__current(self, refresh=False) -> Model__Hacker_News__Data__Feed:
         feed_data = self.s3_db.feed_data__load__current()
         if refresh or not feed_data:
-            feed_data = self.feed_data__load_rss_and_parse()
+            feed_data = self.feed_data__load_rss_and_parse(refresh=refresh)
         return feed_data
 
     def feed_data__load_rss_and_parse(self, refresh=False):
@@ -82,7 +83,6 @@ class Hacker_News__Files(Data_Feeds__Files):
         return feed_data
 
     def timeline_png__latest(self):
-        with self.s3_db as _:
-            s3_path = _.s3_path__timeline__latest__mgraph__png()
-            s3_key  = _.s3_key__for_provider_path(s3_path)
-            return _.s3_file_bytes(s3_key)
+        with Hacker_News__File__Timeline__Png() as _:
+            if _.exists():
+                return _.load()

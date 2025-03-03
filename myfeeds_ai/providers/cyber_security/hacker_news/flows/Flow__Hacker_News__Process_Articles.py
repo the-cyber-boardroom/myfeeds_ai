@@ -7,7 +7,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storag
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article   import Hacker_News__Storage__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Entities import Schema__Feed__Article__Entities, Schema__Feed__Text__Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles  import Schema__Feed__Current_Articles, Schema__Feed__Current_Article, Schema__Feed__Current_Article__Status
-from osbot_utils.context_managers.capture_duration                                           import capture_duration
+from osbot_utils.helpers.duration.decorators.capture_duration                                import capture_duration
 from osbot_utils.helpers.Obj_Id                                                              import Obj_Id
 from osbot_utils.helpers.flows.Flow                                                          import Flow
 from osbot_utils.helpers.flows.decorators.flow                                               import flow

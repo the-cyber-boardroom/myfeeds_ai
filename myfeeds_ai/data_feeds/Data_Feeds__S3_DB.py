@@ -49,7 +49,7 @@ class Data_Feeds__S3_DB(S3__DB_Base):
     def s3_path__now_utc(self):
         return self.s3_key_generator.s3_path__now__utc()
 
-    def s3_path__delete(self, s3_path):
+    def s3_path__delete(self, s3_path) -> bool:
         s3_key = self.s3_key__for_provider_path(s3_path)
         result = self.s3_file_delete(s3_key=s3_key)
         return result
@@ -74,6 +74,10 @@ class Data_Feeds__S3_DB(S3__DB_Base):
     def s3_path__exists(self, s3_path):
         s3_key= self.s3_key__for_provider_path(s3_path)
         return self.s3_file_exists(s3_key)
+
+    def s3_path__file_info(self, s3_path):
+        s3_key= self.s3_key__for_provider_path(s3_path)
+        return self.s3_file_info(s3_key)
 
     # methods for s3 folders
     def s3_folder__for_provider(self):
