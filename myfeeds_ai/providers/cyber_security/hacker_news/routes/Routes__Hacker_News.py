@@ -53,12 +53,14 @@ class Routes__Hacker_News(Fast_API_Routes):
         return status_ok(data=data)
 
     def flow_process_rss(self):
-        flow_process_rss      = Flow__Hacker_News__1__Download_RSS_Feed         ().run().flow_return_value
-        flow_new_articles     = Flow__Hacker_News__Extract_New_Articles().run().flow_return_value
-        flow_process_articles = Flow__Hacker_News__Process_Articles    ().run().flow_return_value
+        flow_process_rss        = Flow__Hacker_News__1__Download_RSS_Feed         ().run().flow_return_value
+        flow__articles_timeline = Flow__Hacker_News__2__Create_Articles_Timeline().run().flow_return_value
+        # flow_new_articles     = Flow__Hacker_News__Extract_New_Articles().run().flow_return_value
+        # flow_process_articles = Flow__Hacker_News__Process_Articles    ().run().flow_return_value
         return dict(flow_process_rss      = flow_process_rss        ,
-                    flow_new_articles     = flow_new_articles       ,
-                    flow_process_articles = flow_process_articles   )
+                    flow__articles_timeline = flow__articles_timeline)
+                    # flow_new_articles     = flow_new_articles       ,
+                    # flow_process_articles = flow_process_articles   )
 
     def flow_new_articles(self, current__path:str ='2025/02/23/22'):
         flow = Flow__Hacker_News__Extract_New_Articles(current__path=current__path)
