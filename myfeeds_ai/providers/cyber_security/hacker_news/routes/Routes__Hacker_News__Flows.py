@@ -21,9 +21,8 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
     def flow_1_download_rss_feed(self):
         return Flow__Hacker_News__1__Download_RSS_Feed().run().flow_return_value
 
-
     def flow_2_create_articles_timeline(self):
-        return Flow__Hacker_News__2__Create_Articles_Timeline().run().flow_return_value
+        return Flow__Hacker_News__2__Create_Articles_Timeline().run().flow_output()
 
     def setup_routes(self):
         self.add_route_get(self.current_articles               )

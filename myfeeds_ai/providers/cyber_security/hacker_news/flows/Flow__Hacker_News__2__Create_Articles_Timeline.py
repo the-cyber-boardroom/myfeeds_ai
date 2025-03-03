@@ -84,15 +84,14 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
 
 
     @task()
-    def task__6__create_output(self, this_flow):
+    def task__6__create_output(self):
         with self.hacker_news_timeline as _:
             hacker_news_timeline = dict(exists      = _.exists(),
                                         path_latest = _.path_latest(),
                                         path_now    = _.path_now  ())
         pprint(self.hacker_news_timeline.path_now())
         self.output = dict(articles_processed   = len(self.articles)  ,
-                           hacker_news_timeline = hacker_news_timeline,
-                           durations            = this_flow.durations())
+                           hacker_news_timeline = hacker_news_timeline)
 
 
     @flow()
