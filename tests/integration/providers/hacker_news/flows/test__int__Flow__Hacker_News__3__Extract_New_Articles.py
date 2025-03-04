@@ -4,6 +4,7 @@ from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types   
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                               import S3_Key__File_Extension
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                                                import S3_FOLDER_NAME__LATEST
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__3__Extract_New_Articles  import Flow__Hacker_News__3__Extract_New_Articles, FILE_NAME__NEW_ARTICLES
+from osbot_utils.helpers.flows.Flow import Flow
 from osbot_utils.type_safe.Type_Safe import Type_Safe
 from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Json                                                                            import json__equals__list_and_set
@@ -11,7 +12,7 @@ from osbot_utils.utils.Misc                                                     
 from osbot_utils.utils.Objects import type_full_name, __, base_types
 from tests.integration.data_feeds__objs_for_tests                                                      import cbr_website__assert_local_stack
 
-class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
+class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -19,8 +20,10 @@ class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
         cls.current_path = '2025/02/20/23'  # use these two in order to have a deterministic data set in the tests below
         cls.previous_path = '2025/02/19/22'
 
+
     def setUp(self):
-        self.flow_extract_new_articles = Flow__Hacker_News__3__Extract_New_Articles()                      # new object on every test run
+        self.flow_extract_new_articles = Flow__Hacker_News__3__Extract_New_Articles()                               # new object on every test run
+        self.path_now                  = self.flow_extract_new_articles.file_current_articles.hacker_news_storage.path_to__now_utc()
 
     # def test_process_flow(self):
     #     with self.flow_extract_new_articles as _:
@@ -63,6 +66,8 @@ class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
 
             _.task__2__create__timeline_diff()
 
+            pprint(_.file_timeline_diff.info())
+
             assert type(_.timeline_diff)       is Schema__MGraph__Diff__Values
             assert base_types(_.timeline_diff) == [Type_Safe, object]
 
@@ -73,6 +78,8 @@ class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
             assert sorted(_.timeline_diff.added_values  [Time_Chain__Source]) == sorted([ '272b4927', 'e5091ea4', '5d2f8952', 'ce7e697e', 'd54c06c4', '9153bba8', '55b2f8d2'])
             assert sorted(_.timeline_diff.removed_values[Time_Chain__Source]) == sorted([ '468bfcf6', 'f2082031', '08ec0110', 'ea2a87d4', '0a68e403','d0ca70d4', '5f6bf957' ])
 
+
+
     def test_task__3__update_current_articles(self):
         with self.flow_extract_new_articles as _:
             _.current__path  = self.current_path                                                        # simulate the current and previous path config
@@ -81,17 +88,34 @@ class test__int__Flow__Hacker_News__Extract_New_Articles(TestCase):
             _.task__2__create__timeline_diff  ()
             _.task__3__update_current_articles()
 
-            #pprint(_.current__articles.json())
+            assert len(_.file_current_articles.current_articles.articles) > 0
+            assert _.file_current_articles.info() == { 'exists'    : True,
+                                                      'path_latest': 'latest/current-articles.json',
+                                                      'path_now'   : f'{self.path_now}/current-articles.json'}
 
-    def test_task__5__create_output(self):
+    #def test_task__5__create_output(self):
+    def test_run(self):
+        # with self.flow_extract_new_articles as _:
+        #     _.current__path  = self.current_path                                                        # simulate the current and previous path config
+        #     _.previous__path = self.previous_path
+        #
+        #     _.task__2__create__timeline_diff  ()
+        #     _.task__3__update_current_articles()
+        #     _.task__5__create_output          ()
+        #     pprint(_.output)
         with self.flow_extract_new_articles as _:
-            _.current__path  = self.current_path                                                        # simulate the current and previous path config
-            _.previous__path = self.previous_path
+            an_flow = _.run()
+            assert type(an_flow)             == Flow
+            assert an_flow.flow_return_value == _.output
 
-            _.task__2__create__timeline_diff  ()
-            _.task__3__update_current_articles()
-            _.task__5__create_output          ()
-            pprint(_.output)
+            assert _.output ==  { 'file_current_articles': { 'exists'     : True,
+                                                             'path_latest': 'latest/current-articles.json',
+                                                             'path_now'   : f'{self.path_now}/current-articles.json'  },
+                                  'file_timeline_diff'   : { 'exists'     : True,
+                                                             'path_latest': 'latest/feed-timeline-diff.json',
+                                                            'path_now'    : f'{self.path_now}/feed-timeline-diff.json'},
+                                  'path_current'        : '2025/03/04/11',
+                                  'path_previous'       : '2025/02/19/22'}
 
     # def test_update_current_articles(self):
     #     with self.flow_extract_new_articles as _:

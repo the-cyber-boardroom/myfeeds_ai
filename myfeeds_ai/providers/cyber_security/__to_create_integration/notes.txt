@@ -3,6 +3,9 @@
  - https://github.com/mrtouch93/awesome-security-feed
  - https://rss.feedspot.com/cyber_security_rss_feeds/
 
+### good json based resources
+    https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+
 ### with RSS feeds
 
 - https://cybersecuritynews.com     : https://feeds.feedburner.com/cyber-security-news

@@ -32,7 +32,7 @@ class Hacker_News__Data(Type_Safe):
     def new_articles__for_path(self, path) -> Schema__Feed__Config__New_Articles:
         return self.cast_to__new_articles(self.storage.load_from__path  (file_id=FILE_ID__NEW_ARTICLES, extension=EXTENSION__NEW_ARTICLES, path=path))
 
-
+    # todo: refactor to use the new file_current_articles
     def current_articles(self) -> Schema__Feed__Current_Articles:
         current_articles = self.storage.load_from__latest(file_id=FILE_NAME__CURRENT_ARTICLES, extension=EXTENSION__CURRENT_ARTICLES           )
         return Schema__Feed__Current_Articles.from_json(current_articles)

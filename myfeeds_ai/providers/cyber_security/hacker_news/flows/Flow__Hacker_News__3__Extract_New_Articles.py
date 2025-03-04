@@ -7,6 +7,8 @@ from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data  
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Edit                  import Hacker_News__Edit
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Live_Data             import Hacker_News__Live_Data
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage               import Hacker_News__Storage
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Current_Articles import \
+    Hacker_News__File__Current_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Diff    import Hacker_News__File__Timeline__Diff
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import Schema__Feed__Config__New_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles     import Schema__Feed__Current_Articles, Schema__Feed__Current_Article
@@ -15,12 +17,14 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.helpers.flows.decorators.flow                                                  import flow
 from osbot_utils.helpers.flows.decorators.task                                                  import task
 from osbot_utils.type_safe.Type_Safe                                                            import Type_Safe
+from osbot_utils.utils.Dev import pprint
 
 FILE_NAME__FEED_TIMELINE_MGRAPH = 'feed-timeline.mgraph.json'
 
 
 class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
     file_timeline_diff             : Hacker_News__File__Timeline__Diff
+    file_current_articles          : Hacker_News__File__Current_Articles
 
     hacker_news_storage            : Hacker_News__Storage
     hacker_news_live_data          : Hacker_News__Live_Data
@@ -58,6 +62,7 @@ class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
         with self.file_timeline_diff as _:
             if _.not_exists():
                 _.create(previous_path=self.previous__path, current_path=self.current__path)
+                _.save()
             else:
                 _.load()
             self.timeline_diff = _.timeline_diff        #todo remove the need to use below self.timeline_diff
@@ -66,22 +71,24 @@ class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
 
     @task()
     def task__3__update_current_articles(self):
-        current_articles     = self.hacker_news_data.current_articles() or Schema__Feed__Current_Articles()
-        new_articles_ids     = self.timeline_diff.added_values  .get(Time_Chain__Source, set())
-        removed_articles_ids = self.timeline_diff.removed_values.get(Time_Chain__Source, set())
-        for new_article_id in new_articles_ids:
-            kwargs = dict(location = self.current__path, article_id = new_article_id)
-            current_article = Schema__Feed__Current_Article(**kwargs)
-            if Obj_Id(new_article_id) not in current_articles.articles:
-                current_articles.articles[Obj_Id(new_article_id)] = current_article
+        with self.file_current_articles as _:
+            current_articles = _.load()
+            new_articles_ids     = self.timeline_diff.added_values  .get(Time_Chain__Source, set())
+            removed_articles_ids = self.timeline_diff.removed_values.get(Time_Chain__Source, set())
+            for new_article_id in new_articles_ids:
+                kwargs = dict(location = self.current__path, article_id = new_article_id)
+                current_article = Schema__Feed__Current_Article(**kwargs)
+                if Obj_Id(new_article_id) not in current_articles.articles:
+                    current_articles.articles[Obj_Id(new_article_id)] = current_article
 
-        for removed_article_id in removed_articles_ids:
-            if Obj_Id(removed_article_id) in current_articles.articles:
-                del current_articles.articles[Obj_Id(removed_article_id)]
+            for removed_article_id in removed_articles_ids:
+                if Obj_Id(removed_article_id) in current_articles.articles:
+                    del current_articles.articles[Obj_Id(removed_article_id)]
 
-        #self.path__current_articles = self.hacker_news_edit.save__current_articles(current_articles)
+            _.save()
+            #self.path__current_articles = self.hacker_news_edit.save__current_articles(current_articles)
 
-        self.current__articles = current_articles
+            #self.current__articles = current_articles
 
     @task()
     def save__config_new_articles__current(self):
@@ -122,10 +129,11 @@ class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
 
     @task()
     def task__5__create_output(self):
-        self.output = dict(path_previous                = self.previous__path              ,
-                           path_current                 = self.current__path               ,
-                           #current__config_new_articles = self.current__config_new_articles.json(),
-                           current__articles            = self.current__articles.json()    )
+
+        self.output = dict(path_previous         = self.previous__path               ,
+                           path_current          = self.current__path                ,
+                           file_timeline_diff    = self.file_timeline_diff.info    (),
+                           file_current_articles = self.file_current_articles.info ())
 
 
 
@@ -138,12 +146,12 @@ class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
                                'current__path': self.current__path,
                                'previous__path': self.previous__path}}
         with self as _:
-            _.task__2__create__timeline_diff       ()
-            _.task__3__update_current_articles           ()
+            _.task__2__create__timeline_diff          ()
+            _.task__3__update_current_articles        ()
             #_.create_screenshot                ()
             # _.save__config_new_articles__current()
             # _.save__config_new_articles__latest ()
-            _.task__5__create_output                     ()
+            _.task__5__create_output                  ()
 
         #return self.timeline_diff
         return self.output

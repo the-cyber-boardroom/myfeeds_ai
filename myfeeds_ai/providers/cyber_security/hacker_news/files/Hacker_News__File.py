@@ -24,6 +24,11 @@ class Hacker_News__File(Type_Safe):
     def path_now         (self) -> str : return self.hacker_news_storage.path__now         (file_id = self.file_id      , extension=self.extension)
     def path_latest      (self) -> str : return self.hacker_news_storage.path__latest      (file_id = self.file_id      , extension=self.extension)
 
+    def info(self) -> dict:                                     # Return standardized dictionary with exists, path_latest and path_now information.
+        return dict(exists      = self.exists     (),
+                    path_latest = self.path_latest(),
+                    path_now    = self.path_now   ())
+
     def file_name(self):
         return f'{self.file_id}.{self.extension.value}'
 

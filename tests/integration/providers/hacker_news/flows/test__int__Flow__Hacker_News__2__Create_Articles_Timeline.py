@@ -7,7 +7,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File    
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Dot_Code                import CONTENT_TYPE__MGRAPH__DOT
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline       import Flow__Hacker_News__2__Create_Articles_Timeline, FILE_NAME__MGRAPH__TIMELINE
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph                                import Hacker_News__MGraph
-from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph__Timeline                      import Hacker_News__MGraph__Timeline, FILE_ID__MGRAPH__TIMELINE
+from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph__Timeline                      import Hacker_News__MGraph__Timeline, FILE_ID__TIMELINE__MGRAPH
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed                      import Model__Hacker_News__Data__Feed
 from osbot_utils.context_managers.disable_root_loggers                                                          import disable_root_loggers
 from osbot_utils.helpers.flows.Flow                                                                             import Flow
@@ -44,8 +44,8 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
                 assert type      (_)   is Hacker_News__MGraph__Timeline
                 assert base_types(_)   == [Hacker_News__MGraph, Hacker_News__File, Type_Safe, object]
                 assert type(_.mgraph)  is MGraph__Time_Chain
-                assert _.file_id       == FILE_ID__MGRAPH__TIMELINE
-                assert _.file_name  () == f'{FILE_ID__MGRAPH__TIMELINE}.mgraph.json'
+                assert _.file_id == FILE_ID__TIMELINE__MGRAPH
+                assert _.file_name  () == f'{FILE_ID__TIMELINE__MGRAPH}.mgraph.json'
                 assert _.path_now   () == f'{self.path_now}/{_.file_name()}'
                 assert _.path_latest() == f'latest/{_.file_name()}'
 

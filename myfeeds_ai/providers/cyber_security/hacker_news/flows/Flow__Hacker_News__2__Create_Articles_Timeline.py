@@ -82,24 +82,10 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
 
     @task()
     def task__6__create_output(self):
-        with self.hacker_news_timeline as _:
-            hacker_news_timeline = dict(exists      = _.exists(),
-                                        path_latest = _.path_latest(),
-                                        path_now    = _.path_now  ())
-
-        with self.hacker_news_timeline_dot_code as _:
-            hacker_news_timeline_dot_code = dict(exists      = _.exists(),
-                                                 path_latest = _.path_latest(),
-                                                 path_now    = _.path_now  ())
-        with self.hacker_news_timeline_png as _:
-            hacker_news_timeline_png = dict(exists      = _.exists(),
-                                            path_latest = _.path_latest(),
-                                            path_now    = _.path_now  ())
-
-        self.output = dict(articles_processed            = len(self.articles)           ,
-                           hacker_news_timeline          = hacker_news_timeline         ,
-                           hacker_news_timeline_dot_code = hacker_news_timeline_dot_code,
-                           hacker_news_timeline_png      = hacker_news_timeline_png     )
+        self.output = dict(articles_processed            = len(self.articles)                       ,
+                           hacker_news_timeline          = self.hacker_news_timeline         .info(),
+                           hacker_news_timeline_dot_code = self.hacker_news_timeline_dot_code.info(),
+                           hacker_news_timeline_png      = self.hacker_news_timeline_png     .info())
 
 
     @flow()
