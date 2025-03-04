@@ -8,12 +8,13 @@ from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2_
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph                                import Hacker_News__MGraph
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph__Timeline                      import Hacker_News__MGraph__Timeline, FILE_ID__MGRAPH__TIMELINE
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed                      import Model__Hacker_News__Data__Feed
+from osbot_utils.context_managers.disable_root_loggers                                                          import disable_root_loggers
 from osbot_utils.helpers.flows.Flow                                                                             import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                                  import flow
 from osbot_utils.type_safe.Type_Safe                                                                            import Type_Safe
-from osbot_utils.utils.Env import not_in_github_action
+from osbot_utils.utils.Env                                                                                      import not_in_github_action
 from osbot_utils.utils.Misc                                                                                     import list_set
-from osbot_utils.utils.Objects                                                                                  import base_types, obj
+from osbot_utils.utils.Objects                                                                                  import base_types, obj, __
 from tests.integration.data_feeds__objs_for_tests                                                               import cbr_website__assert_local_stack
 
 
@@ -22,13 +23,18 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cbr_website__assert_local_stack()
-        cls.files                   =  Hacker_News__Files()
+        cls.files                   = Hacker_News__Files()
         cls.data_feed               = cls.files.feed_data__current()
         cls.flow__articles_timeline = Flow__Hacker_News__2__Create_Articles_Timeline()
         cls.hacker_news_timeline    = cls.flow__articles_timeline.hacker_news_timeline
         cls.path_now                = cls.flow__articles_timeline.hacker_news_storage.path_to__now_utc()
         if len(cls.data_feed.feed_data.articles) != 50:                                     # if the feed_data__current was not created from live data, reload it
             cls.data_feed = cls.files.feed_data__current(True)
+        cls.disable_root_loggers = disable_root_loggers().__enter__()
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        cls.disable_root_loggers.__exit__(None, None, None)
 
     def test_setUpClass(self):
         with self.flow__articles_timeline as flow_2:
@@ -106,49 +112,45 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             _.task__4__create_dot_code()
             _.task__5__create_png   ()
 
-        if not_in_github_action():          # todo: figure out why this doesn't work in GH Actions
-            with self.flow__articles_timeline.hacker_news_timeline_png as _:
-                assert _.file_name() == 'feed-timeline.mgraph.png'
-                assert _.file_name() in _.hacker_news_storage.files_in__latest()           # this is failing in GitHub action
-                assert _.exists   () is True
+        #if not_in_github_action():          # todo: figure out why this doesn't work in GH Actions
+        with self.flow__articles_timeline.hacker_news_timeline_png as _:
+            assert _.file_name() == 'feed-timeline.mgraph.png'
+            assert _.file_name() in _.hacker_news_storage.files_in__latest()           # this is failing in GitHub action
+            assert _.exists   () is True
 
-                assert _.content_type                         == 'image/png'
-                assert obj(_.file_info__latest()).ContentType == _.content_type
-                assert obj(_.file_info__now   ()).ContentType == _.content_type
+            assert _.content_type                         == 'image/png'
+            assert obj(_.file_info__latest()).ContentType == _.content_type
+            assert obj(_.file_info__now   ()).ContentType == _.content_type
 
-    def test_task__6__create_output(self):
+    # this is tests
+    # def test_task__6__create_output(self):
+    #     with self.flow__articles_timeline as _:
+    #         _.task__1__load_articles  ()
+    #         _.task__2__create_mgraph  ()
+    #         _.task__3__save_mgraph    ()
+    #         _.task__4__create_dot_code()
+    #         _.task__5__create_png     ()
+    #         _.task__6__create_output  ()
+
+
+
+
+    def test_task__6__create_output(self):  # to test this method we can run the full flow
         with self.flow__articles_timeline as _:
-            _.task__1__load_articles ()
-            _.task__2__create_mgraph ()
-            _.task__3__save_mgraph   ()
-            _.task__6__create_output ()
+            an_flow = _.run()
+            assert type(an_flow)             == Flow
+            assert an_flow.flow_return_value == _.output
+            path_now = _.hacker_news_timeline.hacker_news_storage.path_to__now_utc()
 
-            # from osbot_utils.utils.Dev import pprint
-            # pprint(_.output)
-            #assert _.output == {'articles_processed': 50}
-
-
-    @pytest.mark.skip(reason='needs fix to take into account latest refactoring')
-    def test_execute(self):
-        with self.flow__articles_timeline as _:
-            flow = _.run()
-            assert type(flow)             == Flow
-            assert flow.flow_return_value == {'durations': _.durations }
-            assert list_set(_.durations)  == [ 'create_dot_code', 'create_mgraph','create_png',
-                                               'load_articles'  , 'save_mgraph'               ]
-            #pprint(flow.durations())
-
-            #_.print_log_messages()
-
-    # def test_create_query_visualisation(self):
-    #     with print_duration():
-    #         mgraph_json__compressed = json_file_contents(S3_FILE_NAME__MGRAPH__TIMELINE)
-    #         mgraph_json = Type_Safe__Json_Compressor().decompress(mgraph_json__compressed)                    # todo: add helper method to do this import from compressed
-    #         mgraph      = MGraph__Time_Series.from_json(mgraph_json)
-    #
-    #         # query : MGraph__Query = mgraph.query()
-    #         # with query as _:
-    #
-    #         #with query as _:
+            assert obj(_.output) == __(articles_processed=50,
+                                       hacker_news_timeline=__(exists      = True,
+                                                               path_latest = 'latest/feed-timeline.mgraph.json',
+                                                               path_now    = f'{path_now}/feed-timeline.mgraph.json'),
+                                       hacker_news_timeline_dot_code=__(exists      = True,
+                                                                        path_latest = 'latest/feed-timeline.mgraph.dot',
+                                                                        path_now    = f'{path_now}/feed-timeline.mgraph.dot'),
+                                       hacker_news_timeline_png=__(exists     =  True,
+                                                                   path_latest = 'latest/feed-timeline.mgraph.png',
+                                                                   path_now    = f'{path_now}/feed-timeline.mgraph.png'))
 
 
