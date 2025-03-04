@@ -33,6 +33,7 @@ class Hacker_News__File__Timeline__Diff(Hacker_News__File):
         json_data = super().load()
         if json_data:
             self.timeline_diff = Schema__MGraph__Diff__Values.from_json(json_data)
+            return self.timeline_diff
 
     def save(self):
         if self.timeline_diff:

@@ -57,11 +57,15 @@
         - https://securityvulnerability.io/vulnerability/critical
         - https://securityvulnerability.io/vulnerability/trending
 
+- Security research
+    - https://unit42.paloaltonetworks.com/category/threat-research/
+
 - other
 
    - https://feeder.co/discover/security
    - https://www.misp-project.org/feeds/
    - good list of cyber security news providers https://cybernewswire.com/
+
 
  - don't seem to have RSS feeds
 

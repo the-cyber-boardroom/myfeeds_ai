@@ -26,6 +26,7 @@ class Hacker_News__Data(Type_Safe):
         if data:
             return Model__Hacker_News__Data__Feed.from_json(data)
 
+    # todo: refactor to use the new file_new_articles
     def new_articles          (self      ) -> Schema__Feed__Config__New_Articles:           #remove usage of cast_to__new_articles
         return self.cast_to__new_articles(self.storage.load_from__latest(file_id=FILE_ID__NEW_ARTICLES, extension=EXTENSION__NEW_ARTICLES           ))
 
