@@ -13,12 +13,16 @@ class test_Hacker_News__File__Current_Articles(TestCase):
 
     def setUp(self):
         self.file_current_articles = Hacker_News__File__Current_Articles()
-        self.file_current_articles.load()
+        with self.file_current_articles as _:
+            if _.exists__latest() is False:                                                     # check if the file exists
+                import pytest
+                pytest.skip("test needs a current-articles files in the latest folder")
+            _.load()                                                                            # if it exists, load it
+
 
     def test_group_by_status(self):
         with self.file_current_articles as _:
             assert _.path_latest   () == 'latest/current-articles.json'
-            assert _.exists__latest() is True
             for status, articles in  _.group_by_status().items():
                 assert status in Schema__Feed__Current_Article__Status.__members__
                 assert type(articles) is list

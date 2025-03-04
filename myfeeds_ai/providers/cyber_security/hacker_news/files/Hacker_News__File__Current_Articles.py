@@ -38,9 +38,3 @@ class Hacker_News__File__Current_Articles(Hacker_News__File):
     def to__process(self) -> List[Schema__Feed__Current_Article]:
         status = Schema__Feed__Current_Article__Status.TO_PROCESS.name
         return self.group_by_status().get(status, [])
-
-
-        # self.current_articles = self.hacker_news_data.current_articles()
-        # for article_id, article in self.current_articles.articles.items():
-        #     if article.status == Schema__Feed__Current_Article__Status.TO_PROCESS:
-        #         self.articles_to_process[article_id]=article

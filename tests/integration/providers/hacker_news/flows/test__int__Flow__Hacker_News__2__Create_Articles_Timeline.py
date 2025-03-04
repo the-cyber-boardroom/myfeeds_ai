@@ -4,6 +4,7 @@ from mgraph_db.mgraph.actions.MGraph__Screenshot                                
 from mgraph_db.providers.time_chain.MGraph__Time_Chain                                                          import MGraph__Time_Chain
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                                         import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File                                    import Hacker_News__File
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Now                               import Hacker_News__File__Now
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Dot_Code                import CONTENT_TYPE__MGRAPH__DOT
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline       import Flow__Hacker_News__2__Create_Articles_Timeline, FILE_NAME__MGRAPH__TIMELINE
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph                                import Hacker_News__MGraph
@@ -42,7 +43,7 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             assert type(flow_2) is Flow__Hacker_News__2__Create_Articles_Timeline
             with flow_2.hacker_news_timeline as _:
                 assert type      (_)   is Hacker_News__MGraph__Timeline
-                assert base_types(_)   == [Hacker_News__MGraph, Hacker_News__File, Type_Safe, object]
+                assert base_types(_)   == [Hacker_News__MGraph, Hacker_News__File, Hacker_News__File__Now, Type_Safe, object]
                 assert type(_.mgraph)  is MGraph__Time_Chain
                 assert _.file_id == FILE_ID__TIMELINE__MGRAPH
                 assert _.file_name  () == f'{FILE_ID__TIMELINE__MGRAPH}.mgraph.json'
