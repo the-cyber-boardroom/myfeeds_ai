@@ -20,6 +20,7 @@ class Hacker_News__File(Type_Safe):
     def exists__now      (self) -> bool: return self.hacker_news_storage.path__exists      (s3_path = self.path_now   ())
     def file_info__latest(self) -> dict: return self.hacker_news_storage.path__file_info   (s3_path = self.path_latest())
     def file_info__now   (self) -> dict: return self.hacker_news_storage.path__file_info   (s3_path = self.path_now   ())
+    def not_exists       (self) -> bool: return not self.exists()
     def path_now         (self) -> str : return self.hacker_news_storage.path__now         (file_id = self.file_id      , extension=self.extension)
     def path_latest      (self) -> str : return self.hacker_news_storage.path__latest      (file_id = self.file_id      , extension=self.extension)
 

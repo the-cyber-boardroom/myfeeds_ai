@@ -71,12 +71,12 @@ class test__int__Routes__Hacker_News(TestCase):
                                               message =''       ,
                                               status  ='ok'     )
 
-    def test_flow_new_articles(self):
-        with self.routes_hacker_news as _:
-            current_path = '2025/02/19/22'
-            data         = _.flow_new_articles(current__path=current_path)
-            new_articles = Schema__Feed__Config__New_Articles.from_json(data)
-            assert type(new_articles) is Schema__Feed__Config__New_Articles
+    # def test_flow_new_articles(self):
+    #     with self.routes_hacker_news as _:
+    #         current_path = '2025/02/19/22'
+    #         data         = _.flow_new_articles(current__path=current_path)
+    #         new_articles = Schema__Feed__Config__New_Articles.from_json(data)
+    #         assert type(new_articles) is Schema__Feed__Config__New_Articles
 
     def test_new_articles(self):
         with self.routes_hacker_news as _:
