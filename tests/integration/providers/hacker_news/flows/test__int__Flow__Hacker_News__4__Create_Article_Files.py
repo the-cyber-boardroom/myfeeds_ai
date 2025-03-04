@@ -15,4 +15,6 @@ class test__int__Flow__Hacker_News__4__Create_Article_Files(TestCase):
     def test_task__1__load_new_articles(self):
         with self.flow_create_article_files as _:
             _.task__1__load_new_articles()
+            assert _.articles_to_process      == _.file_current_articles.to__process()
+            assert len(_.articles_to_process) >  0
 
