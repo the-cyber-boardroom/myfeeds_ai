@@ -114,8 +114,8 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
                                   'file_timeline_diff'   : { 'exists'     : True,
                                                              'path_latest': 'latest/feed-timeline-diff.json',
                                                             'path_now'    : f'{self.path_now}/feed-timeline-diff.json'},
-                                  'path_current'        : '2025/03/04/11',
-                                  'path_previous'       : '2025/02/19/22'}
+                                  'path_current'        : _.current__path ,
+                                  'path_previous'       : _.previous__path }
 
     # def test_update_current_articles(self):
     #     with self.flow_extract_new_articles as _:
