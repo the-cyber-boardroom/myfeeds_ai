@@ -1,5 +1,6 @@
 import pytest
 from unittest                                                                                                   import TestCase
+from mgraph_db.mgraph.actions.MGraph__Screenshot                                                                import ENV_NAME__URL__MGRAPH_DB_SERVERLESS
 from mgraph_db.providers.time_chain.MGraph__Time_Chain                                                          import MGraph__Time_Chain
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                                         import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File                                    import Hacker_News__File
@@ -12,7 +13,7 @@ from osbot_utils.context_managers.disable_root_loggers                          
 from osbot_utils.helpers.flows.Flow                                                                             import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                                  import flow
 from osbot_utils.type_safe.Type_Safe                                                                            import Type_Safe
-from osbot_utils.utils.Env                                                                                      import not_in_github_action
+from osbot_utils.utils.Env                                                                                      import get_env
 from osbot_utils.utils.Misc                                                                                     import list_set
 from osbot_utils.utils.Objects                                                                                  import base_types, obj, __
 from tests.integration.data_feeds__objs_for_tests                                                               import cbr_website__assert_local_stack
@@ -107,20 +108,21 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             assert obj(_.file_info__latest()).ContentType == CONTENT_TYPE__MGRAPH__DOT
 
     def test_task__5__create_png(self):
-        with self.flow__articles_timeline as _:
-            _.task__2__create_mgraph()
-            _.task__4__create_dot_code()
-            _.task__5__create_png   ()
+        if get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS):
+            with self.flow__articles_timeline as _:
+                _.task__2__create_mgraph()
+                _.task__4__create_dot_code()
+                _.task__5__create_png   ()
 
-        #if not_in_github_action():          # todo: figure out why this doesn't work in GH Actions
-        with self.flow__articles_timeline.hacker_news_timeline_png as _:
-            assert _.file_name() == 'feed-timeline.mgraph.png'
-            assert _.file_name() in _.hacker_news_storage.files_in__latest()           # this is failing in GitHub action
-            assert _.exists   () is True
+            #if not_in_github_action():          # todo: figure out why this doesn't work in GH Actions
+            with self.flow__articles_timeline.hacker_news_timeline_png as _:
+                assert _.file_name() == 'feed-timeline.mgraph.png'
+                assert _.file_name() in _.hacker_news_storage.files_in__latest()           # this is failing in GitHub action
+                assert _.exists   () is True
 
-            assert _.content_type                         == 'image/png'
-            assert obj(_.file_info__latest()).ContentType == _.content_type
-            assert obj(_.file_info__now   ()).ContentType == _.content_type
+                assert _.content_type                         == 'image/png'
+                assert obj(_.file_info__latest()).ContentType == _.content_type
+                assert obj(_.file_info__now   ()).ContentType == _.content_type
 
     # this is tests
     # def test_task__6__create_output(self):
@@ -142,6 +144,7 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             assert an_flow.flow_return_value == _.output
             path_now = _.hacker_news_timeline.hacker_news_storage.path_to__now_utc()
 
+            png_exists = get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS) is not None
             assert obj(_.output) == __(articles_processed=50,
                                        hacker_news_timeline=__(exists      = True,
                                                                path_latest = 'latest/feed-timeline.mgraph.json',
@@ -149,7 +152,7 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
                                        hacker_news_timeline_dot_code=__(exists      = True,
                                                                         path_latest = 'latest/feed-timeline.mgraph.dot',
                                                                         path_now    = f'{path_now}/feed-timeline.mgraph.dot'),
-                                       hacker_news_timeline_png=__(exists     =  True,
+                                       hacker_news_timeline_png=__(exists     =  png_exists,
                                                                    path_latest = 'latest/feed-timeline.mgraph.png',
                                                                    path_now    = f'{path_now}/feed-timeline.mgraph.png'))
 
