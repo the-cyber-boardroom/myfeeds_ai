@@ -2,6 +2,7 @@ from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                        
 from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News             import FILE_ID__CURRENT_ARTICLES
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File                import Hacker_News__File
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles import Schema__Feed__Current_Articles
+from osbot_utils.utils.Lists import list_group_by
 
 
 # todo: refactor to class that we only need to provide the file_id and the type (in this case Schema__Feed__Current_Articles)
@@ -10,6 +11,8 @@ class Hacker_News__File__Current_Articles(Hacker_News__File):
     extension             = S3_Key__File_Extension.JSON
     current_articles      : Schema__Feed__Current_Articles
 
+    def articles_json(self):
+        return self.load().json().get('articles', {})       # this is needed for the list_group_by which only operates on json lists
 
     def load(self):
         json_data = super().load()
@@ -21,3 +24,16 @@ class Hacker_News__File__Current_Articles(Hacker_News__File):
         if self.current_articles:
             self.file_data = self.current_articles.json()
             super().save()
+
+    def group_by_status(self):
+        articles        = self.articles_json()                                              # get the dict object which we need to use on list_group_by
+        articles_values = list(articles.values())
+        return list_group_by(articles_values, 'status')                                     # todo: create a version of list_group_by that works on attributes (i.e. an instance's variables)
+
+    def to__process(self):
+        return
+
+        # self.current_articles = self.hacker_news_data.current_articles()
+        # for article_id, article in self.current_articles.articles.items():
+        #     if article.status == Schema__Feed__Current_Article__Status.TO_PROCESS:
+        #         self.articles_to_process[article_id]=article

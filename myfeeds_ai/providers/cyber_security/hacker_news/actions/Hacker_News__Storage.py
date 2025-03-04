@@ -121,9 +121,9 @@ class Hacker_News__Storage(Type_Safe):
         return data
 
 
-    def load_from__latest(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Optional[Dict]:
+    def load_from__latest(self, file_id: Safe_Id, extension: S3_Key__File_Extension, content_type:str=None) -> Optional[Dict]:
         s3_path = self.s3_db.s3_path__latest(file_id=file_id, extension=extension)
-        data    = self.path__load_data(s3_path)
+        data    = self.path__load_data(s3_path, content_type=content_type)
         return data
 
     def load_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension, content_type: str=None) -> Optional[Dict]:

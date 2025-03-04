@@ -33,7 +33,7 @@ class Hacker_News__File(Type_Safe):
         return f'{self.file_id}.{self.extension.value}'
 
     def load(self):
-        self.file_data = self.hacker_news_storage.load_from__now(file_id=self.file_id, extension=self.extension, content_type=self.content_type)
+        self.file_data = self.hacker_news_storage.load_from__latest(file_id=self.file_id, extension=self.extension, content_type=self.content_type)
         return self.file_data
 
     def save(self):
