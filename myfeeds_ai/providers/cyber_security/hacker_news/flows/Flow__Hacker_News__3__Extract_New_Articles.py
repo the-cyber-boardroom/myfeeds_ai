@@ -23,7 +23,7 @@ class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
         if not self.previous__path:
             self.previous__path = new_articles.path__current
         if not self.current__path:
-            self.current__path =  self.file_new_articles.hacker_news_storage.path_to__now_utc()
+            self.current__path =  self.file_new_articles.hacker_news_storage.path__folder_now()
 
     @task()
     def task__2__create__timeline_diff(self):

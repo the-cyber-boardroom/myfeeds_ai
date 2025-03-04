@@ -27,7 +27,7 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
         kwargs = dict(current__path  = self.current_path ,                                                                  # simulate the current and previous path config
                       previous__path = self.previous_path)
         self.flow_extract_new_articles = Flow__Hacker_News__3__Extract_New_Articles(**kwargs)                               # new object on every test run
-        self.path_now                  = self.flow_extract_new_articles.file_current_articles.hacker_news_storage.path_to__now_utc()
+        self.path_now                  = self.flow_extract_new_articles.file_current_articles.hacker_news_storage.path__folder_now()
 
     def test_task__1__resolve__previous__path(self):
 
@@ -35,7 +35,7 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
             assert _.current__path  is None
             assert _.previous__path is None
             _.task__1__resolve__previous__path()
-            assert _.current__path == _.file_new_articles.hacker_news_storage.path_to__now_utc()
+            assert _.current__path == _.file_new_articles.hacker_news_storage.path__folder_now()
             if _.file_new_articles.new_articles:
                 assert _.previous__path == _.file_new_articles.new_articles.path__current
 
@@ -49,7 +49,7 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
             _.current__path  = ''
             _.previous__path = self.previous_path
             _.task__1__resolve__previous__path()
-            assert _.current__path  == _.file_new_articles.hacker_news_storage.path_to__now_utc()                         # current path should now be latest
+            assert _.current__path  == _.file_new_articles.hacker_news_storage.path__folder_now()                         # current path should now be latest
             assert _.previous__path == self.previous_path                                               # previous path is unchanged
 
         with self.flow_extract_new_articles as _:                                                       # Use-case 4: with both current and previous

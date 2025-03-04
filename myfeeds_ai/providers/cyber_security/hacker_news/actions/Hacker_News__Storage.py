@@ -54,7 +54,7 @@ class Hacker_News__Storage(Type_Safe):
 
     def files_in__now(self):
         with self.s3_db as _:
-            path__now_utc =self.path_to__now_utc()
+            path__now_utc =self.path__folder_now()
             return _.s3_path__files(path__now_utc)
 
     def save_to__path(self, data: Dict      ,
@@ -165,11 +165,11 @@ class Hacker_News__Storage(Type_Safe):
         else:
             return self.s3_db.s3_path__load_data(s3_path)
 
-    def path_to__now_utc(self):
-        return self.s3_db.s3_path__now_utc()
+    def path__folder_now(self):
+        return self.s3_db.s3_path__now(areas=self.areas())
 
     def path__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
-        return self.s3_db.s3_path__now(file_id=file_id, extension=extension)
+        return self.s3_db.s3_path__now(file_id=file_id, extension=extension, areas=self.areas())
 
     def path__date_time(self, date_time: datetime,
                               file_id  : Safe_Id                = None,

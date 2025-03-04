@@ -7,17 +7,19 @@ from osbot_utils.utils.Misc                                                     
 
 
 class Hacker_News__File__Now(Type_Safe):
-    hacker_news_storage: Hacker_News__Storage
+    hacker_news_storage : Hacker_News__Storage
     file_id             : Safe_Id
     file_data           : Any
     extension           : S3_Key__File_Extension
     content_type        : str
 
     def delete__now      (self) -> bool: return self.hacker_news_storage.delete_from__path (s3_path = self.path_now   ())
+    def folder__path_now (self) -> str : return self.hacker_news_storage.path__folder_now()
     def exists           (self) -> bool: return self.exists__now()
     def exists__now      (self) -> bool: return self.hacker_news_storage.path__exists      (s3_path = self.path_now   ())
     def file_info__now   (self) -> dict: return self.hacker_news_storage.path__file_info   (s3_path = self.path_now   ())
     def path_now         (self) -> str : return self.hacker_news_storage.path__now         (file_id = self.file_id      , extension=self.extension)
+
 
     def info(self) -> dict:
         return dict(exists      = self.exists     (),

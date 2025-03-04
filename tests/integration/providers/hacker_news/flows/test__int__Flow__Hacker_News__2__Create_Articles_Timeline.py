@@ -29,7 +29,7 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
         cls.data_feed               = cls.files.feed_data__current()
         cls.flow__articles_timeline = Flow__Hacker_News__2__Create_Articles_Timeline()
         cls.hacker_news_timeline    = cls.flow__articles_timeline.hacker_news_timeline
-        cls.path_now                = cls.flow__articles_timeline.hacker_news_storage.path_to__now_utc()
+        cls.path_now                = cls.flow__articles_timeline.hacker_news_storage.path__folder_now()
         if len(cls.data_feed.feed_data.articles) != 50:                                     # if the feed_data__current was not created from live data, reload it
             cls.data_feed = cls.files.feed_data__current(True)
         cls.disable_root_loggers = disable_root_loggers().__enter__()
@@ -143,7 +143,7 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             an_flow = _.run()
             assert type(an_flow)             == Flow
             assert an_flow.flow_return_value == _.output
-            path_now = _.hacker_news_timeline.hacker_news_storage.path_to__now_utc()
+            path_now = _.hacker_news_timeline.hacker_news_storage.path__folder_now()
 
             png_exists = get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS) is not None
             assert obj(_.output) == __(articles_processed=50,
