@@ -7,9 +7,9 @@ from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data  
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Edit                  import Hacker_News__Edit
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Live_Data             import Hacker_News__Live_Data
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage               import Hacker_News__Storage
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Diff    import Hacker_News__File__Timeline__Diff
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import Schema__Feed__Config__New_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles     import Schema__Feed__Current_Articles, Schema__Feed__Current_Article
-from osbot_utils.helpers.duration.decorators.capture_duration                                   import capture_duration
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
 from osbot_utils.helpers.flows.Flow                                                             import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                  import flow
@@ -19,7 +19,9 @@ from osbot_utils.type_safe.Type_Safe                                            
 FILE_NAME__FEED_TIMELINE_MGRAPH = 'feed-timeline.mgraph.json'
 
 
-class Flow__Hacker_News__Extract_New_Articles(Type_Safe):
+class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
+    file_timeline_diff             : Hacker_News__File__Timeline__Diff
+
     hacker_news_storage            : Hacker_News__Storage
     hacker_news_live_data          : Hacker_News__Live_Data
     hacker_news_data               : Hacker_News__Data
@@ -44,33 +46,27 @@ class Flow__Hacker_News__Extract_New_Articles(Type_Safe):
     path__current_articles         : str
 
     @task()
-    def resolve__previous__path(self):
+    def task__1__resolve__previous__path(self):
         self.current__config_new_articles = self.hacker_news_data.new_articles()  # get latest version
         if self.previous__path is None:
-            self.previous__path           = self.current__config_new_articles.path__current
+            self.previous__path = self.current__config_new_articles.path__current
         if self.current__path is None:
             self.current__path =  self.hacker_news_storage.path_to__now_utc()
 
     @task()
-    def load_and_diff_timeline_data(self):
-
-        with capture_duration() as duration:
-            data__timeline_current  = self.hacker_news_live_data.get_json(self.current__path , FILE_NAME__FEED_TIMELINE_MGRAPH)
-            data__timeline_previous = self.hacker_news_live_data.get_json(self.previous__path, FILE_NAME__FEED_TIMELINE_MGRAPH)
-            self.mgraph__timeline__current  = MGraph__Time_Chain.from_json__compressed(data__timeline_current )
-            self.mgraph__timeline__previous = MGraph__Time_Chain.from_json__compressed(data__timeline_previous)
-
-            differ = MGraph__Diff__Values(graph1=self.mgraph__timeline__current,
-                                          graph2=self.mgraph__timeline__previous)
-
-            self.timeline_diff = differ.compare([ Time_Chain__Year,Time_Chain__Month, Time_Chain__Day, Time_Chain__Hour, Time_Chain__Source])
+    def task__2__create__timeline_diff(self):
+        with self.file_timeline_diff as _:
+            if _.not_exists():
+                _.create(previous_path=self.previous__path, current_path=self.current__path)
+            else:
+                _.load()
+            self.timeline_diff = _.timeline_diff        #todo remove the need to use below self.timeline_diff
 
 
-            self.duration__load_timeline_data = duration.seconds
 
     @task()
-    def update_current_articles(self):
-        current_articles = self.hacker_news_data.current_articles() or Schema__Feed__Current_Articles()
+    def task__3__update_current_articles(self):
+        current_articles     = self.hacker_news_data.current_articles() or Schema__Feed__Current_Articles()
         new_articles_ids     = self.timeline_diff.added_values  .get(Time_Chain__Source, set())
         removed_articles_ids = self.timeline_diff.removed_values.get(Time_Chain__Source, set())
         for new_article_id in new_articles_ids:
@@ -83,7 +79,7 @@ class Flow__Hacker_News__Extract_New_Articles(Type_Safe):
             if Obj_Id(removed_article_id) in current_articles.articles:
                 del current_articles.articles[Obj_Id(removed_article_id)]
 
-        self.path__current_articles = self.hacker_news_edit.save__current_articles(current_articles)
+        #self.path__current_articles = self.hacker_news_edit.save__current_articles(current_articles)
 
         self.current__articles = current_articles
 
@@ -125,30 +121,33 @@ class Flow__Hacker_News__Extract_New_Articles(Type_Safe):
         pass
 
     @task()
-    def create_output(self):
-        #return {}
-        pass
+    def task__5__create_output(self):
+        self.output = dict(path_previous                = self.previous__path              ,
+                           path_current                 = self.current__path               ,
+                           #current__config_new_articles = self.current__config_new_articles.json(),
+                           current__articles            = self.current__articles.json()    )
+
 
 
     @flow()
     def extract_new_articles(self) -> Flow:
         with self as _:
-            _.resolve__previous__path           ()
+            _.task__1__resolve__previous__path           ()
         if self.current__path == self.previous__path:
             return {'error': { 'source'       :'current__path == previous_path',
                                'current__path': self.current__path,
                                'previous__path': self.previous__path}}
         with self as _:
-            _.load_and_diff_timeline_data       ()
-            _.update_current_articles           ()
+            _.task__2__create__timeline_diff       ()
+            _.task__3__update_current_articles           ()
             #_.create_screenshot                ()
-            _.save__config_new_articles__current()
-            _.save__config_new_articles__latest ()
-            #_.create_output                     ()
+            # _.save__config_new_articles__current()
+            # _.save__config_new_articles__latest ()
+            _.task__5__create_output                     ()
 
         #return self.timeline_diff
-        #return self.output
-        return self.new__config_new_articles.json()
+        return self.output
+        #return self.new__config_new_articles.json()
 
     def run(self):
         return self.extract_new_articles().execute_flow()

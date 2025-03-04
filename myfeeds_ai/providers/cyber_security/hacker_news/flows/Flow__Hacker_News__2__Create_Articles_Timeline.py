@@ -15,8 +15,6 @@ from osbot_utils.type_safe.Type_Safe                                            
 from osbot_utils.utils.Env                                                                       import get_env
 from osbot_utils.utils.Misc                                                                      import timestamp_to_datetime
 
-from osbot_utils.utils.Dev import pprint
-
 FILE__SCREENSHOT__MGRAPH__TIME_SERIES   = './hacker_news-timeline.png'
 FILE_NAME__MGRAPH__TIMELINE             = 'feed-timeline'
 
@@ -56,13 +54,12 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
                     date_time     = timestamp_to_datetime(timestamp_utc)                                # convert timestamp into a date_time
                     _.create_from_datetime(dt=date_time, source_id=article.article_obj_id)              # add that date_time to mgraph_timeline
 
-
     @task()
     def task__3__save_mgraph(self):
         if self.hacker_news_timeline.exists() is False:             # only save if hacker_news_timeline doesn't exist
             self.hacker_news_timeline.save()
 
-    #@task()
+    @task()
     def task__4__create_dot_code(self):                                  # todo: there is a weird performance issue which only happens on an lambda where this takes about 5 secs to complete (for 50 articles)
         with self.hacker_news_timeline_dot_code as _:
             if _.exists():
@@ -89,9 +86,20 @@ class Flow__Hacker_News__2__Create_Articles_Timeline(Type_Safe):
             hacker_news_timeline = dict(exists      = _.exists(),
                                         path_latest = _.path_latest(),
                                         path_now    = _.path_now  ())
-        pprint(self.hacker_news_timeline.path_now())
-        self.output = dict(articles_processed   = len(self.articles)  ,
-                           hacker_news_timeline = hacker_news_timeline)
+
+        with self.hacker_news_timeline_dot_code as _:
+            hacker_news_timeline_dot_code = dict(exists      = _.exists(),
+                                                 path_latest = _.path_latest(),
+                                                 path_now    = _.path_now  ())
+        with self.hacker_news_timeline_png as _:
+            hacker_news_timeline_png = dict(exists      = _.exists(),
+                                            path_latest = _.path_latest(),
+                                            path_now    = _.path_now  ())
+
+        self.output = dict(articles_processed            = len(self.articles)           ,
+                           hacker_news_timeline          = hacker_news_timeline         ,
+                           hacker_news_timeline_dot_code = hacker_news_timeline_dot_code,
+                           hacker_news_timeline_png      = hacker_news_timeline_png     )
 
 
     @flow()
