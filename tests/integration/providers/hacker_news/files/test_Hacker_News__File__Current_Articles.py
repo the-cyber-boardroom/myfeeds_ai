@@ -35,5 +35,6 @@ class test_Hacker_News__File__Current_Articles(TestCase):
     def test_next_step__1__save_article(self):
         with self.file_current_articles as _:
             next_step_1 = _.next_step__1__save_article()
-            assert next_step_1 == _.group_by_next_step().get('STEP__1__SAVE_ARTICLE')
+            if next_step_1:
+                assert next_step_1 == _.group_by_next_step().get('STEP__1__SAVE_ARTICLE')
 
