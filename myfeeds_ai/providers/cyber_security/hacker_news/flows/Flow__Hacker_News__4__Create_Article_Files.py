@@ -1,7 +1,7 @@
 from typing                                                                                        import List
+
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Article                  import Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                     import Hacker_News__Data
-from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News                    import FILE_ID__FEED_ARTICLE
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article              import Hacker_News__File__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__All        import Hacker_News__File__Articles__All
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current    import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Status         import Schema__Feed__Article__Status
@@ -49,9 +49,8 @@ class Flow__Hacker_News__4__Create_Article_Files(Type_Safe):
 
         for article, article_data in articles_to_save.items():
             article_id                 = article.article_id
-            file_article               = Hacker_News__File__Article(article_id=article_id, file_id=FILE_ID__FEED_ARTICLE)
-            data                       = article_data.json()
-            article.path__feed_article = file_article.save_data(data)
+            hacker_news_article        = Hacker_News__Article(article_id=article_id)
+            article.path__feed_article = hacker_news_article.article_data__save(article_data)
             article.status             = to_status
             article.next_step          = to_step
             article_change_status      = Schema__Feed__Article__Status__Change(article=article, from_status=from_status, from_step=from_step)
