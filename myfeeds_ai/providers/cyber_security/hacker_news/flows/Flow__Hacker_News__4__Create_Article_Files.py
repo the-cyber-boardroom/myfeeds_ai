@@ -28,9 +28,8 @@ class Flow__Hacker_News__4__Create_Article_Files(Type_Safe):
         with self.file_articles_current as _:
             _.load()
             self.articles_to_process = _.next_step__1__save_article()
-            #print(f"There are {len(self.articles_to_process)} articles to process")
 
-    #@task()
+    @task()
     def task__2__create_missing_article_files(self):
         from_status = Schema__Feed__Article__Status.TO_PROCESS
         from_step   = Schema__Feed__Article__Step.STEP__1__SAVE_ARTICLE
@@ -60,9 +59,9 @@ class Flow__Hacker_News__4__Create_Article_Files(Type_Safe):
             self.file_articles_all.add_article(article)
 
 
-        #self.file_articles_current.save()
+        self.file_articles_current.save()
 
-    def task__5__create_output(self):
+    def task__3__create_output(self):
         self.output = dict(articles_to_process = len(self.articles_to_process),
                            status_changes     =  self.status_changes.json()  )
 
@@ -71,7 +70,7 @@ class Flow__Hacker_News__4__Create_Article_Files(Type_Safe):
         with self as _:
             _.task__1__load_articles_to_process    ()
             _.task__2__create_missing_article_files()
-            _.task__5__create_output               ()
+            _.task__3__create_output               ()
         return self.output
 
 

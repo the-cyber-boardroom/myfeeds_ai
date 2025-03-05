@@ -34,7 +34,7 @@ class test__int__Flow__Hacker_News__4__Create_Article_Files(TestCase):
 
                 assert len(_.file_articles_all.articles.articles) > 0
 
-                pprint(status_change.json())
-                article_id = status_change.article.article_id
-                #pprint(_.file_articles_all.articles.json())
+                # pprint(status_change.json())
+                # article_id = status_change.article.article_id
+                # #pprint(_.file_articles_all.articles.json())
 

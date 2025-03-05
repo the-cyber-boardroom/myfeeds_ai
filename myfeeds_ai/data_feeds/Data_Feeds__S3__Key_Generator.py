@@ -10,6 +10,7 @@ from osbot_utils.type_safe.decorators.type_safe         import type_safe
 class S3_Key__File_Extension(Enum):
     JSON         : str = 'json'
     PNG          : str = 'png'
+    MARKDOWN     : str = 'md'
     MGRAPH__DOT  : str = 'mgraph.dot'
     MGRAPH__JSON : str = 'mgraph.json'
     MGRAPH__PNG  : str = 'mgraph.png'
