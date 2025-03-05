@@ -1,17 +1,18 @@
-from typing import Dict, List
-from mgraph_db.providers.graph_rag.actions.Graph_RAG__Create_MGraph                         import Graph_RAG__Create_MGraph
-from mgraph_db.providers.graph_rag.schemas.Schema__Graph_RAG__Entity                        import Schema__Graph_RAG__Entity
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                    import S3_Key__File_Extension
-from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                     import S3_FILE_NAME__ARTICLE__TEXT_ENTITIES, S3_FILE_NAME__ARTICLE__GRAPH_ENTITIES
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data              import Hacker_News__Data
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Edit              import Hacker_News__Edit
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article  import Hacker_News__Storage__Article
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles import Schema__Feed__Current_Article__Status, Schema__Feed__Current_Article, Schema__Feed__Current_Articles
-from osbot_utils.helpers.Obj_Id                                                             import Obj_Id
-from osbot_utils.helpers.flows.Flow                                                         import Flow
-from osbot_utils.helpers.flows.decorators.flow                                              import flow
-from osbot_utils.helpers.flows.decorators.task                                              import task
-from osbot_utils.type_safe.Type_Safe                                                        import Type_Safe
+from typing                                                                                        import Dict, List
+from mgraph_db.providers.graph_rag.actions.Graph_RAG__Create_MGraph                                import Graph_RAG__Create_MGraph
+from mgraph_db.providers.graph_rag.schemas.Schema__Graph_RAG__Entity                               import Schema__Graph_RAG__Entity
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                           import S3_Key__File_Extension
+from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                            import S3_FILE_NAME__ARTICLE__TEXT_ENTITIES, S3_FILE_NAME__ARTICLE__GRAPH_ENTITIES
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                     import Hacker_News__Data
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Edit                     import Hacker_News__Edit
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article         import Hacker_News__Storage__Article
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Article__Status import Schema__Feed__Current_Article__Step
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles        import Schema__Feed__Current_Article__Status, Schema__Feed__Current_Article, Schema__Feed__Current_Articles
+from osbot_utils.helpers.Obj_Id                                                                    import Obj_Id
+from osbot_utils.helpers.flows.Flow                                                                import Flow
+from osbot_utils.helpers.flows.decorators.flow                                                     import flow
+from osbot_utils.helpers.flows.decorators.task                                                     import task
+from osbot_utils.type_safe.Type_Safe                                                               import Type_Safe
 
 MAX_FILES_PROCESSED = 1
 
@@ -29,7 +30,7 @@ class Flow__Hacker_News__Create__Graph_RAG__MGraphs(Type_Safe):
         with self.hacker_news_data as _:
             self.current_articles = _.current_articles()
             for article_id, article in self.current_articles.articles.items():
-                if article.status == Schema__Feed__Current_Article__Status.TO_CREATE_GRAPH:
+                if article.next_step == Schema__Feed__Current_Article__Step.STEP__3__CREATE_GRAPH:
                     self.articles_to_process[article_id]=article
             print(f"There are {len(self.articles_to_process)} articles to process")
 
@@ -39,7 +40,7 @@ class Flow__Hacker_News__Create__Graph_RAG__MGraphs(Type_Safe):
             if i >= MAX_FILES_PROCESSED:
                 break
             article_storage = Hacker_News__Storage__Article(article_id=article_id)
-            location        = article.location
+            location        = article.source_location
             #pprint(article_storage.files_in__path(location, include_sub_folders=True))
             file_entities =  article_storage.load_from__path(path      = location                             ,
                                                              file_id   = S3_FILE_NAME__ARTICLE__TEXT_ENTITIES ,

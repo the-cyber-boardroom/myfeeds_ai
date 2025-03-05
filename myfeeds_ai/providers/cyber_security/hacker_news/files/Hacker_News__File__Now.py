@@ -41,10 +41,11 @@ class Hacker_News__File__Now(Type_Safe):
         else:
             data = self.file_data
         with self.hacker_news_storage as _:
-            saved__path_now   = _.save_to__now   (data=data, file_id=self.file_id, extension=self.extension, content_type=self.content_type)
+            saved__path_now   = _.save_to__now(data=data, file_id=self.file_id, extension=self.extension, content_type=self.content_type)
             if saved__path_now != self.path_now():
                 raise ValueError(f"in Hacker_News__MGraph.save, the saved__path_now was '{saved__path_now}' and it was expected to be '{self.path_now()}'")
+            return saved__path_now
 
     def save_data(self, file_data):
         self.file_data = file_data
-        self.save()
+        return self.save()

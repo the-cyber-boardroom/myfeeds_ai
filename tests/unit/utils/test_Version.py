@@ -1,7 +1,7 @@
 import myfeeds_ai
-from unittest                            import TestCase
-from osbot_utils.utils.Files             import parent_folder, file_name
-from myfeeds_ai.utils.Version import Version, version__myfeeds_ai
+from unittest                   import TestCase
+from osbot_utils.utils.Files    import parent_folder, file_name
+from myfeeds_ai.utils.Version   import Version, version__myfeeds_ai
 
 
 class test_Version(TestCase):

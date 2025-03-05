@@ -20,9 +20,12 @@ class Hacker_News__Storage(Type_Safe):
         s3_path = self.path__latest(file_id=file_id, extension=extension)
         if self.delete_from__path(s3_path):
             return s3_path
+        return False
 
     def delete_from__path(self, s3_path) -> bool:
-        return  self.s3_db.s3_path__delete(s3_path)
+        if self.path__exists(s3_path):
+            return  self.s3_db.s3_path__delete(s3_path)
+        return False
 
     def delete_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
         s3_path = self.path__now(file_id=file_id, extension=extension)

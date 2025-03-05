@@ -107,9 +107,9 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
 
             for article_id, article  in _.file_current_articles.current_articles.articles.items():
                 assert is_obj_id(article_id) is True
-                assert list_set (article   ) == ['article_id', 'knowledge_graph', 'llm_prompt', 'location',
-                                                 'path__entities_mgraph__json', 'path__entities_mgraph__png',
-                                                 'path__feed_article', 'status']
+                assert list_set (article   ) == ['article_id', 'next_step', 'path__entities_mgraph__json',
+                                                 'path__entities_mgraph__png', 'path__feed_article',
+                                                 'source_location', 'status']
                 assert article.article_id    == article_id
 
     def test_run(self):                                 # also tests task__6__create_output

@@ -1,7 +1,8 @@
 from unittest                                                                                           import TestCase
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__4__Create_Article_Files   import Flow__Hacker_News__4__Create_Article_Files
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__4__Create_Article_Files   import Flow__Hacker_News__4__Create_Article_Files, FLOW__HACKER_NEWS__4__MAX__ARTICLES_TO_SAVE
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Article__Status      import Schema__Feed__Current_Article__Step
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles             import Schema__Feed__Current_Article__Status
 from tests.integration.data_feeds__objs_for_tests                                                       import cbr_website__assert_local_stack
-
 
 class test__int__Flow__Hacker_News__4__Create_Article_Files(TestCase):
 
@@ -15,11 +16,18 @@ class test__int__Flow__Hacker_News__4__Create_Article_Files(TestCase):
     def test_task__1__load_articles_to_process(self):
         with self.flow_create_article_files as _:
             _.task__1__load_articles_to_process()
-            assert _.articles_to_process      == _.file_current_articles.to__process()
+            assert _.articles_to_process      == _.file_current_articles.next_step__1__save_article()
             assert len(_.articles_to_process) >  0
 
     def test_task__2__create_missing_article_files(self):
         with self.flow_create_article_files as _:
             _.task__1__load_articles_to_process    ()
             _.task__2__create_missing_article_files()
+            if len(_.status_changes) > 0:
+                assert len(_.status_changes) <= FLOW__HACKER_NEWS__4__MAX__ARTICLES_TO_SAVE
+                status_change = _.status_changes[0]
+                assert status_change.from_status       == Schema__Feed__Current_Article__Status.TO_PROCESS
+                assert status_change.from_step         == Schema__Feed__Current_Article__Step.STEP__1__SAVE_ARTICLE
+                assert status_change.article.status    == Schema__Feed__Current_Article__Status.PROCESSING
+                assert status_change.article.next_step == Schema__Feed__Current_Article__Step.STEP__2__LLM__TEXT_TO_GRAPH
 
