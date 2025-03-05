@@ -55,7 +55,7 @@ class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
                 removed_articles_ids = timeline_diff.removed_values.get(Time_Chain__Source, set())
 
                 for new_article_id in new_articles_ids:
-                    kwargs          = dict(source_location = self.current__path, article_id = new_article_id)
+                    kwargs          = dict(path__folder__source = self.current__path, article_id= new_article_id)
                     current_article = Schema__Feed__Article(**kwargs)
                     if Obj_Id(new_article_id) not in current_articles.articles:
                         current_articles.articles[Obj_Id(new_article_id)] = current_article

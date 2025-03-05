@@ -45,7 +45,7 @@ class Flow__Hacker_News__Process_Articles(Type_Safe):
     def process_articles__create_article_file(self):
         articles_by_location = {}                                           # todo: refactor this file load cache into a better location
         for article_id, article in self.articles_to_process.items():
-            location               = article.source_location
+            location               = article.path__folder__source
             articles_by_article_id = articles_by_location.get(location)
             if articles_by_article_id is None:                              # only load once
                 print(f'loading data for location: {location}')
@@ -57,7 +57,7 @@ class Flow__Hacker_News__Process_Articles(Type_Safe):
             if article_id in articles_by_article_id:
                 article_storage             = Hacker_News__Storage__Article(article_id=article_id)
                 s3_path                     = article_storage.path__path(path=location, file_id=S3_FILE_NAME__ARTICLE__FEED_ARTICLE, extension=S3_Key__File_Extension.JSON)
-                article.path__feed_article  = s3_path
+                article.path__file__feed_article  = s3_path
                 file_exists                 = article_storage.path__exists(s3_path=s3_path)
                 if file_exists is False:
                     #s3_path = article_storage.path__path(path=location, file_id=S3_FILE_NAME__ARTICLE__FEED_ARTICLE, extension=S3_Key__File_Extension.JSON)
@@ -89,7 +89,7 @@ class Flow__Hacker_News__Process_Articles(Type_Safe):
         for article_id, article in self.current_articles.articles.items():
             if article.status == Schema__Feed__Article__Status.TO_EXTRACT_TEXT:
                 article_storage = Hacker_News__Storage__Article(article_id=article_id)
-                path__feed_article    = article.path__feed_article
+                path__feed_article    = article.path__file__feed_article
                 article_data          = article_storage.path__load_data(path__feed_article)     # todo: we shouldn't be using a dict here (we should be using .data() and get the correct schema file
                 article_title         = article_data.get('title'     )
                 article_description   = article_data.get('description')
@@ -101,7 +101,7 @@ class Flow__Hacker_News__Process_Articles(Type_Safe):
 
                 article_entities      = Schema__Feed__Article__Entities(entities__title=entities__title, entities__description=entities__description)
 
-                location = article.source_location
+                location = article.path__folder__source
                 data     = article_entities.json()
                 s3_path  = article_storage.save_to__path(data      = data                                 ,
                                                          path      = location                             ,

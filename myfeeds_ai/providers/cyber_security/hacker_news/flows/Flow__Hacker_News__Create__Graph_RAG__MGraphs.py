@@ -42,7 +42,7 @@ class Flow__Hacker_News__Create__Graph_RAG__MGraphs(Type_Safe):
             if i >= MAX_FILES_PROCESSED:
                 break
             article_storage = Hacker_News__Storage__Article(article_id=article_id)
-            location        = article.source_location
+            location        = article.path__folder__source
             #pprint(article_storage.files_in__path(location, include_sub_folders=True))
             file_entities =  article_storage.load_from__path(path      = location                             ,
                                                              file_id   = S3_FILE_NAME__ARTICLE__TEXT_ENTITIES ,

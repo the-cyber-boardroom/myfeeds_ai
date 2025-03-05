@@ -39,7 +39,7 @@ class Flow__Hacker_News__4__Create_Article_Files(Type_Safe):
 
         articles_to_save = {}
         for article in self.articles_to_process[0:FLOW__HACKER_NEWS__4__MAX__ARTICLES_TO_SAVE]:
-            location         = article.source_location                               # we need to
+            location         = article.path__folder__source                               # we need to
             if location:
                 article_id       = article.article_id
                 articles_by_id   = self.hacker_news_data.articles_by_id__in_path(path=location, load_from_live=True)        # note: this value is cached so this has good performance
@@ -48,12 +48,14 @@ class Flow__Hacker_News__4__Create_Article_Files(Type_Safe):
                     articles_to_save[article] = article_data
 
         for article, article_data in articles_to_save.items():
-            article_id                 = article.article_id
-            hacker_news_article        = Hacker_News__Article(article_id=article_id)
-            article.path__feed_article = hacker_news_article.article_data__save(article_data)
-            article.status             = to_status
-            article.next_step          = to_step
-            article_change_status      = Schema__Feed__Article__Status__Change(article=article, from_status=from_status, from_step=from_step)
+            article_id                       = article.article_id
+            hacker_news_article              = Hacker_News__Article(article_id=article_id)
+            file_article                     = hacker_news_article.file_article()
+            article.path__file__feed_article = hacker_news_article.article_data__save(article_data)
+            article.path__folder__data       = file_article.folder__path_root()
+            article.status                   = to_status
+            article.next_step                = to_step
+            article_change_status            = Schema__Feed__Article__Status__Change(article=article, from_status=from_status, from_step=from_step)
             self.status_changes.append(article_change_status)
             self.file_articles_all.add_article(article)
 
