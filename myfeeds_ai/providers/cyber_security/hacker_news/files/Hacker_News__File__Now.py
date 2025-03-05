@@ -1,4 +1,5 @@
-from typing                                                                         import Any
+from datetime import datetime
+from typing import Any, List
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File_Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage   import Hacker_News__Storage
 from osbot_utils.helpers.Safe_Id                                                    import Safe_Id
@@ -12,13 +13,15 @@ class Hacker_News__File__Now(Type_Safe):
     file_data           : Any
     extension           : S3_Key__File_Extension
     content_type        : str
+    now                 : datetime
 
     def delete__now      (self) -> bool: return self.hacker_news_storage.delete_from__path (s3_path = self.path_now   ())
-    def folder__path_now (self) -> str : return self.hacker_news_storage.path__folder_now()
+    def folder__path_now (self) -> str : return self.hacker_news_storage.path__folder_now  (now=self.now)
+    def folder__path_root(self) -> str : return self.hacker_news_storage.path__folder_root (now=self.now)
     def exists           (self) -> bool: return self.exists__now()
     def exists__now      (self) -> bool: return self.hacker_news_storage.path__exists      (s3_path = self.path_now   ())
     def file_info__now   (self) -> dict: return self.hacker_news_storage.path__file_info   (s3_path = self.path_now   ())
-    def path_now         (self) -> str : return self.hacker_news_storage.path__now         (file_id = self.file_id      , extension=self.extension)
+    def path_now         (self) -> str : return self.hacker_news_storage.path__now         (file_id = self.file_id      , extension=self.extension, now=self.now)
 
 
     def info(self) -> dict:

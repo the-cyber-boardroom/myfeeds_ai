@@ -44,6 +44,13 @@ class Data_Feeds__S3_DB(S3__DB_Base):
         return url_join_safe(self.s3_folder__for_latest(), S3_FILE_NAME__LATEST__VERSIONS + '.json')        # todo remove and use s3_path__in_latest
 
     @type_safe
+    def s3_path__date_time(self, date_time : datetime,
+                                 file_id   : Safe_Id               = None,
+                                 extension: S3_Key__File_Extension = None,
+                                 areas    : List[Safe_Id]          = None) -> str:
+        return self.s3_key_generator.s3_path__date_time(date_time=date_time, file_id=file_id, extension=extension, areas=areas)
+
+    @type_safe
     def s3_path__now(self, file_id: Safe_Id=None, extension: S3_Key__File_Extension=None, areas: List[Safe_Id] = None) -> str:
         return self.s3_key_generator.s3_path__now(file_id=file_id, extension=extension, areas=areas)
 

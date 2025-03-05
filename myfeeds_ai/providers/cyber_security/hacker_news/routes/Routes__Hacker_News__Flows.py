@@ -23,7 +23,7 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
     def flow_2_create_articles_timeline(self):
         return Flow__Hacker_News__2__Create_Articles_Timeline().run().flow_output()
 
-    def flow_3_flow_extract_new_articles(self, current__path:str ='2025/02/23/22'):
+    def flow_3_flow_extract_new_articles(self, current__path:str ='2025/03/01/00'):
         return Flow__Hacker_News__3__Extract_New_Articles(current__path=current__path).run().flow_output()
 
     def flow_4_create_article_files(self):

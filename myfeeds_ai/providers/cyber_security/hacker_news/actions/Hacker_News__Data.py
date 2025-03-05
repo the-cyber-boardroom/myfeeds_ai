@@ -7,7 +7,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storag
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article         import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed      import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import Schema__Feed__Config__New_Articles
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles     import Schema__Feed__Current_Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Articles     import Schema__Feed__Articles
 from osbot_utils.decorators.methods.cache_on_self                                               import cache_on_self
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
 from osbot_utils.type_safe.Type_Safe                                                            import Type_Safe
@@ -52,9 +52,9 @@ class Hacker_News__Data(Type_Safe):
         return self.cast_to__new_articles(self.storage.load_from__path  (file_id=FILE_ID__NEW_ARTICLES, extension=EXTENSION__NEW_ARTICLES, path=path))
 
     # todo: refactor to use the new file_current_articles
-    def current_articles(self) -> Schema__Feed__Current_Articles:
+    def current_articles(self) -> Schema__Feed__Articles:
         current_articles = self.storage.load_from__latest(file_id=FILE_NAME__CURRENT_ARTICLES, extension=EXTENSION__CURRENT_ARTICLES           )
-        return Schema__Feed__Current_Articles.from_json(current_articles)
+        return Schema__Feed__Articles.from_json(current_articles)
 
     def cast_to__new_articles(self, json_data) -> Schema__Feed__Config__New_Articles:       # todo: remove method
         return Schema__Feed__Config__New_Articles.from_json(json_data)

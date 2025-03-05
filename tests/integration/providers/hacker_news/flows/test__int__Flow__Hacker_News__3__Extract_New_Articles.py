@@ -85,8 +85,8 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
             _.task__3__save__new_articles   ()
 
             assert _.file_new_articles.info () == { 'exists'     : True,
-                                                    'path_latest': 'latest/new-articles.json',
-                                                    'path_now'   : f'{self.path_now}/new-articles.json'}
+                                                    'path_latest': 'latest/articles-new.json',
+                                                    'path_now'   : f'{self.path_now}/articles-new.json'}
 
             assert _.file_new_articles.new_articles.obj() == __(path__current  = self.current_path                       ,
                                                                 path__previous = self.previous_path                      ,
@@ -100,16 +100,21 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
             _.task__2__create__timeline_diff  ()
             _.task__4__update_current_articles()
 
-            assert len(_.file_current_articles.current_articles.articles) > 0
+            assert len(_.file_current_articles.articles.articles) > 0
             assert _.file_current_articles.info() == { 'exists'    : True,
-                                                      'path_latest': 'latest/current-articles.json',
-                                                      'path_now'   : f'{self.path_now}/current-articles.json'}
+                                                      'path_latest': 'latest/articles-current.json',
+                                                      'path_now'   : f'{self.path_now}/articles-current.json'}
 
-            for article_id, article  in _.file_current_articles.current_articles.articles.items():
+            for article_id, article  in _.file_current_articles.articles.articles.items():
                 assert is_obj_id(article_id) is True
-                assert list_set (article   ) == ['article_id', 'next_step', 'path__entities_mgraph__json',
-                                                 'path__entities_mgraph__png', 'path__feed_article',
-                                                 'source_location', 'status']
+                assert list_set (article   ) == ['article_id'                       ,
+                                                 'next_step'                        ,
+                                                 'path__file__entities_mgraph__json',
+                                                 'path__file__entities_mgraph__png' ,
+                                                 'path__file__feed_article'         ,
+                                                 'path__folder__data'               ,
+                                                 'path__folder__source'             ,
+                                                 'status'                           ]
                 assert article.article_id    == article_id
 
     def test_run(self):                                 # also tests task__6__create_output
@@ -119,11 +124,11 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
             assert an_flow.flow_return_value == _.output
 
             assert _.output ==  { 'file_current_articles': { 'exists'     : True,
-                                                             'path_latest': 'latest/current-articles.json',
-                                                             'path_now'   : f'{self.path_now}/current-articles.json'  },
+                                                             'path_latest': 'latest/articles-current.json',
+                                                             'path_now'   : f'{self.path_now}/articles-current.json'  },
                                   'file_new_articles'    : { 'exists'     : True,
-                                                             'path_latest': 'latest/new-articles.json',
-                                                             'path_now'   : f'{self.path_now}/new-articles.json'},
+                                                             'path_latest': 'latest/articles-new.json',
+                                                             'path_now'   : f'{self.path_now}/articles-new.json'},
                                   'file_timeline_diff'   : { 'exists'     : True,
                                                              'path_latest': 'latest/feed-timeline-diff.json',
                                                             'path_now'    : f'{self.path_now}/feed-timeline-diff.json'},

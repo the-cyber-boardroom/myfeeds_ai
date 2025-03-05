@@ -1,8 +1,8 @@
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types                   import Time_Chain__Source
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Current_Articles  import Hacker_News__File__Current_Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__New_Articles      import Hacker_News__File__New_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Diff    import Hacker_News__File__Timeline__Diff
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles     import Schema__Feed__Current_Article
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Articles     import Schema__Feed__Article
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
 from osbot_utils.helpers.flows.Flow                                                             import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                  import flow
@@ -11,7 +11,7 @@ from osbot_utils.type_safe.Type_Safe                                            
 
 class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
     file_timeline_diff    : Hacker_News__File__Timeline__Diff
-    file_current_articles : Hacker_News__File__Current_Articles
+    file_current_articles : Hacker_News__File__Articles__Current
     file_new_articles     : Hacker_News__File__New_Articles
     current__path         : str = None
     previous__path        : str = None
@@ -55,8 +55,8 @@ class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
                 removed_articles_ids = timeline_diff.removed_values.get(Time_Chain__Source, set())
 
                 for new_article_id in new_articles_ids:
-                    kwargs          = dict(source_location = self.current__path, article_id = new_article_id)
-                    current_article = Schema__Feed__Current_Article(**kwargs)
+                    kwargs          = dict(path__folder__source = self.current__path, article_id= new_article_id)
+                    current_article = Schema__Feed__Article(**kwargs)
                     if Obj_Id(new_article_id) not in current_articles.articles:
                         current_articles.articles[Obj_Id(new_article_id)] = current_article
 
