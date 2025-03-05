@@ -2,7 +2,7 @@ from typing                                                                     
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                     import Hacker_News__Data
 from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News                    import FILE_ID__FEED_ARTICLE
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article              import Hacker_News__File__Article
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Current_Articles     import Hacker_News__File__Current_Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current    import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Article__Status import Schema__Feed__Current_Article__Step
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles        import Schema__Feed__Current_Article, Schema__Feed__Current_Article__Status, Schema__Feed__Current_Article__Status__Change
 from osbot_utils.helpers.flows.Flow                                                                import Flow
@@ -13,7 +13,7 @@ from osbot_utils.type_safe.Type_Safe                                            
 FLOW__HACKER_NEWS__4__MAX__ARTICLES_TO_SAVE = 1
 
 class Flow__Hacker_News__4__Create_Article_Files(Type_Safe):
-    file_current_articles : Hacker_News__File__Current_Articles
+    file_current_articles : Hacker_News__File__Articles__Current
     output                : dict
     articles_to_process   : List[Schema__Feed__Current_Article                ]
     status_changes        : List[Schema__Feed__Current_Article__Status__Change]

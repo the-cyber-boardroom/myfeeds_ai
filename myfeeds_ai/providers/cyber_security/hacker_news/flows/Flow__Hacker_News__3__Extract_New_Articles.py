@@ -1,5 +1,5 @@
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types                   import Time_Chain__Source
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Current_Articles  import Hacker_News__File__Current_Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__New_Articles      import Hacker_News__File__New_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Diff    import Hacker_News__File__Timeline__Diff
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles     import Schema__Feed__Current_Article
@@ -11,7 +11,7 @@ from osbot_utils.type_safe.Type_Safe                                            
 
 class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
     file_timeline_diff    : Hacker_News__File__Timeline__Diff
-    file_current_articles : Hacker_News__File__Current_Articles
+    file_current_articles : Hacker_News__File__Articles__Current
     file_new_articles     : Hacker_News__File__New_Articles
     current__path         : str = None
     previous__path        : str = None

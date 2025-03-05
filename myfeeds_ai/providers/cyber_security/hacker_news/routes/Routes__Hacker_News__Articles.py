@@ -1,7 +1,6 @@
 from osbot_fast_api.api.Fast_API_Routes                                                         import Fast_API_Routes
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Current_Articles  import Hacker_News__File__Current_Articles
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__New_Articles import \
-    Hacker_News__File__New_Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__New_Articles      import Hacker_News__File__New_Articles
 
 ROUTE_PATH__HACKER_NEWS__ARTICLES = 'hacker-news-articles'
 
@@ -14,7 +13,7 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
     tag                 : str                = ROUTE_PATH__HACKER_NEWS__ARTICLES
 
     def current_articles(self):
-        with Hacker_News__File__Current_Articles() as _:
+        with Hacker_News__File__Articles__Current() as _:
             _.load()
             return _.group_by_next_step()
 
@@ -23,7 +22,7 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
     #         return _.exists__latest()
 
     def current_articles_delete(self):
-        with Hacker_News__File__Current_Articles() as _:
+        with Hacker_News__File__Articles__Current() as _:
             return _.delete__latest()
 
     def new_articles_delete(self):

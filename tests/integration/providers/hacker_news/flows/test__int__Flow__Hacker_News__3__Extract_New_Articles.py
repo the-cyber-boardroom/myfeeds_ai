@@ -102,8 +102,8 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
 
             assert len(_.file_current_articles.current_articles.articles) > 0
             assert _.file_current_articles.info() == { 'exists'    : True,
-                                                      'path_latest': 'latest/current-articles.json',
-                                                      'path_now'   : f'{self.path_now}/current-articles.json'}
+                                                      'path_latest': 'latest/articles-current.json',
+                                                      'path_now'   : f'{self.path_now}/articles-current.json'}
 
             for article_id, article  in _.file_current_articles.current_articles.articles.items():
                 assert is_obj_id(article_id) is True
@@ -119,8 +119,8 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
             assert an_flow.flow_return_value == _.output
 
             assert _.output ==  { 'file_current_articles': { 'exists'     : True,
-                                                             'path_latest': 'latest/current-articles.json',
-                                                             'path_now'   : f'{self.path_now}/current-articles.json'  },
+                                                             'path_latest': 'latest/articles-current.json',
+                                                             'path_now'   : f'{self.path_now}/articles-current.json'  },
                                   'file_new_articles'    : { 'exists'     : True,
                                                              'path_latest': 'latest/new-articles.json',
                                                              'path_now'   : f'{self.path_now}/new-articles.json'},

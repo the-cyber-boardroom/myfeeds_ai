@@ -1,5 +1,5 @@
 from unittest                                                                                       import TestCase
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Current_Articles      import Hacker_News__File__Current_Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current     import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Article__Status  import Schema__Feed__Current_Article__Step
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles         import Schema__Feed__Current_Article
 from osbot_utils.utils.Misc                                                                         import list_set
@@ -13,7 +13,7 @@ class test_Hacker_News__File__Current_Articles(TestCase):
 
 
     def setUp(self):
-        self.file_current_articles = Hacker_News__File__Current_Articles()
+        self.file_current_articles = Hacker_News__File__Articles__Current()
         with self.file_current_articles as _:
             if _.exists__latest() is False:                                                     # check if the file exists
                 import pytest
@@ -23,7 +23,7 @@ class test_Hacker_News__File__Current_Articles(TestCase):
 
     def test_group_by_next_step(self):
         with self.file_current_articles as _:
-            assert _.path_latest   () == 'latest/current-articles.json'
+            assert _.path_latest   () == 'latest/articles-current.json'
             for status, articles in  _.group_by_next_step().items():
                 assert status in Schema__Feed__Current_Article__Step.__members__
                 assert type(articles) is list
