@@ -31,3 +31,7 @@ class test__int__Flow__Hacker_News__4__Create_Article_Files(TestCase):
                 assert status_change.article.status    == Schema__Feed__Article__Status.PROCESSING
                 assert status_change.article.next_step == Schema__Feed__Article__Step.STEP__2__LLM__TEXT_TO_GRAPH
 
+                # todo add check that the new file is added to the file_articles_all
+                # from osbot_utils.utils.Dev import pprint
+                # pprint(list(_.file_articles_all.articles))
+

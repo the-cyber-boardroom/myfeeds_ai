@@ -85,8 +85,8 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
             _.task__3__save__new_articles   ()
 
             assert _.file_new_articles.info () == { 'exists'     : True,
-                                                    'path_latest': 'latest/new-articles.json',
-                                                    'path_now'   : f'{self.path_now}/new-articles.json'}
+                                                    'path_latest': 'latest/articles-new.json',
+                                                    'path_now'   : f'{self.path_now}/articles-new.json'}
 
             assert _.file_new_articles.new_articles.obj() == __(path__current  = self.current_path                       ,
                                                                 path__previous = self.previous_path                      ,
@@ -122,8 +122,8 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
                                                              'path_latest': 'latest/articles-current.json',
                                                              'path_now'   : f'{self.path_now}/articles-current.json'  },
                                   'file_new_articles'    : { 'exists'     : True,
-                                                             'path_latest': 'latest/new-articles.json',
-                                                             'path_now'   : f'{self.path_now}/new-articles.json'},
+                                                             'path_latest': 'latest/articles-new.json',
+                                                             'path_now'   : f'{self.path_now}/articles-new.json'},
                                   'file_timeline_diff'   : { 'exists'     : True,
                                                              'path_latest': 'latest/feed-timeline-diff.json',
                                                             'path_now'    : f'{self.path_now}/feed-timeline-diff.json'},
