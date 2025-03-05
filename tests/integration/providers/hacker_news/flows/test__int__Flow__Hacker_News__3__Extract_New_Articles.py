@@ -100,12 +100,12 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
             _.task__2__create__timeline_diff  ()
             _.task__4__update_current_articles()
 
-            assert len(_.file_current_articles.current_articles.articles) > 0
+            assert len(_.file_current_articles.articles.articles) > 0
             assert _.file_current_articles.info() == { 'exists'    : True,
                                                       'path_latest': 'latest/articles-current.json',
                                                       'path_now'   : f'{self.path_now}/articles-current.json'}
 
-            for article_id, article  in _.file_current_articles.current_articles.articles.items():
+            for article_id, article  in _.file_current_articles.articles.articles.items():
                 assert is_obj_id(article_id) is True
                 assert list_set (article   ) == ['article_id', 'next_step', 'path__entities_mgraph__json',
                                                  'path__entities_mgraph__png', 'path__feed_article',

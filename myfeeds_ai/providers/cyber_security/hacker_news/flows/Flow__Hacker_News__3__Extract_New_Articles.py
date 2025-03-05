@@ -2,7 +2,7 @@ from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types   
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__New_Articles      import Hacker_News__File__New_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Diff    import Hacker_News__File__Timeline__Diff
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Current_Articles     import Schema__Feed__Current_Article
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Articles     import Schema__Feed__Article
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
 from osbot_utils.helpers.flows.Flow                                                             import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                  import flow
@@ -56,7 +56,7 @@ class Flow__Hacker_News__3__Extract_New_Articles(Type_Safe):
 
                 for new_article_id in new_articles_ids:
                     kwargs          = dict(source_location = self.current__path, article_id = new_article_id)
-                    current_article = Schema__Feed__Current_Article(**kwargs)
+                    current_article = Schema__Feed__Article(**kwargs)
                     if Obj_Id(new_article_id) not in current_articles.articles:
                         current_articles.articles[Obj_Id(new_article_id)] = current_article
 
