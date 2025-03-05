@@ -11,6 +11,7 @@ class Schema__Feed__Article(Type_Safe):
     path__file__entities_mgraph__json: str = None
     path__file__entities_mgraph__png : str = None
     path__file__feed_article         : str = None
+    path__file__markdown             : str = None
     path__folder__source             : str
     path__folder__data               : str
 

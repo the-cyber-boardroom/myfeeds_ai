@@ -1,5 +1,5 @@
 from datetime                                                            import datetime
-from typing                                                              import Dict, Optional, List
+from typing import Dict, Optional, List, Any
 from mgraph_db.mgraph.MGraph                                             import MGraph
 from myfeeds_ai.utils.My_Feeds__Utils import path_to__date_time
 from osbot_utils.decorators.methods.cache_on_self                        import cache_on_self
@@ -81,23 +81,25 @@ class Hacker_News__Storage(Type_Safe):
             _.s3_path__save_data(data=data, s3_path=s3_path, content_type=content_type)
             return s3_path
 
-    def save_to__now(self, data         : Dict                    ,                  # Save data with current timestamp
+    @type_safe
+    def save_to__now(self, data         : Any                     ,                  # Save data with current timestamp
                            file_id      : Safe_Id                 ,
                            extension    : S3_Key__File_Extension  ,
-                           content_type : str   = None
+                           content_type : str           = None    ,
+                           now          : datetime      = None
                       ) -> str:
         with self.s3_db as _:
-            s3_path = self.path__now(file_id=file_id, extension=extension)
+            s3_path = self.path__now(file_id=file_id, extension=extension, now=now)
             _.s3_path__save_data    (data=data, s3_path=s3_path, content_type=content_type)
             return s3_path
 
-    def save_to__now__json(self, data: Dict, file_id: Safe_Id) -> str:          # Save json data with current timestamp
-        return self.save_to__now(data=data, file_id=file_id, extension=S3_Key__File_Extension.JSON)
+    # def save_to__now__json(self, data: Dict, file_id: Safe_Id) -> str:          # Save json data with current timestamp
+    #     return self.save_to__now(data=data, file_id=file_id, extension=S3_Key__File_Extension.JSON)
 
     @type_safe
-    def save_to__now__mgraph(self, mgraph: MGraph, file_id: Safe_Id) -> str:          # Save json data with current timestamp
+    def save_to__now__mgraph(self, mgraph: MGraph, file_id: Safe_Id, now: datetime=None) -> str:          # Save json data with current timestamp
         data = mgraph.json__compress()
-        return self.save_to__now(data=data, file_id=file_id, extension=S3_Key__File_Extension.MGRAPH__JSON)
+        return self.save_to__now(data=data, file_id=file_id, extension=S3_Key__File_Extension.MGRAPH__JSON, now=now)
 
     def save_to__latest(self, data        : Dict                    ,                # Save data to latest version
                               file_id     : Safe_Id                 ,
@@ -130,8 +132,12 @@ class Hacker_News__Storage(Type_Safe):
         data    = self.path__load_data(s3_path, content_type=content_type)
         return data
 
-    def load_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension, content_type: str=None) -> Optional[Dict]:
-        s3_path = self.path__now(file_id=file_id, extension=extension)
+    def load_from__now(self, file_id     : Safe_Id               ,
+                             extension   : S3_Key__File_Extension,
+                             content_type: str      = None       ,
+                             now         : datetime = None
+                        ) -> Optional[Dict]:
+        s3_path = self.path__now      (file_id=file_id, extension=extension, now=now)
         data    = self.path__load_data(s3_path, content_type=content_type)
         return data
 

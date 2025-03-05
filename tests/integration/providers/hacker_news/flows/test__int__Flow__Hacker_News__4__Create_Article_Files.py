@@ -30,11 +30,11 @@ class test__int__Flow__Hacker_News__4__Create_Article_Files(TestCase):
                 assert status_change.from_status       == Schema__Feed__Article__Status.TO_PROCESS
                 assert status_change.from_step         == Schema__Feed__Article__Step.STEP__1__SAVE_ARTICLE
                 assert status_change.article.status    == Schema__Feed__Article__Status.PROCESSING
-                assert status_change.article.next_step == Schema__Feed__Article__Step.STEP__2__LLM__TEXT_TO_GRAPH
+                assert status_change.article.next_step == Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE
 
                 assert len(_.file_articles_all.articles.articles) > 0
 
                 # pprint(status_change.json())
                 # article_id = status_change.article.article_id
-                # pprint(_.file_articles_all.articles.json())
+                # #pprint(_.file_articles_all.articles.json())
 

@@ -9,7 +9,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Artic
 
 
 # todo: refactor to class that we only need to provide the file_id and the type (in this case Schema__Feed__Articles)
-class Hacker_News__File__New_Articles(Hacker_News__File):
+class Hacker_News__File__Articles__New(Hacker_News__File):
     file_id           = FILE_ID__ARTICLES__NEW
     extension         = S3_Key__File_Extension.JSON
     new_articles      : Schema__Feed__Config__New_Articles

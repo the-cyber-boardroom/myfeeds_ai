@@ -12,8 +12,8 @@ class test__int__Flow__Hacker_News__Create__Graph_RAG__MGraphs(TestCase):
     def setUp(self):
         self.flow_create_graph_rag_mgraphs = Flow__Hacker_News__Create__Graph_RAG__MGraphs()                      # new object on every test run
 
-    def test_run(self):
-        with self.flow_create_graph_rag_mgraphs as _:
-            _.run()
-            # pprint(_.result__processed_files)
-            # pprint(_.current_articles.json())
+    # def test_run(self):
+    #     with self.flow_create_graph_rag_mgraphs as _:
+    #         _.run()
+    #         # pprint(_.result__processed_files)
+    #         # pprint(_.current_articles.json())

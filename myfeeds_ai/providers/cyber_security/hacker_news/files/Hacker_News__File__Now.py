@@ -23,6 +23,8 @@ class Hacker_News__File__Now(Type_Safe):
     def file_info__now   (self) -> dict: return self.hacker_news_storage.path__file_info   (s3_path = self.path_now   ())
     def path_now         (self) -> str : return self.hacker_news_storage.path__now         (file_id = self.file_id      , extension=self.extension, now=self.now)
 
+    def contents(self):
+        return self.load()
 
     def info(self) -> dict:
         return dict(exists      = self.exists     (),
@@ -32,8 +34,14 @@ class Hacker_News__File__Now(Type_Safe):
         return f'{self.file_id}.{self.extension.value}'
 
     def load(self):                                                                             # load file data from 'now' path
-        self.file_data = self.hacker_news_storage.load_from__now(file_id=self.file_id, extension=self.extension, content_type=self.content_type)
+        load_kwargs = dict(file_id      = self.file_id     ,
+                      extension    = self.extension   ,
+                      content_type = self.content_type,
+                      now          = self.now         )
+
+        self.file_data = self.hacker_news_storage.load_from__now(**load_kwargs)
         return self.file_data
+
 
     def save(self):
         if not self.file_data:
@@ -44,7 +52,12 @@ class Hacker_News__File__Now(Type_Safe):
         else:
             data = self.file_data
         with self.hacker_news_storage as _:
-            saved__path_now   = _.save_to__now(data=data, file_id=self.file_id, extension=self.extension, content_type=self.content_type)
+            save_kwargs = dict(data         = data              ,
+                               now          = self.now          ,
+                               file_id      = self.file_id      ,
+                               extension    = self.extension    ,
+                               content_type = self.content_type )
+            saved__path_now   = _.save_to__now(**save_kwargs)
             if saved__path_now != self.path_now():
                 raise ValueError(f"in Hacker_News__MGraph.save, the saved__path_now was '{saved__path_now}' and it was expected to be '{self.path_now()}'")
             return saved__path_now

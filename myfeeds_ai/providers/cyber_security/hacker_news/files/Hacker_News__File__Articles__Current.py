@@ -17,7 +17,11 @@ class Hacker_News__File__Articles__Current(Hacker_News__File__Articles):
                 results[status_name].append(article)
         return results
 
-    def next_step__1__save_article(self) -> List[Schema__Feed__Article]:
-        next_step = Schema__Feed__Article__Step.STEP__1__SAVE_ARTICLE.name
-        return self.group_by_next_step().get(next_step, [])
+    def next_for_step(self, next_step: Schema__Feed__Article__Step)  -> List[Schema__Feed__Article]:
+        return self.group_by_next_step().get(next_step.name, [])
 
+    def next_step__1__save_article(self) -> List[Schema__Feed__Article]:
+        return self.next_for_step(Schema__Feed__Article__Step.STEP__1__SAVE_ARTICLE)
+
+    def next_step__2__markdown_for_article(self)  -> List[Schema__Feed__Article]:
+        return self.next_for_step(Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE)
