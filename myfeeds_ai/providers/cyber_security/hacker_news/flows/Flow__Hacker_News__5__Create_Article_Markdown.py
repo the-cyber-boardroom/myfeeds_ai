@@ -1,13 +1,9 @@
 from typing                                                                                         import List
-
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Article import Hacker_News__Article
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Article                   import Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current     import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article                  import Schema__Feed__Article
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Status import \
-    Schema__Feed__Article__Status
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Status__Change  import Schema__Feed__Article__Status__Change
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Step import \
-    Schema__Feed__Article__Step
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Step            import Schema__Feed__Article__Step
 from osbot_utils.helpers.flows.Flow                                                                 import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                      import flow
 from osbot_utils.helpers.flows.decorators.task                                                      import task
@@ -50,9 +46,9 @@ class Flow__Hacker_News__5__Create_Article_Markdown(Type_Safe):
     @flow()
     def process_articles(self) -> Flow:
         with self as _:
-            _.task__1__load_articles_to_process    ()
-
-            _.task__3__create_output               ()
+            _.task__1__load_articles_to_process ()
+            _.task__2__create_article_markdown  ()
+            _.task__3__create_output            ()
         return self.output
 
 
