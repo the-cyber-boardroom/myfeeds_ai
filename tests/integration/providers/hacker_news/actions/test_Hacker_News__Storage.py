@@ -3,7 +3,6 @@ from unittest                                                                   
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File_Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB             import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage   import Hacker_News__Storage
-from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Misc                                                         import random_text
 from osbot_utils.helpers.Safe_Id                                                    import Safe_Id
 from tests.integration.data_feeds__objs_for_tests                                   import cbr_website__assert_local_stack
@@ -102,9 +101,8 @@ class test_Hacker_News__Storage(TestCase):
             alternate_id = Safe_Id(random_text())                                    # Use different ID to not conflict with tearDown
 
             # Should not raise exceptions for missing files
-            path_latest = _.delete_from__latest(alternate_id, self.extension)
-            path_now    = _.delete_from__now   (alternate_id, self.extension)
+            path_latest = _.delete_from__latest(alternate_id, self.extension)       # return False when file doesn't exist
+            path_now    = _.delete_from__now   (alternate_id, self.extension)       # returns None when file doesn't exist
 
-            assert type(path_latest) is str
-            assert type(path_now)    is str
-            assert path_latest == f'latest/{alternate_id}.{self.extension.value}'
+            assert path_latest == False
+            assert path_now    is None

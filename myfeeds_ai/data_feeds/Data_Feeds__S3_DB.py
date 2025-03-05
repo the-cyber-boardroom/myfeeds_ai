@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 from osbot_aws.aws.cloud_front.Cloud_Front                      import Cloud_Front
 from osbot_utils.utils.Env                                      import get_env
@@ -43,11 +44,11 @@ class Data_Feeds__S3_DB(S3__DB_Base):
         return url_join_safe(self.s3_folder__for_latest(), S3_FILE_NAME__LATEST__VERSIONS + '.json')        # todo remove and use s3_path__in_latest
 
     @type_safe
-    def s3_path__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
-        return self.s3_key_generator.s3_path__now(file_id=file_id, extension=extension)
+    def s3_path__now(self, file_id: Safe_Id=None, extension: S3_Key__File_Extension=None, areas: List[Safe_Id] = None) -> str:
+        return self.s3_key_generator.s3_path__now(file_id=file_id, extension=extension, areas=areas)
 
-    def s3_path__now_utc(self):
-        return self.s3_key_generator.s3_path__now__utc()
+    # def s3_path__now_utc(self):
+    #     return self.s3_key_generator.s3_path__now__utc()
 
     def s3_path__delete(self, s3_path) -> bool:
         s3_key = self.s3_key__for_provider_path(s3_path)

@@ -4,10 +4,11 @@ from mgraph_db.mgraph.actions.MGraph__Screenshot                                
 from mgraph_db.providers.time_chain.MGraph__Time_Chain                                                          import MGraph__Time_Chain
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                                         import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File                                    import Hacker_News__File
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Now                               import Hacker_News__File__Now
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Dot_Code                import CONTENT_TYPE__MGRAPH__DOT
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline       import Flow__Hacker_News__2__Create_Articles_Timeline, FILE_NAME__MGRAPH__TIMELINE
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph                                import Hacker_News__MGraph
-from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph__Timeline                      import Hacker_News__MGraph__Timeline, FILE_ID__MGRAPH__TIMELINE
+from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph__Timeline                      import Hacker_News__MGraph__Timeline, FILE_ID__TIMELINE__MGRAPH
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed                      import Model__Hacker_News__Data__Feed
 from osbot_utils.context_managers.disable_root_loggers                                                          import disable_root_loggers
 from osbot_utils.helpers.flows.Flow                                                                             import Flow
@@ -28,7 +29,7 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
         cls.data_feed               = cls.files.feed_data__current()
         cls.flow__articles_timeline = Flow__Hacker_News__2__Create_Articles_Timeline()
         cls.hacker_news_timeline    = cls.flow__articles_timeline.hacker_news_timeline
-        cls.path_now                = cls.flow__articles_timeline.hacker_news_storage.path_to__now_utc()
+        cls.path_now                = cls.flow__articles_timeline.hacker_news_storage.path__folder_now()
         if len(cls.data_feed.feed_data.articles) != 50:                                     # if the feed_data__current was not created from live data, reload it
             cls.data_feed = cls.files.feed_data__current(True)
         cls.disable_root_loggers = disable_root_loggers().__enter__()
@@ -42,10 +43,10 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             assert type(flow_2) is Flow__Hacker_News__2__Create_Articles_Timeline
             with flow_2.hacker_news_timeline as _:
                 assert type      (_)   is Hacker_News__MGraph__Timeline
-                assert base_types(_)   == [Hacker_News__MGraph, Hacker_News__File, Type_Safe, object]
+                assert base_types(_)   == [Hacker_News__MGraph, Hacker_News__File, Hacker_News__File__Now, Type_Safe, object]
                 assert type(_.mgraph)  is MGraph__Time_Chain
-                assert _.file_id       == FILE_ID__MGRAPH__TIMELINE
-                assert _.file_name  () == f'{FILE_ID__MGRAPH__TIMELINE}.mgraph.json'
+                assert _.file_id == FILE_ID__TIMELINE__MGRAPH
+                assert _.file_name  () == f'{FILE_ID__TIMELINE__MGRAPH}.mgraph.json'
                 assert _.path_now   () == f'{self.path_now}/{_.file_name()}'
                 assert _.path_latest() == f'latest/{_.file_name()}'
 
@@ -142,7 +143,7 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             an_flow = _.run()
             assert type(an_flow)             == Flow
             assert an_flow.flow_return_value == _.output
-            path_now = _.hacker_news_timeline.hacker_news_storage.path_to__now_utc()
+            path_now = _.hacker_news_timeline.hacker_news_storage.path__folder_now()
 
             png_exists = get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS) is not None
             assert obj(_.output) == __(articles_processed=50,

@@ -20,9 +20,12 @@ class Hacker_News__Storage(Type_Safe):
         s3_path = self.path__latest(file_id=file_id, extension=extension)
         if self.delete_from__path(s3_path):
             return s3_path
+        return False
 
     def delete_from__path(self, s3_path) -> bool:
-        return  self.s3_db.s3_path__delete(s3_path)
+        if self.path__exists(s3_path):
+            return  self.s3_db.s3_path__delete(s3_path)
+        return False
 
     def delete_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
         s3_path = self.path__now(file_id=file_id, extension=extension)
@@ -54,7 +57,7 @@ class Hacker_News__Storage(Type_Safe):
 
     def files_in__now(self):
         with self.s3_db as _:
-            path__now_utc =self.path_to__now_utc()
+            path__now_utc =self.path__folder_now()
             return _.s3_path__files(path__now_utc)
 
     def save_to__path(self, data: Dict      ,
@@ -121,9 +124,9 @@ class Hacker_News__Storage(Type_Safe):
         return data
 
 
-    def load_from__latest(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> Optional[Dict]:
+    def load_from__latest(self, file_id: Safe_Id, extension: S3_Key__File_Extension, content_type:str=None) -> Optional[Dict]:
         s3_path = self.s3_db.s3_path__latest(file_id=file_id, extension=extension)
-        data    = self.path__load_data(s3_path)
+        data    = self.path__load_data(s3_path, content_type=content_type)
         return data
 
     def load_from__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension, content_type: str=None) -> Optional[Dict]:
@@ -165,11 +168,11 @@ class Hacker_News__Storage(Type_Safe):
         else:
             return self.s3_db.s3_path__load_data(s3_path)
 
-    def path_to__now_utc(self):
-        return self.s3_db.s3_path__now_utc()
+    def path__folder_now(self):
+        return self.s3_db.s3_path__now(areas=self.areas())
 
     def path__now(self, file_id: Safe_Id, extension: S3_Key__File_Extension) -> str:
-        return self.s3_db.s3_path__now(file_id=file_id, extension=extension)
+        return self.s3_db.s3_path__now(file_id=file_id, extension=extension, areas=self.areas())
 
     def path__date_time(self, date_time: datetime,
                               file_id  : Safe_Id                = None,

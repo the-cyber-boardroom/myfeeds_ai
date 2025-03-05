@@ -3,6 +3,9 @@
  - https://github.com/mrtouch93/awesome-security-feed
  - https://rss.feedspot.com/cyber_security_rss_feeds/
 
+### good json based resources
+    https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+
 ### with RSS feeds
 
 - https://cybersecuritynews.com     : https://feeds.feedburner.com/cyber-security-news
@@ -54,11 +57,15 @@
         - https://securityvulnerability.io/vulnerability/critical
         - https://securityvulnerability.io/vulnerability/trending
 
+- Security research
+    - https://unit42.paloaltonetworks.com/category/threat-research/
+
 - other
 
    - https://feeder.co/discover/security
    - https://www.misp-project.org/feeds/
    - good list of cyber security news providers https://cybernewswire.com/
+
 
  - don't seem to have RSS feeds
 
