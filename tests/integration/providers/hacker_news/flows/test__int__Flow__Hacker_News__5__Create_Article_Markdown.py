@@ -27,5 +27,5 @@ class test__int__Flow__Hacker_News__5__Create_Article_Markdown(TestCase):
             _.task__1__load_articles_to_process()
             _.task__2__create_article_markdown()
 
-            pprint(_.status_changes.json())
+            #pprint(_.status_changes.json())
 
