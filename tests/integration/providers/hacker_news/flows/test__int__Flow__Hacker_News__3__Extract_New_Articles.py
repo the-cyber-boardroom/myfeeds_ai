@@ -112,6 +112,7 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
                                                  'path__file__entities_mgraph__json',
                                                  'path__file__entities_mgraph__png' ,
                                                  'path__file__feed_article'         ,
+                                                 'path__file__markdown'             ,
                                                  'path__folder__data'               ,
                                                  'path__folder__source'             ,
                                                  'status'                           ]

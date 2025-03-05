@@ -34,6 +34,7 @@ class test_Hacker_News__File__Current_Articles(TestCase):
                                                  'path__file__entities_mgraph__json',
                                                  'path__file__entities_mgraph__png' ,
                                                  'path__file__feed_article'         ,
+                                                 'path__file__markdown'             ,
                                                  'path__folder__data'               ,
                                                  'path__folder__source'             ,
                                                  'status'                           ]
