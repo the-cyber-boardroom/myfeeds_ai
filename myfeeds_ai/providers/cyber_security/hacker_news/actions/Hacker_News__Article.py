@@ -2,6 +2,8 @@ from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File_Ext
 from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News         import FILE_ID__FEED_ARTICLE, FILE_ID__ARTICLE__MARKDOWN
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article   import Hacker_News__File__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Entities import \
+    Schema__Feed__Text__Entities
 from myfeeds_ai.utils.My_Feeds__Utils                                                   import path_to__date_time
 from osbot_utils.decorators.methods.cache_on_self                                       import cache_on_self
 from osbot_utils.helpers.Obj_Id                                                         import Obj_Id
@@ -64,6 +66,18 @@ class Hacker_News__Article(Type_Safe):
         data         = article_data.json()
         article_path = file_article.save_data(data)
         return article_path
+
+
+    # todo: add file save and cache support to this, so that we don't make an LLM request for the exact same request
+    # def extract_graph_from_text(self, text):                                     # todo: move this to a separate class
+    #     from mgraph_db.providers.llms.utils.API__LLM                              import API__LLM
+    #     from mgraph_db.providers.graph_rag.actions.Graph_RAG__Document__Processor import Graph_RAG__Document__Processor
+    #     api_llm       = API__LLM()
+    #     processor     = Graph_RAG__Document__Processor(api_llm=api_llm)                 # GraphRAG Create processor instance
+    #     entities      = processor.extract_entities(text=text)
+    #     return entities
+    #     #text_entities = Schema__Feed__Text__Entities(text=text, entities=entities)
+    #     #return text_entities
 
 
 MARKDOWN__ARTICLE__CONTENT = """## {title}

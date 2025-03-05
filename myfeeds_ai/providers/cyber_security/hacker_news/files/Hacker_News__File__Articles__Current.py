@@ -25,3 +25,6 @@ class Hacker_News__File__Articles__Current(Hacker_News__File__Articles):
 
     def next_step__2__markdown_for_article(self)  -> List[Schema__Feed__Article]:
         return self.next_for_step(Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE)
+
+    def next_step__3__llm_text_to_graph(self)  -> List[Schema__Feed__Article]:
+        return self.next_for_step(Schema__Feed__Article__Step.STEP__3__LLM__TEXT_TO_GRAPH)

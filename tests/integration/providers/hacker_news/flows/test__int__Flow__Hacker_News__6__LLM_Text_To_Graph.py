@@ -2,29 +2,31 @@ from unittest import TestCase
 
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__5__Create_Article_Markdown import \
     Flow__Hacker_News__5__Create_Article_Markdown
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__6__LLM_Text_To_Graph import \
+    Flow__Hacker_News__6__LLM_Text_To_Graph
 from osbot_utils.utils.Dev import pprint
 from tests.integration.data_feeds__objs_for_tests import cbr_website__assert_local_stack
 
 
-class test__int__Flow__Hacker_News__5__Create_Article_Markdown(TestCase):
+class test__int__Flow__Hacker_News__6__LLM_Text_To_Graph(TestCase):
 
     @classmethod
     def setUpClass(cls):
         cbr_website__assert_local_stack()
 
     def setUp(self):
-        self.flow_create_article_markdown = Flow__Hacker_News__5__Create_Article_Markdown()
+        self.flow_llm_text_to_graph = Flow__Hacker_News__6__LLM_Text_To_Graph()
 
     def test_task__1__load_articles_to_process(self):
-        with self.flow_create_article_markdown as _:
+        with self.flow_llm_text_to_graph as _:
             _.task__1__load_articles_to_process()
-            assert _.articles_to_process      == _.file_articles_current.next_step__2__markdown_for_article()
+            assert _.articles_to_process      == _.file_articles_current.next_step__3__llm_text_to_graph()
             assert len(_.articles_to_process) >=  0
 
-    def test_task__2__create_article_markdown(self):
-        with self.flow_create_article_markdown as _:
+    def test_task__2__llm__text_to_graph(self):
+        with self.flow_llm_text_to_graph as _:
             _.task__1__load_articles_to_process()
-            _.task__2__create_article_markdown()
+            _.task__2__llm__text_to_graph      ()
 
-            #pprint(_.status_changes.json())
+            pprint(_.status_changes.json())
 
