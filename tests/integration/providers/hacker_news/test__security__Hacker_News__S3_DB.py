@@ -23,7 +23,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
             when_path_elements = _.s3_key_generator.create_path_elements__from_when().pop()
             good_file_id = Safe_Id('valid-file')
 
-            traversal_patterns = ['../../../etc/passwd'           ,                                     # Unix path traversal
+            traversal_patterns = [r'../../../etc/passwd'           ,                                     # Unix path traversal
                                   '..\\..\\Windows\\System32'     ,                                     # Windows path traversal
                                   '%2e%2e%2fadmin'                ,                                     # URL encoded path traversal
                                   '....//....//config'            ,                                     # Multiple dot path traversal
