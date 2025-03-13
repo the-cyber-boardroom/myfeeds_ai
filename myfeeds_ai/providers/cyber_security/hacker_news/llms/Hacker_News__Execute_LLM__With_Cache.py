@@ -1,3 +1,4 @@
+from myfeeds_ai.providers.cyber_security.hacker_news.llms.Virtual_Storage__S3 import Virtual_Storage__S3
 from osbot_utils.decorators.methods.cache_on_self                       import cache_on_self
 from osbot_utils.helpers.llms.actions.LLM_Request__Execute              import LLM_Request__Execute
 from osbot_utils.helpers.llms.builders.LLM_Request__Builder__Open_AI    import LLM_Request__Builder__Open_AI
@@ -15,7 +16,8 @@ FOLDER__CACHE__HACKER_NEWS__EXECUTE_LLM = '/tmp/_my-feeds-llm-cache/Hacker_News_
 
 class Hacker_News__Execute_LLM__With_Cache(Type_Safe):
     cache_root_folder : Safe_Str__File__Path            = Safe_Str__File__Path(folder_create(FOLDER__CACHE__HACKER_NEWS__EXECUTE_LLM))
-    virtual_storage   : Virtual_Storage__Local__Folder  = None
+    #virtual_storage   : Virtual_Storage__Local__Folder  = None
+    virtual_storage   : Virtual_Storage__S3
     llm_cache         : LLM_Request__Cache__File_System = None
     llm_execute       : LLM_Request__Execute            = None
     llm_api           : API__LLM__Open_AI
@@ -23,7 +25,7 @@ class Hacker_News__Execute_LLM__With_Cache(Type_Safe):
 
 
     def setup(self):
-        self.virtual_storage   = Virtual_Storage__Local__Folder  ( root_folder     = self.cache_root_folder )
+        #self.virtual_storage   = Virtual_Storage__Local__Folder  ( root_folder     = self.cache_root_folder )
         self.llm_cache         = LLM_Request__Cache__File_System ( virtual_storage = self.virtual_storage   ).setup()
         self.llm_execute       = LLM_Request__Execute            ( llm_cache       = self.llm_cache         ,
                                                                    llm_api         = self.llm_api           ,

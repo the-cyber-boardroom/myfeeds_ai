@@ -55,14 +55,12 @@ class LLM__Prompt__Extract_Entities(Type_Safe):
 
     @type_safe
     def create_graph(self, entities: Schema__Graph_RAG__Entities__LLMs):
-        pprint(entities.json())
         graph_rag = Graph_RAG__Create_MGraph().setup()
 
         for entity in entities.entities:
             #pprint(entity.json())
             rag_entity = Schema__Graph_RAG__Entity.from_json(entity.json())
             graph_rag.add_entity(rag_entity)
-            pprint(rag_entity)
 
         with graph_rag as _:
             load_dotenv()
