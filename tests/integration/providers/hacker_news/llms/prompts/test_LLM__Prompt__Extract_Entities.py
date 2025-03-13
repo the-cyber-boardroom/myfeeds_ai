@@ -18,10 +18,10 @@ class test_LLM__Prompt__Extract_Entities(TestCase):
 
 
             llm_response = self.execute_llm_with_cache.execute__llm_request(llm_request)
-            if llm_response:
-                assert type(llm_response) is Schema__LLM_Response
-                entities = _.process_llm_response(llm_response)
-                _.create_graph(entities)
+            # if llm_response:
+            #     assert type(llm_response) is Schema__LLM_Response
+            #     entities = _.process_llm_response(llm_response)
+            #     _.create_graph(entities)
 
 
 

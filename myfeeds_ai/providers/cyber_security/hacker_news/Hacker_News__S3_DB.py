@@ -5,7 +5,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed  import Model__Hacker_News__Raw_Data__Feed
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                                  import Model__Data_Feeds__Providers
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
-from osbot_utils.helpers.Safe_Id import Safe_Id
+from osbot_utils.helpers.Safe_Id                                                                import Safe_Id
 from osbot_utils.type_safe.decorators.type_safe                                                 import type_safe
 from osbot_utils.utils.Http                                                                     import url_join_safe
 
