@@ -1,4 +1,5 @@
 from osbot_utils.helpers.llms.builders.LLM_Request__Builder__Open_AI import LLM_Request__Builder__Open_AI
+from osbot_utils.helpers.llms.schemas.Schema__LLM_Request            import Schema__LLM_Request
 from osbot_utils.type_safe.Type_Safe                                 import Type_Safe
 
 content_prompt = """You are a comprehensive knowledge extractor that maps entities into a rich semantic network.
@@ -19,4 +20,6 @@ class LLM__Prompt__Extract_Entities(Type_Safe):
         with self.request_builder as _:
             _.set__model__gpt_4o_mini()
             _.add_message__user(text)
-        return self.request_builder.llm_request()
+
+        return Schema__LLM_Request(request_data=self.request_builder.llm_request_data)      # todo: while the osbot_utils is not updated with the .llm_request() method
+        #return self.request_builder.llm_request()
