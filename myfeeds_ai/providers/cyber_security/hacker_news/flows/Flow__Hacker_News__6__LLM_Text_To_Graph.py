@@ -24,6 +24,7 @@ class Flow__Hacker_News__6__LLM_Text_To_Graph(Type_Safe):
             _.load()
             self.articles_to_process = _.next_step__3__llm_text_to_graph()
 
+    @task()
     def task__2__llm__text_to_graph(self):
 
         from_step   = Schema__Feed__Article__Step.STEP__3__LLM__TEXT_TO_GRAPH
@@ -39,7 +40,7 @@ class Flow__Hacker_News__6__LLM_Text_To_Graph(Type_Safe):
             print()
             print(text__title)
 
-            #text_graph = hacker_news_article.extract_graph_from_text(text__title)
+            text_graph = hacker_news_article.extract_graph_from_text(text__title)
             #pprint(text_graph.json())
 
             #pprint(file_article)

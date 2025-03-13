@@ -1,10 +1,16 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                import S3_Key__File_Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News         import FILE_ID__FEED_ARTICLE, FILE_ID__ARTICLE__MARKDOWN
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article   import Hacker_News__File__Article
+from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache import \
+    Hacker_News__Execute_LLM__With_Cache
+from myfeeds_ai.providers.cyber_security.hacker_news.llms.prompts.LLM__Prompt__Extract_Entities import \
+    LLM__Prompt__Extract_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article import Model__Hacker_News__Article
 from myfeeds_ai.utils.My_Feeds__Utils                                                   import path_to__date_time
 from osbot_utils.decorators.methods.cache_on_self                                       import cache_on_self
 from osbot_utils.helpers.Obj_Id                                                         import Obj_Id
+from osbot_utils.helpers.duration.decorators.capture_duration import capture_duration
+from osbot_utils.helpers.duration.decorators.print_duration import print_duration
 from osbot_utils.type_safe.Type_Safe                                                    import Type_Safe
 from osbot_utils.utils.Dev                                                              import pprint
 from urllib.parse                                                                       import urlparse
@@ -67,7 +73,18 @@ class Hacker_News__Article(Type_Safe):
 
 
     # todo: add file save and cache support to this, so that we don't make an LLM request for the exact same request
-    # def extract_graph_from_text(self, text):                                     # todo: move this to a separate class
+    def extract_graph_from_text(self, text):                                     # todo: move this to a separate class
+        with capture_duration() as duration:
+            print(f"...... extracting {text}")
+            prompt_extract_entities = LLM__Prompt__Extract_Entities               ()
+            execute_llm_with_cache  = Hacker_News__Execute_LLM__With_Cache        ().setup()
+            llm_request             = prompt_extract_entities.llm_request         (text       )
+            llm_response            = execute_llm_with_cache .execute__llm_request(llm_request)
+            entities                = prompt_extract_entities.process_llm_response(llm_response)
+            cache_id                = execute_llm_with_cache.llm_cache.get__cache_id__from__request(llm_request)
+            #pprint(entities.json())
+
+
     #     from mgraph_db.providers.llms.utils.API__LLM                              import API__LLM
     #     from mgraph_db.providers.graph_rag.actions.Graph_RAG__Document__Processor import Graph_RAG__Document__Processor
     #     api_llm       = API__LLM()

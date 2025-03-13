@@ -16,8 +16,7 @@ FOLDER__CACHE__HACKER_NEWS__EXECUTE_LLM = '/tmp/_my-feeds-llm-cache/Hacker_News_
 
 class Hacker_News__Execute_LLM__With_Cache(Type_Safe):
     cache_root_folder : Safe_Str__File__Path            = Safe_Str__File__Path(folder_create(FOLDER__CACHE__HACKER_NEWS__EXECUTE_LLM))
-    #virtual_storage   : Virtual_Storage__Local__Folder  = None
-    virtual_storage   : Virtual_Storage__S3
+    virtual_storage   : Virtual_Storage__S3                         # Virtual_Storage__Local__Folder  = None
     llm_cache         : LLM_Request__Cache__File_System = None
     llm_execute       : LLM_Request__Execute            = None
     llm_api           : API__LLM__Open_AI

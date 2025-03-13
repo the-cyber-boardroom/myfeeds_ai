@@ -2,10 +2,7 @@ from unittest                                                                   
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache  import Hacker_News__Execute_LLM__With_Cache
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.prompts.LLM__Prompt__Extract_Entities import LLM__Prompt__Extract_Entities
 from osbot_utils.helpers.llms.schemas.Schema__LLM_Response                                      import Schema__LLM_Response
-from osbot_utils.utils.Dev import pprint
-from osbot_utils.utils.Env                                                                      import load_dotenv
-from tests.integration.data_feeds__objs_for_tests import myfeeds_tests__setup_local_stack, \
-    myfeeds_tests__setup_fast_api__and_localstack
+from tests.integration.data_feeds__objs_for_tests                                               import myfeeds_tests__setup_local_stack
 
 
 class test_LLM__Prompt__Extract_Entities(TestCase):
