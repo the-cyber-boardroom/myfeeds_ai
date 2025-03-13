@@ -9,8 +9,8 @@
 #
 #     @classmethod
 #     def setUpClass(cls) -> None:
-#         from tests.integration.data_feeds__objs_for_tests import cbr_website__assert_local_stack
-#         cbr_website__assert_local_stack()
+#         from tests.integration.data_feeds__objs_for_tests import myfeeds_tests__setup_local_stack
+#         myfeeds_tests__setup_local_stack()
 #
 #         cls.flow__extract_articles = Flow__Hacker_News__Extract_Articles_From_Feed()
 #

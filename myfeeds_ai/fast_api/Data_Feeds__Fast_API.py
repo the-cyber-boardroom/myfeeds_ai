@@ -13,7 +13,7 @@ from myfeeds_ai.fast_api.routes.Routes__Info                                    
 from myfeeds_ai.providers.cyber_security.open_security_summit.routes.Routes__OSS          import Routes__OSS
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News           import Routes__Hacker_News
 
-# todo: refector Data_Feeds class name
+# todo: refactor Data_Feeds class name
 class Data_Feeds__Fast_API(Fast_API):
     base_path  : str  = '/'
     enable_cors: bool = True

@@ -8,13 +8,13 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.type_safe.Type_Safe                                                                    import Type_Safe
 from osbot_utils.utils.Misc                                                                             import list_set
 from osbot_utils.utils.Objects                                                                          import  __, base_types
-from tests.integration.data_feeds__objs_for_tests                                                       import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                       import myfeeds_tests__setup_local_stack
 
 class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.current_path = '2025/02/20/23'  # use these two in order to have a deterministic data set in the tests below
         cls.previous_path = '2025/02/19/22'
         cls.disable_root_loggers = disable_root_loggers().__enter__()

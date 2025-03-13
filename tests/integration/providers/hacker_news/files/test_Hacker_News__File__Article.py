@@ -5,7 +5,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storag
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article       import Hacker_News__File__Article
 from osbot_utils.helpers.Obj_Id                                                             import Obj_Id
 from osbot_utils.helpers.Safe_Id                                                            import Safe_Id
-from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                           import myfeeds_tests__setup_local_stack
 
 from osbot_utils.utils.Dev import pprint
 
@@ -14,7 +14,7 @@ class test_Hacker_News__File__Article(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
 
     def setUp(self):
         self.article_id      = Obj_Id()

@@ -1,12 +1,12 @@
 from unittest                                                                                      import TestCase
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__6__LLM_Text_To_Graph import Flow__Hacker_News__6__LLM_Text_To_Graph
-from tests.integration.data_feeds__objs_for_tests                                                  import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                  import myfeeds_tests__setup_local_stack
 
 class test__int__Flow__Hacker_News__6__LLM_Text_To_Graph(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
 
     def setUp(self):
         self.flow_llm_text_to_graph = Flow__Hacker_News__6__LLM_Text_To_Graph()

@@ -1,13 +1,13 @@
 from unittest                                                                                   import TestCase
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_Articles  import Flow__Hacker_News__Process_Articles
 from osbot_utils.utils.Dev import pprint
-from tests.integration.data_feeds__objs_for_tests                                               import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                               import myfeeds_tests__setup_local_stack
 
 class test__int__Flow__Hacker_News__Process_Articles(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
 
     def setUp(self):
         self.process_articles = Flow__Hacker_News__Process_Articles()

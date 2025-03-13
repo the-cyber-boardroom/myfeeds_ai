@@ -3,7 +3,7 @@ from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Raw_Data                   
 from osbot_utils.utils.Json                                                                 import str_to_json
 from osbot_utils.utils.Misc                                                                 import list_set
 from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
-from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                           import myfeeds_tests__setup_local_stack
 
 EXPECTED__OSS__RAW_CONTENT__FIELDS = ['company', 'content', 'date', 'description', 'dir', 'event', 'expirydate',
                                       'facebook', 'fuzzywordcount', 'hey_summit', 'image', 'job_title', 'kind',
@@ -17,7 +17,7 @@ class test_OSS__Http_Content(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.oss_http_content = OSS__Http_Content()
 
     def test_raw_content(self):

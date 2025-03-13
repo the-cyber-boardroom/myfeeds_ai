@@ -1,14 +1,15 @@
 from unittest                                     import TestCase
 from osbot_fast_api.utils.Fast_API_Server         import Fast_API_Server
-from myfeeds_ai.utils.Version          import version__myfeeds_ai
-from tests.integration.data_feeds__objs_for_tests import data_feeds__fast_api__app
+from myfeeds_ai.utils.Version                     import version__myfeeds_ai
+from tests.integration.data_feeds__objs_for_tests import myfeeds_tests__setup_fast_api__and_localstack
 
 
 class test__http__Routes__Info(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.fast_api_server = Fast_API_Server(app=data_feeds__fast_api__app)
+        cls.app             = myfeeds_tests__setup_fast_api__and_localstack().data_feeds__fast_api__app
+        cls.fast_api_server = Fast_API_Server(app=cls.app)
         cls.fast_api_server.start()
         assert cls.fast_api_server.is_port_open() is True
 

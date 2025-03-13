@@ -3,14 +3,14 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News                 import Routes__Hacker_News
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import Schema__Feed__Config__New_Articles
 from osbot_utils.utils.Objects                                                                  import obj, __
-from tests.integration.data_feeds__objs_for_tests                                               import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                               import myfeeds_tests__setup_local_stack
 
 
 class test__int__Routes__Hacker_News(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.routes_hacker_news = Routes__Hacker_News()
 
     def test_routes_setup(self):

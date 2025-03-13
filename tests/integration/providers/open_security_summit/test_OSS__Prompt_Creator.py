@@ -1,14 +1,14 @@
 from unittest                                                                           import TestCase
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Prompt                  import Model__Data_Feeds__Prompt
 from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Prompts   import OSS__Prompts, PROMPT__OSS__CURRENT_SESSIONS
-from tests.integration.data_feeds__objs_for_tests                                       import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                       import myfeeds_tests__setup_local_stack
 
 
 class test_OSS__Prompt_Creator(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.prompt_creator = OSS__Prompts()
 
     def test_current_event(self):

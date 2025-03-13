@@ -9,7 +9,7 @@ from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__S3_DB        
 from myfeeds_ai.providers.cyber_security.open_security_summit.models.Model__OSS__Event   import Model__OSS__Event
 from osbot_utils.utils.Env                                                                          import in_github_action
 from osbot_utils.utils.Misc                                                                         import list_set
-from tests.integration.data_feeds__objs_for_tests                                                   import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                   import myfeeds_tests__setup_local_stack
 
 class test_OSS__Files(TestCase):
 
@@ -17,7 +17,7 @@ class test_OSS__Files(TestCase):
         def setUpClass(cls):
             import pytest
             pytest.skip("tests needs updating")
-            cbr_website__assert_local_stack()
+            myfeeds_tests__setup_local_stack()
             cls.oss_files = OSS__Files()
             cls.refresh_data = in_github_action()
 

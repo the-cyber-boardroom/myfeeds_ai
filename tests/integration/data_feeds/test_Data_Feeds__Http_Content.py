@@ -3,13 +3,13 @@ from myfeeds_ai.data_feeds.Data_Feeds__Http_Content             import Data_Feed
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Raw_Data   import Model__Data_Feeds__Raw_Data
 from osbot_aws.aws.s3.S3__DB_Base                               import DEFAULT__LOCAL_STACK__TARGET_SERVER
 from osbot_utils.utils.Json                                     import str_to_json
-from tests.integration.data_feeds__objs_for_tests               import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests               import myfeeds_tests__setup_local_stack
 
 class test_Data_Feeds__Http_Content(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.server       = DEFAULT__LOCAL_STACK__TARGET_SERVER          # use localstack server since it will be up and it is fast
         cls.http_content = Data_Feeds__Http_Content(server=cls.server)
 

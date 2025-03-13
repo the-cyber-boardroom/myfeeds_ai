@@ -2,13 +2,13 @@ from unittest                                                                   
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                        import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
-from tests.integration.data_feeds__objs_for_tests                                              import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                              import myfeeds_tests__setup_local_stack
 
 class test_Hacker_News__Files(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.hacker_news__files = Hacker_News__Files()
 
     def test_files_paths__latest(self):

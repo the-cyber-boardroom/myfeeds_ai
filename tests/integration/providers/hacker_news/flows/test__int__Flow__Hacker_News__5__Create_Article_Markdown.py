@@ -1,12 +1,12 @@
 from unittest                                                                                            import TestCase
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__5__Create_Article_Markdown import Flow__Hacker_News__5__Create_Article_Markdown
-from tests.integration.data_feeds__objs_for_tests                                                        import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                        import myfeeds_tests__setup_local_stack
 
 class test__int__Flow__Hacker_News__5__Create_Article_Markdown(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
 
     def setUp(self):
         self.flow_create_article_markdown = Flow__Hacker_News__5__Create_Article_Markdown()

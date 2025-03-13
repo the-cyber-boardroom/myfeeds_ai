@@ -8,7 +8,7 @@ from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                  
 from osbot_utils.helpers.Safe_Id import Safe_Id
 from osbot_utils.utils.Misc                                                                    import random_text
 from osbot_utils.utils.Objects                                                                 import obj
-from tests.integration.data_feeds__objs_for_tests                                              import cbr_website__assert_local_stack, DATA_FEEDS__TEST__AWS_ACCOUNT_ID
+from tests.integration.data_feeds__objs_for_tests                                              import myfeeds_tests__setup_local_stack, DATA_FEEDS__TEST__AWS_ACCOUNT_ID
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB                        import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed import Model__Hacker_News__Raw_Data__Feed
 from tests.integration.data_feeds__test_data                                                   import TEST_DATA__HACKER_NEWS__FEED_XML
@@ -18,7 +18,7 @@ class test_Hacker_News__S3_DB(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.s3_db_hacker_news = Hacker_News__S3_DB().setup()            #.setup() will create the DB
 
     def test__init__(self):

@@ -3,13 +3,13 @@ from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Ar
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Step            import Schema__Feed__Article__Step
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Articles                 import Schema__Feed__Article
 from osbot_utils.utils.Misc                                                                         import list_set
-from tests.integration.data_feeds__objs_for_tests                                                   import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                   import myfeeds_tests__setup_local_stack
 
 class test_Hacker_News__File__Current_Articles(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
 
 
     def setUp(self):

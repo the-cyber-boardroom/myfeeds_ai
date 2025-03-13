@@ -2,13 +2,13 @@ from unittest                                                                   
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__4__Create_Article_Files   import Flow__Hacker_News__4__Create_Article_Files, FLOW__HACKER_NEWS__4__MAX__ARTICLES_TO_SAVE
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Status              import Schema__Feed__Article__Status
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Step                import Schema__Feed__Article__Step
-from tests.integration.data_feeds__objs_for_tests                                                       import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                       import myfeeds_tests__setup_local_stack
 
 class test__int__Flow__Hacker_News__4__Create_Article_Files(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
 
     def setUp(self):
         self.flow_create_article_files = Flow__Hacker_News__4__Create_Article_Files()

@@ -1,14 +1,14 @@
 from unittest                                                                   import TestCase
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Flows import Hacker_News__Flows
 from osbot_utils.utils.Misc                                                     import list_set
-from tests.integration.data_feeds__objs_for_tests                               import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                               import myfeeds_tests__setup_local_stack
 
 
 class test_Hacker_News__Flows(TestCase):
 
     @classmethod                                                                       # Setup test environment
     def setUpClass(cls):
-        cbr_website__assert_local_stack()                                              # Ensure LocalStack is running
+        myfeeds_tests__setup_local_stack()                                              # Ensure LocalStack is running
         cls.hacker_new__flows = Hacker_News__Flows()
 
     # def test_current_articles(self):
