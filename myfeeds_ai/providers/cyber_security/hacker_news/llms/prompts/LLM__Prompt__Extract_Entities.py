@@ -15,6 +15,8 @@ Return only valid JSON with no additional text.
 class LLM__Prompt__Extract_Entities(Type_Safe):
     request_builder: LLM_Request__Builder__Open_AI
 
-    def llm_payload(self) -> dict:
-
-        return self.request_builder.build_request_payload()
+    def llm_request(self, text) -> dict:
+        with self.request_builder as _:
+            _.set__model__gpt_4o_mini()
+            _.add_message__user(text)
+        return self.request_builder.llm_request()
