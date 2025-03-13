@@ -1,12 +1,6 @@
-from unittest import TestCase
-
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__5__Create_Article_Markdown import \
-    Flow__Hacker_News__5__Create_Article_Markdown
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__6__LLM_Text_To_Graph import \
-    Flow__Hacker_News__6__LLM_Text_To_Graph
-from osbot_utils.utils.Dev import pprint
-from tests.integration.data_feeds__objs_for_tests import cbr_website__assert_local_stack
-
+from unittest                                                                                      import TestCase
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__6__LLM_Text_To_Graph import Flow__Hacker_News__6__LLM_Text_To_Graph
+from tests.integration.data_feeds__objs_for_tests                                                  import cbr_website__assert_local_stack
 
 class test__int__Flow__Hacker_News__6__LLM_Text_To_Graph(TestCase):
 
@@ -28,5 +22,5 @@ class test__int__Flow__Hacker_News__6__LLM_Text_To_Graph(TestCase):
             _.task__1__load_articles_to_process()
             _.task__2__llm__text_to_graph      ()
 
-            pprint(_.status_changes.json())
+            #pprint(_.status_changes.json())
 

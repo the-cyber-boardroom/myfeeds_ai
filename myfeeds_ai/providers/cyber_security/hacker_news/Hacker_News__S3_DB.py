@@ -5,6 +5,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed  import Model__Hacker_News__Raw_Data__Feed
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                                  import Model__Data_Feeds__Providers
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
+from osbot_utils.helpers.Safe_Id import Safe_Id
 from osbot_utils.type_safe.decorators.type_safe                                                 import type_safe
 from osbot_utils.utils.Http                                                                     import url_join_safe
 
@@ -108,7 +109,7 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
         return url_join_safe(s3_folder__article,S3_FILE_NAME__ARTICLE__FEED_ARTICLE + '.json')
 
     def s3_key__raw_data__feed_xml(self):
-         return self.s3_key_generator.s3_key(area=Model__Data_Feeds__Providers.HACKER_NEWS, file_id=S3_FILE_NAME__RAW__FEED_XML)
+         return self.s3_key_generator.s3_key(area=Safe_Id(Model__Data_Feeds__Providers.HACKER_NEWS.value), file_id=S3_FILE_NAME__RAW__FEED_XML)
 
     # def s3_path__timeline__now                 (self, extension:S3_Key__File_Extension): return self.s3_key_generator.s3_path__now (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)
     # def s3_path__timeline__latest              (self, extension:S3_Key__File_Extension): return self.s3_path__latest               (file_id=S3_FILE_NAME__MGRAPH__TIMELINE, extension=extension)

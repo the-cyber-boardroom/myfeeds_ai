@@ -59,18 +59,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.37.5"
+version = "1.37.11"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "boto3-1.37.5-py3-none-any.whl", hash = "sha256:12166353519aca0cc8d9dcfbbb0d38f8915955a5912b8cb241b2b2314f0dbc14"},
-    {file = "boto3-1.37.5.tar.gz", hash = "sha256:ae6e7048beeaa4478368e554a4b290e3928beb0ae8d8767d108d72381a81af30"},
+    {file = "boto3-1.37.11-py3-none-any.whl", hash = "sha256:da6c22fc8a7e9bca5d7fc465a877ac3d45b6b086d776bd1a6c55bdde60523741"},
+    {file = "boto3-1.37.11.tar.gz", hash = "sha256:8eec08363ef5db05c2fbf58e89f0c0de6276cda2fdce01e76b3b5f423cd5c0f4"},
 ]
 
 [package.dependencies]
-botocore = ">=1.37.5,<1.38.0"
+botocore = ">=1.37.11,<1.38.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.11.0,<0.12.0"
 
@@ -79,14 +79,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.37.5"
+version = "1.37.11"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "botocore-1.37.5-py3-none-any.whl", hash = "sha256:e5cfbb8026d5b4fadd9b3a18b61d238a41a8b8f620ab75873dc1467d456150d6"},
-    {file = "botocore-1.37.5.tar.gz", hash = "sha256:f8f526d33ae74d242c577e0440b57b9ec7d53edd41db211155ec8087fe7a5a21"},
+    {file = "botocore-1.37.11-py3-none-any.whl", hash = "sha256:02505309b1235f9f15a6da79103ca224b3f3dc5f6a62f8630fbb2c6ed05e2da8"},
+    {file = "botocore-1.37.11.tar.gz", hash = "sha256:72eb3a9a58b064be26ba154e5e56373633b58f951941c340ace0d379590d98b5"},
 ]
 
 [package.dependencies]
@@ -415,14 +415,14 @@ files = [
 
 [[package]]
 name = "mgraph-db"
-version = "1.2.6"
+version = "1.2.7"
 description = "MGraph-DB"
 optional = false
 python-versions = "<4.0,>=3.11"
 groups = ["main"]
 files = [
-    {file = "mgraph_db-1.2.6-py3-none-any.whl", hash = "sha256:9e10f7e5f793a45ec8695eae6c260b116475213e5734e2f952f0130112c3d0ee"},
-    {file = "mgraph_db-1.2.6.tar.gz", hash = "sha256:c6bc5016a674620961f72df3001e7a4e475ab4d01c0fb065870bd6f59dc38cac"},
+    {file = "mgraph_db-1.2.7-py3-none-any.whl", hash = "sha256:24e50785722a5f5926726a5d79623c5d606cac7d473dcad4df0433c3e7d83e89"},
+    {file = "mgraph_db-1.2.7.tar.gz", hash = "sha256:f440d51db975bcd580193df532419455910742ad55811e7a2fd6f8786611be14"},
 ]
 
 [package.dependencies]
@@ -480,14 +480,14 @@ osbot-aws = "*"
 
 [[package]]
 name = "osbot-utils"
-version = "2.33.0"
+version = "2.35.0"
 description = "OWASP Security Bot - Utils"
 optional = false
 python-versions = "<4.0,>=3.7"
 groups = ["main"]
 files = [
-    {file = "osbot_utils-2.33.0-py3-none-any.whl", hash = "sha256:b9b99cf7124b7b7b0183eca7066554f0a1af2fa76aa30345b515a4925b3050e0"},
-    {file = "osbot_utils-2.33.0.tar.gz", hash = "sha256:f3b1cdab2fb01adb47cbbfbcb7bef5c7925aaf00a94f223291ef8c0a4728a2a9"},
+    {file = "osbot_utils-2.35.0-py3-none-any.whl", hash = "sha256:c594edc873f2d3b25f67ea6ec1b6afd71a75a0640c0b3a949c4cc643010ff6b6"},
+    {file = "osbot_utils-2.35.0.tar.gz", hash = "sha256:e962a1e0ae5b386139b84f7629ff5ae5a4ec6babca1e88d9f3a2f770054db60b"},
 ]
 
 [[package]]
@@ -697,21 +697,21 @@ jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
 name = "s3transfer"
-version = "0.11.3"
+version = "0.11.4"
 description = "An Amazon S3 Transfer Manager"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "s3transfer-0.11.3-py3-none-any.whl", hash = "sha256:ca855bdeb885174b5ffa95b9913622459d4ad8e331fc98eb01e6d5eb6a30655d"},
-    {file = "s3transfer-0.11.3.tar.gz", hash = "sha256:edae4977e3a122445660c7c114bba949f9d191bae3b34a096f18a1c8c354527a"},
+    {file = "s3transfer-0.11.4-py3-none-any.whl", hash = "sha256:ac265fa68318763a03bf2dc4f39d5cbd6a9e178d81cc9483ad27da33637e320d"},
+    {file = "s3transfer-0.11.4.tar.gz", hash = "sha256:559f161658e1cf0a911f45940552c696735f5c74e64362e515f333ebed87d679"},
 ]
 
 [package.dependencies]
-botocore = ">=1.36.0,<2.0a.0"
+botocore = ">=1.37.4,<2.0a.0"
 
 [package.extras]
-crt = ["botocore[crt] (>=1.36.0,<2.0a.0)"]
+crt = ["botocore[crt] (>=1.37.4,<2.0a.0)"]
 
 [[package]]
 name = "shellingham"
@@ -763,14 +763,14 @@ files = [
 
 [[package]]
 name = "starlette"
-version = "0.46.0"
+version = "0.46.1"
 description = "The little ASGI library that shines."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "starlette-0.46.0-py3-none-any.whl", hash = "sha256:913f0798bd90ba90a9156383bcf1350a17d6259451d0d8ee27fc0cf2db609038"},
-    {file = "starlette-0.46.0.tar.gz", hash = "sha256:b359e4567456b28d473d0193f34c0de0ed49710d75ef183a74a5ce0499324f50"},
+    {file = "starlette-0.46.1-py3-none-any.whl", hash = "sha256:77c74ed9d2720138b25875133f3a2dae6d854af2ec37dceb56aef370c1d8a227"},
+    {file = "starlette-0.46.1.tar.gz", hash = "sha256:3c88d58ee4bd1bb807c0d1acb381838afc7752f9ddaec81bbe4383611d833230"},
 ]
 
 [package.dependencies]

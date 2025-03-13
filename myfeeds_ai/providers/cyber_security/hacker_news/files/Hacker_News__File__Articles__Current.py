@@ -5,7 +5,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Artic
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Step  import Schema__Feed__Article__Step
 
 class Hacker_News__File__Articles__Current(Hacker_News__File__Articles):
-    file_id               = FILE_ID__ARTICLES__CURRENT
+    file_id = FILE_ID__ARTICLES__CURRENT
 
     def group_by_next_step(self) -> Dict[str, List[Schema__Feed__Article]]:                                        # Group current articles by their status, preserving the typed objects.
         results = {}

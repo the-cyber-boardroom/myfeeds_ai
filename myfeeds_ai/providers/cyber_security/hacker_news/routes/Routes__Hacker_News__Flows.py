@@ -4,8 +4,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1_
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline   import Flow__Hacker_News__2__Create_Articles_Timeline
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__3__Extract_New_Articles       import Flow__Hacker_News__3__Extract_New_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__4__Create_Article_Files       import Flow__Hacker_News__4__Create_Article_Files
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__5__Create_Article_Markdown import \
-    Flow__Hacker_News__5__Create_Article_Markdown
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__5__Create_Article_Markdown    import Flow__Hacker_News__5__Create_Article_Markdown
 
 ROUTE_PATH__HACKER_NEWS__FLOWS = 'hacker-news-flows'
 

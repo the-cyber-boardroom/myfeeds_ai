@@ -30,7 +30,7 @@ class test_Hacker_News__Files(TestCase):
             #assert xml_feed__raw_data.created_by                                 == RAW_FEED__CREATED__BY
             assert xml_feed__raw_data.duration                                   < 2.0
             #assert xml_feed__raw_data.feed_xml.startswith(expected_xml_start)    is True
-            assert _.xml_feed__raw_data__from_date(year, month, day, hour).obj() == xml_feed__raw_data
+            assert _.xml_feed__raw_data__from_date(int(year), int(month), int(day), int(hour)).obj() == xml_feed__raw_data
 
     def test_xml_feed__data__current(self):
         with self.hacker_news__files as _:

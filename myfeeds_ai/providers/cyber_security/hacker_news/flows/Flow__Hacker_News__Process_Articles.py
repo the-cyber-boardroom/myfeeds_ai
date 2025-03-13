@@ -5,10 +5,9 @@ from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data  
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Edit                     import Hacker_News__Edit
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage                  import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article         import Hacker_News__Storage__Article
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article import Schema__Feed__Article
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article                 import Schema__Feed__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Entities       import Schema__Feed__Article__Entities, Schema__Feed__Text__Entities
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Status import \
-    Schema__Feed__Article__Status
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Status         import Schema__Feed__Article__Status
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Step           import Schema__Feed__Article__Step
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Articles                import Schema__Feed__Articles
 from osbot_utils.helpers.duration.decorators.capture_duration                                      import capture_duration
@@ -71,9 +70,10 @@ class Flow__Hacker_News__Process_Articles(Type_Safe):
         self.hacker_news_edit.save__current_articles(self.current_articles)
 
     def extract_entities_from_text(self, text):                             # todo: move this to a separate class
-        from mgraph_db.providers.llms.utils.API__LLM                              import API__LLM
+
         from mgraph_db.providers.graph_rag.actions.Graph_RAG__Document__Processor import Graph_RAG__Document__Processor
-        api_llm       = API__LLM()
+        from osbot_utils.helpers.llms.platforms.open_ai.API__LLM__Open_AI         import API__LLM__Open_AI
+        api_llm       = API__LLM__Open_AI()
         processor     = Graph_RAG__Document__Processor(api_llm=api_llm)                 # GraphRAG Create processor instance
         entities      = processor.extract_entities(text=text)
         text_entities = Schema__Feed__Text__Entities(text=text, entities=entities)

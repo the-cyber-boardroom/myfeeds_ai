@@ -5,6 +5,7 @@ from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                         
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser                       import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed     import Model__Hacker_News__Data__Feed
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                                 import Model__Data_Feeds__Providers
+from osbot_utils.helpers.Safe_Id import Safe_Id
 from osbot_utils.utils.Misc                                                                    import random_text
 from osbot_utils.utils.Objects                                                                 import obj
 from tests.integration.data_feeds__objs_for_tests                                              import cbr_website__assert_local_stack, DATA_FEEDS__TEST__AWS_ACCOUNT_ID
@@ -43,7 +44,7 @@ class test_Hacker_News__S3_DB(TestCase):
             year, month, day, hour = _.s3_key_generator.path__for_date_time__now_utc().split('/')
             all_files              = _.provider__all_files()
             file_data__current     = _.feed_data__load__current().obj()
-            file_data__from_data   = _.feed_data__load__from_date(year, month, day, hour).obj()
+            file_data__from_data   = _.feed_data__load__from_date(int(year), int(month), int(day), int(hour)).obj()
             file_data__latest      = _.feed_data__load__from_path(s3_path_latest).obj()
 
             assert s3_path                                in all_files
@@ -63,7 +64,7 @@ class test_Hacker_News__S3_DB(TestCase):
             raw_data_feed_json     = raw_data_feed.json()
             result                 = _.raw_data__feed__save(raw_data_feed)
             year, month, day, hour = _.s3_key_generator.path__for_date_time__now_utc().split('/')
-            s3_path                = _.s3_key_generator.s3_path(year, month, day, hour, file_id=S3_FILE_NAME__RAW__FEED_XML,extension=S3_Key__File_Extension.JSON)
+            s3_path                = _.s3_key_generator.s3_path(int(year), int(month), int(day), int(hour), file_id=S3_FILE_NAME__RAW__FEED_XML,extension=S3_Key__File_Extension.JSON)
             s3_path_latest         = _.s3_path__raw_data__feed_xml__latest()
             all_files              = _.provider__all_files()
             file_data__current     = _.raw_data__feed__load__current  (              ).json()
@@ -82,10 +83,10 @@ class test_Hacker_News__S3_DB(TestCase):
 
     def test_s3_key(self):
         with self.s3_db_hacker_news as _:
-            area               = random_text('area')
+            area               = Safe_Id(random_text('area'))
             when_path_elements = '/'.join(_.s3_key_generator.create_path_elements__from_when(area=area))
-            file_id            = 'file-id'
-            assert _.s3_key_generator.s3_key(area=area, file_id='file-id') == f'{when_path_elements}/{file_id}.json'
+            file_id            = Safe_Id('file-id')
+            assert _.s3_key_generator.s3_key(area=area, file_id=file_id) == f'{when_path_elements}/{file_id}.json'
 
     def test_s3_key__for_raw_data__feed_xml(self):
         with self.s3_db_hacker_news as _:

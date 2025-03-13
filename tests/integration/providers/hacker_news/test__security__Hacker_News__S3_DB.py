@@ -119,7 +119,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
                 for char in control_chars:
                     assert char not in safe_id, f"Control character found in {safe_id}"
 
-                result = _.s3_key_generator.s3_key(area=safe_id, file_id='valid-file')                               # Verify S3 key is properly formatted
+                result = _.s3_key_generator.s3_key(area=safe_id, file_id=Safe_Id('valid-file'))                               # Verify S3 key is properly formatted
                 assert result.startswith(f'{S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA}/'), f"Invalid S3 key prefix: {result}"
                 assert len(result.split('/')) >= 3, f"Invalid path depth in S3 key: {result}"
                 assert result == f"{S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA}/{safe_id}/{when_path_elements}/valid-file.json"
