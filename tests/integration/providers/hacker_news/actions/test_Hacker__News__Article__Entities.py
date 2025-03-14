@@ -25,3 +25,12 @@ class test_Hacker__News__Article__Entities(TestCase):
             assert base_types(_) == [Hacker_News__File__Now , Type_Safe, object]
             assert _.exists() is False
             assert _.path_now() == f'{self.path__folder__data}/articles/{self.article_id}/entities/text-entities-title.json'
+            assert _.content_type == ''
+
+    def test_file___text__entities__title__png(self):
+        with self.article_entities.file___text__entities__title__png() as _:
+            assert type(_) == Hacker_News__File__Article__Text_Entities
+            assert base_types(_) == [Hacker_News__File__Now , Type_Safe, object]
+            assert _.exists() is False
+            assert _.path_now() == f'{self.path__folder__data}/articles/{self.article_id}/entities/text-entities-title.png'
+            assert _.content_type == 'image/png'

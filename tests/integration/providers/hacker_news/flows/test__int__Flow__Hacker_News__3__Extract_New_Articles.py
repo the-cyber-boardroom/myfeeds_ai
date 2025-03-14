@@ -115,6 +115,7 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
                                                  'path__file__markdown'                  ,
                                                  'path__file__text_entities__description',
                                                  'path__file__text_entities__title'      ,
+                                                 'path__file__text_entities__title__png' ,
                                                  'path__folder__data'                    ,
                                                  'path__folder__source'                  ,
                                                  'status'                                ]

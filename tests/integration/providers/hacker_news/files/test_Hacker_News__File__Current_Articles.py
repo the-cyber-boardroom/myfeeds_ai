@@ -37,6 +37,7 @@ class test_Hacker_News__File__Current_Articles(TestCase):
                                                  'path__file__markdown'                  ,
                                                  'path__file__text_entities__description',
                                                  'path__file__text_entities__title'      ,
+                                                 'path__file__text_entities__title__png' ,
                                                  'path__folder__data'                    ,
                                                  'path__folder__source'                  ,
                                                  'status'                                ]
