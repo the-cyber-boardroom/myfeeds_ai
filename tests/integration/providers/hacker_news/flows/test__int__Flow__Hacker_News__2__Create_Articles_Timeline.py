@@ -17,14 +17,14 @@ from osbot_utils.type_safe.Type_Safe                                            
 from osbot_utils.utils.Env                                                                                      import get_env
 from osbot_utils.utils.Misc                                                                                     import list_set
 from osbot_utils.utils.Objects                                                                                  import base_types, obj, __
-from tests.integration.data_feeds__objs_for_tests                                                               import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                               import myfeeds_tests__setup_local_stack
 
 
 class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.files                   = Hacker_News__Files()
         cls.data_feed               = cls.files.feed_data__current()
         cls.flow__articles_timeline = Flow__Hacker_News__2__Create_Articles_Timeline()

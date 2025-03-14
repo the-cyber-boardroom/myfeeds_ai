@@ -1,6 +1,5 @@
-from datetime import datetime
-from typing import List
-
+from datetime                                                   import datetime
+from typing                                                     import List
 from osbot_aws.aws.cloud_front.Cloud_Front                      import Cloud_Front
 from osbot_utils.utils.Env                                      import get_env
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator        import Data_Feeds__S3__Key_Generator, S3_Key__File_Extension
@@ -33,7 +32,7 @@ class Data_Feeds__S3_DB(S3__DB_Base):
 
     # methods for paths
     @type_safe
-    def s3_path__latest(self, file_id, extension: S3_Key__File_Extension = S3_Key__File_Extension.JSON):
+    def s3_path__latest(self, file_id, extension: S3_Key__File_Extension):
         return url_join_safe(S3_FOLDER_NAME__LATEST, file_id + f'.{extension.value}')
 
     @type_safe
@@ -89,7 +88,7 @@ class Data_Feeds__S3_DB(S3__DB_Base):
 
     # methods for s3 folders
     def s3_folder__for_provider(self):
-        return self.s3_key_generator.s3_folder__for_area(area=self.provider_name)
+        return self.s3_key_generator.s3_folder__for_area(area=Safe_Id(self.provider_name.value))
 
     def s3_folder__for_date_time(self, date_time: datetime):
         return self.s3_key_generator.s3_folder__for_date_time(date_time=date_time)

@@ -5,13 +5,13 @@ from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Raw_Data   import Model__Da
 from myfeeds_ai.providers.RSS_Providers                         import RSS_Providers
 from myfeeds_ai.rss_feeds.RSS_Feeds                             import RSS_Feeds
 from osbot_utils.helpers.xml.Xml__File                          import Xml__File
-from tests.integration.data_feeds__objs_for_tests               import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests               import myfeeds_tests__setup_local_stack
 
 class test_RSS_Feeds(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.rss_feeds     = RSS_Feeds()
         cls.rss_providers = RSS_Providers().data()
         cls.provider_id   = 'hacker-news' # 'cso-online'

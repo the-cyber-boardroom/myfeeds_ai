@@ -2,15 +2,14 @@ from unittest                                                           import T
 from osbot_utils.utils.Objects                                          import obj
 from myfeeds_ai.fast_api.public_data.Public_Data__Fast_API              import ROUTES__BASE_PATH__PUBLIC_DATA
 from myfeeds_ai.fast_api.public_data.routes.Routes__Public__Hacker_News import ROUTES__TAG__PUBLIC__HACKER_NEWS
-from tests.integration.data_feeds__objs_for_tests                       import data_feeds__fast_api__client, cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                       import myfeeds_tests__setup_fast_api__and_localstack
 
 
 class test__client__Routes__Public_Data(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
-        cls.client      = data_feeds__fast_api__client
+        cls.client      = myfeeds_tests__setup_fast_api__and_localstack().data_feeds__fast_api__client
         cls.parent_path = f'{ROUTES__BASE_PATH__PUBLIC_DATA}/{ROUTES__TAG__PUBLIC__HACKER_NEWS}'
 
     def get_response(self, method_name):

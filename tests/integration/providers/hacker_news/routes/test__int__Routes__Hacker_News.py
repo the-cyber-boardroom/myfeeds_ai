@@ -3,14 +3,14 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News                 import Routes__Hacker_News
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import Schema__Feed__Config__New_Articles
 from osbot_utils.utils.Objects                                                                  import obj, __
-from tests.integration.data_feeds__objs_for_tests                                               import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                               import myfeeds_tests__setup_local_stack
 
 
 class test__int__Routes__Hacker_News(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.routes_hacker_news = Routes__Hacker_News()
 
     def test_routes_setup(self):
@@ -92,7 +92,7 @@ class test__int__Routes__Hacker_News(TestCase):
         with self.routes_hacker_news as _:
             current_feed = _.raw_data_feed_current()
             year, month, day, hour = _.files.s3_db.s3_key_generator.path__for_date_time__now_utc().split('/')
-            assert _.raw_data_feed(year, month, day, hour) == current_feed
+            assert _.raw_data_feed(int(year), int(month), int(day), int(hour)) == current_feed
 
     def test_data_feed_current(self):
         with self.routes_hacker_news as _:

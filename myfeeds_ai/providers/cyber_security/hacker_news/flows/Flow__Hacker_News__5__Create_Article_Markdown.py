@@ -27,17 +27,18 @@ class Flow__Hacker_News__5__Create_Article_Markdown(Type_Safe):
     def task__2__create_article_markdown(self):
 
         from_step   = Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE
-        to_step     = Schema__Feed__Article__Step.STEP__3__LLM__TEXT_TO_GRAPH
+        to_step     = Schema__Feed__Article__Step.STEP__3__LLM__TEXT_TO_ENTITIES
 
         for article in self.articles_to_process[0:FLOW__HACKER_NEWS__5__MAX__ARTICLES_TO_CREATE]:
             article_id                   = article.article_id
             path_folder_data             = article.path__folder__data
             hacker_news_article          = Hacker_News__Article(article_id=article_id, path__folder__data=path_folder_data)
             article.path__file__markdown = hacker_news_article.article_markdown__create()
-            article.step                 = to_step
+            article.next_step            = to_step
             article_change_status        = Schema__Feed__Article__Status__Change(article=article, from_step=from_step)
             self.status_changes.append(article_change_status)
-            #pprint(hacker_news_article.file_markdown().path_now())
+
+        self.file_articles_current.save()
 
     def task__3__create_output(self):
         self.output = dict(articles_to_process = len(self.articles_to_process),

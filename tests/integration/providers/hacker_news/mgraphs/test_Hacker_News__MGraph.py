@@ -4,14 +4,14 @@ from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                        
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage          import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph           import Hacker_News__MGraph
 from osbot_utils.helpers.Safe_Id                                                           import Safe_Id
-from tests.integration.data_feeds__objs_for_tests                                          import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                          import myfeeds_tests__setup_local_stack
 
 
 class test_Hacker_News__MGraph(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()                                                           # Ensure LocalStack is running
+        myfeeds_tests__setup_local_stack()                                                           # Ensure LocalStack is running
         cls.hacker_news_storage = Hacker_News__Storage()
 
     def setUp(self):

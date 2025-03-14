@@ -57,7 +57,7 @@ class Data_Feeds__S3__Key_Generator(S3__Key_Generator):                # todo: r
 
     def s3_path__now(self, file_id: Safe_Id=None, extension: S3_Key__File_Extension=None, areas: List[Safe_Id] = None):                # todo:refactor the name of this method which is not consistent with the other s3_path__now__** methods
         year, month, day, hour = self.path__for_date_time__now_utc().split('/')
-        return self.s3_path(year, month, day, hour, file_id=file_id, extension=extension, areas=areas)
+        return self.s3_path(int(year), int(month), int(day), int(hour), file_id=file_id, extension=extension, areas=areas)
 
 
     def s3_path__now__utc(self):

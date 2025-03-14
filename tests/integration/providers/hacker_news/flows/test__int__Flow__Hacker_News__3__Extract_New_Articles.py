@@ -8,13 +8,13 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.type_safe.Type_Safe                                                                    import Type_Safe
 from osbot_utils.utils.Misc                                                                             import list_set
 from osbot_utils.utils.Objects                                                                          import  __, base_types
-from tests.integration.data_feeds__objs_for_tests                                                       import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                       import myfeeds_tests__setup_local_stack
 
 class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.current_path = '2025/02/20/23'  # use these two in order to have a deterministic data set in the tests below
         cls.previous_path = '2025/02/19/22'
         cls.disable_root_loggers = disable_root_loggers().__enter__()
@@ -107,15 +107,17 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
 
             for article_id, article  in _.file_current_articles.articles.articles.items():
                 assert is_obj_id(article_id) is True
-                assert list_set (article   ) == ['article_id'                       ,
-                                                 'next_step'                        ,
-                                                 'path__file__entities_mgraph__json',
-                                                 'path__file__entities_mgraph__png' ,
-                                                 'path__file__feed_article'         ,
-                                                 'path__file__markdown'             ,
-                                                 'path__folder__data'               ,
-                                                 'path__folder__source'             ,
-                                                 'status'                           ]
+                assert list_set (article   ) == ['article_id'                            ,
+                                                 'next_step'                             ,
+                                                 'path__file__entities_mgraph__json'     ,
+                                                 'path__file__entities_mgraph__png'      ,
+                                                 'path__file__feed_article'              ,
+                                                 'path__file__markdown'                  ,
+                                                 'path__file__text_entities__description',
+                                                 'path__file__text_entities__title'      ,
+                                                 'path__folder__data'                    ,
+                                                 'path__folder__source'                  ,
+                                                 'status'                                ]
                 assert article.article_id    == article_id
 
     def test_run(self):                                 # also tests task__6__create_output

@@ -5,9 +5,6 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files         
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content                            import Hacker_News__Http_Content
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                            import Hacker_News__Data
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline import Flow__Hacker_News__2__Create_Articles_Timeline
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Create__Graph_RAG__MGraphs  import Flow__Hacker_News__Create__Graph_RAG__MGraphs
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__3__Extract_New_Articles     import Flow__Hacker_News__3__Extract_New_Articles
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__Process_Articles            import Flow__Hacker_News__Process_Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed        import Flow__Hacker_News__1__Download_RSS_Feed
 from osbot_utils.utils.Lists                                                                              import list_filter_contains
 from osbot_utils.utils.Status                                                                             import status_ok, status_error
@@ -20,9 +17,9 @@ ROUTES_PATHS__HACKER_NEWS = [ f'/{ROUTE_PATH__HACKER_NEWS}/data-feed'           
                               f'/{ROUTE_PATH__HACKER_NEWS}/feed'                  ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/feed-prompt'           ,
                               #f'/{ROUTE_PATH__HACKER_NEWS}/flow-new-articles'     ,
-                              f'/{ROUTE_PATH__HACKER_NEWS}/flow-process-articles' ,
+                              # f'/{ROUTE_PATH__HACKER_NEWS}/flow-process-articles' ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/flow-process-rss'      ,
-                              f'/{ROUTE_PATH__HACKER_NEWS}/flow-graph-rag-mgraphs',
+                              # f'/{ROUTE_PATH__HACKER_NEWS}/flow-graph-rag-mgraphs',
                               f'/{ROUTE_PATH__HACKER_NEWS}/files-paths'           ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/new-articles'          ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-all-files'    ,
@@ -66,15 +63,12 @@ class Routes__Hacker_News(Fast_API_Routes):
     #     flow.run()
     #     return flow.new__config_new_articles.json()
 
-    def flow_process_articles(self):
-        flow = Flow__Hacker_News__Process_Articles()
-        flow.run()
-        return flow.result__create_text_entities
 
-    def flow_graph_rag_mgraphs(self):
-        flow = Flow__Hacker_News__Create__Graph_RAG__MGraphs()
-        flow.run()
-        return flow.result__processed_files
+
+    # def flow_graph_rag_mgraphs(self):
+    #     flow = Flow__Hacker_News__Create__Graph_RAG__MGraphs()
+    #     flow.run()
+    #     return flow.result__processed_files
 
     def data_feed(self, year:int, month:int, day:int, hour:int):
         kwargs = dict(year   = year ,
@@ -140,9 +134,9 @@ class Routes__Hacker_News(Fast_API_Routes):
         self.add_route_get(self.data_feed_current     )
         self.add_route_get(self.files_paths           )
         #self.add_route_get(self.flow_new_articles     )
-        self.add_route_get(self.flow_process_articles )
+        #self.add_route_get(self.flow_process_articles )
         self.add_route_get(self.flow_process_rss      )
-        self.add_route_get(self.flow_graph_rag_mgraphs)
+        #self.add_route_get(self.flow_graph_rag_mgraphs)
         self.add_route_get(self.feed                  )
         self.add_route_get(self.feed_prompt           )
         self.add_route_get(self.new_articles          )

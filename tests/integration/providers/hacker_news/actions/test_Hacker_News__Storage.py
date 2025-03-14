@@ -5,13 +5,13 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB         
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage   import Hacker_News__Storage
 from osbot_utils.utils.Misc                                                         import random_text
 from osbot_utils.helpers.Safe_Id                                                    import Safe_Id
-from tests.integration.data_feeds__objs_for_tests                                   import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                   import myfeeds_tests__setup_local_stack
 
 class test_Hacker_News__Storage(TestCase):
 
     @classmethod                                                                       # Setup test environment
     def setUpClass(cls):
-        cbr_website__assert_local_stack()                                             # Ensure LocalStack is running
+        myfeeds_tests__setup_local_stack()                                             # Ensure LocalStack is running
         cls.s3_db    = Hacker_News__S3_DB().setup()                                  # Setup and create test DB
         cls.storage  = Hacker_News__Storage(s3_db=cls.s3_db)
 

@@ -3,14 +3,14 @@ from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                         
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                   import Model__Data_Feeds__Providers
 from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
 from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__S3_DB         import OSS__S3_DB
-from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack, DATA_FEEDS__TEST__AWS_ACCOUNT_ID
+from tests.integration.data_feeds__objs_for_tests                                           import myfeeds_tests__setup_local_stack, DATA_FEEDS__TEST__AWS_ACCOUNT_ID
 
 
 class test_OSS__S3_DB(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.s3_db_oss = OSS__S3_DB().setup()            #.setup() will create the DB
 
     def test__init__(self):

@@ -1,6 +1,6 @@
 from unittest                                                             import TestCase
 from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Events import OSS__Events,OSS_EVENTS__CURRENT__YEAR, OSS_EVENTS__CURRENT__MONTH
-from tests.integration.data_feeds__objs_for_tests                         import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                         import myfeeds_tests__setup_local_stack
 
 class test_OSS__Events(TestCase):
 
@@ -8,7 +8,7 @@ class test_OSS__Events(TestCase):
     def setUpClass(cls):
         import pytest
         pytest.skip("test needs updating")
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.oss_events = OSS__Events()
 
     def test_current_event(self):

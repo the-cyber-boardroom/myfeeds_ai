@@ -2,14 +2,14 @@ from unittest                                                                   
 
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed  import Flow__Hacker_News__1__Download_RSS_Feed
 from osbot_utils.helpers.flows.Flow                                                                 import Flow
-from tests.integration.data_feeds__objs_for_tests                                                   import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                   import myfeeds_tests__setup_local_stack
 
 
 class test__int__Flow__Hacker_News__1__Download_RSS_Feed(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.download_rss_feed = Flow__Hacker_News__1__Download_RSS_Feed()
 
     def test__confirm_that_we_have_the_version_with_50_articles(self):

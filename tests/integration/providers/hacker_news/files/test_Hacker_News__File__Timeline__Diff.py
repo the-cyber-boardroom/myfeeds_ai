@@ -2,14 +2,14 @@ from unittest                                                                   
 from mgraph_db.mgraph.schemas.Schema__MGraph__Diff__Values                                      import Schema__MGraph__Diff__Values
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types                   import Time_Chain__Day, Time_Chain__Source
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Diff    import Hacker_News__File__Timeline__Diff
-from tests.integration.data_feeds__objs_for_tests                                               import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                               import myfeeds_tests__setup_local_stack
 
 
 class test_Hacker_News__File__Timeline__Diff(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()                               # make sure we are using localstack
+        myfeeds_tests__setup_local_stack()                               # make sure we are using localstack
         cls.current_path  = '2025/02/20/23'                             # use these two in order to have a deterministic data set in the tests below
         cls.previous_path = '2025/02/19/22'
         cls.file_timeline_diff = Hacker_News__File__Timeline__Diff()

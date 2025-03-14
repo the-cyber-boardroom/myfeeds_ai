@@ -3,13 +3,13 @@ from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Ar
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Step            import Schema__Feed__Article__Step
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Articles                 import Schema__Feed__Article
 from osbot_utils.utils.Misc                                                                         import list_set
-from tests.integration.data_feeds__objs_for_tests                                                   import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                                   import myfeeds_tests__setup_local_stack
 
 class test_Hacker_News__File__Current_Articles(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
 
 
     def setUp(self):
@@ -29,18 +29,20 @@ class test_Hacker_News__File__Current_Articles(TestCase):
                 assert type(articles) is list
                 for article in articles:
                     assert type(article) is Schema__Feed__Article
-                    assert list_set(article) == ['article_id'                       ,
-                                                 'next_step'                        ,
-                                                 'path__file__entities_mgraph__json',
-                                                 'path__file__entities_mgraph__png' ,
-                                                 'path__file__feed_article'         ,
-                                                 'path__file__markdown'             ,
-                                                 'path__folder__data'               ,
-                                                 'path__folder__source'             ,
-                                                 'status'                           ]
+                    assert list_set(article) == ['article_id'                            ,
+                                                 'next_step'                             ,
+                                                 'path__file__entities_mgraph__json'     ,
+                                                 'path__file__entities_mgraph__png'      ,
+                                                 'path__file__feed_article'              ,
+                                                 'path__file__markdown'                  ,
+                                                 'path__file__text_entities__description',
+                                                 'path__file__text_entities__title'      ,
+                                                 'path__folder__data'                    ,
+                                                 'path__folder__source'                  ,
+                                                 'status'                                ]
     def test_next_step__1__save_article(self):
         with self.file_current_articles as _:
             next_step_1 = _.next_step__1__save_article()
             if next_step_1:
-                assert next_step_1 == _.group_by_next_step().get('STEP__1__SAVE_ARTICLE')
+                assert next_step_1 == _.group_by_next_step().get('STEP__1__SAVE__ARTICLE')
 

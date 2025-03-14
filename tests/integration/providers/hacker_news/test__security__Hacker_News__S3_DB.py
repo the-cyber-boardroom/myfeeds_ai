@@ -1,13 +1,16 @@
-from unittest                                                                       import TestCase
+from unittest                                                            import TestCase
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                 import Data_Feeds__S3__Key_Generator
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                  import S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB  import Hacker_News__S3_DB
-from osbot_utils.helpers.Safe_Id                                                    import Safe_Id
+from osbot_utils.helpers.Safe_Id                                         import Safe_Id
+from tests.integration.data_feeds__objs_for_tests                        import myfeeds_tests__setup_fast_api__and_localstack
+
 
 class test__security__Hacker_News__S3_DB(TestCase):
 
     @classmethod
     def setUpClass(cls):
+        myfeeds_tests__setup_fast_api__and_localstack()
         cls.s3_db_hacker_news = Hacker_News__S3_DB()
         cls.s3_db_hacker_news.s3_key_generator.split_when = False
 
@@ -20,7 +23,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
             when_path_elements = _.s3_key_generator.create_path_elements__from_when().pop()
             good_file_id = Safe_Id('valid-file')
 
-            traversal_patterns = ['../../../etc/passwd'           ,                                     # Unix path traversal
+            traversal_patterns = [r'../../../etc/passwd'           ,                                     # Unix path traversal
                                   '..\\..\\Windows\\System32'     ,                                     # Windows path traversal
                                   '%2e%2e%2fadmin'                ,                                     # URL encoded path traversal
                                   '....//....//config'            ,                                     # Multiple dot path traversal
@@ -36,7 +39,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
                 safe_area = Safe_Id(malicious_input)                                                    # Test that the input is sanitized into Safe_Id
                 safe_file = Safe_Id(malicious_input)
 
-                unsafe_patterns = ['..', '../', '..\\', '/etc/', '\\etc\\', '\passwd']                  # Verify sanitized values don't contain dangerous patterns
+                unsafe_patterns = ['..', '../', '..\\', '/etc/', '\\etc\\', r'\passwd']                  # Verify sanitized values don't contain dangerous patterns
                 for pattern in unsafe_patterns:
                     assert pattern not in safe_area, f"Unsafe pattern {pattern} found in {safe_area}"
                     assert pattern not in safe_file, f"Unsafe pattern {pattern} found in {safe_file}"
@@ -119,7 +122,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
                 for char in control_chars:
                     assert char not in safe_id, f"Control character found in {safe_id}"
 
-                result = _.s3_key_generator.s3_key(area=safe_id, file_id='valid-file')                               # Verify S3 key is properly formatted
+                result = _.s3_key_generator.s3_key(area=safe_id, file_id=Safe_Id('valid-file'))                               # Verify S3 key is properly formatted
                 assert result.startswith(f'{S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA}/'), f"Invalid S3 key prefix: {result}"
                 assert len(result.split('/')) >= 3, f"Invalid path depth in S3 key: {result}"
                 assert result == f"{S3_FOLDER__ROOT_FOLDER__PUBLIC_DATA}/{safe_id}/{when_path_elements}/valid-file.json"

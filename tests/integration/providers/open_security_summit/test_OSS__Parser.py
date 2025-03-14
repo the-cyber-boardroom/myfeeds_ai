@@ -1,13 +1,13 @@
 from unittest                                                                               import TestCase
 from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Http_Content  import OSS__Http_Content
 from myfeeds_ai.providers.cyber_security.open_security_summit.OSS__Parser        import OSS__Parser
-from tests.integration.data_feeds__objs_for_tests                                           import cbr_website__assert_local_stack
+from tests.integration.data_feeds__objs_for_tests                                           import myfeeds_tests__setup_local_stack
 
 class test_OSS__Parser(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cbr_website__assert_local_stack()
+        myfeeds_tests__setup_local_stack()
         cls.oss_parser  = OSS__Parser()
         cls.oss_content = OSS__Http_Content()
 

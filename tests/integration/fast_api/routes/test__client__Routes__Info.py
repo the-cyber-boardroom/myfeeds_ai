@@ -1,13 +1,13 @@
 from unittest                                       import TestCase
 from myfeeds_ai.utils.Version                       import version__myfeeds_ai
-from tests.integration.data_feeds__objs_for_tests   import data_feeds__fast_api__client
+from tests.integration.data_feeds__objs_for_tests   import myfeeds_tests__setup_fast_api__and_localstack
 
 
 class test__client__Routes__Info(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.client = data_feeds__fast_api__client
+        cls.client = myfeeds_tests__setup_fast_api__and_localstack().data_feeds__fast_api__client
 
     def test_raw__uk__homepage(self):
         response = self.client.get('/info/version')

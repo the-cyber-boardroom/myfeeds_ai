@@ -1,12 +1,12 @@
 from unittest                                     import TestCase
-from tests.integration.data_feeds__objs_for_tests import data_feeds__fast_api__client
+from tests.integration.data_feeds__objs_for_tests import myfeeds_tests__setup_fast_api__and_localstack
 
 
 class test__client__Data_Feeds__Fast_API(TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.client = data_feeds__fast_api__client
+        cls.client = myfeeds_tests__setup_fast_api__and_localstack().data_feeds__fast_api__client
 
     def test__docs__(self):
         response = self.client.get('/docs')

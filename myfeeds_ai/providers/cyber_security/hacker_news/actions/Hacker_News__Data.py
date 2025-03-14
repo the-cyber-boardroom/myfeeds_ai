@@ -15,8 +15,8 @@ from osbot_utils.type_safe.Type_Safe                                            
 FILE_NAME__CURRENT_ARTICLES   = 'current-articles'
 FILE_NAME__NEW_ARTICLES       = 'new-articles'
 FILE_ID__NEW_ARTICLES         = FILE_NAME__NEW_ARTICLES
-EXTENSION__NEW_ARTICLES       = S3_Key__File_Extension.JSON.value
-EXTENSION__CURRENT_ARTICLES   = S3_Key__File_Extension.JSON.value
+EXTENSION__NEW_ARTICLES       = S3_Key__File_Extension.JSON
+EXTENSION__CURRENT_ARTICLES   = S3_Key__File_Extension.JSON
 
 class Hacker_News__Data(Type_Safe):
     storage               : Hacker_News__Storage
@@ -40,7 +40,7 @@ class Hacker_News__Data(Type_Safe):
             file_name = f'{S3_FILE_NAME__RAW__FEED_DATA}.{S3_Key__File_Extension.JSON.value}'
             data      = self.hacker_news_live_data.get_json(path, file_name)
         else:
-            data      = self.storage.load_from__path(path, S3_FILE_NAME__RAW__FEED_DATA, S3_Key__File_Extension.JSON.value)
+            data      = self.storage.load_from__path(path, S3_FILE_NAME__RAW__FEED_DATA, S3_Key__File_Extension.JSON)
         if data:
             return Model__Hacker_News__Data__Feed.from_json(data)
 
