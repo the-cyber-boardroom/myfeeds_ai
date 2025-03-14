@@ -14,6 +14,7 @@ class Schema__Feed__Article(Type_Safe):
     path__file__markdown                   : str = None
     path__file__text_entities__description : str = None
     path__file__text_entities__title       : str = None
+    path__file__text_entities__title__png  : str = None
     path__folder__source                   : str
     path__folder__data                     : str
 

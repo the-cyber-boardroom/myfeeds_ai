@@ -5,4 +5,4 @@ class Schema__Feed__Article__Status(Enum):
     PROCESSING                  : str = 'processing'
     PROCESSED                   : str = 'processed'
     ERROR__NO_FEED_DATA         : str = 'error-no-feed-data'
-    ERROR__IN_PROCESS           : str = 'error-in-process'
+    ERROR__FAILED_TASK          : str = 'error-failed-task'
