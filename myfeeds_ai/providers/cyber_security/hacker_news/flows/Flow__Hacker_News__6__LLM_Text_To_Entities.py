@@ -10,8 +10,6 @@ from osbot_utils.helpers.flows.decorators.flow                                  
 from osbot_utils.helpers.flows.decorators.task                                                      import task
 from osbot_utils.type_safe.Type_Safe                                                                import Type_Safe
 
-from osbot_utils.utils.Dev import pprint
-
 FLOW__HACKER_NEWS__6__MAX__ARTICLES_TO_CREATE = 1
 
 class Flow__Hacker_News__6__LLM_Text_To_Entities(Type_Safe):
@@ -58,7 +56,7 @@ class Flow__Hacker_News__6__LLM_Text_To_Entities(Type_Safe):
             article_change_status        = Schema__Feed__Article__Status__Change(article=article, from_step=from_step)
             self.status_changes.append(article_change_status)
 
-        #self.file_articles_current.save()
+        self.file_articles_current.save()
 
     def task__3__create_output(self):
         self.output = dict(articles_to_process = len(self.articles_to_process),
