@@ -21,10 +21,10 @@ class Hacker_News__File__Articles__Current(Hacker_News__File__Articles):
         return self.group_by_next_step().get(next_step.name, [])
 
     def next_step__1__save_article(self) -> List[Schema__Feed__Article]:
-        return self.next_for_step(Schema__Feed__Article__Step.STEP__1__SAVE_ARTICLE)
+        return self.next_for_step(Schema__Feed__Article__Step.STEP__1__SAVE__ARTICLE)
 
     def next_step__2__markdown_for_article(self)  -> List[Schema__Feed__Article]:
         return self.next_for_step(Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE)
 
     def next_step__3__llm_text_to_graph(self)  -> List[Schema__Feed__Article]:
-        return self.next_for_step(Schema__Feed__Article__Step.STEP__3__LLM__TEXT_TO_GRAPH)
+        return self.next_for_step(Schema__Feed__Article__Step.STEP__3__LLM__TEXT_TO_ENTITIES)

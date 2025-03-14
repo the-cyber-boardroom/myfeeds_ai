@@ -27,7 +27,7 @@ class Flow__Hacker_News__5__Create_Article_Markdown(Type_Safe):
     def task__2__create_article_markdown(self):
 
         from_step   = Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE
-        to_step     = Schema__Feed__Article__Step.STEP__3__LLM__TEXT_TO_GRAPH
+        to_step     = Schema__Feed__Article__Step.STEP__3__LLM__TEXT_TO_ENTITIES
 
         for article in self.articles_to_process[0:FLOW__HACKER_NEWS__5__MAX__ARTICLES_TO_CREATE]:
             article_id                   = article.article_id

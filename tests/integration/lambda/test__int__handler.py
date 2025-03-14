@@ -7,7 +7,7 @@ from tests.integration.data_feeds__objs_for_tests import myfeeds_tests__setup_lo
 class test__int__handler(TestCase):
 
     @classmethod
-    def setUp(cls):
+    def setUpClass(cls):
         myfeeds_tests__setup_local_stack()
         cls.client = TestClient(app)
 

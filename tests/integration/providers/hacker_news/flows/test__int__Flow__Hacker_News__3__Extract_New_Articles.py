@@ -107,15 +107,17 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
 
             for article_id, article  in _.file_current_articles.articles.articles.items():
                 assert is_obj_id(article_id) is True
-                assert list_set (article   ) == ['article_id'                       ,
-                                                 'next_step'                        ,
-                                                 'path__file__entities_mgraph__json',
-                                                 'path__file__entities_mgraph__png' ,
-                                                 'path__file__feed_article'         ,
-                                                 'path__file__markdown'             ,
-                                                 'path__folder__data'               ,
-                                                 'path__folder__source'             ,
-                                                 'status'                           ]
+                assert list_set (article   ) == ['article_id'                            ,
+                                                 'next_step'                             ,
+                                                 'path__file__entities_mgraph__json'     ,
+                                                 'path__file__entities_mgraph__png'      ,
+                                                 'path__file__feed_article'              ,
+                                                 'path__file__markdown'                  ,
+                                                 'path__file__text_entities__description',
+                                                 'path__file__text_entities__title'      ,
+                                                 'path__folder__data'                    ,
+                                                 'path__folder__source'                  ,
+                                                 'status'                                ]
                 assert article.article_id    == article_id
 
     def test_run(self):                                 # also tests task__6__create_output

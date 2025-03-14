@@ -32,7 +32,7 @@ class Flow__Hacker_News__4__Create_Article_Files(Type_Safe):
     @task()
     def task__2__create_missing_article_files(self):
         from_status = Schema__Feed__Article__Status.TO_PROCESS
-        from_step   = Schema__Feed__Article__Step.STEP__1__SAVE_ARTICLE
+        from_step   = Schema__Feed__Article__Step.STEP__1__SAVE__ARTICLE
         to_status   = Schema__Feed__Article__Status.PROCESSING
         to_step     = Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE
 

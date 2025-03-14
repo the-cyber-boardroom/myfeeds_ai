@@ -1,8 +1,5 @@
-from unittest import TestCase
-
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article__Entity import \
-    Hacker_News__Storage__Article__Entity
-from osbot_utils.utils.Dev import pprint
+from unittest                                                                                      import TestCase
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article__Entity import Hacker_News__Storage__Article__Entity
 
 
 class test_Hacker_News__Storage__Article__Entity(TestCase):

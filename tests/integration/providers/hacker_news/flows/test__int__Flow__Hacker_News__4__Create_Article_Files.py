@@ -27,7 +27,7 @@ class test__int__Flow__Hacker_News__4__Create_Article_Files(TestCase):
                 assert len(_.status_changes) <= FLOW__HACKER_NEWS__4__MAX__ARTICLES_TO_SAVE
                 status_change = _.status_changes[0]
                 assert status_change.from_status       == Schema__Feed__Article__Status.TO_PROCESS
-                assert status_change.from_step         == Schema__Feed__Article__Step.STEP__1__SAVE_ARTICLE
+                assert status_change.from_step         == Schema__Feed__Article__Step.STEP__1__SAVE__ARTICLE
                 assert status_change.article.status    == Schema__Feed__Article__Status.PROCESSING
                 assert status_change.article.next_step == Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE
 

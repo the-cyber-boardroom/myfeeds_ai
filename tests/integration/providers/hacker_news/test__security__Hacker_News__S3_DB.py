@@ -39,7 +39,7 @@ class test__security__Hacker_News__S3_DB(TestCase):
                 safe_area = Safe_Id(malicious_input)                                                    # Test that the input is sanitized into Safe_Id
                 safe_file = Safe_Id(malicious_input)
 
-                unsafe_patterns = ['..', '../', '..\\', '/etc/', '\\etc\\', '\passwd']                  # Verify sanitized values don't contain dangerous patterns
+                unsafe_patterns = ['..', '../', '..\\', '/etc/', '\\etc\\', r'\passwd']                  # Verify sanitized values don't contain dangerous patterns
                 for pattern in unsafe_patterns:
                     assert pattern not in safe_area, f"Unsafe pattern {pattern} found in {safe_area}"
                     assert pattern not in safe_file, f"Unsafe pattern {pattern} found in {safe_file}"
