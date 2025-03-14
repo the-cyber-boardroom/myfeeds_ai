@@ -29,18 +29,19 @@ class test_Hacker_News__File__Current_Articles(TestCase):
                 assert type(articles) is list
                 for article in articles:
                     assert type(article) is Schema__Feed__Article
-                    assert list_set(article) == ['article_id'                            ,
-                                                 'next_step'                             ,
-                                                 'path__file__entities_mgraph__json'     ,
-                                                 'path__file__entities_mgraph__png'      ,
-                                                 'path__file__feed_article'              ,
-                                                 'path__file__markdown'                  ,
-                                                 'path__file__text_entities__description',
-                                                 'path__file__text_entities__title'      ,
-                                                 'path__file__text_entities__title__png' ,
-                                                 'path__folder__data'                    ,
-                                                 'path__folder__source'                  ,
-                                                 'status'                                ]
+                    assert list_set(article) == ['article_id'                                 ,
+                                                 'next_step'                                  ,
+                                                 'path__file__entities_mgraph__json'          ,
+                                                 'path__file__entities_mgraph__png'           ,
+                                                 'path__file__feed_article'                   ,
+                                                 'path__file__markdown'                       ,
+                                                 'path__file__text_entities__description'     ,
+                                                 'path__file__text_entities__description__png',
+                                                 'path__file__text_entities__title'           ,
+                                                 'path__file__text_entities__title__png'      ,
+                                                 'path__folder__data'                         ,
+                                                 'path__folder__source'                       ,
+                                                 'status'                                     ]
     def test_next_step__1__save_article(self):
         with self.file_current_articles as _:
             next_step_1 = _.next_step__1__save_article()
