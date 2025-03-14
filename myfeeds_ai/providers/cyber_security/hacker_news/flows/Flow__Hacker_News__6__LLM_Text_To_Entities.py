@@ -48,7 +48,6 @@ class Flow__Hacker_News__6__LLM_Text_To_Entities(Type_Safe):
                 text_entities__description = hacker_news_article.extract_entities_from_text(text__description)
                 file___text__entities__description.save_data(file_data=text_entities__description.json())
 
-
             article.path__file__text_entities__title       = file___text__entities__title.path_now      ()
             article.path__file__text_entities__description = file___text__entities__description.path_now()
 
@@ -56,7 +55,7 @@ class Flow__Hacker_News__6__LLM_Text_To_Entities(Type_Safe):
             article_change_status        = Schema__Feed__Article__Status__Change(article=article, from_step=from_step)
             self.status_changes.append(article_change_status)
 
-        #self.file_articles_current.save()
+        self.file_articles_current.save()
 
     def task__3__create_output(self):
         self.output = dict(articles_to_process = len(self.articles_to_process),
