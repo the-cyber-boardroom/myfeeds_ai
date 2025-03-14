@@ -1,4 +1,3 @@
-from mgraph_db.mgraph.actions.MGraph__Screenshot                                import ENV_NAME__URL__MGRAPH_DB_SERVERLESS
 from mgraph_db.providers.graph_rag.schemas.Schema__Graph_RAG__Entity            import Schema__Graph_RAG__Entity
 from mgraph_db.providers.graph_rag.actions.Graph_RAG__Create_MGraph             import Graph_RAG__Create_MGraph
 from mgraph_db.providers.graph_rag.schemas.Schema__Graph_RAG__Entities__LLMs    import Schema__Graph_RAG__Entities__LLMs
@@ -6,7 +5,6 @@ from osbot_utils.helpers.llms.builders.LLM_Request__Builder__Open_AI            
 from osbot_utils.helpers.llms.schemas.Schema__LLM_Response                      import Schema__LLM_Response
 from osbot_utils.type_safe.Type_Safe                                            import Type_Safe
 from osbot_utils.type_safe.decorators.type_safe                                 import type_safe
-from osbot_utils.utils.Env                                                      import get_env
 from osbot_utils.utils.Json                                                     import str_to_json
 
 system_prompt = """You are a comprehensive knowledge extractor that maps entities 
@@ -53,14 +51,11 @@ class LLM__Prompt__Extract_Entities(Type_Safe):
     #             entities.append(entity)
 
     @type_safe
-    def create_entities_png_bytes(self, entities: Schema__Graph_RAG__Entities__LLMs):
-        if get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS) is None:                # is this env var is not set we can't create the graph's png
-            return None
-
+    def create_entities_graph_rag(self, entities: Schema__Graph_RAG__Entities__LLMs):
         graph_rag = Graph_RAG__Create_MGraph().setup()
 
         for entity in entities.entities:
             rag_entity = Schema__Graph_RAG__Entity.from_json(entity.json())
             graph_rag.add_entity(rag_entity)
-
-        return graph_rag.screenshot__create_bytes()
+        return graph_rag
+        #return graph_rag.screenshot__create_bytes()
