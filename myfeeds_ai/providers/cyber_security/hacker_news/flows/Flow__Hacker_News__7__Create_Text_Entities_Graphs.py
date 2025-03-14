@@ -23,7 +23,7 @@ class Flow__Hacker_News__7__Create_Text_Entities_Graphs(Type_Safe):
             _.load()
             self.articles_to_process = _.next_step__4__create_text_entities_graphs()
 
-    #@task()
+    @task()
     def task__2__llm__create_text_entities_graphs(self):
         from_step   = Schema__Feed__Article__Step.STEP__4__CREATE__TEXT_ENTITIES_GRAPHS
         to_step     = Schema__Feed__Article__Step.STEP__5__MERGE__TEXT_ENTITIES_GRAPHS
@@ -32,25 +32,14 @@ class Flow__Hacker_News__7__Create_Text_Entities_Graphs(Type_Safe):
             article_id                         = article.article_id
             path_folder_data                   = article.path__folder__data
             hacker_news_article_entities       = Hacker_News__Article__Entities(article_id=article_id, path__folder__data=path_folder_data)
-
             result__text_entities__title       = hacker_news_article_entities.create_text_entities_graph__title      ()
             result__text_entities__description = hacker_news_article_entities.create_text_entities_graph__description()
 
-
-            article.path__file__text_entities__title__mgraph       = result__text_entities__title.path__file__text_entities__mgraph
-            article.path__file__text_entities__title__png          = result__text_entities__title.path__file__text_entities__png
-            article.path__file__text_entities__description__mgraph = result__text_entities__title.path__file__text_entities__mgraph
-            article.path__file__text_entities__description__png    = result__text_entities__title.path__file__text_entities__png
+            article.path__file__text_entities__title__mgraph       = result__text_entities__title      .path__file__text_entities__mgraph
+            article.path__file__text_entities__title__png          = result__text_entities__title      .path__file__text_entities__png
+            article.path__file__text_entities__description__mgraph = result__text_entities__description.path__file__text_entities__mgraph
+            article.path__file__text_entities__description__png    = result__text_entities__description.path__file__text_entities__png
             article.next_step = to_step
-            #path__file__text_entities__description__png   = hacker_news_article_entities.create_text_entities_graph__description()
-
-            # if path__file__text_entities__title__png:# and path__file__text_entities__description__png:
-            #     article.path__file__text_entities__title__png       = path__file__text_entities__title__png
-            #     #article.path__file__text_entities__description__png = path__file__text_entities__description__png
-            #
-            #     article.next_step            = to_step
-            # else:
-            #     article.status = Schema__Feed__Article__Status.ERROR__FAILED_TASK
             article_change_status        = Schema__Feed__Article__Status__Change(article=article, from_step=from_step)
             self.status_changes.append(article_change_status)
 

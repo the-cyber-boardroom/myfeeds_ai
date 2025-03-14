@@ -62,20 +62,6 @@ class Hacker_News__Article__Entities(Type_Safe):
             png_bytes = None
         return dict(mgraph_entity=mgraph_entity, png_bytes=png_bytes)
 
-        # with self.file___text__entities__title__png() as _:
-        #     can_create_png =
-        #
-        #     if _.exists(): #is False:
-        #
-        #
-        #         self.file___text__entities__title__mgraph().save_data(
-        #             mgraph_json_data)  # save it to file___text__entities__title__mgraph
-        #         if can_create_png:
-        #             self.file___text__entities__title__mgraph().save_data(mgraph_json_data)                             # save it to file___text__entities__title__mgraph
-        #             png_bytes = graph_rag.screenshot__create_bytes()                                                    # create the bytes (using the
-        #             _.save_data(png_bytes)
-        #     return _.path_now()
-
     def create_text_entities_graph__description(self):
         kwargs = dict(file___text__entities         = self.file___text__entities__description()        ,
                       file___text__entities__mgraph = self.file___text__entities__description__mgraph(),
@@ -107,22 +93,6 @@ class Hacker_News__Article__Entities(Type_Safe):
 
         return obj(dict(path__file__text_entities__mgraph = path__file__text_entities__mgraph,
                         path__file__text_entities__png    = path__file__text_entities__png   ))
-
-
-
-
-
-
-    # def create_text_entities_graph__description(self):
-    #     description__json_data              = self.file___text__entities__description().load()
-    #     description__text_entities          = Schema__Feed__Article__Text__Entities.from_json(description__json_data).text_entities
-    #     description__text_entities.entities = description__text_entities.entities
-    #
-    #     with self.file___text__entities__description__png() as _:
-    #         if _.exists() is False:
-    #             png_bytes = self.prompt_extract_entities.create_entities_png_bytes(entities=description__text_entities)
-    #             return _.save_data(png_bytes)
-    #         return _.path_now()
 
 
     def now(self):
