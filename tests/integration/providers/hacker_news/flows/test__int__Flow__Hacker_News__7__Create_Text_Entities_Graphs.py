@@ -3,7 +3,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__7_
 from tests.integration.data_feeds__objs_for_tests                                                            import myfeeds_tests__setup_local_stack
 
 
-class test_Flow__Hacker_News__7__Create_Text_Entities_Graphs(TestCase):
+class test__int__Flow__Hacker_News__7__Create_Text_Entities_Graphs(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -23,6 +23,7 @@ class test_Flow__Hacker_News__7__Create_Text_Entities_Graphs(TestCase):
             _.task__1__load_articles_to_process         ()
             _.task__2__llm__create_text_entities_graphs ()
 
-            #pprint(_.status_changes.json())
+            # from osbot_utils.utils.Dev import pprint
+            # pprint(_.status_changes.json())
 
 

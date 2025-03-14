@@ -34,14 +34,17 @@ class Flow__Hacker_News__7__Create_Text_Entities_Graphs(Type_Safe):
         for article in self.articles_to_process[0:FLOW__HACKER_NEWS__7__MAX__ARTICLES_TO_CREATE]:
             article_id                         = article.article_id
             path_folder_data                   = article.path__folder__data
-            hacker_news_article                = Hacker_News__Article          (article_id=article_id, path__folder__data=path_folder_data)
+            #hacker_news_article                = Hacker_News__Article          (article_id=article_id, path__folder__data=path_folder_data)
             hacker_news_article_entities       = Hacker_News__Article__Entities(article_id=article_id, path__folder__data=path_folder_data)
-            file___text__entities__title       = hacker_news_article_entities.file___text__entities__title()
-            file___text__entities__description = hacker_news_article_entities.file___text__entities__description()
+            #file___text__entities__title       = hacker_news_article_entities.file___text__entities__title()
+            #file___text__entities__description = hacker_news_article_entities.file___text__entities__description()
 
-            path__file__text_entities__title__png         =  hacker_news_article_entities.create_text_entities_graph__title()
-            if path__file__text_entities__title__png:
-                article.path__file__text_entities__title__png = path__file__text_entities__title__png
+            path__file__text_entities__title__png         =  hacker_news_article_entities.create_text_entities_graph__title     ()
+            path__file__text_entities__description__png   = hacker_news_article_entities.create_text_entities_graph__description()
+
+            if path__file__text_entities__title__png and path__file__text_entities__description__png:
+                article.path__file__text_entities__title__png       = path__file__text_entities__title__png
+                article.path__file__text_entities__description__png = path__file__text_entities__description__png
 
                 article.next_step            = to_step
             else:

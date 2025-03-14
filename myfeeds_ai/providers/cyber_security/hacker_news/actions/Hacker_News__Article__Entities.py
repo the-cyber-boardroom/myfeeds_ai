@@ -34,6 +34,12 @@ class Hacker_News__Article__Entities(Type_Safe):
             _.content_type = "image/png"
             return _
 
+    def file___text__entities__description__png(self):
+        with self.file___text__entities__description() as _:
+            _.extension     = S3_Key__File_Extension.PNG
+            _.content_type = "image/png"
+            return _
+
     def create_text_entities_graph__title(self):
         title__json_data              = self.file___text__entities__title().load()
         title__text_entities          = Schema__Feed__Article__Text__Entities.from_json(title__json_data).text_entities
@@ -42,6 +48,17 @@ class Hacker_News__Article__Entities(Type_Safe):
         with self.file___text__entities__title__png() as _:
             if _.exists() is False:
                 png_bytes = self.prompt_extract_entities.create_entities_png_bytes(entities=title__text_entities)
+                return _.save_data(png_bytes)
+            return _.path_now()
+
+    def create_text_entities_graph__description(self):
+        description__json_data              = self.file___text__entities__description().load()
+        description__text_entities          = Schema__Feed__Article__Text__Entities.from_json(description__json_data).text_entities
+        description__text_entities.entities = description__text_entities.entities
+
+        with self.file___text__entities__description__png() as _:
+            if _.exists() is False:
+                png_bytes = self.prompt_extract_entities.create_entities_png_bytes(entities=description__text_entities)
                 return _.save_data(png_bytes)
             return _.path_now()
 
