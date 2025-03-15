@@ -5,7 +5,6 @@ from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Articl
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Text_Entities         import Hacker_News__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article              import Schema__Feed__Article
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
-from osbot_utils.utils.Dev                                                                      import pprint
 from tests.integration.data_feeds__objs_for_tests                                               import myfeeds_tests__setup_local_stack
 
 
@@ -43,7 +42,6 @@ class test_Hacker_News__Text_Entities(TestCase):
             assert type(mgraph) is MGraph
 
     def test_png_bytes__for_article__text_entities__description(self):
-        pprint(self.article_entities.article_id)
         with self.text_entities as _:
             png_bytes = _.png_bytes__for_article__text_entities__description(article_entities=self.article_entities)
             assert type(png_bytes) is bytes
@@ -77,9 +75,7 @@ class test_Hacker_News__Text_Entities(TestCase):
 
 
             _.add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_text_entities__title      )
-            # print('-----')
             _.add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_text_entities__description)
-
 
             # _.screenshot__setup()
             # _.screenshot().save_to(f'{self.__class__.__name__}.png').dot()

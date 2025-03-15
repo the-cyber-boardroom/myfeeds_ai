@@ -1,5 +1,5 @@
 from typing                                                                                         import List
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Article__Entities         import Hacker_News__Article__Entities
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Text_Entities             import Hacker_News__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current     import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article                  import Schema__Feed__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Status__Change  import Schema__Feed__Article__Status__Change
@@ -28,18 +28,33 @@ class Flow__Hacker_News__8__Merge_Text_Entities_Graphs(Type_Safe):
     @task()
     def task__2__llm__merge_text_entities_graphs(self):
         from_step   = Schema__Feed__Article__Step.STEP__5__MERGE__TEXT_ENTITIES_GRAPHS
-        to_step     = Schema__Feed__Article__Step.STEP__6__MERGE__FEED_ENTITIES_GRAPHS
+        to_step     = Schema__Feed__Article__Step.STEP__6__MERGE__DAY_ENTITIES_GRAPHS
 
 
         for article in self.articles_to_process[0:FLOW__HACKER_NEWS__8__MAX__ARTICLES_TO_CREATE]:
             article_id                         = article.article_id
-            path_folder_data                   = article.path__folder__data
-            hacker_news_article_entities       = Hacker_News__Article__Entities(article_id=article_id, path__folder__data=path_folder_data)
-            mgraph_text_entities__title        = hacker_news_article_entities.file___text__entities__title__mgraph()
-            mgraph_text_entities__description  = hacker_news_article_entities.file___text__entities__description__mgraph()
+            # path_folder_data                   = article.path__folder__data
+            # hacker_news_article_entities       = Hacker_News__Article__Entities(article_id=article_id, path__folder__data=path_folder_data)
 
-            #pprint(mgraph_text_entities__title.exists())
-            #pprint(mgraph_text_entities__description.exists())
+
+            with Hacker_News__Text_Entities().setup() as _:
+                article_entities                  = _.article_entities(article_id=article_id)
+                mgraph_text_entities__title       = _.mgraph__for_article__text_entities__title      (article_entities=article_entities)
+                mgraph_text_entities__description = _.mgraph__for_article__text_entities__description(article_entities=article_entities)
+
+                _.add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_text_entities__title      )
+                _.add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_text_entities__description)
+
+                file__mgraph_text_entities__mgraph = article_entities.file___text__entities__mgraph()
+                file__mgraph_text_entities__png    = article_entities.file___text__entities__png   ()
+
+                if file__mgraph_text_entities__mgraph.exists() is False:
+                    file__mgraph_text_entities__mgraph.save_data(_.mgraph_entities.json())
+                if file__mgraph_text_entities__png.exists() is False:
+                    file__mgraph_text_entities__png.save_data(_.png_bytes__for_mgraph_entities())
+
+                article.path__file__text_entities__mgraph = file__mgraph_text_entities__mgraph.path_now()
+                article.path__file__text_entities__png    = file__mgraph_text_entities__png   .path_now()
 
             article.next_step = to_step
             article_change_status = Schema__Feed__Article__Status__Change(article=article, from_step=from_step)

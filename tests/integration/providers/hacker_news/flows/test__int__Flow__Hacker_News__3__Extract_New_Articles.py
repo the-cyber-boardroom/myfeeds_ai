@@ -116,6 +116,8 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
                                                  'path__file__text_entities__description'        ,
                                                  'path__file__text_entities__description__mgraph',
                                                  'path__file__text_entities__description__png'   ,
+                                                 'path__file__text_entities__mgraph'             ,
+                                                 'path__file__text_entities__png'                ,
                                                  'path__file__text_entities__title'              ,
                                                  'path__file__text_entities__title__mgraph'      ,
                                                  'path__file__text_entities__title__png'         ,

@@ -2,6 +2,7 @@ from osbot_utils.helpers.Safe_Id import Safe_Id
 
 FILE_ID__FEED_ARTICLE                          = Safe_Id('feed-article'             )
 FILE_ID__ARTICLE__MARKDOWN                     = Safe_Id('article-markdown'         )
+FILE_ID__ARTICLE__TEXT__ENTITIES               = Safe_Id('text-entities'            )
 FILE_ID__ARTICLE__TEXT__ENTITIES__TITLE        = Safe_Id('text-entities-title'      )
 FILE_ID__ARTICLE__TEXT__ENTITIES__DESCRIPTION  = Safe_Id('text-entities-description')
 FILE_ID__ARTICLES__ALL                         = Safe_Id('articles-all'             )

@@ -6,7 +6,6 @@ from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Ar
 from osbot_utils.decorators.methods.cache_on_self                                               import cache_on_self
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
 from osbot_utils.type_safe.Type_Safe                                                            import Type_Safe
-from osbot_utils.utils.Dev                                                                      import pprint
 from osbot_utils.utils.Objects                                                                  import obj
 
 
@@ -77,8 +76,8 @@ class Hacker_News__Text_Entities(Type_Safe):
     @cache_on_self
     def screenshot(self):
         return self.mgraph_entities.screenshot()
-    def screenshot__setup(self):
 
+    def screenshot__setup(self):
         with self.screenshot().export().export_dot() as _:
             color__article_id = '#B0E0E6'  # Powder Blue - for Article ID nodes
             color__entity     = '#7EB36A'  # Sage Green - for entity nodes
@@ -92,7 +91,11 @@ class Hacker_News__Text_Entities(Type_Safe):
             _.set_node__type_fill_color(node_type=Node_Type__Entity    , color=color__entity)
             _.set_node__font__size(20)
             _.set_node__font__name('Arial')
+        return self
 
+    def png_bytes__for_mgraph_entities(self):
+        png_bytes = self.screenshot__setup().screenshot().dot()
+        return png_bytes
 
     def png_bytes__for_article__text_entities__description(self, article_entities: Hacker_News__Article__Entities) -> MGraph:
         png_bytes = article_entities.file___text__entities__description__png().load()
