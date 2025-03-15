@@ -415,14 +415,14 @@ files = [
 
 [[package]]
 name = "mgraph-db"
-version = "1.2.11"
+version = "1.2.12"
 description = "MGraph-DB"
 optional = false
 python-versions = "<4.0,>=3.11"
 groups = ["main"]
 files = [
-    {file = "mgraph_db-1.2.11-py3-none-any.whl", hash = "sha256:b8bbf12b750aed2060d0380fdf32817bcc9aad310fad9066624ca3b22971c4e4"},
-    {file = "mgraph_db-1.2.11.tar.gz", hash = "sha256:6c4c06b1b32b9586fd01f0d9668764984aaf9efee3ae17c4e5918a4846386dac"},
+    {file = "mgraph_db-1.2.12-py3-none-any.whl", hash = "sha256:3dc18b74967fe047616ca84ef8a864f93dc0f05a5ab5da12e0750981f551a284"},
+    {file = "mgraph_db-1.2.12.tar.gz", hash = "sha256:47a4dfeafd7b1ee2e90896f16dca1066c708b9cc6e3e67a71b5d33691d264138"},
 ]
 
 [package.dependencies]

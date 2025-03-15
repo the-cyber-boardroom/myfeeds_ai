@@ -51,10 +51,9 @@ class Hacker_News__Text_Entities(Type_Safe):
 
         with self.builder() as _:
             _.add_node(node_type=Node_Type__Article_Id, value=article_id)
-            pprint(_.current_node())
             for entity in entities:
                 kwargs_entity_node = dict(value     =  entity.entity_name,
-                                          predicate = 'in-article'           ,
+                                          predicate = 'article_entity'           ,
                                           node_type = Node_Type__Entity  )
                 _.add_connected_node(**kwargs_entity_node)
                 for entity_link in entity.entity_links:
@@ -91,6 +90,8 @@ class Hacker_News__Text_Entities(Type_Safe):
             _.set_graph__splines__polyline()
             _.set_node__type_fill_color(node_type=Node_Type__Article_Id, color=color__article_id)
             _.set_node__type_fill_color(node_type=Node_Type__Entity    , color=color__entity)
+            _.set_node__font__size(20)
+            _.set_node__font__name('Arial')
 
 
     def png_bytes__for_article__text_entities__description(self, article_entities: Hacker_News__Article__Entities) -> MGraph:
