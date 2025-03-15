@@ -1,6 +1,8 @@
 from mgraph_db.mgraph.actions.MGraph__Screenshot                                                        import ENV_NAME__URL__MGRAPH_DB_SERVERLESS
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                                import S3_Key__File_Extension
-from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News                         import FILE_ID__ARTICLE__TEXT__ENTITIES__TITLE, FILE_ID__ARTICLE__TEXT__ENTITIES__DESCRIPTION
+from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News import \
+    FILE_ID__ARTICLE__TEXT__ENTITIES__TITLE, FILE_ID__ARTICLE__TEXT__ENTITIES__DESCRIPTION, \
+    FILE_ID__ARTICLE__TEXT__ENTITIES
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article__Text_Entities    import Hacker_News__File__Article__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.prompts.LLM__Prompt__Extract_Entities         import LLM__Prompt__Extract_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Text__Entities      import Schema__Feed__Article__Text__Entities
@@ -16,6 +18,17 @@ class Hacker_News__Article__Entities(Type_Safe):
     path__folder__data      : str
     prompt_extract_entities : LLM__Prompt__Extract_Entities
 
+    def file___text__entities__mgraph(self):
+        with self.file___text__entities() as _:
+            _.extension     = S3_Key__File_Extension.MGRAPH__JSON
+            return _
+
+    def file___text__entities__png(self):
+        with self.file___text__entities() as _:
+            _.extension     = S3_Key__File_Extension.PNG
+            _.content_type = "image/png"
+            return _
+
     def file___text__entities__description(self):
         kwargs = dict(article_id = self.article_id                               ,
                       file_id    = FILE_ID__ARTICLE__TEXT__ENTITIES__DESCRIPTION ,
@@ -23,9 +36,15 @@ class Hacker_News__Article__Entities(Type_Safe):
         return Hacker_News__File__Article__Text_Entities(**kwargs)
 
     def file___text__entities__description__mgraph(self):
-        with self.file___text__entities__title() as _:
+        with self.file___text__entities__description() as _:
             _.extension     = S3_Key__File_Extension.MGRAPH__JSON
             return _
+
+    def file___text__entities(self):
+        kwargs = dict(article_id = self.article_id                         ,
+                      file_id    = FILE_ID__ARTICLE__TEXT__ENTITIES        ,
+                      now        = self.now()                              )
+        return Hacker_News__File__Article__Text_Entities(**kwargs)
 
     def file___text__entities__title(self):
         kwargs = dict(article_id = self.article_id                         ,
@@ -78,7 +97,7 @@ class Hacker_News__Article__Entities(Type_Safe):
         path__file__text_entities__mgraph = None
         path__file__text_entities__png    = None
 
-        if file___text__entities__png.exists() is False:
+        if file___text__entities__png.exists() is False or file___text__entities__mgraph.exists() is False:
             result        = self.create__text_entities__mgraph_and_png(file___text__entities)
             mgraph_entity = result.get('mgraph_entity')
             png_bytes     = result.get('png_bytes'    )

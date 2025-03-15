@@ -38,6 +38,8 @@ class test_Hacker_News__File__Current_Articles(TestCase):
                                                  'path__file__text_entities__description'        ,
                                                  'path__file__text_entities__description__mgraph',
                                                  'path__file__text_entities__description__png'   ,
+                                                 'path__file__text_entities__mgraph'             ,
+                                                 'path__file__text_entities__png'                ,
                                                  'path__file__text_entities__title'              ,
                                                  'path__file__text_entities__title__mgraph'      ,
                                                  'path__file__text_entities__title__png'         ,
@@ -49,4 +51,27 @@ class test_Hacker_News__File__Current_Articles(TestCase):
             next_step_1 = _.next_step__1__save_article()
             if next_step_1:
                 assert next_step_1 == _.group_by_next_step().get('STEP__1__SAVE__ARTICLE')
+
+    def test_change_article_status(self):
+        with self.file_current_articles as _:
+            articles__next_step_1 = _.next_step__1__save_article()
+            if articles__next_step_1:
+                article    = articles__next_step_1[0]
+                article_id = article.article_id
+                assert type(article.next_step) is Schema__Feed__Article__Step
+                assert article.next_step       == Schema__Feed__Article__Step.STEP__1__SAVE__ARTICLE
+
+                result_1                = _.change_article_next_step(article_id, Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE)
+                file_current_articles_1 = Hacker_News__File__Articles__Current().load()
+
+                assert article.next_step                                          == Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE
+                assert result_1                                                   is True
+                assert file_current_articles_1.articles.get(article_id).next_step == Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE
+
+                result_2                = _.change_article_next_step(article_id,Schema__Feed__Article__Step.STEP__1__SAVE__ARTICLE)
+                file_current_articles_2 = Hacker_News__File__Articles__Current().load()
+
+                assert article.next_step                                          == Schema__Feed__Article__Step.STEP__1__SAVE__ARTICLE
+                assert result_2                                                   is True
+                assert file_current_articles_2.articles.get(article_id).next_step == Schema__Feed__Article__Step.STEP__1__SAVE__ARTICLE
 

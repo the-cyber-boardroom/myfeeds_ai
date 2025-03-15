@@ -80,3 +80,29 @@ class test_remote_shell_lambda(TestCase):
         result = self.shell.function(flow_process_rss)
 
         pprint(result)
+
+    # bug fixed via data collected from code bellow
+    def test__debug_flow_7(self):
+
+        def debug_flow_7():
+            from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__7__Create_Text_Entities_Graphs import Flow__Hacker_News__7__Create_Text_Entities_Graphs
+            from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Article__Entities                  import Hacker_News__Article__Entities
+            with Flow__Hacker_News__7__Create_Text_Entities_Graphs() as _:
+                _.file_articles_current.load()
+                articles_to_process = _.file_articles_current.next_step__4__create_text_entities_graphs()
+                article = articles_to_process[0]
+
+                article_id = article.article_id
+                path_folder_data = article.path__folder__data
+
+                hacker_news_article_entities = Hacker_News__Article__Entities(article_id         = article_id,
+                                                                              path__folder__data = path_folder_data)
+            result__text_entities__title       = hacker_news_article_entities.create_text_entities_graph__description()
+            file___text__entities              = hacker_news_article_entities.file___text__entities__description()
+            result                             = hacker_news_article_entities.create__text_entities__mgraph_and_png(file___text__entities)
+            png_bytes = result.get('png_bytes')
+            return len(png_bytes)
+
+        result = self.shell.function(debug_flow_7)
+
+        pprint(result)
