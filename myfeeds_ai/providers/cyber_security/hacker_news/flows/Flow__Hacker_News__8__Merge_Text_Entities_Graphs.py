@@ -60,7 +60,7 @@ class Flow__Hacker_News__8__Merge_Text_Entities_Graphs(Type_Safe):
             article_change_status = Schema__Feed__Article__Status__Change(article=article, from_step=from_step)
             self.status_changes.append(article_change_status)
 
-        #self.file_articles_current.save()
+        self.file_articles_current.save()
 
 
     def task__3__create_output(self):
