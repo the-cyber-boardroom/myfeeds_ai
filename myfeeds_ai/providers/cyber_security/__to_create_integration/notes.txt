@@ -6,6 +6,9 @@
 ### good json based resources
     https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 
+### get cve data
+
+    https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2025-23209
 ### with RSS feeds
 
 - https://cybersecuritynews.com     : https://feeds.feedburner.com/cyber-security-news
