@@ -23,7 +23,7 @@ class Hacker_News__Article__Entities(Type_Safe):
         return Hacker_News__File__Article__Text_Entities(**kwargs)
 
     def file___text__entities__description__mgraph(self):
-        with self.file___text__entities__title() as _:
+        with self.file___text__entities__description() as _:
             _.extension     = S3_Key__File_Extension.MGRAPH__JSON
             return _
 

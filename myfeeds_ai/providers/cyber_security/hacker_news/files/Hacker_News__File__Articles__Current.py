@@ -9,6 +9,7 @@ from osbot_utils.type_safe.decorators.type_safe import type_safe
 class Hacker_News__File__Articles__Current(Hacker_News__File__Articles):
     file_id = FILE_ID__ARTICLES__CURRENT
 
+    @type_safe
     def article(self, article_id):
         return self.articles.articles.get(article_id)
 
