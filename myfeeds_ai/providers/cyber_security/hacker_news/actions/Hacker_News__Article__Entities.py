@@ -78,7 +78,7 @@ class Hacker_News__Article__Entities(Type_Safe):
         path__file__text_entities__mgraph = None
         path__file__text_entities__png    = None
 
-        if file___text__entities__png.exists() is False:
+        if file___text__entities__png.exists() is False or file___text__entities__mgraph.exists() is False:
             result        = self.create__text_entities__mgraph_and_png(file___text__entities)
             mgraph_entity = result.get('mgraph_entity')
             png_bytes     = result.get('png_bytes'    )
