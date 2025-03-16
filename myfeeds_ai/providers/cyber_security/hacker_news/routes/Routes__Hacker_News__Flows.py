@@ -43,8 +43,8 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
     def flow_6_article_step_3_llm_text_to_entities(self, max_articles_to_create:int = 1):
         return Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Entities(max_articles_to_create=max_articles_to_create).run().flow_output()
 
-    def flow_7_article_step_4_create_text_entities_graphs(self):
-        return Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs().run().flow_output()
+    def flow_7_article_step_4_create_text_entities_graphs(self, max_graphs_to_create: int=1):
+        return Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs(max_graphs_to_create=max_graphs_to_create).run().flow_output()
 
     def flow_8_article_step_5_merge_text_entities_graphs(self):
         return Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs().run().flow_output()
