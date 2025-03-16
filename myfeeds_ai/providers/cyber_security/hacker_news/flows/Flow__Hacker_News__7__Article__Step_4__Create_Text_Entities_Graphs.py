@@ -31,11 +31,11 @@ class Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs(Type_Sa
     @task()
     def task__2__llm__create_text_entities_graphs(self):
         articles = self.articles_to_process[0:self.max_graphs_to_create]
-
-        calls = [((article,), {}) for article in articles]  # args and kwargs (args need to be tuple)
+        calls    = [((article,), {}) for article in articles]  # args and kwargs (args need to be tuple)
 
         execute_in_thread_pool(self.task__2s__llm__create_text_entities_graphs, calls=calls, max_workers=10)
-        #self.file_articles_current.save()
+
+        self.file_articles_current.save()
 
     def task__2s__llm__create_text_entities_graphs(self, article):
 
