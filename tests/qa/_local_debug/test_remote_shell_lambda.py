@@ -85,9 +85,9 @@ class test_remote_shell_lambda(TestCase):
     def test__debug_flow_7(self):
 
         def debug_flow_7():
-            from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__7__Create_Text_Entities_Graphs import Flow__Hacker_News__7__Create_Text_Entities_Graphs
+            from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__7__Create_Text_Entities_Graphs import Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs
             from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Article__Entities                  import Hacker_News__Article__Entities
-            with Flow__Hacker_News__7__Create_Text_Entities_Graphs() as _:
+            with Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs() as _:
                 _.file_articles_current.load()
                 articles_to_process = _.file_articles_current.next_step__4__create_text_entities_graphs()
                 article = articles_to_process[0]
