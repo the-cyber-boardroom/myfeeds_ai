@@ -4,6 +4,7 @@ from mgraph_db.mgraph.MGraph                                             import 
 from myfeeds_ai.utils.My_Feeds__Utils                                    import path_to__date_time
 from osbot_utils.decorators.methods.cache_on_self                        import cache_on_self
 from osbot_utils.helpers.Safe_Id                                         import Safe_Id
+from osbot_utils.helpers.safe_str.Safe_Str__File__Path                   import Safe_Str__File__Path
 from osbot_utils.type_safe.Type_Safe                                     import Type_Safe
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                 import S3_Key__File_Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB  import Hacker_News__S3_DB
@@ -51,7 +52,8 @@ class Hacker_News__Storage(Type_Safe):
             path__latest = _.s3_folder__for_latest()
             return _.s3_path__files(path__latest)
 
-    def files_in__path(self, path, include_sub_folders=False):
+    # todo: add @type_safe to this method
+    def files_in__path(self, path: Safe_Str__File__Path, include_sub_folders=False):
         with self.s3_db as _:
             date_time = path_to__date_time(path)
             return self.files_in__date_time(date_time, include_sub_folders=include_sub_folders)

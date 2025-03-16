@@ -8,6 +8,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__5_
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Entities        import Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs import Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs  import Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs   import Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs
 
 ROUTE_PATH__HACKER_NEWS__FLOWS = 'hacker-news-flows'
 
@@ -18,7 +19,8 @@ ROUTES_PATHS__HACKER_NEWS__FLOWS = [f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-1-d
                                     f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-5-article-step-2-create-article-markdown'    ,
                                     f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-6-article-step-3-llm-text-to-entities'       ,
                                     f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-7-article-step-4-create-text-entities-graphs',
-                                    f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-8-article-step-5-merge-text-entities-graphs' ]
+                                    f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-8-article-step-5-merge-text-entities-graphs' ,
+                                    f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-9-article-step-6-merge-day-entities-graphs'  ]
 
 
 class Routes__Hacker_News__Flows(Fast_API_Routes):
@@ -49,6 +51,9 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
     def flow_8_article_step_5_merge_text_entities_graphs(self,max_graphs_to_merge: int=1):
         return Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs(max_graphs_to_merge=max_graphs_to_merge).run().flow_output()
 
+    def flow_9_article_step_6_merge_day_entities_graphs(self, max_graphs_to_merge:int=1):
+        return Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs(max_graphs_to_merge=max_graphs_to_merge).run().flow_output()
+
     def setup_routes(self):
         self.add_route_get(self.flow_1_download_rss_feed                          )
         self.add_route_get(self.flow_2_create_articles_timeline                   )
@@ -58,3 +63,4 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
         self.add_route_get(self.flow_6_article_step_3_llm_text_to_entities        )
         self.add_route_get(self.flow_7_article_step_4_create_text_entities_graphs )
         self.add_route_get(self.flow_8_article_step_5_merge_text_entities_graphs  )
+        self.add_route_get(self.flow_9_article_step_6_merge_day_entities_graphs   )

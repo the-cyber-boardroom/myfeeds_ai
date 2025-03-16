@@ -3,7 +3,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News 
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles    import Hacker_News__File__Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article        import Schema__Feed__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Step  import Schema__Feed__Article__Step
-from osbot_utils.type_safe.decorators.type_safe import type_safe
+from osbot_utils.type_safe.decorators.type_safe                                           import type_safe
 
 
 class Hacker_News__File__Articles__Current(Hacker_News__File__Articles):
