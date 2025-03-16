@@ -25,7 +25,8 @@ class test__int__Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graph
             _.task__2__find_days_to_process           ()
             _.task__3__llm__merge_day_entities_graphs ()
             _.task__4__create_mgraph_png              ()
-            _.task__5__create_output                  ()
+            _.task__5__update_file_articles           ()
+            _.task__6__create_output                  ()
 
             # from osbot_utils.utils.Dev import pprint
             # pprint(_.status_changes.json())

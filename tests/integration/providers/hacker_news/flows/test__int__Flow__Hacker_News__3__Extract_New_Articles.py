@@ -109,6 +109,8 @@ class test__int__Flow__Hacker_News__3__Extract_New_Articles(TestCase):
                 assert is_obj_id(article_id) is True
                 assert list_set (article   ) == ['article_id'                                    ,
                                                  'next_step'                                     ,
+                                                 'path__file__day__text_entities'                ,
+                                                 'path__file__day__text_entities__png'           ,
                                                  'path__file__entities_mgraph__json'             ,
                                                  'path__file__entities_mgraph__png'              ,
                                                  'path__file__feed_article'                      ,
