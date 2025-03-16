@@ -12,7 +12,7 @@ from osbot_utils.utils.Dev                                                      
 
 FLOW__HACKER_NEWS__8__MAX__ARTICLES_TO_CREATE = 1
 
-class Flow__Hacker_News__8__Merge_Text_Entities_Graphs(Type_Safe):
+class Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs(Type_Safe):
 
     file_articles_current : Hacker_News__File__Articles__Current
     output                : dict

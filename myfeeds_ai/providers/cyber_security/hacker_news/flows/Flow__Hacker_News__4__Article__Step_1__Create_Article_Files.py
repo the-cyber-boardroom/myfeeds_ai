@@ -15,7 +15,7 @@ from osbot_utils.type_safe.Type_Safe                                            
 
 FLOW__HACKER_NEWS__4__MAX__ARTICLES_TO_SAVE = 1
 
-class Flow__Hacker_News__4__Create_Article_Files(Type_Safe):
+class Flow__Hacker_News__4__Article__Step_1__Create_Article_Files(Type_Safe):
     file_articles_all     : Hacker_News__File__Articles__All
     file_articles_current : Hacker_News__File__Articles__Current
     output                : dict
