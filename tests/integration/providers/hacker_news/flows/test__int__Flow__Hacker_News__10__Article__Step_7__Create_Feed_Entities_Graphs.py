@@ -16,3 +16,4 @@ class test__int__Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_Gr
         with self.flow_llm_create_feed_entities_graphs as _:
             _.task__1__load_articles_to_process()
             assert len(_.articles_to_process.articles) >= 0
+
