@@ -20,6 +20,7 @@ class test__int__Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Gra
 
     def test_task__2__llm__create_text_entities_graphs(self):
         with self.flow_llm_create_text_entities_graphs as _:
+            _.max_graphs_to_create = 1
             _.task__1__load_articles_to_process         ()
             _.task__2__llm__create_text_entities_graphs ()
 
