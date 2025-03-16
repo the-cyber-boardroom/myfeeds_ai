@@ -113,7 +113,7 @@ class Routes__Hacker_News(Fast_API_Routes):
     #     return StreamingResponse(img_io, media_type="image/png")
 
 
-    def files_in_day(self, day: str='2025/03/13/23', include_sub_folders=False):
+    def files_in_day(self, day: str='2025/03/13/23', include_sub_folders: bool =False):
         path   = Safe_Str__File__Path(day)
         files = self.hacker_news_data.storage.files_in__path(path=path, include_sub_folders=include_sub_folders)
         return sorted(files)
