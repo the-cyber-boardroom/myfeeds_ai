@@ -8,5 +8,6 @@ FILE_ID__ARTICLE__TEXT__ENTITIES__DESCRIPTION  = Safe_Id('text-entities-descript
 FILE_ID__ARTICLES__ALL                         = Safe_Id('articles-all'             )
 FILE_ID__ARTICLES__CURRENT                     = Safe_Id('articles-current'         )
 FILE_ID__ARTICLES__NEW                         = Safe_Id('articles-new'             )
+FILE_ID__DAY__TEXT_ENTITIES                    = Safe_Id('text-entities-day'        )
 FILE_ID__TIMELINE__MGRAPH                      = Safe_Id('feed-timeline'            )
 FILE_ID__TIMELINE__DIFF                        = Safe_Id('feed-timeline-diff'       )
