@@ -6,7 +6,6 @@ from osbot_utils.helpers.Safe_Id                                                
 from osbot_utils.type_safe.Type_Safe                                                import Type_Safe
 from osbot_utils.utils.Misc                                                         import str_to_bytes
 
-
 class Hacker_News__File__Now(Type_Safe):
     hacker_news_storage : Hacker_News__Storage
     file_id             : Safe_Id

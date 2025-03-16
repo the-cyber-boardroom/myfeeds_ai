@@ -74,7 +74,11 @@ class Hacker_News__Article__Entities(Type_Safe):
         graph_rag              = self.prompt_extract_entities.create_entities_graph_rag(entities=text_entities)   # Create the MGraph with the text_entities
         mgraph_entity          = graph_rag.mgraph_entity
         if get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS):                                                          # is this env var is not set we can't create the graph's png
-            png_bytes = graph_rag.screenshot__create_bytes()                                                      # create the bytes (using the lambda graphviz lambda function)
+            try:
+                png_bytes = graph_rag.screenshot__create_bytes()                                                  # create the bytes (using the lambda graphviz lambda function)
+            except Exception as e:
+                print(e)                                                                                          # todo: add better error handling and reporting
+                png_bytes = None
         else:
             png_bytes = None
         return dict(mgraph_entity=mgraph_entity, png_bytes=png_bytes)
