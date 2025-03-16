@@ -8,7 +8,7 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.helpers.flows.decorators.flow                                                      import flow
 from osbot_utils.helpers.flows.decorators.task                                                      import task
 from osbot_utils.type_safe.Type_Safe                                                                import Type_Safe
-from osbot_utils.utils.Threads import execute_in_thread_pool
+from osbot_utils.utils.Threads                                                                      import execute_in_thread_pool
 
 FLOW__HACKER_NEWS__7__MAX__GRAPHS_TO_CREATE = 1
 

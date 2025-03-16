@@ -8,9 +8,9 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.helpers.flows.decorators.flow                                                      import flow
 from osbot_utils.helpers.flows.decorators.task                                                      import task
 from osbot_utils.type_safe.Type_Safe                                                                import Type_Safe
-from osbot_utils.utils.Dev                                                                          import pprint
+from osbot_utils.utils.Threads                                                                      import execute_in_thread_pool
 
-FLOW__HACKER_NEWS__8__MAX__ARTICLES_TO_CREATE = 1
+FLOW__HACKER_NEWS__8__MAX__GRAPHS_TO_MERGE = 1
 
 class Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs(Type_Safe):
 
@@ -18,6 +18,9 @@ class Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs(Type_Saf
     output                : dict
     articles_to_process   : List[Schema__Feed__Article                ]
     status_changes        : List[Schema__Feed__Article__Status__Change]
+    max_graphs_to_merge   : int = FLOW__HACKER_NEWS__8__MAX__GRAPHS_TO_MERGE
+    from_step             : Schema__Feed__Article__Step               = Schema__Feed__Article__Step.STEP__5__MERGE__TEXT_ENTITIES_GRAPHS
+    to_step               : Schema__Feed__Article__Step               = Schema__Feed__Article__Step.STEP__6__MERGE__DAY_ENTITIES_GRAPHS
 
     @task()
     def task__1__load_articles_to_process(self):
@@ -27,40 +30,41 @@ class Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs(Type_Saf
 
     @task()
     def task__2__llm__merge_text_entities_graphs(self):
-        from_step   = Schema__Feed__Article__Step.STEP__5__MERGE__TEXT_ENTITIES_GRAPHS
-        to_step     = Schema__Feed__Article__Step.STEP__6__MERGE__DAY_ENTITIES_GRAPHS
+        articles = self.articles_to_process[0:self.max_graphs_to_merge]
+        calls    = [((article,), {}) for article in articles]              # args and kwargs (args need to be tuple))
 
-
-        for article in self.articles_to_process[0:FLOW__HACKER_NEWS__8__MAX__ARTICLES_TO_CREATE]:
-            article_id                         = article.article_id
-            # path_folder_data                   = article.path__folder__data
-            # hacker_news_article_entities       = Hacker_News__Article__Entities(article_id=article_id, path__folder__data=path_folder_data)
-
-
-            with Hacker_News__Text_Entities().setup() as _:
-                article_entities                  = _.article_entities(article_id=article_id)
-                mgraph_text_entities__title       = _.mgraph__for_article__text_entities__title      (article_entities=article_entities)
-                mgraph_text_entities__description = _.mgraph__for_article__text_entities__description(article_entities=article_entities)
-
-                _.add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_text_entities__title      )
-                _.add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_text_entities__description)
-
-                file__mgraph_text_entities__mgraph = article_entities.file___text__entities__mgraph()
-                file__mgraph_text_entities__png    = article_entities.file___text__entities__png   ()
-
-                if file__mgraph_text_entities__mgraph.exists() is False:
-                    file__mgraph_text_entities__mgraph.save_data(_.mgraph_entities.json())
-                if file__mgraph_text_entities__png.exists() is False:
-                    file__mgraph_text_entities__png.save_data(_.png_bytes__for_mgraph_entities())
-
-                article.path__file__text_entities__mgraph = file__mgraph_text_entities__mgraph.path_now()
-                article.path__file__text_entities__png    = file__mgraph_text_entities__png   .path_now()
-
-            article.next_step = to_step
-            article_change_status = Schema__Feed__Article__Status__Change(article=article, from_step=from_step)
-            self.status_changes.append(article_change_status)
+        execute_in_thread_pool(self.task__2s__llm__merge_text_entities_graphs, calls=calls, max_workers=10)
 
         self.file_articles_current.save()
+
+    #@task()
+    def task__2s__llm__merge_text_entities_graphs(self, article):
+
+        article_id                         = article.article_id
+
+        with Hacker_News__Text_Entities().setup() as _:
+            article_entities                  = _.article_entities(article_id=article_id)
+            mgraph_text_entities__title       = _.mgraph__for_article__text_entities__title      (article_entities=article_entities)
+            mgraph_text_entities__description = _.mgraph__for_article__text_entities__description(article_entities=article_entities)
+
+            _.add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_text_entities__title      )
+            _.add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_text_entities__description)
+
+            file__mgraph_text_entities__mgraph = article_entities.file___text__entities__mgraph()
+            file__mgraph_text_entities__png    = article_entities.file___text__entities__png   ()
+
+            if file__mgraph_text_entities__mgraph.exists() is False:
+                file__mgraph_text_entities__mgraph.save_data(_.mgraph_entities.json())
+            if file__mgraph_text_entities__png.exists() is False:
+                file__mgraph_text_entities__png.save_data(_.png_bytes__for_mgraph_entities())
+
+            article.path__file__text_entities__mgraph = file__mgraph_text_entities__mgraph.path_now()
+            article.path__file__text_entities__png    = file__mgraph_text_entities__png   .path_now()
+
+        article.next_step = self.to_step
+        article_change_status = Schema__Feed__Article__Status__Change(article=article, from_step=self.from_step)
+        self.status_changes.append(article_change_status)
+
 
 
     def task__3__create_output(self):

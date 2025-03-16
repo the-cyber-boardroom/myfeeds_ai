@@ -46,8 +46,8 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
     def flow_7_article_step_4_create_text_entities_graphs(self, max_graphs_to_create: int=1):
         return Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs(max_graphs_to_create=max_graphs_to_create).run().flow_output()
 
-    def flow_8_article_step_5_merge_text_entities_graphs(self):
-        return Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs().run().flow_output()
+    def flow_8_article_step_5_merge_text_entities_graphs(self,max_graphs_to_merge: int=1):
+        return Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs(max_graphs_to_merge=max_graphs_to_merge).run().flow_output()
 
     def setup_routes(self):
         self.add_route_get(self.flow_1_download_rss_feed                          )
