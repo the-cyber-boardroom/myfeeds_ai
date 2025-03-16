@@ -24,7 +24,7 @@ class test__int__Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Graph(TestCa
 
     def test_task__2__llm__text_to_graph(self):
         with self.flow_llm_text_to_graph as _:
-            _.max_articles_to_create = 2
+            _.max_articles_to_create = 1
             _.task__1__load_articles_to_process()
             _.task__2__llm__text_to_graph      ()
 

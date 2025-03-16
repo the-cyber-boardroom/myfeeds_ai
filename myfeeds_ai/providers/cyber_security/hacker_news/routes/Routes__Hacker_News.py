@@ -6,6 +6,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content  
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                            import Hacker_News__Data
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline import Flow__Hacker_News__2__Create_Articles_Timeline
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed        import Flow__Hacker_News__1__Download_RSS_Feed
+from osbot_utils.helpers.safe_str.Safe_Str__File__Path import Safe_Str__File__Path
 from osbot_utils.utils.Lists                                                                              import list_filter_contains
 from osbot_utils.utils.Status                                                                             import status_ok, status_error
 
@@ -22,6 +23,7 @@ ROUTES_PATHS__HACKER_NEWS = [ f'/{ROUTE_PATH__HACKER_NEWS}/data-feed'           
                               # f'/{ROUTE_PATH__HACKER_NEWS}/flow-graph-rag-mgraphs',
                               f'/{ROUTE_PATH__HACKER_NEWS}/files-paths'           ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/new-articles'          ,
+                              f'/{ROUTE_PATH__HACKER_NEWS}/files-in-day'          ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-all-files'    ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-feed'         ,
                               f'/{ROUTE_PATH__HACKER_NEWS}/raw-data-feed-current' ]
@@ -111,6 +113,11 @@ class Routes__Hacker_News(Fast_API_Routes):
     #     return StreamingResponse(img_io, media_type="image/png")
 
 
+    def files_in_day(self, day: str='2025/03/13/23', include_sub_folders=False):
+        path   = Safe_Str__File__Path(day)
+        files = self.hacker_news_data.storage.files_in__path(path=path, include_sub_folders=include_sub_folders)
+        return sorted(files)
+
     def raw_data_all_files(self, only_with:str = None):
         all_files = sorted(self.files.all_files(), reverse=True)
         if only_with:
@@ -141,6 +148,7 @@ class Routes__Hacker_News(Fast_API_Routes):
         self.add_route_get(self.feed_prompt           )
         self.add_route_get(self.new_articles          )
         self.add_route_get(self.timeline_latest_png   )
+        self.add_route_get(self.files_in_day          )
         self.add_route_get(self.raw_data_all_files    )
         self.add_route_get(self.raw_data_feed_current )
         self.add_route_get(self.raw_data_feed         )

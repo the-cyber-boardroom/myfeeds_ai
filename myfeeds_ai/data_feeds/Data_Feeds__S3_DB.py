@@ -63,7 +63,7 @@ class Data_Feeds__S3_DB(S3__DB_Base):
 
     def s3_path__files(self, s3_path, include_sub_folders=False):
         s3_key__now_utc = self.s3_key__for_provider_path(s3_path)
-        return self.s3_folder_files(s3_key__now_utc, include_sub_folders=include_sub_folders)
+        return sorted(self.s3_folder_files(s3_key__now_utc, include_sub_folders=include_sub_folders))
 
     def s3_path__save_data(self, data, s3_path, content_type=None):
         s3_key = self.s3_key__for_provider_path(s3_path)
