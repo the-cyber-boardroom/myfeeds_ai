@@ -131,7 +131,7 @@ class Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs(Type_Safe
                 article_change_status = Schema__Feed__Article__Status__Change(article=article, from_step=self.from_step)
                 self.status_changes.append(article_change_status)
 
-            #_.save()
+            _.save()
 
     def task__6__create_output(self):
         stats__day_mgraphs = {}

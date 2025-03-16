@@ -13,8 +13,10 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_Graphs(Type_S
     file_articles_current : Hacker_News__File__Articles__Current
     articles_to_process   : Schema__Feed__Articles
 
-    #@task()
+    @task()
     def task__1__load_articles_to_process(self):
         with self.file_articles_current as _:
             _.load()
             self.articles_to_process = _.articles
+
+    #def tast__2__find_articles_to_process(self):
