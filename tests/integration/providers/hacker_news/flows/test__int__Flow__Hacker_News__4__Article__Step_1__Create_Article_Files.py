@@ -27,15 +27,17 @@ class test__int__Flow__Hacker_News__4__Article__Step_1__Create_Article_Files(Tes
         from_step   = Schema__Feed__Article__Step.STEP__1__SAVE__ARTICLE
         to_step     = Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE
 
+        max_articles_to_save = 1
         with self.flow_create_article_files as _:
-            #_.max_articles_to_save = 2
+
+            _.max_articles_to_save = max_articles_to_save
 
             _.task__1__load_articles_to_process    ()
             _.task__2__find_articles_to_safe       ()
             _.task__3__create_missing_article_files()
 
             if len(_.status_changes) > 0:
-                assert len(_.status_changes) <= FLOW__HACKER_NEWS__4__MAX__ARTICLES_TO_SAVE
+                assert len(_.status_changes) <= max_articles_to_save
                 status_change = _.status_changes[0]
                 assert status_change.from_status       == from_status
                 assert status_change.article.status    == to_status

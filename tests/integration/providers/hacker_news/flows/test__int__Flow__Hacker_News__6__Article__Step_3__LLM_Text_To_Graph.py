@@ -24,8 +24,46 @@ class test__int__Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Graph(TestCa
 
     def test_task__2__llm__text_to_graph(self):
         with self.flow_llm_text_to_graph as _:
+            _.max_articles_to_create = 2
             _.task__1__load_articles_to_process()
             _.task__2__llm__text_to_graph      ()
 
-            #
+            # from osbot_utils.utils.Dev import pprint
+            # pprint(_.status_changes.json())
+
+
+    # def test_parallel_execution_test(self):
+    #     import concurrent
+    #     from time import sleep
+    #     from osbot_utils.utils.Http import GET
+    #
+    #     def wait_for(seconds):
+    #         with print_duration():
+    #             if seconds and seconds > 0:
+    #                 sleep(seconds)
+    #
+    #             http = GET("https://www.thecyberboardroom.com/")
+    #             return f"Waited for {seconds} seconds and got {len(http)} page"
+    #
+    #     def concurrency_test_parallel():
+    #         print('starting parallel execution')
+    #
+    #         # Create a thread pool
+    #
+    #         with concurrent.futures.ThreadPoolExecutor() as executor:
+    #             # Submit both wait operations to run in parallel
+    #             future1 = executor.submit(wait_for, 1)
+    #             future2 = executor.submit(wait_for, 1)
+    #
+    #             # Wait for both to complete
+    #             result1 = future1.result()
+    #             result2 = future2.result()
+    #
+    #         print('all operations completed')
+    #         print(result1)
+    #         print(result2)
+    #
+    #     # Running the test
+    #     with print_duration():
+    #         concurrency_test_parallel()
 

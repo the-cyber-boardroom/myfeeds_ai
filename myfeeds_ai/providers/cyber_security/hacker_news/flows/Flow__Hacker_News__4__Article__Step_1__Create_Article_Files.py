@@ -11,7 +11,7 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.helpers.flows.decorators.flow                                                     import flow
 from osbot_utils.helpers.flows.decorators.task                                                     import task
 from osbot_utils.type_safe.Type_Safe                                                               import Type_Safe
-from osbot_utils.utils.Threads                                                                     import invoke_async__coroutines
+from osbot_utils.utils.Threads                                                                     import execute_in_thread_pool
 
 FLOW__HACKER_NEWS__4__MAX__ARTICLES_TO_SAVE = 1
 
@@ -53,22 +53,17 @@ class Flow__Hacker_News__4__Article__Step_1__Create_Article_Files(Type_Safe):
 
     @task()
     def task__3__create_missing_article_files(self):
-        task_coroutines = []
-        for article, article_data in self.articles_to_save.items():
-            task_coroutine = self.task__3a__process_article(article, article_data)
-            task_coroutines.append(task_coroutine)
 
-        # QUESTION: how can we use invoke_async or async_invoke_in_new_loop from osbot_utils.utils.Threads import
-        #  to wait for all these corotines to complete
-        from osbot_utils.utils.Dev import pprint
-        execution_exceptions = invoke_async__coroutines(task_coroutines, return_exceptions=True)
+        calls = [ ((article, article_data), {})                                     # Each call has positional args but no keyword args
+                  for article, article_data in self.articles_to_save.items() ]
+        execute_in_thread_pool(target_function=self.task__3a__process_article, calls=calls)
 
-        #self.file_articles_current.save()
+        self.file_articles_current.save()
 
 
 
     @task()
-    async def task__3a__process_article(self, article, article_data):
+    def task__3a__process_article(self, article, article_data):
         article_id                       = article.article_id
         hacker_news_article              = Hacker_News__Article(article_id=article_id)
         file_article                     = hacker_news_article.file_article()
@@ -79,6 +74,7 @@ class Flow__Hacker_News__4__Article__Step_1__Create_Article_Files(Type_Safe):
         article_change_status            = Schema__Feed__Article__Status__Change(article=article, from_status=self.from_status, from_step=self.from_step)
         self.status_changes.append(article_change_status)
         self.file_articles_all.add_article(article)
+
 
     @task()
     def task__4__create_output(self):
