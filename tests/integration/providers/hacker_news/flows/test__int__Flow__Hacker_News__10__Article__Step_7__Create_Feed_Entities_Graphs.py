@@ -17,17 +17,19 @@ class test__int__Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_Gr
             _.task__1__load_articles_to_process()
             assert _.articles_to_process == _.file_articles_current.next_step__7__merge_day_entities_graphs()
             assert len(_.articles_to_process) >= 0
-            #pprint(_.articles_to_process)
+            # from osbot_utils.utils.Dev import pprint
+            # pprint(_.articles_to_process)
 
     def test_task__2__create_file_with_feed_text_entities_mgraph(self):
         with self.flow_llm_create_feed_entities_graphs as _:
-            _.max_articles_to_process = 1
+            _.max_articles_to_move = 1
             _.task__1__load_articles_to_process                  ()
             _.task__2__create_file_with_feed_text_entities_mgraph()
             _.task__3__move_articles_to_next_step                ()
             _.task__4__create_output                             ()
 
-            #pprint(_.output)
+            # from osbot_utils.utils.Dev import pprint
+            # pprint(_.output)
 
             # file_size 295355
             # files_to_process 50

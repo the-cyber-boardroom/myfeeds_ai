@@ -18,7 +18,8 @@ class test__int__Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tr
             _.task__1__load_articles_to_process()
             assert _.articles_to_process == _.file_articles_current.next_step__8__create_feed_entities_tree_view()
             assert len(_.articles_to_process) >= 0
-            pprint(_.articles_to_process)
+            # from osbot_utils.utils.Dev import pprint
+            # pprint(_.articles_to_process)
 
     def test_task__2__create_file_with_feed_text_entities_mgraph(self):
         with self.flow_llm_create_feed_entities_graphs as _:
@@ -26,4 +27,4 @@ class test__int__Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tr
             _.task__1__load_articles_to_process                  ()
             _.task__2__create_file_with_feed_text_entities_mgraph()
             _.task__3__create_output                             ()
-            pprint(_.output)
+            #pprint(_.output)

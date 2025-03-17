@@ -7,6 +7,7 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.helpers.flows.decorators.flow                                                          import flow
 from osbot_utils.helpers.flows.decorators.task                                                          import task
 from osbot_utils.type_safe.Type_Safe                                                                    import Type_Safe
+from osbot_utils.utils.Dev import pprint
 
 
 class Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View(Type_Safe):
@@ -25,7 +26,10 @@ class Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View(Typ
 
     @task()
     def task__2__create_file_with_feed_text_entities_mgraph(self):
-        ...
+        if self.articles_to_process:
+            article = self.articles_to_process[0]                    # we only need one
+            pprint(article.article_id)
+
 
     @flow()
     def process_articles(self) -> Flow:
