@@ -55,3 +55,6 @@ class Hacker_News__File__Articles__Current(Hacker_News__File__Articles):
 
     def next_step__7__merge_day_entities_graphs(self)-> List[Schema__Feed__Article]:
         return self.next_for_step(Schema__Feed__Article__Step.STEP__7__MERGE__FEED_ENTITIES_GRAPHS)
+
+    def next_step__8__create_feed_entities_tree_view(self)-> List[Schema__Feed__Article]:
+        return self.next_for_step(Schema__Feed__Article__Step.STEP__8__CREATE__FEED_ENTITIES_TREE_VIEW)
