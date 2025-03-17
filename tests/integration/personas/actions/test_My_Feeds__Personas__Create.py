@@ -98,7 +98,7 @@ issues to make well-informed governance decisions, contributing effectively to t
             assert _.now().year              == 2025
             assert type(merged_day_entities) is Schema__Feed__Day__Text_Entities
             assert type(mgraph)              is MGraph
-            articles_ids = ['45070db2']
+
             mgraph.export().export_tree_values().print_as_text(articles_node_id)
 
             #

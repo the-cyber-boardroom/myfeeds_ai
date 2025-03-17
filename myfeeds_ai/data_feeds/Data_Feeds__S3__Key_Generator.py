@@ -14,6 +14,7 @@ class S3_Key__File_Extension(Enum):
     MGRAPH__DOT  : str = 'mgraph.dot'
     MGRAPH__JSON : str = 'mgraph.json'
     MGRAPH__PNG  : str = 'mgraph.png'
+    TXT          : str = 'txt'
 
 DEFAULT__S3_Key__FILE_EXTENSION = S3_Key__File_Extension.JSON
 

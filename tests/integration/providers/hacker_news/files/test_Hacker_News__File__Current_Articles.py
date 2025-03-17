@@ -38,6 +38,7 @@ class test_Hacker_News__File__Current_Articles(TestCase):
                                                  'path__file__feed__text_entities'               ,
                                                  'path__file__feed__text_entities__descriptions' ,
                                                  'path__file__feed__text_entities__titles'       ,
+                                                 'path__file__feed__text_entities__titles__tree' ,
                                                  'path__file__feed_article'                      ,
                                                  'path__file__markdown'                          ,
                                                  'path__file__text_entities__description'        ,
