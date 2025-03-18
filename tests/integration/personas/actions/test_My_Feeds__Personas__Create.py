@@ -3,7 +3,7 @@ from unittest                                                                   
 from mgraph_db.mgraph.actions.MGraph__Index                                                     import MGraph__Index
 from mgraph_db.mgraph.MGraph                                                                    import MGraph
 from mgraph_db.providers.graph_rag.schemas.Schema__Graph_RAG__Nodes                             import Schema__MGraph__RAG__Node__Text_Id
-from myfeeds_ai.personas.actions.My_Feeds__Personas import My_Feeds__Personas
+from myfeeds_ai.personas.actions.My_Feeds__Personas                                             import My_Feeds__Personas
 from myfeeds_ai.personas.actions.My_Feeds__Personas__Create                                     import My_Feeds__Personas__Create
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Day                   import Hacker_News__Day
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Text_Entities         import Node_Type__Article_Id
@@ -27,12 +27,6 @@ class test_My_Feeds__Personas__Create(TestCase):
         myfeeds_tests__setup_local_stack()
         cls.persona_create = My_Feeds__Personas__Create()
         cls.personas       = My_Feeds__Personas()
-
-
-    def test_create_persona__ciso(self):
-        with self.persona_create as _:
-            persona_ciso = _.create_persona__ciso()
-            pprint(persona_ciso.json())
 
     def test_extract_entities_from_text(self):
         with self.persona_create as _:

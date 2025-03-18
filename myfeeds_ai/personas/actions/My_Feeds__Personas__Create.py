@@ -1,3 +1,4 @@
+from mgraph_db.providers.graph_rag.schemas.Schema__Graph_RAG__Nodes import Schema__MGraph__RAG__Node__Text_Id
 from myfeeds_ai.personas.actions.My_Feeds__Personas                                                 import My_Feeds__Personas
 from myfeeds_ai.personas.llms.LLM__Prompt__Personas__Extract_Entities                               import LLM__Prompt__Personas__Extract_Entities
 from myfeeds_ai.personas.schemas.Schema__Persona                                                    import Schema__Persona
@@ -14,16 +15,23 @@ class My_Feeds__Personas__Create(Type_Safe):
     prompt_extract_entities : LLM__Prompt__Personas__Extract_Entities
     personas                : My_Feeds__Personas
 
-    def create_persona__ciso(self) -> Schema__Persona:
-        file__persona__ciso = self.personas.file__persona__ciso()
-        with self.personas.file__persona__ciso__load() as _:
-            _.description           = PERSONA__DESCRIPTION__CISO
-            _.path_now              = file__persona__ciso.path_now   ()
-            _.path_latest           = file__persona__ciso.path_latest()
-            _.description__entities = self.extract_entities_from_text(_.description).text_entities
+    # def create_persona__ciso(self) -> Schema__Persona:
+    #     file__persona__ciso = self.personas.file__persona__ciso()
+    #     with self.personas.file__persona__ciso__load() as _:
+    #         _.description           = PERSONA__DESCRIPTION__CISO
+    #         _.path_now              = file__persona__ciso.path_now   ()
+    #         _.path_latest           = file__persona__ciso.path_latest()
+    #         _.description__entities = self.extract_entities_from_text(_.description).text_entities
+    #
+    #         file__persona__ciso.save_data(_.json())
+    #         return _
 
-            file__persona__ciso.save_data(_.json())
-            return _
+    def create_tree_values_from_entities(self, text_entities):
+        root_id_type = Schema__MGraph__RAG__Node__Text_Id
+        graph_rag    = self.prompt_extract_entities.create_entities_graph_rag(text_entities)
+        text_ids     = graph_rag.mgraph_entity.index().get_nodes_by_type(root_id_type)
+        tree_values  = graph_rag.mgraph_entity.export().export_tree_values().as_text(list(text_ids))
+        return tree_values
 
     @cache_on_self
     def execute_llm_with_cache(self) -> Hacker_News__Execute_LLM__With_Cache:
