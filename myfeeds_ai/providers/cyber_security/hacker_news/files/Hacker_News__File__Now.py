@@ -1,5 +1,5 @@
 from datetime                                                                       import datetime
-from typing                                                                         import Any
+from typing import Any, Type
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File_Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage   import Hacker_News__Storage
 from osbot_utils.helpers.Safe_Id                                                    import Safe_Id
@@ -13,6 +13,7 @@ class Hacker_News__File__Now(Type_Safe):
     extension           : S3_Key__File_Extension
     content_type        : str
     now                 : datetime
+    data_type           : Type[Type_Safe]         = None
 
     def delete__now      (self) -> bool: return self.hacker_news_storage.delete_from__path (s3_path = self.path_now   ())
     def folder__path_now (self) -> str : return self.hacker_news_storage.path__folder_now  (now=self.now)
@@ -25,6 +26,15 @@ class Hacker_News__File__Now(Type_Safe):
     def contents(self):
         return self.load()
 
+    def data(self):
+        file_data = self.load()
+        if self.data_type:                                      # if there is a data_type defined
+            if file_data:                                       #   if there was data
+                return self.data_type.from_json(file_data)      #       return the full object (since self.data_type is Type[Type_Safe] we know the from_json exists)
+            else:                                               #   if there was no data
+                return self.data_type()                         #       return a new object of data_type (which should have a default value
+        else:                                                   # if there is no data_type defined
+            return file_data                                    #   just return the data
     def info(self) -> dict:
         return dict(exists      = self.exists     (),
                     path_now    = self.path_now   ())
