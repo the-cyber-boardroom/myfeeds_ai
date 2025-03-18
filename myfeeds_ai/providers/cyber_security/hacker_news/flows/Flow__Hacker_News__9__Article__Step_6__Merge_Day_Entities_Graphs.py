@@ -107,7 +107,7 @@ class Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs(Type_Safe
         self.text_entities    [path_to_day] = text_entities
 
     # todo: add parallel execution to this task
-    @task()
+    #@task()                                                # todo: debug why this is was failing lambda (I think it was because of the use of polyline in the text entities graphviz png generation)
     def task__4__create_mgraph_png(self):
         for path_to_day, text_entities in self.text_entities.items():
             hacker_news_day               = self.hacker_news__days[path_to_day]
