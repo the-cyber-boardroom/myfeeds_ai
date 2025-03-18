@@ -1,11 +1,12 @@
-from myfeeds_ai.personas.actions.My_Feeds__Personas import My_Feeds__Personas
+from myfeeds_ai.personas.actions.My_Feeds__Personas                                                 import My_Feeds__Personas
 from myfeeds_ai.personas.llms.LLM__Prompt__Personas__Extract_Entities                               import LLM__Prompt__Personas__Extract_Entities
-from myfeeds_ai.personas.schemas.Schema__Persona import Schema__Persona
-from myfeeds_ai.personas.schemas.Schema__Persona__Text__Entities import Schema__Persona__Text__Entities
+from myfeeds_ai.personas.schemas.Schema__Persona                                                    import Schema__Persona
+from myfeeds_ai.personas.schemas.Schema__Persona__Text__Entities                                    import Schema__Persona__Text__Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache      import Hacker_News__Execute_LLM__With_Cache
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Text__Entities  import Schema__Feed__Article__Text__Entities
-from osbot_utils.decorators.methods.cache_on_self import cache_on_self
-from osbot_utils.type_safe.Type_Safe import Type_Safe
+from osbot_utils.decorators.methods.cache_on_self                                                   import cache_on_self
+from osbot_utils.type_safe.Type_Safe                                                                import Type_Safe
+
 from osbot_utils.utils.Dev import pprint
 
 
@@ -16,9 +17,10 @@ class My_Feeds__Personas__Create(Type_Safe):
     def create_persona__ciso(self) -> Schema__Persona:
         file__persona__ciso = self.personas.file__persona__ciso()
         with self.personas.file__persona__ciso__load() as _:
-            _.description = PERSONA__DESCRIPTION__CISO
-            _.path_now    = file__persona__ciso.path_now   ()
-            _.path_latest = file__persona__ciso.path_latest()
+            _.description           = PERSONA__DESCRIPTION__CISO
+            _.path_now              = file__persona__ciso.path_now   ()
+            _.path_latest           = file__persona__ciso.path_latest()
+            _.description__entities = self.extract_entities_from_text(_.description).text_entities
 
             file__persona__ciso.save_data(_.json())
             return _

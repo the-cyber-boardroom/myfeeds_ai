@@ -29,7 +29,6 @@ class test_My_Feeds__Personas__Create(TestCase):
         cls.personas       = My_Feeds__Personas()
 
 
-
     def test_create_persona__ciso(self):
         with self.persona_create as _:
             persona_ciso = _.create_persona__ciso()
