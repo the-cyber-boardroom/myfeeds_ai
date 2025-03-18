@@ -42,14 +42,14 @@ class Flow__My_Feeds__Personas__Create__Persona(Type_Safe):
             _.description__entities                      = persona_text_entities.text_entities
             _.cache_ids[Safe_Id('description-entities')] = persona_text_entities.cache_id
 
-    @task()
-    def test__4__create_tree_values(self):
+    #@task()
+    def task__4__create_tree_values(self):
         with self.persona as _:
             text_entities              =  _.description__entities
             tree_values                = self.personas_create.create_tree_values_from_entities(text_entities)
             _.description__tree_values = tree_values
 
-            print(_.description__tree_values)
+            #print(_.description__tree_values)
 
     @task()
     def task__5__save_data(self):
@@ -73,7 +73,7 @@ class Flow__My_Feeds__Personas__Create__Persona(Type_Safe):
             _.task__1__load_persona_data  ()
             _.test__2__set_persona_details()
             _.test__3__create_entities    ()
-            _.test__4__create_tree_values ()
+            _.task__4__create_tree_values ()
             _.task__5__save_data          ()
             _.task__6__create_output      ()
         return self.output

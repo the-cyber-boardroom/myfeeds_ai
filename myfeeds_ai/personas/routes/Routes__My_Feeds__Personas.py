@@ -13,7 +13,8 @@ ROUTES_PATHS__MY_FEEDS__PERSONAS = [f'/{ROUTE_PATH__PERSONAS}/files-in-latest'  
                                     f'/{ROUTE_PATH__PERSONAS}/persona'            ,
                                     f'/{ROUTE_PATH__PERSONAS}/persona-png'        ,
                                     f'/{ROUTE_PATH__PERSONAS}/persona-tree'       ,
-                                    f'/{ROUTE_PATH__PERSONAS}/storage-all-files'  ]
+                                    f'/{ROUTE_PATH__PERSONAS}/storage-all-files'  ,
+                                    f'/{ROUTE_PATH__PERSONAS}/delete-file'  ]
 
 class Routes__My_Feeds__Personas(Fast_API_Routes):
     tag: str = ROUTE_PATH__PERSONAS
@@ -47,8 +48,12 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
         else:
             return Response(status_code=status.HTTP_204_NO_CONTENT)
 
+    def delete_file(self, path:str):
+        return self.personas.storage.delete_from__path(path)
+
     def storage_all_files(self):
-        return self.personas.storage.s3_db.provider__all_files()
+        return sorted(self.personas.storage.s3_db.provider__all_files(), reverse=True)
+
 
     def setup_routes(self):
         self.add_route_get(self.flow_create_persona)
@@ -58,3 +63,4 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
         self.add_route_get(self.persona_png        )
         self.add_route_get(self.persona_tree       )
         self.add_route_get(self.storage_all_files  )
+        self.add_route_delete(self.delete_file     )         # todo, remove this temp method

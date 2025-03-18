@@ -1,5 +1,6 @@
 import pytest
 from unittest                                                               import TestCase
+from myfeeds_ai.personas.config.Config__My_Feeds__Personas                  import FILE_ID__PERSONA
 from myfeeds_ai.personas.files.My_Feeds__Personas__File                     import My_Feeds__Personas__File
 from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__Create__Persona    import Flow__My_Feeds__Personas__Create__Persona
 from myfeeds_ai.personas.schemas.Schema__Persona                            import Schema__Persona
@@ -29,7 +30,7 @@ class test_Flow__My_Feeds__Personas__Create__Persona(TestCase):
             assert type(_.persona             ) is Schema__Persona
             assert type(_.persona_type        ) is Schema__Persona__Types
             assert type(_.file_persona.file_id) is Safe_Id
-            assert _.file_persona.file_id       == _.persona_type.value
+            assert _.file_persona.file_id       == f"{_.persona_type.value}__{FILE_ID__PERSONA}"
 
     def test__2__set_persona_details(self):
         with self.flow_create_persona as _:
@@ -48,7 +49,7 @@ class test_Flow__My_Feeds__Personas__Create__Persona(TestCase):
     def test_test__4__create_tree_values(self):
         with self.flow_create_persona as _:
             _.task__1__load_persona_data()
-            _.test__4__create_tree_values()
+            _.task__4__create_tree_values()
 
             assert type(_.persona.description__tree_values) is str
             assert len (_.persona.description__tree_values) > 10

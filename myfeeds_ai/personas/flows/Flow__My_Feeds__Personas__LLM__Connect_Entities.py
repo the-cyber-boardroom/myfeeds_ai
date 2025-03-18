@@ -7,7 +7,7 @@ from osbot_utils.helpers.flows.Flow                         import Flow
 from osbot_utils.helpers.flows.decorators.flow              import flow
 from osbot_utils.helpers.flows.decorators.task              import task
 from osbot_utils.type_safe.Type_Safe                        import Type_Safe
-from osbot_utils.utils.Dev import pprint
+from osbot_utils.utils.Dev                                  import pprint
 
 
 class Flow__My_Feeds__Personas__LLM__Connect_Entities(Type_Safe):
@@ -32,17 +32,21 @@ class Flow__My_Feeds__Personas__LLM__Connect_Entities(Type_Safe):
             self.llm_connect_entities      = _.data()
 
         with self.llm_connect_entities as _:
-            _.persona__description__tree_values = self.persona.description__tree_values
+            #_.persona__description__tree_values = self.persona.description__tree_values
             _.persona__path_now                 = self.persona.path_now
 
-            #pprint(self.llm_connect_entities.json())
+            # todo add LLM connection
+
+            self.file_llm_connect_entities.save_data(_.json())
+        #pprint(self.llm_connect_entities.json())
 
 
 
     @task()
     def task__n__create_output(self):
-        self.output = dict(persona_id           = self.persona_type               ,
-                           llm_connect_entities = self.llm_connect_entities.json())
+        self.output = dict(persona_type         = self.persona_type.value                                  ,
+                           path_latest__file_llm_connect_entities = self.file_llm_connect_entities.path_latest(),
+                           path_now__file_llm_connect_entities    = self.file_llm_connect_entities.path_now())
 
 
     @flow()
