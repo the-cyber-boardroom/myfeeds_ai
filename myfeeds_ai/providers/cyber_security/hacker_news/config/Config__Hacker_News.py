@@ -15,3 +15,5 @@ FILE_ID__FEED__TEXT_ENTITIES__TITLES           = Safe_Id('feed-text-entities-tit
 FILE_ID__FEED__TEXT_ENTITIES__TITLES__TREE     = Safe_Id('feed-text-entities-titles-tree'  )
 FILE_ID__TIMELINE__MGRAPH                      = Safe_Id('feed-timeline'                   )
 FILE_ID__TIMELINE__DIFF                        = Safe_Id('feed-timeline-diff'              )
+
+FILE_ID__PERSONA__CISO                         = Safe_Id('persona-ciso'                    )

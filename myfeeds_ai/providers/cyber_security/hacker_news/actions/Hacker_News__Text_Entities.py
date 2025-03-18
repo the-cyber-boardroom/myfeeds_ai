@@ -86,7 +86,7 @@ class Hacker_News__Text_Entities(Type_Safe):
             #_.show_node__id   ()
             _.show_edge__predicate()
             _.set_node__shape__type__box().set_node__shape__rounded()
-            _.set_graph__splines__polyline()
+            #_.set_graph__splines__polyline()                                   # was failing on Graphviz in Lambda for larger graphs
             #_.set_graph__rank_dir__lr()
             #_.set_graph__layout_engine__fdp()
             #_.set_graph__layout_engine__circo()
