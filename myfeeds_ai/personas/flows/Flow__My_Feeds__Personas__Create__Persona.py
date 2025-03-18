@@ -52,7 +52,7 @@ class Flow__My_Feeds__Personas__Create__Persona(Type_Safe):
             print(_.description__tree_values)
 
     @task()
-    def task__n__save_data(self):
+    def task__5__save_data(self):
         with self.persona as _:
             _.path_now    = self.file_persona.path_now()
             _.path_latest = self.file_persona.path_latest()
@@ -60,7 +60,7 @@ class Flow__My_Feeds__Personas__Create__Persona(Type_Safe):
             pprint(_.save_data(self.persona.json()))
 
     @task()
-    def task__n__create_output(self):
+    def task__6__create_output(self):
         self.output = dict(persona_id   = self.persona_type,
                            path_now     = self.file_persona.path_now(),
                            path_latest  = self.file_persona.path_latest(),
@@ -74,8 +74,8 @@ class Flow__My_Feeds__Personas__Create__Persona(Type_Safe):
             _.test__2__set_persona_details()
             _.test__3__create_entities    ()
             _.test__4__create_tree_values ()
-            _.task__n__save_data          ()
-            _.task__n__create_output      ()
+            _.task__5__save_data          ()
+            _.task__6__create_output      ()
         return self.output
 
     def run(self):

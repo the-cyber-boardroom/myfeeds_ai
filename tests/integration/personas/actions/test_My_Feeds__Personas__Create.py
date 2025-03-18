@@ -59,45 +59,45 @@ issues to make well-informed governance decisions, contributing effectively to t
             cache_id               = persona__text_entities.cache_id
             graph_rag              = _.prompt_extract_entities.create_entities_graph_rag(text_entities)
             png_file = f'{self.__class__.__name__}-{cache_id}.png'
-            if file_not_exists(png_file):
-                pprint(graph_rag.screenshot__create_file(png_file))
+            # if file_not_exists(png_file):
+            #     pprint(graph_rag.screenshot__create_file(png_file))
 
             text_ids = list(graph_rag.mgraph_entity.index().get_nodes_by_type(Schema__MGraph__RAG__Node__Text_Id))
 
-            print()
-            print(graph_rag.mgraph_entity.export().export_tree_values().as_text(text_ids))
+            # print()
+            # print(graph_rag.mgraph_entity.export().export_tree_values().as_text(text_ids))
 
-    def test__get_tree_for_full_feed(self):
-        source_url = 'https://dev.myfeeds.ai/public-data/hacker-news/latest/feed-text-entities-titles.mgraph.json'
-        with print_duration():
-            json_code  = GET_json(source_url)
-        with print_duration():
-            mgraph                = MGraph.from_json(json_code)
-            index : MGraph__Index = mgraph.index()
-            articles_ids   = list(index.get_nodes_by_type(Node_Type__Article_Id))
-            mgraph_as_text = mgraph.export().export_tree_values().as_text(articles_ids)
-            file_create(path='./feed-as-text.txt', contents=mgraph_as_text)
-            pprint(len(mgraph_as_text))
+    # def test__get_tree_for_full_feed(self):
+    #     source_url = 'https://dev.myfeeds.ai/public-data/hacker-news/latest/feed-text-entities-titles.mgraph.json'
+    #     with print_duration():
+    #         json_code  = GET_json(source_url)
+    #     with print_duration():
+    #         mgraph                = MGraph.from_json(json_code)
+    #         index : MGraph__Index = mgraph.index()
+    #         articles_ids   = list(index.get_nodes_by_type(Node_Type__Article_Id))
+    #         mgraph_as_text = mgraph.export().export_tree_values().as_text(articles_ids)
+    #         file_create(path='./feed-as-text.txt', contents=mgraph_as_text)
+    #         pprint(len(mgraph_as_text))
 
 
-    def test__get_tree_for_news(self):
-        #path__folder__data = "2025/03/14/19"
-        path__folder__data = "2025/03/13/23"
-        with Hacker_News__Day(path__folder__data=path__folder__data) as _:
-            merged_day_entities = _.file_merged_day_entities__load()
-            articles_ids         = merged_day_entities.articles_ids
-            mgraph              = merged_day_entities.mgraph_entities
-            articles_node_id     = []
-            for article_id in articles_ids:
-                article_node_id = mgraph.index().values_index.get_node_id_by_value(Obj_Id, article_id, node_type=Node_Type__Article_Id)
-                articles_node_id.append(article_node_id)
-
-            assert type(_)                   is Hacker_News__Day
-            assert _.now().year              == 2025
-            assert type(merged_day_entities) is Schema__Feed__Day__Text_Entities
-            assert type(mgraph)              is MGraph
-
-            mgraph.export().export_tree_values().print_as_text(articles_node_id)
+    # def test__get_tree_for_news(self):
+    #     #path__folder__data = "2025/03/14/19"
+    #     path__folder__data = "2025/03/13/23"
+    #     with Hacker_News__Day(path__folder__data=path__folder__data) as _:
+    #         merged_day_entities = _.file_merged_day_entities__load()
+    #         articles_ids         = merged_day_entities.articles_ids
+    #         mgraph              = merged_day_entities.mgraph_entities
+    #         articles_node_id     = []
+    #         for article_id in articles_ids:
+    #             article_node_id = mgraph.index().values_index.get_node_id_by_value(Obj_Id, article_id, node_type=Node_Type__Article_Id)
+    #             articles_node_id.append(article_node_id)
+    #
+    #         assert type(_)                   is Hacker_News__Day
+    #         assert _.now().year              == 2025
+    #         assert type(merged_day_entities) is Schema__Feed__Day__Text_Entities
+    #         assert type(mgraph)              is MGraph
+    #
+    #         mgraph.export().export_tree_values().print_as_text(articles_node_id)
 
             #
 

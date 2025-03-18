@@ -10,9 +10,10 @@ ROUTE_PATH__PERSONAS = 'personas'
 ROUTES_PATHS__MY_FEEDS__PERSONAS = [f'/{ROUTE_PATH__PERSONAS}/files-in-latest'    ,
                                     f'/{ROUTE_PATH__PERSONAS}/files-in-now'       ,
                                     f'/{ROUTE_PATH__PERSONAS}/flow-create-persona',
-                                    f'/{ROUTE_PATH__PERSONAS}/persona',
-                                    f'/{ROUTE_PATH__PERSONAS}/persona-png',
-                                    f'/{ROUTE_PATH__PERSONAS}/persona-tree']
+                                    f'/{ROUTE_PATH__PERSONAS}/persona'            ,
+                                    f'/{ROUTE_PATH__PERSONAS}/persona-png'        ,
+                                    f'/{ROUTE_PATH__PERSONAS}/persona-tree'       ,
+                                    f'/{ROUTE_PATH__PERSONAS}/storage-all-files'  ]
 
 class Routes__My_Feeds__Personas(Fast_API_Routes):
     tag: str = ROUTE_PATH__PERSONAS
@@ -46,6 +47,9 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
         else:
             return Response(status_code=status.HTTP_204_NO_CONTENT)
 
+    def storage_all_files(self):
+        return self.personas.storage.s3_db.provider__all_files()
+
     def setup_routes(self):
         self.add_route_get(self.flow_create_persona)
         self.add_route_get(self.files_in_latest    )
@@ -53,3 +57,4 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
         self.add_route_get(self.persona            )
         self.add_route_get(self.persona_png        )
         self.add_route_get(self.persona_tree       )
+        self.add_route_get(self.storage_all_files  )

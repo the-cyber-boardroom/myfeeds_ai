@@ -1,6 +1,6 @@
 from myfeeds_ai.data_feeds.Data_Feeds__Http_Content  import Data_Feeds__Http_Content
 from myfeeds_ai.data_feeds.Data_Feeds__S3_DB         import Data_Feeds__S3_DB
-from osbot_utils.type_safe.Type_Safe                             import Type_Safe
+from osbot_utils.type_safe.Type_Safe                 import Type_Safe
 
 class Data_Feeds__Files(Type_Safe):
     s3_db       : Data_Feeds__S3_DB
