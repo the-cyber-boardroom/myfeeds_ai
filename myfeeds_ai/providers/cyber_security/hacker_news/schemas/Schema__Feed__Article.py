@@ -11,6 +11,10 @@ class Schema__Feed__Article(Type_Safe):
     path__file__entities_mgraph__json              : str = None
     path__file__entities_mgraph__png               : str = None
     path__file__feed_article                       : str = None
+    path__file__feed__text_entities                : str = None
+    path__file__feed__text_entities__titles        : str = None
+    path__file__feed__text_entities__titles__tree  : str = None
+    path__file__feed__text_entities__descriptions  : str = None
     path__file__markdown                           : str = None
     path__file__day__text_entities                 : str = None
     path__file__day__text_entities__png            : str = None

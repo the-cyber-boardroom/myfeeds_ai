@@ -1,6 +1,8 @@
 from osbot_fast_api.api.Fast_API_Routes                                                                                         import Fast_API_Routes
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Flows                                                 import Hacker_News__Flows
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs import Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View import \
+    Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed                              import Flow__Hacker_News__1__Download_RSS_Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline                       import Flow__Hacker_News__2__Create_Articles_Timeline
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__3__Extract_New_Articles                           import Flow__Hacker_News__3__Extract_New_Articles
@@ -22,7 +24,8 @@ ROUTES_PATHS__HACKER_NEWS__FLOWS = [f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-1-d
                                     f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-7-article-step-4-create-text-entities-graphs'  ,
                                     f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-8-article-step-5-merge-text-entities-graphs'   ,
                                     f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-9-article-step-6-merge-day-entities-graphs'    ,
-                                    f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-10-article-step-7-create-feed-entities-mgraphs']
+                                    f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-10-article-step-7-create-feed-entities-mgraphs',
+                                    f'/{ROUTE_PATH__HACKER_NEWS__FLOWS}/flow-11-article-step-8-create-entities-tree-view'   ]
 
 
 class Routes__Hacker_News__Flows(Fast_API_Routes):
@@ -56,8 +59,11 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
     def flow_9_article_step_6_merge_day_entities_graphs(self, max_graphs_to_merge:int=1):
         return Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs(max_graphs_to_merge=max_graphs_to_merge).run().flow_output()
 
-    def flow_10_article_step_7_create_feed_entities_mgraphs(self, max_articles_to_load: int = 1):
-        return Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(max_articles_to_load=max_articles_to_load).run().flow_output()
+    def flow_10_article_step_7_create_feed_entities_mgraphs(self, max_articles_to_move: int = 1):
+        return Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(max_articles_to_move=max_articles_to_move).run().flow_output()
+
+    def flow_11_article_step_8_create_entities_tree_view(self,max_articles_to_move: int = 1):
+        return Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View(max_articles_to_move=max_articles_to_move).run().flow_output()
 
     def setup_routes(self):
         self.add_route_get(self.flow_1_download_rss_feed                           )
@@ -70,3 +76,4 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
         self.add_route_get(self.flow_8_article_step_5_merge_text_entities_graphs   )
         self.add_route_get(self.flow_9_article_step_6_merge_day_entities_graphs    )
         self.add_route_get(self.flow_10_article_step_7_create_feed_entities_mgraphs)
+        self.add_route_get(self.flow_11_article_step_8_create_entities_tree_view   )

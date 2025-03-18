@@ -39,3 +39,7 @@ class Hacker_News__Execute_LLM__With_Cache(Type_Safe):
     def execute__llm_request(self, llm_request: Schema__LLM_Request):
         if self.enabled():
             return self.llm_execute.execute(llm_request)
+
+    def refresh_llm_cache(self, value=True):
+        self.llm_execute.refresh_cache = value
+        return self

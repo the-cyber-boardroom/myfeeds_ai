@@ -14,14 +14,14 @@ files = [
 
 [[package]]
 name = "anyio"
-version = "4.8.0"
+version = "4.9.0"
 description = "High level compatibility layer for multiple asynchronous event loop implementations"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "anyio-4.8.0-py3-none-any.whl", hash = "sha256:b5011f270ab5eb0abf13385f851315585cc37ef330dd88e27ec3d34d651fd47a"},
-    {file = "anyio-4.8.0.tar.gz", hash = "sha256:1d9fe889df5212298c0c0723fa20479d1b94883a2df44bd3897aa91083316f7a"},
+    {file = "anyio-4.9.0-py3-none-any.whl", hash = "sha256:9f76d541cad6e36af7beb62e978876f3b41e3e04f2c1fbf0884604c0a9c4d93c"},
+    {file = "anyio-4.9.0.tar.gz", hash = "sha256:673c0c244e15788651a4ff38710fea9675823028a6f08a5eda409e0c9840a028"},
 ]
 
 [package.dependencies]
@@ -30,8 +30,8 @@ sniffio = ">=1.1"
 typing_extensions = {version = ">=4.5", markers = "python_version < \"3.13\""}
 
 [package.extras]
-doc = ["Sphinx (>=7.4,<8.0)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx_rtd_theme"]
-test = ["anyio[trio]", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "trustme", "truststore (>=0.9.1)", "uvloop (>=0.21)"]
+doc = ["Sphinx (>=8.2,<9.0)", "packaging", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx_rtd_theme"]
+test = ["anyio[trio]", "blockbuster (>=1.5.23)", "coverage[toml] (>=7)", "exceptiongroup (>=1.2.0)", "hypothesis (>=4.0)", "psutil (>=5.9)", "pytest (>=7.0)", "trustme", "truststore (>=0.9.1)", "uvloop (>=0.21)"]
 trio = ["trio (>=0.26.1)"]
 
 [[package]]
@@ -59,18 +59,18 @@ lxml = ["lxml"]
 
 [[package]]
 name = "boto3"
-version = "1.37.13"
+version = "1.37.14"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "boto3-1.37.13-py3-none-any.whl", hash = "sha256:90fa5a91d7d7456219f0b7c4a93b38335dc5cf4613d885da4d4c1d099e04c6b7"},
-    {file = "boto3-1.37.13.tar.gz", hash = "sha256:295648f887464ab74c5c301a44982df76f9ba39ebfc16be5b8f071ad1a81fe95"},
+    {file = "boto3-1.37.14-py3-none-any.whl", hash = "sha256:56b4d1e084dbca43d5fdd070f633a84de61a6ce592655b4d239d263d1a0097fc"},
+    {file = "boto3-1.37.14.tar.gz", hash = "sha256:cf2e5e6d56efd5850db8ce3d9094132e4759cf2d4b5fd8200d69456bf61a20f3"},
 ]
 
 [package.dependencies]
-botocore = ">=1.37.13,<1.38.0"
+botocore = ">=1.37.14,<1.38.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.11.0,<0.12.0"
 
@@ -79,14 +79,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.37.13"
+version = "1.37.14"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "botocore-1.37.13-py3-none-any.whl", hash = "sha256:aa417bac0f4d79533080e6e17c0509e149353aec83cfe7879597a7942f7f08d0"},
-    {file = "botocore-1.37.13.tar.gz", hash = "sha256:60dfb831c54eb466db9b91891a6c8a0c223626caa049969d5d42858ad1e7f8c7"},
+    {file = "botocore-1.37.14-py3-none-any.whl", hash = "sha256:709a1796f436f8e378e52170e58501c1f3b5f2d1308238cf1d6a3bdba2e32851"},
+    {file = "botocore-1.37.14.tar.gz", hash = "sha256:b0adce3f0fb42b914eb05079f50cf368cb9cf9745fdd206bd91fe6ac67b29aca"},
 ]
 
 [package.dependencies]
@@ -415,14 +415,14 @@ files = [
 
 [[package]]
 name = "mgraph-db"
-version = "1.2.12"
+version = "1.2.13"
 description = "MGraph-DB"
 optional = false
 python-versions = "<4.0,>=3.11"
 groups = ["main"]
 files = [
-    {file = "mgraph_db-1.2.12-py3-none-any.whl", hash = "sha256:3dc18b74967fe047616ca84ef8a864f93dc0f05a5ab5da12e0750981f551a284"},
-    {file = "mgraph_db-1.2.12.tar.gz", hash = "sha256:47a4dfeafd7b1ee2e90896f16dca1066c708b9cc6e3e67a71b5d33691d264138"},
+    {file = "mgraph_db-1.2.13-py3-none-any.whl", hash = "sha256:9412b251930fdf1331d885866bfe8f64e9b02e64925b32c23d2d6cb7f1226d3e"},
+    {file = "mgraph_db-1.2.13.tar.gz", hash = "sha256:e118f7682830febb4c8c2c7682428b73ce6f05044efd35f61f9fc0535a38f852"},
 ]
 
 [package.dependencies]
@@ -480,14 +480,14 @@ osbot-aws = "*"
 
 [[package]]
 name = "osbot-utils"
-version = "2.46.0"
+version = "2.47.0"
 description = "OWASP Security Bot - Utils"
 optional = false
 python-versions = "<4.0,>=3.7"
 groups = ["main"]
 files = [
-    {file = "osbot_utils-2.46.0-py3-none-any.whl", hash = "sha256:2baafd1a72db0f5204d4b523b34f289f6395f87be844f55d99fd189350e13d65"},
-    {file = "osbot_utils-2.46.0.tar.gz", hash = "sha256:849e6fd955e1b696e4bbf1af9eee48c5300ba6e8d20e5162be9a20076f766d44"},
+    {file = "osbot_utils-2.47.0-py3-none-any.whl", hash = "sha256:cdd62f7606e8e5a52787d34cfeef540423d5991b150087916d8e67b3c9fcd874"},
+    {file = "osbot_utils-2.47.0.tar.gz", hash = "sha256:b2b3e68c8750fbc33281885daffebe9d8af2baf210e6b90e337244be648e3fe1"},
 ]
 
 [[package]]

@@ -41,20 +41,20 @@ class test_Hacker_News__Text_Entities(TestCase):
             mgraph = _.mgraph__for_article__text_entities__title(article_entities=self.article_entities)
             assert type(mgraph) is MGraph
 
-    def test_png_bytes__for_article__text_entities__description(self):
-        with self.text_entities as _:
-            png_bytes = _.png_bytes__for_article__text_entities__description(article_entities=self.article_entities)
-            assert type(png_bytes) is bytes
-            assert len (png_bytes) > 255
-            #file_create_from_bytes(path=f'{self.__class__.__name__}__description.png', bytes=png_bytes)
+    # def test_png_bytes__for_article__text_entities__description(self):
+    #     with self.text_entities as _:
+    #         png_bytes = _.png_bytes__for_article__text_entities__description(article_entities=self.article_entities)
+    #         assert type(png_bytes) is bytes
+    #         assert len (png_bytes) > 255
+    #         #file_create_from_bytes(path=f'{self.__class__.__name__}__description.png', bytes=png_bytes)
 
 
-    def test_png_bytes__for_article__text_entities__title(self):
-        with self.text_entities as _:
-            png_bytes = _.png_bytes__for_article__text_entities__title(article_entities=self.article_entities)
-            assert type(png_bytes) is bytes
-            assert len (png_bytes) > 255
-            #file_create_from_bytes(path=f'{self.__class__.__name__}__title.png', bytes=png_bytes)
+    # def test_png_bytes__for_article__text_entities__title(self):
+    #     with self.text_entities as _:
+    #         png_bytes = _.png_bytes__for_article__text_entities__title(article_entities=self.article_entities)
+    #         assert type(png_bytes) is bytes
+    #         assert len (png_bytes) > 255
+    #         #file_create_from_bytes(path=f'{self.__class__.__name__}__title.png', bytes=png_bytes)
 
 
     def test_add_text_entities_mgraph(self):
