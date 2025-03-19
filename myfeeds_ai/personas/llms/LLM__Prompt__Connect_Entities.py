@@ -76,10 +76,3 @@ class LLM__Prompt__Connect_Entities(Type_Safe):
         content = llm_response.obj().response_data.choices[0].message.content
         content_json = str_to_json(content)
         return Schema__Persona__Connected_Entities.from_json(content_json)
-
-    # @type_safe
-    # def generate_relevance_assessment(self, persona_graph_tree : str,
-    #                                         articles_graph_tree: str):# Generate a complete relevance assessment between persona and article.
-    #     llm_response         = self.llm_request(persona_graph_tree=persona_graph_tree, articles_graph_tree=articles_graph_tree)
-    #     relevance_assessment = self.process_llm_response(llm_response)
-    #     return relevance_assessment
