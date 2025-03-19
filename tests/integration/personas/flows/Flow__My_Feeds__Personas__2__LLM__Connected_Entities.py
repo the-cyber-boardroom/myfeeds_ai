@@ -11,7 +11,7 @@ from osbot_utils.helpers.llms.platforms.open_ai.API__LLM__Open_AI               
 from osbot_utils.utils.Env                                                          import get_env
 from tests.integration.data_feeds__objs_for_tests                                   import myfeeds_tests__setup_local_stack
 
-class test_Flow__My_Feeds__Personas__Connect__Entities(TestCase):
+class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
 
     @classmethod
     def setUpClass(cls):
