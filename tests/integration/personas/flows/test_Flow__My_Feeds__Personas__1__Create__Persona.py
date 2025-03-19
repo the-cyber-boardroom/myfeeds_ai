@@ -13,7 +13,7 @@ from osbot_utils.utils.Env                                                  impo
 from tests.integration.data_feeds__objs_for_tests                           import myfeeds_tests__setup_local_stack
 
 
-class Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
+class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
 
     @classmethod
     def setUpClass(cls):
