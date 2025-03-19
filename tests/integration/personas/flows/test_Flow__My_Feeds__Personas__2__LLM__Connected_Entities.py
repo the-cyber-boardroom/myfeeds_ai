@@ -11,7 +11,7 @@ from osbot_utils.helpers.llms.platforms.open_ai.API__LLM__Open_AI               
 from osbot_utils.utils.Env                                                          import get_env
 from tests.integration.data_feeds__objs_for_tests                                   import myfeeds_tests__setup_local_stack
 
-class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
+class test_Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -29,7 +29,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
             assert type(_.file_persona.file_id) is Safe_Id
             assert _.file_persona.file_id       == f"{_.persona_type.value}__{FILE_ID__PERSONA}"
 
-    def test_task__2__setup__file_llm_connect_entities(self):
+    def test_task__3__create_connected_entities(self):
         with self.flow_connect_entities as _:
             _.task__1__load_persona_data               ()
             _.task__2__load_articles_data              ()
@@ -40,4 +40,14 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
 
             # from osbot_utils.utils.Dev import pprint
             # pprint(_.output)
+
+    def test_task__4__collect_articles_markdown(self):
+        with self.flow_connect_entities as _:
+            _.task__1__load_persona_data               ()
+            _.task__4__collect_articles_markdown       ()
+
+
+            # from osbot_utils.utils.Dev import pprint
+            # pprint(_.output)
+
 
