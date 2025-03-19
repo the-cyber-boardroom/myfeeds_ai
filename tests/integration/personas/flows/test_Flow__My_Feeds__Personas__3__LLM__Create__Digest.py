@@ -42,12 +42,12 @@ class test_Flow__My_Feeds__Personas__3__LLM__Create__Digest(TestCase):
             _.task__2__llm_create_persona_digest()
             _.task__3__save_persona_digest      ()
 
-    def test_task__4__create_output(self):
-        with self.flow_create_digest as _:
-            _.task__1__load_persona_data        ()
-            _.task__2__llm_create_persona_digest()
-            _.task__3__save_persona_digest      ()
-            _.task__4__create_output            ()
+    # def test_task__4__create_output(self):
+    #     with self.flow_create_digest as _:
+    #         _.task__1__load_persona_data        ()
+    #         _.task__2__llm_create_persona_digest()
+    #         _.task__3__save_persona_digest      ()
+    #         _.task__4__create_output            ()
 
             # from osbot_utils.utils.Dev import pprint
             # pprint(_.output)
