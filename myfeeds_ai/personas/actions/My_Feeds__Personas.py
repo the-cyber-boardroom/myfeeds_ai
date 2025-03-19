@@ -32,6 +32,16 @@ class My_Feeds__Personas(Type_Safe):
         return My_Feeds__Personas__File(**kwargs_file)
 
     @type_safe
+    def file__persona_digest_html(self, persona_type: Schema__Persona__Types):
+        file_id = Safe_Id(persona_type.value + '__' + FILE_ID__PERSONA__DIGEST)
+        kwargs_file= dict(persona_type = persona_type               ,
+                          file_id      = file_id                    ,
+                          extension    = S3_Key__File_Extension.HTML,
+                          content_type = 'text/html; charset=utf-8' ,
+                          data_type    = Schema__Persona__Digest    )
+        return My_Feeds__Personas__File(**kwargs_file)
+
+    @type_safe
     def file__persona(self, persona_type: Schema__Persona__Types):
         file_id = Safe_Id(persona_type.value + '__' + FILE_ID__PERSONA)
         kwargs_file= dict(persona_type = persona_type               ,
