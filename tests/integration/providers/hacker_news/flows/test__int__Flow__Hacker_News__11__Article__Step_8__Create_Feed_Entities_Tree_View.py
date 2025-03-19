@@ -23,8 +23,10 @@ class test__int__Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tr
     def test_task__2__create_file_with_feed_text_entities_mgraph(self):
         with self.flow_llm_create_feed_entities_graphs as _:
             _.max_articles_to_load = 5
-            _.task__1__load_articles_to_process                  ()
-            _.task__2__create_file_with_feed_text_entities_mgraph()
-            _.task__3__move_articles_to_next_step                 ()
-            _.task__4__create_output                             ()
+            _.task__1__load_articles_to_process                     ()
+            _.task__2__create_file_with_feed_text_entities_tree_view()
+            _.task__3__update__feed_text_entities__files            ()
+            _.task__4__move_articles_to_next_step                   ()
+            _.task__5__create_output                                ()
+
             #pprint(_.output)

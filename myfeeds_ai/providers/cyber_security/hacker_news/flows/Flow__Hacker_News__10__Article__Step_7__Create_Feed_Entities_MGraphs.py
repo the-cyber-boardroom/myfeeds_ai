@@ -3,6 +3,7 @@ from mgraph_db.mgraph.MGraph                                                    
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Feed__Text_Entities           import Hacker_News__Feed__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage                       import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Text_Entities                 import Hacker_News__Text_Entities
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File                            import Hacker_News__File
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current         import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article                      import Schema__Feed__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Article__Status__Change      import Schema__Feed__Article__Status__Change
@@ -17,6 +18,7 @@ FLOW__HACKER_NEWS__7__MAX__ARTICLES_TO_MOVE = 1
 
 class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_Safe):
     file_articles_current                    : Hacker_News__File__Articles__Current
+    file__feed_text_entities__files          : Hacker_News__File
     articles_to_process                      : List[Schema__Feed__Article                ]
     feed_text_entities                       : Hacker_News__Feed__Text_Entities
     storage                                  : Hacker_News__Storage
@@ -42,6 +44,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
         with self.file_articles_current as _:
             _.load()
             self.articles_to_process = _.next_step__7__merge_day_entities_graphs()
+        self.file__feed_text_entities__files = self.feed_text_entities.file__feed_text_entities__files()
 
     @task()
     def task__2__create_file_with_feed_text_entities_mgraph(self):
@@ -86,13 +89,24 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
         self.path_now__text_entities__titles          = file__feed_text_entities_titles      .path_now   ()             #      since at the moment there is only support for saving on both "hour now" and latest
         #self.path_now__text_entities__descriptions    = file__feed_text_entities_descriptions.path_now   ()             #      but not on "article now" and latest
 
-    def task__3__move_articles_to_next_step(self):
+    @task()
+    def task__3__update__feed_text_entities__files(self):
+        with self.file__feed_text_entities__files as _:
+            data = _.data()
+            data.path_latest__text_entities__titles = self.path_latest__text_entities__titles
+            data.path_now__text_entities__titles    = self.path_now__text_entities__titles
+            _.save_data(data.json())
+
+
+    @task()
+    def task__4__move_articles_to_next_step(self):
         for article in self.articles_to_process[0:self.max_articles_to_move]:
             article.next_step                                     = self.to_step
             article_change_status                                 = Schema__Feed__Article__Status__Change(article=article, from_step=self.from_step)
             article.path__file__feed__text_entities               =  self.path_now__text_entities
             article.path__file__feed__text_entities__titles       =  self.path_now__text_entities__titles
             article.path__file__feed__text_entities__descriptions =  self.path_now__text_entities__descriptions
+            article.path__file__feed__text_entities__files        =  self.file__feed_text_entities__files.path_now()
             self.status_changes.append(article_change_status)
 
         self.file_articles_current.save()
@@ -119,7 +133,8 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
     #
     #         #pprint(file_size(png_file))
 
-    def task__4__create_output(self):
+    @task()
+    def task__5__create_output(self):
         self.output = dict(articles_to_process                      = len(self.articles_to_process)                     ,
                            mgraph_entities                          = self.mgraph_entities              .data().stats() ,
                            mgraph_entities__titles                  = self.mgraph_entities__titles      .data().stats() ,
@@ -131,6 +146,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
                            path_now__text_entities__titles          = self.path_now__text_entities__titles              ,
                            path_now__text_entities__descriptions    = self.path_now__text_entities__descriptions        ,
                            max_articles_to_move                     = self.max_articles_to_move                         ,
+                           path_feed_text_entities__files           = self.file__feed_text_entities__files.path_now()   ,
                            status_changes                           = self.status_changes.json()                        )
 
 
@@ -139,8 +155,9 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
         with self as _:
             _.task__1__load_articles_to_process                   ()
             _.task__2__create_file_with_feed_text_entities_mgraph ()
-            _.task__3__move_articles_to_next_step                 ()
-            _.task__4__create_output                              ()
+            _.task__3__update__feed_text_entities__files          ()
+            _.task__4__move_articles_to_next_step                 ()
+            _.task__5__create_output                              ()
         return self.output
 
     def run(self):

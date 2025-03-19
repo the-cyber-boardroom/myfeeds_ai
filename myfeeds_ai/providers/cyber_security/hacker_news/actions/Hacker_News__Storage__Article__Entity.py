@@ -9,7 +9,6 @@ from osbot_utils.helpers.Safe_Id                                                
 S3_FOLDER_NAME__ENTITIES = 'entities'
 
 class Hacker_News__Storage__Article__Entity(Hacker_News__Storage__Article):
-    #entity_id : Obj_Id
 
     @cache_on_self
     def areas(self) -> List[Safe_Id]:
