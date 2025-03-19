@@ -31,7 +31,7 @@ class test_My_Feeds__Personas(TestCase):
 
     def test_file__llm_connect_entities(self):
         persona_type = Schema__Persona__Types.PRIVATE__CISO
-        with self.personas.file__llm_connect_entities(persona_type=persona_type) as _:
+        with self.personas.file__persona_connect_entities(persona_type=persona_type) as _:
             assert type(_)     is My_Feeds__Personas__File
             assert _.file_id   == f'{Schema__Persona__Types.PRIVATE__CISO.value}__{FILE_ID__PERSONA__CONNECTED__ENTITIES}'
             assert _.data_type is Schema__Persona__LLM__Connect_Entities

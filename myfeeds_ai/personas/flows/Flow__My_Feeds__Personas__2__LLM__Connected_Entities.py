@@ -52,7 +52,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
 
     #@task()
     def task__3__create_connected_entities(self):
-        with self.personas.file__llm_connect_entities(persona_type=self.persona_type) as _:
+        with self.personas.file__persona_connect_entities(persona_type=self.persona_type) as _:
             self.file_llm_connect_entities = _
             self.llm_connect_entities      = _.data()
 
@@ -76,7 +76,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
     def task__4__collect_articles_markdown(self):
         file_current_articles = Hacker_News__File__Articles__Current()
         file_current_articles.load()
-        with self.personas.file__llm_connect_entities(persona_type=self.persona_type) as _:
+        with self.personas.file__persona_connect_entities(persona_type=self.persona_type) as _:
             llm_connect_entities = _.data()
             for connected_entity in llm_connect_entities.connected_entities:
                 article_id = Obj_Id(connected_entity.article_id)
@@ -94,7 +94,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
 
 
     @task()
-    def task__n__create_output(self):
+    def task__5__create_output(self):
         self.output = dict(persona_type                             = self.persona_type.value                         ,
                            path_latest__file_llm_connected_entities = self.file_llm_connect_entities.path_latest    (),
                            path_now__file_llm_connected_entities    = self.file_llm_connect_entities.path_now       (),
@@ -112,7 +112,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
             _.task__2__load_articles_data        ()
             _.task__3__create_connected_entities ()
             _.task__4__collect_articles_markdown ()
-            _.task__n__create_output             ()
+            _.task__5__create_output             ()
         return self.output
 
     def run(self):

@@ -2,7 +2,7 @@ import pytest
 from unittest                                                                                   import TestCase
 from myfeeds_ai.personas.actions.My_Feeds__Personas                                             import My_Feeds__Personas
 from myfeeds_ai.personas.llms.LLM__Prompt__Personas__Create_Digest                              import LLM__Prompt__Personas__Create_Digest, SYSTEM_PROMPT__CREATE_DIGEST, USER_PROMPT__CREATE_DIGEST
-from myfeeds_ai.personas.llms.Schema__Persona__Digest                                           import Schema__Persona__Digest
+from myfeeds_ai.personas.llms.Schema__Persona__Digest_Articles                                  import Schema__Persona__Digest_Articles
 from myfeeds_ai.personas.schemas.Schema__Persona                                                import Schema__Persona
 from myfeeds_ai.personas.schemas.Schema__Persona__LLM__Connect_Entities                         import Schema__Persona__LLM__Connect_Entities
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                                         import Schema__Persona__Types
@@ -26,7 +26,7 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
         cls.persona_type               = Schema__Persona__Types.EXEC__CEO
         cls.personas                   = My_Feeds__Personas()
         cls.persona                    = cls.personas.file__persona             (persona_type=cls.persona_type).data()
-        cls.persona_connected_entities = cls.personas.file__llm_connect_entities(persona_type=cls.persona_type).data()
+        cls.persona_connected_entities = cls.personas.file__persona_connect_entities(persona_type=cls.persona_type).data()
 
     def test_format_articles_content(self):                          # Test that article content is correctly formatted.
         if self.persona:
@@ -47,7 +47,7 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
     def test_llm_request(self):                                                 # Test that the LLM request is properly formatted.
         llm_request = self.prompt_create_digest.llm_request(persona                     = self.persona                   ,
                                                             persona_connected_entities  = self.persona_connected_entities)
-        assert llm_request.request_data.function_call.parameters == Schema__Persona__Digest         # Check function call parameters
+        assert llm_request.request_data.function_call.parameters == Schema__Persona__Digest_Articles         # Check function call parameters
 
         with llm_request.request_data.messages[0] as _:                                             # Check system message
             assert _.role    == Schema__LLM_Request__Message__Role.SYSTEM
@@ -72,12 +72,12 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
 
         digest = self.prompt_create_digest.process_llm_response(llm_response)
 
-
-        pprint(digest.json())
-        file_create(path='./digest.html', contents=digest.get_html())
+        assert type(digest) is Schema__Persona__Digest_Articles
+        # pprint(digest.json())
+        # file_create(path='./digest.html', contents=digest.get_html())
 
         # todo: fix and improve the asserts below
-        self.assertIsInstance(digest, Schema__Persona__Digest)                  # Verify the result is a proper Schema__Persona__Digest
+        self.assertIsInstance(digest, Schema__Persona__Digest_Articles)                  # Verify the result is a proper Schema__Persona__Digest
 
         # Check that required fields are present
         self.assertTrue(hasattr(digest, 'persona_type'))

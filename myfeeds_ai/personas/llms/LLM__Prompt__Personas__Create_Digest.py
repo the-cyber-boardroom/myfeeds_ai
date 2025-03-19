@@ -1,4 +1,4 @@
-from myfeeds_ai.personas.llms.Schema__Persona__Digest                       import Schema__Persona__Digest
+from myfeeds_ai.personas.llms.Schema__Persona__Digest_Articles              import Schema__Persona__Digest_Articles
 from myfeeds_ai.personas.schemas.Schema__Persona                            import Schema__Persona
 from myfeeds_ai.personas.schemas.Schema__Persona__LLM__Connect_Entities     import Schema__Persona__LLM__Connect_Entities
 from osbot_utils.helpers.llms.builders.LLM_Request__Builder__Open_AI        import LLM_Request__Builder__Open_AI
@@ -7,7 +7,6 @@ from osbot_utils.helpers.llms.schemas.Schema__LLM_Response                  impo
 from osbot_utils.type_safe.Type_Safe                                        import Type_Safe
 from osbot_utils.type_safe.decorators.type_safe                             import type_safe
 from osbot_utils.utils.Json                                                 import str_to_json
-from osbot_utils.utils.Misc                                                 import word_wrap
 
 SYSTEM_PROMPT__CREATE_DIGEST = """You are a specialized cybersecurity news analyst creating personalized digests for professionals in the security field across various roles and responsibilities.
 
@@ -116,13 +115,13 @@ class LLM__Prompt__Personas__Create_Digest(Type_Safe):
             _.set__model__gpt_4o_mini()                     # Using GPT-4o-mini
             _.add_message__system    (system_prompt)
             _.add_message__user      (user_prompt)
-            _.set__function_call     (parameters=Schema__Persona__Digest, function_name='create_digest')
+            _.set__function_call     (parameters=Schema__Persona__Digest_Articles, function_name='create_digest')
 
         return self.request_builder.llm_request()
 
     @type_safe
-    def process_llm_response(self, llm_response: Schema__LLM_Response) -> Schema__Persona__Digest:
+    def process_llm_response(self, llm_response: Schema__LLM_Response) -> Schema__Persona__Digest_Articles:
         """Process the LLM response into a structured digest."""
         content = llm_response.obj().response_data.choices[0].message.content
         content_json = str_to_json(content)
-        return Schema__Persona__Digest.from_json(content_json)
+        return Schema__Persona__Digest_Articles.from_json(content_json)

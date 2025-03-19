@@ -34,7 +34,7 @@ class test_Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
             _.task__1__load_persona_data               ()
             _.task__2__load_articles_data              ()
             _.task__3__create_connected_entities       ()
-            _.task__n__create_output                   ()
+            _.task__5__create_output                   ()
             assert type(_.llm_connect_entities)      is Schema__Persona__LLM__Connect_Entities
             assert type(_.file_llm_connect_entities) is My_Feeds__Personas__File
 
