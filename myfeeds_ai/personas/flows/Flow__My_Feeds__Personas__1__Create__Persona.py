@@ -32,7 +32,8 @@ class Flow__My_Feeds__Personas__1__Create__Persona(Type_Safe):
             if _.description is None:
                 persona_default_data = Default_Data__My_Feeds__Personas.get(self.persona_type)
                 if persona_default_data:
-                    _.description = persona_default_data.get("description")
+                    _.description  = persona_default_data.get("description")
+            _.persona_type = self.persona_type
 
     @task()
     def test__3__create_entities(self):
