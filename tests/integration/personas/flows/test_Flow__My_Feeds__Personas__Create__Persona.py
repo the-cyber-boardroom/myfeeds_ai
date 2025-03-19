@@ -2,7 +2,7 @@ import pytest
 from unittest                                                               import TestCase
 from myfeeds_ai.personas.config.Config__My_Feeds__Personas                  import FILE_ID__PERSONA
 from myfeeds_ai.personas.files.My_Feeds__Personas__File                     import My_Feeds__Personas__File
-from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__Create__Persona    import Flow__My_Feeds__Personas__Create__Persona
+from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__1__Create__Persona import Flow__My_Feeds__Personas__1__Create__Persona
 from myfeeds_ai.personas.schemas.Schema__Persona                            import Schema__Persona
 from myfeeds_ai.personas.schemas.Schema__Persona__Entities                  import Schema__Persona__Entities
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                     import Schema__Persona__Types
@@ -20,7 +20,7 @@ class test_Flow__My_Feeds__Personas__Create__Persona(TestCase):
         if get_env(ENV_NAME_OPEN_AI__API_KEY) is None:
             pytest.skip('This test requires OpenAI API Key to run')
         myfeeds_tests__setup_local_stack()
-        cls.flow_create_persona = Flow__My_Feeds__Personas__Create__Persona()
+        cls.flow_create_persona = Flow__My_Feeds__Personas__1__Create__Persona()
 
     def test_task__1__load_persona_data(self):
         with self.flow_create_persona as _:
