@@ -8,6 +8,7 @@ from osbot_utils.type_safe.decorators.type_safe         import type_safe
 
 
 class S3_Key__File_Extension(Enum):
+    HTML         : str = 'html'
     JSON         : str = 'json'
     PNG          : str = 'png'
     MARKDOWN     : str = 'md'

@@ -14,17 +14,18 @@ from osbot_utils.type_safe.Type_Safe                                            
 
 
 class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
-    file_persona                     : My_Feeds__Personas__File
-    persona                          : Schema__Persona
-    persona_digest                   : Schema__Persona__Digest
-    persona_digest_articles          : Schema__Persona__Digest_Articles
-    persona_connected_entities       : Schema__Persona__LLM__Connect_Entities
-    persona_type                     : Schema__Persona__Types = Schema__Persona__Types.EXEC__CISO
-    personas                         : My_Feeds__Personas
-    prompt_create_digest             : LLM__Prompt__Personas__Create_Digest
-    output                           : dict
-    path_now_file__persona_digest    : str
-    path_latest_file__persona_digest : str
+    file_persona                         : My_Feeds__Personas__File
+    persona                              : Schema__Persona
+    persona_digest                       : Schema__Persona__Digest
+    persona_digest_articles              : Schema__Persona__Digest_Articles
+    persona_connected_entities           : Schema__Persona__LLM__Connect_Entities
+    persona_type                         : Schema__Persona__Types = Schema__Persona__Types.EXEC__CISO
+    personas                             : My_Feeds__Personas
+    prompt_create_digest                 : LLM__Prompt__Personas__Create_Digest
+    output                               : dict
+    path_now_file__persona_digest        : str
+    path_latest_file__persona_digest     : str
+    path_latest_file__persona_digest_html: str
 
     @task()
     def task__1__load_persona_data(self):
@@ -45,7 +46,7 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
         self.persona_digest_articles = self.prompt_create_digest.process_llm_response(llm_response)
 
 
-    @task()
+    #@task()
     def task__3__save_persona_digest(self):
         with Schema__Persona__Digest() as _:
             _.digest_articles = self.persona_digest_articles
@@ -60,11 +61,17 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
             self.path_now_file__persona_digest    = _.path_now()
             self.path_latest_file__persona_digest = _.path_latest()
 
+        with self.personas.file__persona_digest_html(persona_type=self.persona_type) as _:
+            _.save_data(self.persona_digest.digest_html)
+            self.path_latest_file__persona_digest_html = _.path_latest()
+
+
     @task()
     def task__4__create_output(self):
-        self.output = dict(persona_type                             = self.persona_type.value              ,
-                           path_now_file__persona_digest            = self.path_now_file__persona_digest   ,
-                           path_now__file_llm_connected_entities    = self.path_latest_file__persona_digest)
+        self.output = dict(persona_type                             = self.persona_type.value                   ,
+                           path_now_file__persona_digest            = self.path_now_file__persona_digest        ,
+                           path_now_file__persona_digest_html       = self.path_latest_file__persona_digest_html,
+                           path_now__file_llm_connected_entities    = self.path_latest_file__persona_digest     )
 
 
     @flow()
