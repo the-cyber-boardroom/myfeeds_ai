@@ -8,10 +8,9 @@ from myfeeds_ai.personas.schemas.Schema__Persona__LLM__Connect_Entities         
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                                         import Schema__Persona__Types
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Feed__Text_Entities   import Hacker_News__Feed__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage               import Hacker_News__Storage
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import \
-    Hacker_News__File__Articles__Current
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache  import Hacker_News__Execute_LLM__With_Cache
-from osbot_utils.helpers.Obj_Id import Obj_Id
+from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
 from osbot_utils.helpers.flows.Flow                                                             import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                  import flow
 from osbot_utils.helpers.flows.decorators.task                                                  import task
@@ -51,7 +50,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
 
             #path_latest__text_entities__titles__tree
 
-    @task()
+    #@task()
     def task__3__create_connected_entities(self):
         with self.personas.file__llm_connect_entities(persona_type=self.persona_type) as _:
             self.file_llm_connect_entities = _
@@ -62,14 +61,14 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
         llm_request             = prompt_connect_entities.llm_request(persona_graph_tree  = self.persona_graph_tree ,
                                                                       articles_graph_tree = self.articles_graph_tree)
         with Hacker_News__Execute_LLM__With_Cache() as _:
-            llm_response            = _.setup().execute__llm_request(llm_request)
-            connected_entities      = prompt_connect_entities.process_llm_response(llm_response)
-            cache_id__llm_request    = _.llm_cache.get__cache_id__from__request(llm_request)
+            llm_response                = _.setup().execute__llm_request(llm_request)
+            persona_connected_entities  = prompt_connect_entities.process_llm_response(llm_response)
+            cache_id__llm_request       = _.llm_cache.get__cache_id__from__request(llm_request)
 
         with self.llm_connect_entities as _:
             _.persona__path_now                     = self.persona.path_now
             _.path_now__text_entities__titles__tree = self.path_now__text_entities__titles__tree
-            _.connected_entities                    = connected_entities
+            _.connected_entities                    = persona_connected_entities.connected_entities
             _.cache_id__llm_request                 = cache_id__llm_request
             self.file_llm_connect_entities.save_data(_.json())
 
@@ -79,7 +78,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
         file_current_articles.load()
         with self.personas.file__llm_connect_entities(persona_type=self.persona_type) as _:
             llm_connect_entities = _.data()
-            for connected_entity in llm_connect_entities.connected_entities.connected_entities:
+            for connected_entity in llm_connect_entities.connected_entities:
                 article_id = Obj_Id(connected_entity.article_id)
                 article    = file_current_articles.article(article_id=article_id)
                 if article:
