@@ -102,23 +102,15 @@ EXPECTED_SCHEMA = { 'properties': { 'entities': { 'items': { 'properties': { 'co
                      'required': ['entities'],
                      'type': 'object'}
 
-SYSTEM_CONTENT = ('You are a comprehensive knowledge extractor that '
-                  'maps entities into a rich semantic network.\n'
-                  '                           For each entity:\n'
-                  '                           1. Identify its core '
-                  'essence and domain classifications\n'
-                  '                           2. Map its functional '
-                  'roles (keep these brief and specific)\n'
-                  '                           3. Identify its '
-                  'technical ecosystem and standards\n'
-                  '                           4. Map both direct '
-                  'relationships (from the text) and broader '
-                  'knowledge relationships\n'
-                  '                           Be specific and '
-                  'precise. Avoid descriptions - focus on '
-                  'relationships and classifications.\n'
-                  '                           Return only valid '
-                  'JSON with no additional text.')
+SYSTEM_CONTENT   = ("You are a comprehensive knowledge extractor that maps entities into a rich semantic network.\n"
+                    "For each entity:\n"
+                    "  1. Identify its core essence and domain classifications.\n"
+                    "  2. Map its functional roles (keep these brief and specific).\n"
+                    "  3. Identify its technical ecosystem and standards.\n"
+                    "  4. Map both direct relationships (from the text) and broader knowledge relationships.\n"
+                    "Be specific and precise. Avoid descriptions—focus on relationships and classifications.\n"
+                    "Return only valid JSON with no additional text."                                         )
+
 EXPECTED_PROMPTS = { "cyber-news-1": { 'messages': [ { 'content': SYSTEM_CONTENT,
                                                        'role'   : 'system'     },
                                                     { 'content': 'Extract key entities from this text: '

@@ -1,17 +1,16 @@
-from osbot_fast_api.api.Fast_API_Routes                                                                                         import Fast_API_Routes
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Flows                                                 import Hacker_News__Flows
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs import Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View import \
-    Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed                              import Flow__Hacker_News__1__Download_RSS_Feed
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline                       import Flow__Hacker_News__2__Create_Articles_Timeline
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__3__Extract_New_Articles                           import Flow__Hacker_News__3__Extract_New_Articles
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__4__Article__Step_1__Create_Article_Files          import Flow__Hacker_News__4__Article__Step_1__Create_Article_Files
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__5__Article__Step_2__Create_Article_Markdown       import Flow__Hacker_News__5__Article__Step_2__Create_Article_Markdown
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Entities          import Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Entities
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs   import Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs    import Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs
-from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs     import Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs
+from osbot_fast_api.api.Fast_API_Routes                                                                                             import Fast_API_Routes
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Flows                                                     import Hacker_News__Flows
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs     import Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View   import Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed                                  import Flow__Hacker_News__1__Download_RSS_Feed
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline                           import Flow__Hacker_News__2__Create_Articles_Timeline
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__3__Extract_New_Articles                               import Flow__Hacker_News__3__Extract_New_Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__4__Article__Step_1__Create_Article_Files              import Flow__Hacker_News__4__Article__Step_1__Create_Article_Files
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__5__Article__Step_2__Create_Article_Markdown           import Flow__Hacker_News__5__Article__Step_2__Create_Article_Markdown
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Entities              import Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Entities
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs       import Flow__Hacker_News__7__Article__Step_4__Create_Text_Entities_Graphs
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs        import Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs
+from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs         import Flow__Hacker_News__9__Article__Step_6__Merge_Day_Entities_Graphs
 
 ROUTE_PATH__HACKER_NEWS__FLOWS = 'hacker-news-flows'
 
@@ -44,8 +43,8 @@ class Routes__Hacker_News__Flows(Fast_API_Routes):
     def flow_4_article_step_1_create_article_files(self, max_articles_to_save:int = 1):
         return Flow__Hacker_News__4__Article__Step_1__Create_Article_Files(max_articles_to_save=max_articles_to_save).run().flow_output()
 
-    def flow_5_article_step_2_create_article_markdown(self):
-        return Flow__Hacker_News__5__Article__Step_2__Create_Article_Markdown().run().flow_output()
+    def flow_5_article_step_2_create_article_markdown(self, max_articles_to_create:int =1):
+        return Flow__Hacker_News__5__Article__Step_2__Create_Article_Markdown(max_articles_to_create=max_articles_to_create).run().flow_output()
 
     def flow_6_article_step_3_llm_text_to_entities(self, max_articles_to_create:int = 1):
         return Flow__Hacker_News__6__Article__Step_3__LLM_Text_To_Entities(max_articles_to_create=max_articles_to_create).run().flow_output()

@@ -1,5 +1,7 @@
 from unittest                                                                                   import TestCase
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import Schema__Feed__Config__New_Articles
+from osbot_utils.utils.Json                                                                     import json__equals__list_and_set
+
 
 class test_Schema__Feed__Config__New_Articles(TestCase):
 
@@ -26,5 +28,4 @@ class test_Schema__Feed__Config__New_Articles(TestCase):
 
         default_json = Schema__Feed__Config__New_Articles().json()
         assert Schema__Feed__Config__New_Articles.from_json(default_json).json() == default_json
-
-        assert Schema__Feed__Config__New_Articles.from_json(json_data).json() == json_data
+        assert json__equals__list_and_set(Schema__Feed__Config__New_Articles.from_json(json_data).json(),  json_data)

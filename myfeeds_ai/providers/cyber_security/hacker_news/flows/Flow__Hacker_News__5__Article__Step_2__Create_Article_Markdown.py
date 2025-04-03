@@ -17,6 +17,7 @@ class Flow__Hacker_News__5__Article__Step_2__Create_Article_Markdown(Type_Safe):
     output                : dict
     articles_to_process   : List[Schema__Feed__Article                ]
     status_changes        : List[Schema__Feed__Article__Status__Change]
+    max_articles_to_create: int = FLOW__HACKER_NEWS__5__MAX__ARTICLES_TO_CREATE
 
     @task()
     def task__1__load_articles_to_process(self):
@@ -29,7 +30,7 @@ class Flow__Hacker_News__5__Article__Step_2__Create_Article_Markdown(Type_Safe):
         from_step   = Schema__Feed__Article__Step.STEP__2__MARKDOWN__FOR_ARTICLE
         to_step     = Schema__Feed__Article__Step.STEP__3__LLM__TEXT_TO_ENTITIES
 
-        for article in self.articles_to_process[0:FLOW__HACKER_NEWS__5__MAX__ARTICLES_TO_CREATE]:
+        for article in self.articles_to_process[0:self.max_articles_to_create]:
             article_id                   = article.article_id
             path_folder_data             = article.path__folder__data
             hacker_news_article          = Hacker_News__Article(article_id=article_id, path__folder__data=path_folder_data)

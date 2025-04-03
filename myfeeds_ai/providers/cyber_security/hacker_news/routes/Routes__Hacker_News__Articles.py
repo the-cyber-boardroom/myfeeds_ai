@@ -1,4 +1,5 @@
 from osbot_fast_api.api.Fast_API_Routes                                                         import Fast_API_Routes
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                  import Hacker_News__Data
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__All     import Hacker_News__File__Articles__All
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__New     import Hacker_News__File__Articles__New
@@ -7,7 +8,9 @@ from osbot_utils.helpers.Obj_Id                                                 
 
 ROUTE_PATH__HACKER_NEWS__ARTICLES   = 'hacker-news-articles'
 
-ROUTES_PATHS__HACKER_NEWS__ARTICLES = [f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-articles'                ,
+ROUTES_PATHS__HACKER_NEWS__ARTICLES = [
+                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles'                 ,
+                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-articles'                ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article'                 ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article-change-next-step',
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/delete-file-articles-all'        ,
@@ -17,6 +20,10 @@ ROUTES_PATHS__HACKER_NEWS__ARTICLES = [f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/cu
 
 class Routes__Hacker_News__Articles(Fast_API_Routes):
     tag                 : str                = ROUTE_PATH__HACKER_NEWS__ARTICLES
+    hacker_news_data    : Hacker_News__Data
+
+    def digest_articles(self):
+        return self.hacker_news_data.digest_articles()
 
     def current_articles(self):
         with Hacker_News__File__Articles__Current() as _:
@@ -52,6 +59,7 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
             return _.delete__latest()
 
     def setup_routes(self):
+        self.add_route_get   (self.digest_articles                  )
         self.add_route_get   (self.current_articles                 )
         self.add_route_get   (self.current_article                  )
         self.add_route_get   (self.current_article_change_next_step )

@@ -44,9 +44,11 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
         with self.feed_text_entities.file__feed_text_entities__files().data() as _:
 
             self.path_now__text_entities__titles__tree = _.path_now__text_entities__titles__tree
-
-            self.articles_graph_tree = self.hacker_news_storage.path__load_data(self.path_now__text_entities__titles__tree, content_type='text/plain').decode()
-            self.persona_graph_tree  = self.persona.description__tree_values
+            if self.path_now__text_entities__titles__tree:
+                self.articles_graph_tree = self.hacker_news_storage.path__load_data(self.path_now__text_entities__titles__tree, content_type='text/plain').decode()
+                self.persona_graph_tree  = self.persona.description__tree_values
+            else:
+                raise ValueError(f"path_now__text_entities__titles__tree was empty in file: {self.feed_text_entities.file__feed_text_entities__files().path_now()} ")
 
             #path_latest__text_entities__titles__tree
 

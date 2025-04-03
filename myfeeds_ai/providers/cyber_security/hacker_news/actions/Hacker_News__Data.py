@@ -1,8 +1,11 @@
-from typing                                                                                     import Dict
+from typing                                                                                     import Dict, List
+from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types                   import Time_Chain__Source
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                        import S3_Key__File_Extension
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                                         import S3_FILE_NAME__RAW__FEED_DATA
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Live_Data             import Hacker_News__Live_Data
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage               import Hacker_News__Storage
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
+from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__New     import Hacker_News__File__Articles__New
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Article         import Model__Hacker_News__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed      import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Config__New_Articles import Schema__Feed__Config__New_Articles
@@ -43,17 +46,26 @@ class Hacker_News__Data(Type_Safe):
         if data:
             return Model__Hacker_News__Data__Feed.from_json(data)
 
-    # todo: refactor to use the new file_new_articles
-    def new_articles          (self      ) -> Schema__Feed__Config__New_Articles:           #remove usage of cast_to__new_articles
-        return self.cast_to__new_articles(self.storage.load_from__latest(file_id=FILE_ID__NEW_ARTICLES, extension=EXTENSION__NEW_ARTICLES           ))
 
-    def new_articles__for_path(self, path) -> Schema__Feed__Config__New_Articles:
-        return self.cast_to__new_articles(self.storage.load_from__path  (file_id=FILE_ID__NEW_ARTICLES, extension=EXTENSION__NEW_ARTICLES, path=path))
+    def new_articles(self) -> Schema__Feed__Config__New_Articles:
+        return Hacker_News__File__Articles__New().data()
 
-    # todo: refactor to use the new file_current_articles
+    def digest_articles(self):
+        digest_articles  = {}
+        current_articles = self.current_articles().articles
+        for digest_article_id in self.digest_articles_ids():
+            digest_articles[digest_article_id] = current_articles.get(digest_article_id)
+        return digest_articles
+
+    def digest_articles_ids(self) -> set:
+        new_articles = self.new_articles()
+        if new_articles and new_articles.timeline_diff:
+            return new_articles.timeline_diff.added_values.get(Time_Chain__Source, set())
+        else:
+            return set()
+
     def current_articles(self) -> Schema__Feed__Articles:
-        current_articles = self.storage.load_from__latest(file_id=FILE_NAME__CURRENT_ARTICLES, extension=EXTENSION__CURRENT_ARTICLES           )
-        return Schema__Feed__Articles.from_json(current_articles)
+        return Hacker_News__File__Articles__Current().data()
 
     def cast_to__new_articles(self, json_data) -> Schema__Feed__Config__New_Articles:       # todo: remove method
         return Schema__Feed__Config__New_Articles.from_json(json_data)
