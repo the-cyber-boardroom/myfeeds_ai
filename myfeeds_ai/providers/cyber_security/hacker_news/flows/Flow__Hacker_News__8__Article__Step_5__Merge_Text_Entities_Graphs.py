@@ -20,7 +20,9 @@ class Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs(Type_Saf
     status_changes        : List[Schema__Feed__Article__Status__Change]
     max_graphs_to_merge   : int = FLOW__HACKER_NEWS__8__MAX__GRAPHS_TO_MERGE
     from_step             : Schema__Feed__Article__Step               = Schema__Feed__Article__Step.STEP__5__MERGE__TEXT_ENTITIES_GRAPHS
-    to_step               : Schema__Feed__Article__Step               = Schema__Feed__Article__Step.STEP__6__MERGE__DAY_ENTITIES_GRAPHS
+    #to_step               : Schema__Feed__Article__Step               = Schema__Feed__Article__Step.STEP__6__MERGE__DAY_ENTITIES_GRAPHS
+    # todo: rewire back (after performance fix) step 6
+    to_step               : Schema__Feed__Article__Step = Schema__Feed__Article__Step.STEP__7__MERGE__FEED_ENTITIES_GRAPHS
 
     @task()
     def task__1__load_articles_to_process(self):

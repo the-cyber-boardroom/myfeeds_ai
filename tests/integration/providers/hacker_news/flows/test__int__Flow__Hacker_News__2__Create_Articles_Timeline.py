@@ -157,4 +157,3 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
                                                                    path_latest = 'latest/feed-timeline.mgraph.png',
                                                                    path_now    = f'{path_now}/feed-timeline.mgraph.png'))
 
-

@@ -10,7 +10,7 @@ class test_Hacker_News__File__Timeline__Diff(TestCase):
     @classmethod
     def setUpClass(cls):
         myfeeds_tests__setup_local_stack()                               # make sure we are using localstack
-        cls.current_path  = '2025/02/20/23'                             # use these two in order to have a deterministic data set in the tests below
+        cls.current_path  = '2025/02/20/23'                              # use these two in order to have a deterministic data set in the tests below
         cls.previous_path = '2025/02/19/22'
         cls.file_timeline_diff = Hacker_News__File__Timeline__Diff()
 

@@ -6,7 +6,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Http_Content  
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                            import Hacker_News__Data
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline import Flow__Hacker_News__2__Create_Articles_Timeline
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__1__Download_RSS_Feed        import Flow__Hacker_News__1__Download_RSS_Feed
-from osbot_utils.helpers.safe_str.Safe_Str__File__Path import Safe_Str__File__Path
+from osbot_utils.helpers.safe_str.Safe_Str__File__Path                                                    import Safe_Str__File__Path
 from osbot_utils.utils.Lists                                                                              import list_filter_contains
 from osbot_utils.utils.Status                                                                             import status_ok, status_error
 
@@ -51,26 +51,10 @@ class Routes__Hacker_News(Fast_API_Routes):
         return status_ok(data=data)
 
     def flow_process_rss(self):
-        flow_process_rss        = Flow__Hacker_News__1__Download_RSS_Feed         ().run().flow_return_value
+        flow_process_rss        = Flow__Hacker_News__1__Download_RSS_Feed       ().run().flow_return_value
         flow__articles_timeline = Flow__Hacker_News__2__Create_Articles_Timeline().run().flow_return_value
-        # flow_new_articles     = Flow__Hacker_News__Extract_New_Articles().run().flow_return_value
-        # flow_process_articles = Flow__Hacker_News__Process_Articles    ().run().flow_return_value
-        return dict(flow_process_rss      = flow_process_rss        ,
+        return dict(flow_process_rss        = flow_process_rss       ,
                     flow__articles_timeline = flow__articles_timeline)
-                    # flow_new_articles     = flow_new_articles       ,
-                    # flow_process_articles = flow_process_articles   )
-
-    # def flow_new_articles(self, current__path:str ='2025/02/23/22'):
-    #     flow = Flow__Hacker_News__3__Extract_New_Articles(current__path=current__path)
-    #     flow.run()
-    #     return flow.new__config_new_articles.json()
-
-
-
-    # def flow_graph_rag_mgraphs(self):
-    #     flow = Flow__Hacker_News__Create__Graph_RAG__MGraphs()
-    #     flow.run()
-    #     return flow.result__processed_files
 
     def data_feed(self, year:int, month:int, day:int, hour:int):
         kwargs = dict(year   = year ,
@@ -89,11 +73,7 @@ class Routes__Hacker_News(Fast_API_Routes):
         return status_error(f'No data found')
 
     def feed_prompt(self, size:int=5):
-        #return { "prompt" : self.http_content.get_prompt_schema(size=size) }
         return PlainTextResponse(self.http_content.feed_prompt(size=size))
-
-    # def current_articles(self):
-    #     return self.hacker_news_data.current_articles().json()
 
     def new_articles(self):
         return self.hacker_news_data.new_articles().json()
@@ -103,14 +83,6 @@ class Routes__Hacker_News(Fast_API_Routes):
         img_io          = BytesIO(bytes__timeline)  # Wrap in memory stream
         img_io.seek(0)  # Reset stream position
         return StreamingResponse(img_io, media_type="image/png")
-
-    # def graph_entities_png(self, path='2025/02/19/22/articles/b65f80c0'):
-    #     path += '/graph-entities.mgraph.png'
-    #     from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage import Hacker_News__Storage
-    #     png_bytes = Hacker_News__Storage().path__load_bytes(path)
-    #     img_io = BytesIO(png_bytes)                                 # Wrap in memory stream
-    #     img_io.seek(0)                                              # Reset stream position
-    #     return StreamingResponse(img_io, media_type="image/png")
 
 
     def files_in_day(self, day: str='2025/03/13/23', include_sub_folders: bool =False):
@@ -140,10 +112,7 @@ class Routes__Hacker_News(Fast_API_Routes):
         self.add_route_get(self.data_feed             )
         self.add_route_get(self.data_feed_current     )
         self.add_route_get(self.files_paths           )
-        #self.add_route_get(self.flow_new_articles     )
-        #self.add_route_get(self.flow_process_articles )
         self.add_route_get(self.flow_process_rss      )
-        #self.add_route_get(self.flow_graph_rag_mgraphs)
         self.add_route_get(self.feed                  )
         self.add_route_get(self.feed_prompt           )
         self.add_route_get(self.new_articles          )
