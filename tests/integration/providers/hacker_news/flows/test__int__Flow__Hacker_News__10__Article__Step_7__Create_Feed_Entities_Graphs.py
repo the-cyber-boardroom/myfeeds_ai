@@ -29,9 +29,6 @@ class test__int__Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_Gr
             _.task__4__move_articles_to_next_step                ()
             _.task__5__create_output                             ()
 
-            # from osbot_utils.utils.Dev import pprint
-            # pprint(_.output)
-
             # file_size 295355
             # files_to_process 50
             #

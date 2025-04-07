@@ -1,5 +1,6 @@
 from typing                                                                                             import List, Dict
 from mgraph_db.mgraph.MGraph                                                                            import MGraph
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data import Hacker_News__Data
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Feed__Text_Entities           import Hacker_News__Feed__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage                       import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Text_Entities                 import Hacker_News__Text_Entities
@@ -22,6 +23,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
     articles_to_process                      : List[Schema__Feed__Article                ]
     feed_text_entities                       : Hacker_News__Feed__Text_Entities
     storage                                  : Hacker_News__Storage
+    hacker_news_data                         : Hacker_News__Data
     target                                   : str                         = '/tmp/feed-entities.mgraph-both.json'
     max_articles_to_move                     : int = FLOW__HACKER_NEWS__7__MAX__ARTICLES_TO_MOVE
     output                                   : dict
@@ -37,6 +39,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
     path_now__text_entities                  : str
     path_now__text_entities__titles          : str
     path_now__text_entities__descriptions    : str
+    processed__articles_ids                  : List[str]
 
 
     @task()
@@ -46,7 +49,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
             self.articles_to_process = _.next_step__7__merge_day_entities_graphs()
         self.file__feed_text_entities__files = self.feed_text_entities.file__feed_text_entities__files()
 
-    @task()
+    #@task()
     def task__2__create_file_with_feed_text_entities_mgraph(self):
         files_to_process__titles              = []
         files_to_process__descriptions        = []
@@ -55,12 +58,21 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
         #file__feed_text_entities_descriptions = self.feed_text_entities.file__feed_text_entities_descriptions()        # todo: (to wire back in ) don't create the text entities for both description
 
         # we always need to refresh this since by the fact that we are here, there are one or more articles to update
-        with self.file_articles_current as _:
-            for article_id, article in _.articles.articles.items():
-                if article.path__file__text_entities__title__mgraph:
-                   files_to_process__titles.append((article_id,article.path__file__text_entities__title__mgraph ))
-                if article.path__file__text_entities__description__mgraph:
-                    files_to_process__descriptions.append((article_id,article.path__file__text_entities__description__mgraph))
+        from osbot_utils.utils.Dev import pprint
+        for article_id, article in self.hacker_news_data.digest_articles().items():
+            if article.path__file__text_entities__title__mgraph:
+                files_to_process__titles.append((article_id, article.path__file__text_entities__title__mgraph))
+            if article.path__file__text_entities__description__mgraph:
+                files_to_process__descriptions.append(
+                    (article_id, article.path__file__text_entities__description__mgraph))
+
+
+        # with self.file_articles_current as _:
+        #     for article_id, article in _.articles.articles.items():
+        #         if article.path__file__text_entities__title__mgraph:
+        #            files_to_process__titles.append((article_id,article.path__file__text_entities__title__mgraph ))
+        #         if article.path__file__text_entities__description__mgraph:
+        #             files_to_process__descriptions.append((article_id,article.path__file__text_entities__description__mgraph))
 
         #text_entities               = Hacker_News__Text_Entities(mgraph_entities=self.mgraph_entities              ).setup()
         text_entities__titles       = Hacker_News__Text_Entities(mgraph_entities=self.mgraph_entities__titles      ).setup()
@@ -71,6 +83,8 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
             mgraph_to_process = MGraph.from_json(json_data)
             text_entities__titles.add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_to_process)
             #text_entities        .add_text_entities_mgraph(article_id=article_id, mgraph_text_entities=mgraph_to_process)
+            self.processed__articles_ids.append(article_id)
+
 
         # for (article_id, file_to_process) in files_to_process__descriptions:            # and here (control how many articles are processed)
         #     json_data         = self.storage.path__load_data(file_to_process)
@@ -108,6 +122,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
             article.path__file__feed__text_entities__descriptions =  self.path_now__text_entities__descriptions
             article.path__file__feed__text_entities__files        =  self.file__feed_text_entities__files.path_now()
             self.status_changes.append(article_change_status)
+            break
 
         self.file_articles_current.save()
 
@@ -147,6 +162,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
                            path_now__text_entities__descriptions    = self.path_now__text_entities__descriptions        ,
                            max_articles_to_move                     = self.max_articles_to_move                         ,
                            path_feed_text_entities__files           = self.file__feed_text_entities__files.path_now()   ,
+                           processed__articles_ids                  = self.processed__articles_ids.json()               ,
                            status_changes                           = self.status_changes.json()                        )
 
 

@@ -10,6 +10,7 @@ ROUTE_PATH__HACKER_NEWS__ARTICLES   = 'hacker-news-articles'
 
 ROUTES_PATHS__HACKER_NEWS__ARTICLES = [
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles'                 ,
+                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/new-articles'                    ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-articles'                ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article'                 ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article-change-next-step',
@@ -24,6 +25,9 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
 
     def digest_articles(self):
         return self.hacker_news_data.digest_articles()
+
+    def new_articles(self):
+        return self.hacker_news_data.new_articles().json()
 
     def current_articles(self):
         with Hacker_News__File__Articles__Current() as _:
@@ -60,6 +64,7 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
 
     def setup_routes(self):
         self.add_route_get   (self.digest_articles                  )
+        self.add_route_get   (self.new_articles                     )
         self.add_route_get   (self.current_articles                 )
         self.add_route_get   (self.current_article                  )
         self.add_route_get   (self.current_article_change_next_step )
