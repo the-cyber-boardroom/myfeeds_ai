@@ -54,22 +54,23 @@ class Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View(Typ
 
     @task()
     def task__3__update__feed_text_entities__files(self):
-        with self.file__feed_text_entities__files as _:
-            data = _.data()
-            data.path_latest__text_entities__titles__tree = self.path_latest__text_entities__titles__tree
-            data.path_now__text_entities__titles__tree    = self.path_now__text_entities__titles__tree
-            print(data.json())
-            _.save_data(data.json())
+        if self.articles_to_process:
+            with self.file__feed_text_entities__files as _:
+                data = _.data()
+                data.path_latest__text_entities__titles__tree = self.path_latest__text_entities__titles__tree
+                data.path_now__text_entities__titles__tree    = self.path_now__text_entities__titles__tree
+                _.save_data(data.json())
 
     @task()
     def task__4__move_articles_to_next_step(self):
-        for article in self.articles_to_process[0:self.max_articles_to_move]:
-            article.next_step                                     = self.to_step
-            article_change_status                                 = Schema__Feed__Article__Status__Change(article=article, from_step=self.from_step)
-            article.path__file__feed__text_entities__titles__tree = self.path_now__text_entities__titles__tree
-            self.status_changes.append(article_change_status)
+        if self.articles_to_process:
+            for article in self.articles_to_process[0:self.max_articles_to_move]:
+                article.next_step                                     = self.to_step
+                article_change_status                                 = Schema__Feed__Article__Status__Change(article=article, from_step=self.from_step)
+                article.path__file__feed__text_entities__titles__tree = self.path_now__text_entities__titles__tree
+                self.status_changes.append(article_change_status)
 
-        self.file_articles_current.save()          # todo: wire when flow is completed
+            self.file_articles_current.save()
 
     @task()
     def task__5__create_output(self):
