@@ -9,8 +9,8 @@ from osbot_utils.helpers.Obj_Id                                                 
 
 ROUTE_PATH__HACKER_NEWS__ARTICLES   = 'hacker-news-articles'
 
-ROUTES_PATHS__HACKER_NEWS__ARTICLES = [
-                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles'                 ,
+ROUTES_PATHS__HACKER_NEWS__ARTICLES = [f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles'                 ,
+                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles-data'            ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/new-articles'                    ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-articles'                ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article'                 ,
@@ -27,6 +27,9 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
 
     def digest_articles(self):
         return self.hacker_news_data_digest.digest_articles()
+
+    def digest_articles_data(self):
+        return self.hacker_news_data_digest.digest_articles__view_data()
 
     def new_articles(self):
         return self.hacker_news_data.new_articles().json()
@@ -66,6 +69,7 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
 
     def setup_routes(self):
         self.add_route_get   (self.digest_articles                  )
+        self.add_route_get   (self.digest_articles_data             )
         self.add_route_get   (self.new_articles                     )
         self.add_route_get   (self.current_articles                 )
         self.add_route_get   (self.current_article                  )
