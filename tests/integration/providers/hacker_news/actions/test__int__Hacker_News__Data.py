@@ -18,13 +18,3 @@ class test__int__Hacker_News__Data(TestCase):
             new_articles = _.new_articles()
             assert type(new_articles) is Schema__Feed__Config__New_Articles
             assert new_articles.json() == Hacker_News__File__Articles__New().data().json()
-
-    def test_digest_articles(self):
-        with self.hacker_news_data as _:
-            digest_articles = _.digest_articles()
-            assert type(digest_articles) is dict
-
-
-    def test_digest_articles_ids(self):
-        with self.hacker_news_data as _:
-            assert type(_.digest_articles_ids()) is set

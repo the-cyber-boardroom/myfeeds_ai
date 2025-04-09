@@ -8,26 +8,39 @@ from osbot_utils.type_safe.Type_Safe                                        impo
 from osbot_utils.type_safe.decorators.type_safe                             import type_safe
 from osbot_utils.utils.Json                                                 import str_to_json
 
-SYSTEM_PROMPT__CREATE_DIGEST = """You are a specialized cybersecurity news analyst creating personalized digests for professionals in the security field across various roles and responsibilities.
+SYSTEM_PROMPT__CREATE_DIGEST = """You are a specialized cybersecurity news analyst creating highly personalized digests for professionals across various security and leadership roles.
 
-Your task is to synthesize selected news articles into a concise, targeted digest that highlights information specifically relevant to the recipient's role, interests, and responsibilities.
+Your primary task is to analyze the semantic relationships between news articles and the recipient's knowledge graph to create a role-tailored briefing that connects directly to their specific domains of interest and responsibility.
+
+For the executive summary structure:
+   - An introductory paragraph providing a high-level overview of key developments relevant to this persona
+   - 2-3 domain-specific paragraphs organized by key responsibility areas relevant to this persona, each with:    
+       * A clear section header using a title that is relevant to the current persona/role
+       * A paragraph that connects the news to specific entities and responsibilities from the persona description
+   - Information emphasis and terminology matched to this persona's role and decision-making needs
+   - Factual information without assumptions about internal implementation state
 
 For each article:
-1. Extract the key information most relevant to the persona's specific focus areas
-2. Highlight trends, threats, or changes that directly impact their domain
-3. Connect each article to the persona's specific responsibilities and interests
-4. Add brief, role-specific action recommendations based on the news
-
+    - A clear, persona-relevant headline
+    - Extract the key information most relevant to the persona's specific focus areas       
+    - Concise summary highlighting only the most relevant information
+    - Brief explanation of why this specifically matters to this persona
+    - Role-specific action recommendations based on this news
+   
 Your digest should:
-- Be precisely tailored to the specific persona type (Executive, Investor, Security Specialist, Board Member, etc.)
-- Prioritize articles based on their relevance score and critical nature
-- Provide clear, actionable insights relevant to the persona's decision-making needs
-- Use terminology and framing appropriate for the persona's role and organizational context
-- Maintain a professional tone appropriate for the persona's level
+    - Adapt its structure, terminology, and emphasis based on the specific persona type
+    - Prioritize articles based on their relevance score and critical nature
+    - Provide insights relevant to the persona's decision-making context (strategic for executives, tactical for practitioners, etc.)
+    - Match the level of technical detail to the persona's expertise and information needs
+    - Maintain a professional tone appropriate for the persona's organizational level
+    - Conclude with strategic implications connecting these news items to the persona's responsibilities
+    - When available, make sure to include the author, article source, image link and when it was published 
+
+This news digest must be professional and focused exclusively on what matters to this specific persona's role and responsibilities.
 """
 
 USER_PROMPT__CREATE_DIGEST = """\
-Create a personalized cybersecurity news digest for the following persona:
+Create a personalized cybersecurity news digest based on the system prompt instructions for the following persona and articles:
 
 PERSONA TYPE: {persona_type}
 
@@ -53,18 +66,6 @@ These articles have been selected as relevant to this persona with the following
 {articles_content}
 <END>
 =========================================================================
-
-Format the digest as follows:
-1. Begin with a brief executive summary highlighting the most critical insights
-2. Present each article in order of relevance with:
-   - A clear, persona-relevant headline
-   - Concise summary highlighting only the most relevant information
-   - Brief explanation of why this specifically matters to this persona
-   - Role-specific action recommendations based on this news
-3. Conclude with strategic implications connecting these news items to the persona's responsibilities
-4. When available, make sure to include the author, article source, image link and when it was published 
-
-The digest should be professional, concise (600-800 words total), and focused exclusively on what matters to this specific persona's role and responsibilities.
 """
 
 
@@ -112,7 +113,8 @@ class LLM__Prompt__Personas__Create_Digest(Type_Safe):
                                                         articles_content        = articles_content       )
 
         with self.request_builder as _:
-            _.set__model__gpt_4o_mini()                     # Using GPT-4o-mini
+            #_.set__model__gpt_4o_mini()                        # Using GPT-4o-mini
+            _.set__model__gpt_4o()                              # For this final step use the more expensive GPT-4o
             _.add_message__system    (system_prompt)
             _.add_message__user      (user_prompt)
             _.set__function_call     (parameters=Schema__Persona__Digest_Articles, function_name='create_digest')

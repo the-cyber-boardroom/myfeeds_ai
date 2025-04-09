@@ -1,6 +1,7 @@
 from typing                                                                                             import List, Dict
 from mgraph_db.mgraph.MGraph                                                                            import MGraph
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                          import Hacker_News__Data
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data__Digest import Hacker_News__Data__Digest
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Feed__Text_Entities           import Hacker_News__Feed__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage                       import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Text_Entities                 import Hacker_News__Text_Entities
@@ -24,6 +25,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
     feed_text_entities                       : Hacker_News__Feed__Text_Entities
     storage                                  : Hacker_News__Storage
     hacker_news_data                         : Hacker_News__Data
+    hacker_news_data_digest                  : Hacker_News__Data__Digest
     target                                   : str                         = '/tmp/feed-entities.mgraph-both.json'
     max_articles_to_move                     : int = FLOW__HACKER_NEWS__7__MAX__ARTICLES_TO_MOVE
     output                                   : dict
@@ -59,7 +61,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
 
         # we always need to refresh this since by the fact that we are here, there are one or more articles to update
         from osbot_utils.utils.Dev import pprint
-        for article_id, article in self.hacker_news_data.digest_articles().items():
+        for article_id, article in self.hacker_news_data_digest.digest_articles().items():
             if article.path__file__text_entities__title__mgraph:
                 files_to_process__titles.append((article_id, article.path__file__text_entities__title__mgraph))
             if article.path__file__text_entities__description__mgraph:

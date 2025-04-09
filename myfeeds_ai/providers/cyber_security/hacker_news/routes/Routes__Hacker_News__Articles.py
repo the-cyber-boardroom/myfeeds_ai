@@ -1,5 +1,6 @@
 from osbot_fast_api.api.Fast_API_Routes                                                         import Fast_API_Routes
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                  import Hacker_News__Data
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data__Digest import Hacker_News__Data__Digest
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__All     import Hacker_News__File__Articles__All
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__New     import Hacker_News__File__Articles__New
@@ -20,11 +21,12 @@ ROUTES_PATHS__HACKER_NEWS__ARTICLES = [
 
 
 class Routes__Hacker_News__Articles(Fast_API_Routes):
-    tag                 : str                = ROUTE_PATH__HACKER_NEWS__ARTICLES
-    hacker_news_data    : Hacker_News__Data
+    tag                     : str                = ROUTE_PATH__HACKER_NEWS__ARTICLES
+    hacker_news_data        : Hacker_News__Data
+    hacker_news_data_digest : Hacker_News__Data__Digest
 
     def digest_articles(self):
-        return self.hacker_news_data.digest_articles()
+        return self.hacker_news_data_digest.digest_articles()
 
     def new_articles(self):
         return self.hacker_news_data.new_articles().json()
