@@ -1,5 +1,6 @@
 from unittest                                                                 import TestCase
 from myfeeds_ai.data_feeds.Data_Feeds__S3_DB                                  import Data_Feeds__S3_DB
+from osbot_utils.utils.Misc import list_set
 from tests.integration.data_feeds__objs_for_tests                             import myfeeds_tests__setup_local_stack
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Virtual_Storage__S3 import Virtual_Storage__S3
 
@@ -35,6 +36,12 @@ class test_Virtual_Storage__S3(TestCase):
             assert _.json__load(path=path) == data
             assert _.file__delete(path   ) is True
             assert _.file__exists(path   ) is False
+
+    def test_files(self):
+        with self.virtual_storage as _:
+            cache_index = _.json__load('llm-cache/data/cache_index.json')
+            if cache_index:
+                assert list_set(cache_index) == ['cache_id__from__hash__request', 'cache_id__to__file_path']
 
     # todo: add test for pprint(_.files__all()) and pprint(_.stats()) (create a temp bucket or root folder for this, so that we don't catch the cache files that will be created in the LocalStack test server)
 

@@ -1,5 +1,6 @@
 import myfeeds_ai
 from starlette.staticfiles                                                                import StaticFiles
+from myfeeds_ai.fast_api.public_data.LLM_Cache__Fast_API                                  import LLM_Cache__Fast_API
 from myfeeds_ai.fast_api.public_data.Public_Data__Fast_API                                import Public_Data__Fast_API
 from myfeeds_ai.fast_api.routes.Routes__Debug                                             import Routes__Debug
 from myfeeds_ai.personas.routes.Routes__My_Feeds__Personas                                import Routes__My_Feeds__Personas
@@ -35,6 +36,7 @@ class Data_Feeds__Fast_API(Fast_API):
         self.add_routes(Routes__Debug                )
 
         Public_Data__Fast_API().setup().mount(self.app())
+        LLM_Cache__Fast_API  ().setup().mount(self.app())
         RSS_Feeds__Fast_API  ().setup().mount(self.app())
 
     def path_static_folder(self):
@@ -62,3 +64,4 @@ class Data_Feeds__Fast_API(Fast_API):
             print(f"------ using local stack with account id: {DATA_FEEDS__TEST__AWS_ACCOUNT_ID}-----")
 
             local_stack = Local_Stack().activate()
+            return local_stack

@@ -7,10 +7,15 @@ from myfeeds_ai.personas.schemas.Schema__Persona                                
 from myfeeds_ai.personas.schemas.Schema__Persona__LLM__Connect_Entities                        import Schema__Persona__LLM__Connect_Entities
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                                        import Schema__Persona__Types
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache import Hacker_News__Execute_LLM__With_Cache
+from osbot_utils.helpers.Obj_Id import Obj_Id
 from osbot_utils.helpers.flows.Flow                                                            import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                 import flow
 from osbot_utils.helpers.flows.decorators.task                                                 import task
+from osbot_utils.helpers.llms.cache.LLM_Request__Cache import LLM_Request__Cache
+from osbot_utils.helpers.llms.schemas.Schema__LLM_Request import Schema__LLM_Request
+from osbot_utils.helpers.llms.schemas.Schema__LLM_Response import Schema__LLM_Response
 from osbot_utils.type_safe.Type_Safe                                                           import Type_Safe
+from osbot_utils.utils.Dev import pprint
 
 
 class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
@@ -26,6 +31,10 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
     path_now_file__persona_digest        : str
     path_latest_file__persona_digest     : str
     path_latest_file__persona_digest_html: str
+    execute_llm_with_cache               : Hacker_News__Execute_LLM__With_Cache
+    llm_request                          : Schema__LLM_Request
+    llm_request__cache_id                : Obj_Id
+    llm_response                         : Schema__LLM_Response
 
     @task()
     def task__1__load_persona_data(self):
@@ -38,18 +47,22 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
     @task()
     def task__2__llm_create_persona_digest(self):
-        llm_request = self.prompt_create_digest.llm_request(persona=self.persona,
-                                                            persona_connected_entities=self.persona_connected_entities)
-        with Hacker_News__Execute_LLM__With_Cache().setup() as _:
-            llm_response = _.execute__llm_request(llm_request)
+        self.llm_request = self.prompt_create_digest.llm_request(persona                    = self.persona,
+                                                                 persona_connected_entities = self.persona_connected_entities)
+        with self.execute_llm_with_cache.setup() as _:
+            self.llm_response = _.execute__llm_request(self.llm_request)
 
-        self.persona_digest_articles = self.prompt_create_digest.process_llm_response(llm_response)
+        self.persona_digest_articles = self.prompt_create_digest.process_llm_response(self.llm_response)
 
-
-    #@task()
+    @task()
     def task__3__save_persona_digest(self):
+        llm_request_cache = self.execute_llm_with_cache.llm_cache
+        cache_id          = llm_request_cache.get__cache_id__from__request(self.llm_request)
+
+
         with Schema__Persona__Digest() as _:
-            _.digest_articles = self.persona_digest_articles
+            _.cache_id                = cache_id
+            _.digest_articles         = self.persona_digest_articles
             _.digest_html             = self.persona_digest_articles.get_html()
             _.digest_markdown         = self.persona_digest_articles.get_markdown()
             self.persona_digest       = _
@@ -75,7 +88,7 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
 
     @flow()
-    def create_persona(self) -> Flow:
+    def create_disgest(self) -> Flow:
         with self as _:
             _.task__1__load_persona_data         ()
             _.task__2__llm_create_persona_digest ()
@@ -84,4 +97,4 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
         return self.output
 
     def run(self):
-        return self.create_persona().execute_flow()
+        return self.create_disgest().execute_flow()
