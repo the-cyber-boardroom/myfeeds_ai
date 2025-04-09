@@ -1,6 +1,7 @@
+from fastapi                                                                                    import Response
 from osbot_fast_api.api.Fast_API_Routes                                                         import Fast_API_Routes
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                  import Hacker_News__Data
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data__Digest import Hacker_News__Data__Digest
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data__Digest          import Hacker_News__Data__Digest
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__All     import Hacker_News__File__Articles__All
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__New     import Hacker_News__File__Articles__New
@@ -11,6 +12,8 @@ ROUTE_PATH__HACKER_NEWS__ARTICLES   = 'hacker-news-articles'
 
 ROUTES_PATHS__HACKER_NEWS__ARTICLES = [f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles'                 ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles-data'            ,
+                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles-html-page'       ,
+                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles-html-section'    ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/new-articles'                    ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-articles'                ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article'                 ,
@@ -30,6 +33,16 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
 
     def digest_articles_data(self):
         return self.hacker_news_data_digest.digest_articles__view_data()
+
+    def digest_articles_html_page(self):
+        content      = self.hacker_news_data_digest.digest_articles__html__as_page()
+        content_type =  'text/html; charset=utf-8'
+        return Response(content=content, media_type=content_type)
+
+    def digest_articles_html_section(self):
+        content      = self.hacker_news_data_digest.digest_articles__html__as_section()
+        content_type =  'text/html; charset=utf-8'
+        return Response(content=content, media_type=content_type)
 
     def new_articles(self):
         return self.hacker_news_data.new_articles().json()
@@ -70,6 +83,8 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
     def setup_routes(self):
         self.add_route_get   (self.digest_articles                  )
         self.add_route_get   (self.digest_articles_data             )
+        self.add_route_get   (self.digest_articles_html_page        )
+        self.add_route_get   (self.digest_articles_html_section     )
         self.add_route_get   (self.new_articles                     )
         self.add_route_get   (self.current_articles                 )
         self.add_route_get   (self.current_article                  )
