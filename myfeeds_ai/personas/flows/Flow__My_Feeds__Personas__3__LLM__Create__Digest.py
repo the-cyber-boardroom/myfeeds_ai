@@ -1,3 +1,4 @@
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Data import My_Feeds__Persona__Data
 from myfeeds_ai.personas.actions.My_Feeds__Personas                                             import My_Feeds__Personas
 from myfeeds_ai.personas.files.My_Feeds__Personas__File                                         import My_Feeds__Personas__File
 from myfeeds_ai.personas.llms.LLM__Prompt__Personas__Create_Digest                              import LLM__Prompt__Personas__Create_Digest
@@ -23,7 +24,8 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
     persona_digest_articles              : Schema__Persona__Digest_Articles
     persona_connected_entities           : Schema__Persona__LLM__Connect_Entities
     persona_type                         : Schema__Persona__Types = Schema__Persona__Types.EXEC__CISO
-    personas                             : My_Feeds__Personas
+    #personas                             : My_Feeds__Personas
+    persona_data                         : My_Feeds__Persona__Data
     prompt_create_digest                 : LLM__Prompt__Personas__Create_Digest
     output                               : dict
     path_now_file__persona_digest        : str
@@ -37,10 +39,10 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
     @task()
     def task__1__load_persona_data(self):
-        with self.personas.file__persona(persona_type=self.persona_type) as _:
+        with self.persona_data.file__persona(persona_type=self.persona_type) as _:
             self.file_persona = _
             self.persona      = _.data()
-        with self.personas.file__persona_connect_entities(persona_type=self.persona_type) as _:
+        with self.persona_data.file__persona_connect_entities(persona_type=self.persona_type) as _:
             self.persona_connected_entities = _.data()
 
 
@@ -67,14 +69,14 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
             _.digest_markdown         = self.persona_digest_articles.get_markdown()
             self.persona_digest       = _
         #
-        with self.personas.file__persona_digest(persona_type=self.persona_type) as _:
+        with self.persona_data.file__persona_digest(persona_type=self.persona_type) as _:
             self.persona_digest.path_now = _.path_now()
             _.save_data(self.persona_digest.json())
 
             self.path_now_file__persona_digest    = _.path_now()
             self.path_latest_file__persona_digest = _.path_latest()
 
-        with self.personas.file__persona_digest_html(persona_type=self.persona_type) as _:
+        with self.persona_data.file__persona_digest_html(persona_type=self.persona_type) as _:
             _.save_data(self.persona_digest.digest_html)
             self.path_latest_file__persona_digest_html = _.path_latest()
 

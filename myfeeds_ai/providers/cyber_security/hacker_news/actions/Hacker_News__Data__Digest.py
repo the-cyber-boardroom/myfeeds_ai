@@ -195,34 +195,6 @@ class Hacker_News__Data__Digest(Type_Safe):
 
         return html
 
-    def digest_articles__html__as_section(self, base_url='/public-data/hacker-news/'):
-        """Generate an HTML section for digest articles to be included in persona HTML."""
-        view_data = self.digest_articles__view_data()
-        article_items_html = ""
-
-        # Generate article list HTML for each article
-        for article_id, article_info in view_data.items():
-            article_items_html += self._generate_section_article(article_id, article_info, base_url)
-
-        # Generate the section HTML
-        html = f"""
-        <div class="source-articles-section">
-            <h2>Source Articles</h2>
-            <div class="source-articles-info">
-                <p>The personalized digest above was generated from the following {len(view_data)} source articles. These represent the raw news content before it was analyzed and tailored to the specific persona.</p>
-            </div>
-            <div class="source-articles-container">
-                {article_items_html}
-            </div>
-            <script>
-            {self.JS}
-            </script>
-        </div>
-        """
-
-        return html
-
-
     # Static HTML templates and styles
     HTML_TEMPLATE = """<!DOCTYPE html>
 <html lang="en">

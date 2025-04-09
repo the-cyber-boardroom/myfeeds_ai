@@ -1,6 +1,8 @@
 from fastapi                                                                import Response
 from osbot_fast_api.api.Fast_API_Routes                                     import Fast_API_Routes
 from starlette                                                              import status
+
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Data import My_Feeds__Persona__Data
 from myfeeds_ai.personas.actions.My_Feeds__Personas                         import My_Feeds__Personas
 from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__1__Create__Persona import Flow__My_Feeds__Personas__1__Create__Persona
 from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__2__LLM__Connected_Entities import \
@@ -23,8 +25,9 @@ ROUTES_PATHS__MY_FEEDS__PERSONAS = [f'/{ROUTE_PATH__PERSONAS}/flow-1-create-pers
                                     f'/{ROUTE_PATH__PERSONAS}/delete-file'                  ]
 
 class Routes__My_Feeds__Personas(Fast_API_Routes):
-    tag: str = ROUTE_PATH__PERSONAS
-    personas : My_Feeds__Personas
+    tag          : str = ROUTE_PATH__PERSONAS
+    personas     : My_Feeds__Personas
+    persona_data : My_Feeds__Persona__Data
 
     def flow_1_create_persona(self, persona_type: Schema__Persona__Types):
         return Flow__My_Feeds__Personas__1__Create__Persona(persona_type=persona_type).run().flow_return_value
@@ -42,10 +45,10 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
         return self.personas.files_in__now()
 
     def persona(self, persona_type: Schema__Persona__Types):
-        return self.personas.file__persona(persona_type=persona_type).load()
+        return self.persona_data.file__persona(persona_type=persona_type).load()
 
     def persona_png(self, persona_type: Schema__Persona__Types):
-        png_bytes = self.personas.persona__description__png(persona_type=persona_type)
+        png_bytes = self.persona_data.persona__description__png(persona_type=persona_type)
         if png_bytes:
             content_type = "image/png"
             return Response(content=png_bytes, media_type=content_type)
@@ -53,7 +56,7 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
             return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     def persona_tree(self, persona_type: Schema__Persona__Types):
-        tree_values = self.personas.persona__description__tree_values(persona_type=persona_type)
+        tree_values = self.persona_data.persona__description__tree_values(persona_type=persona_type)
         if tree_values:
             content_type = 'text/plain; charset=utf-8'
             return Response(content=tree_values, media_type=content_type)

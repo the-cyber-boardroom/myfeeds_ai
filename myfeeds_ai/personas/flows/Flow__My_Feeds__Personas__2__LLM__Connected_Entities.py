@@ -1,5 +1,6 @@
 from typing import Dict
 
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Data import My_Feeds__Persona__Data
 from myfeeds_ai.personas.actions.My_Feeds__Personas                                             import My_Feeds__Personas
 from myfeeds_ai.personas.files.My_Feeds__Personas__File                                         import My_Feeds__Personas__File
 from myfeeds_ai.personas.llms.LLM__Prompt__Connect_Entities                                     import LLM__Prompt__Connect_Entities
@@ -25,7 +26,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
     llm_connect_entities                  : Schema__Persona__LLM__Connect_Entities
     persona                               : Schema__Persona
     persona_type                          : Schema__Persona__Types    = Schema__Persona__Types.EXEC__CISO
-    personas                              : My_Feeds__Personas
+    persona_data                          : My_Feeds__Persona__Data
     output                                : dict
     path_now__text_entities__titles__tree : str
     articles_graph_tree                   : str
@@ -34,7 +35,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
 
     @task()
     def task__1__load_persona_data(self):
-        with self.personas.file__persona(persona_type=self.persona_type) as _:
+        with self.persona_data.file__persona(persona_type=self.persona_type) as _:
             self.file_persona = _
             self.persona      = _.data()
 
@@ -54,7 +55,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
 
     #@task()
     def task__3__create_connected_entities(self):
-        with self.personas.file__persona_connect_entities(persona_type=self.persona_type) as _:
+        with self.persona_data.file__persona_connect_entities(persona_type=self.persona_type) as _:
             self.file_llm_connect_entities = _
             self.llm_connect_entities      = _.data()
 
@@ -78,7 +79,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
     def task__4__collect_articles_markdown(self):
         file_current_articles = Hacker_News__File__Articles__Current()
         file_current_articles.load()
-        with self.personas.file__persona_connect_entities(persona_type=self.persona_type) as _:
+        with self.persona_data.file__persona_connect_entities(persona_type=self.persona_type) as _:
             llm_connect_entities = _.data()
             for connected_entity in llm_connect_entities.connected_entities:
                 article_id = Obj_Id(connected_entity.article_id)
