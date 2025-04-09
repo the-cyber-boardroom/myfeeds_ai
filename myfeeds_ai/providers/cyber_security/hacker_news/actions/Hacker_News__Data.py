@@ -1,5 +1,4 @@
 from typing                                                                                     import Dict, List
-from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Types                   import Time_Chain__Source
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                        import S3_Key__File_Extension
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                                         import S3_FILE_NAME__RAW__FEED_DATA
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Live_Data             import Hacker_News__Live_Data
@@ -49,20 +48,6 @@ class Hacker_News__Data(Type_Safe):
 
     def new_articles(self) -> Schema__Feed__Config__New_Articles:
         return Hacker_News__File__Articles__New().data()
-
-    def digest_articles(self):
-        digest_articles  = {}
-        current_articles = self.current_articles().articles
-        for digest_article_id in self.digest_articles_ids():
-            digest_articles[digest_article_id] = current_articles.get(digest_article_id)
-        return digest_articles
-
-    def digest_articles_ids(self) -> set:
-        new_articles = self.new_articles()
-        if new_articles and new_articles.timeline_diff:
-            return new_articles.timeline_diff.added_values.get(Time_Chain__Source, set())
-        else:
-            return set()
 
     def current_articles(self) -> Schema__Feed__Articles:
         return Hacker_News__File__Articles__Current().data()

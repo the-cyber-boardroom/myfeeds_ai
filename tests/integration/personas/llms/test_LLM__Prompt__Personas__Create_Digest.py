@@ -1,5 +1,7 @@
 import pytest
 from unittest                                                                                   import TestCase
+
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Data import My_Feeds__Persona__Data
 from myfeeds_ai.personas.actions.My_Feeds__Personas                                             import My_Feeds__Personas
 from myfeeds_ai.personas.llms.LLM__Prompt__Personas__Create_Digest                              import LLM__Prompt__Personas__Create_Digest, SYSTEM_PROMPT__CREATE_DIGEST, USER_PROMPT__CREATE_DIGEST
 from myfeeds_ai.personas.llms.Schema__Persona__Digest_Articles                                  import Schema__Persona__Digest_Articles
@@ -22,9 +24,9 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
         myfeeds_tests__setup_local_stack()
         cls.prompt_create_digest       = LLM__Prompt__Personas__Create_Digest()
         cls.persona_type               = Schema__Persona__Types.EXEC__CEO
-        cls.personas                   = My_Feeds__Personas()
-        cls.persona                    = cls.personas.file__persona             (persona_type=cls.persona_type).data()
-        cls.persona_connected_entities = cls.personas.file__persona_connect_entities(persona_type=cls.persona_type).data()
+        cls.persona_data               = My_Feeds__Persona__Data()
+        cls.persona                    = cls.persona_data.file__persona            (persona_type=cls.persona_type).data()
+        cls.persona_connected_entities = cls.persona_data.file__persona_connect_entities(persona_type=cls.persona_type).data()
 
     def test_format_articles_content(self):                          # Test that article content is correctly formatted.
         if self.persona:

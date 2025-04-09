@@ -2,6 +2,16 @@ from typing                           import List
 from osbot_utils.type_safe.Type_Safe  import Type_Safe
 from osbot_utils.utils.Misc           import date_time_now
 
+class Schema__Persona__Digest_Summary_Section(Type_Safe):
+    """Represents a section in the executive summary with a header and content."""
+    section_header : str                                            # The title of this section (e.g., "COMPLIANCE & REGULATIONS")
+    section_text   : str                                            # The paragraph content for this section
+
+class Schema__Persona__Digest_Summary(Type_Safe):
+    """Structured representation of the executive summary."""
+    introduction   : str                                             # Opening paragraph providing overview
+    sections       : List[Schema__Persona__Digest_Summary_Section]   # Domain-specific sections with headers and content
+
 
 class Schema__Persona__Digest_Article(Type_Safe):
     """Represents a single article in the personalized digest."""
@@ -20,7 +30,7 @@ class Schema__Persona__Digest_Article(Type_Safe):
 class Schema__Persona__Digest_Articles(Type_Safe):
     """Complete personalized digest for a specific persona."""
     persona_type           : str                                        # Type of persona (from Schema__Persona__Types)
-    executive_summary      : str                                        # Brief overview of key insights
+    executive_summary      : Schema__Persona__Digest_Summary            # Structured summary with intro and sections
     articles               : List[Schema__Persona__Digest_Article]      # Processed articles
     strategic_implications : str                                        # Broader context and implications for this role
 
@@ -52,7 +62,7 @@ class Schema__Persona__Digest_Articles(Type_Safe):
 
         return md
 
-    def get_html(self) -> str:
+    def get_html(self, cache_id=None) -> str:
         """Convert the digest to HTML format."""
         priority_colors = {
             "critical": "#d9534f",  # Red
@@ -82,12 +92,24 @@ class Schema__Persona__Digest_Articles(Type_Safe):
         .footer {{ margin-top: 30px; font-size: 12px; color: #777; text-align: center; }}
     </style>
 </head>
-<body>
+
+<body>    
     <h1>Cybersecurity Digest for {self.persona_type}</h1>
+    <b> cache</b>: <a href="/cache/cache-entry?cache_id={cache_id }" target="_black">entry</a> | 
+                   <a href="/cache/cache-response?cache_id={cache_id }" target="_black">response</a> |
+                   <a href="/cache/cache-prompt?cache_id={cache_id }" target="_black">prompt</a>
     
+    <h2>Executive Summary</h2>
     <div class="executive-summary">
-        <h2>Executive Summary</h2>
-        <p>{self.executive_summary}</p>
+        
+        <p>{self.executive_summary.introduction}</p>
+        
+        {self.render_html__executive_summary_sections()}
+    </div>
+        
+    <h2>Strategic Implications</h2>
+    <div class="strategic-implications">        
+        <p>{self.strategic_implications}</p>
     </div>
 """
 
@@ -114,12 +136,7 @@ class Schema__Persona__Digest_Articles(Type_Safe):
     </div>
 """
 
-        html += f"""
-    <div class="strategic-implications">
-        <h2>Strategic Implications</h2>
-        <p>{self.strategic_implications}</p>
-    </div>
-    
+        html += f"""    
     <div class="footer">
         <p>Generated: {created_at}</p>
     </div>
@@ -127,3 +144,12 @@ class Schema__Persona__Digest_Articles(Type_Safe):
 </html>
 """
         return html
+
+    def render_html__executive_summary_sections(self) -> str:              # Helper method to render the executive summary sections."""
+        sections_html = ""
+        for section in self.executive_summary.sections:
+            sections_html += f"""
+            <div class="section">                
+                <p><strong>{section.section_header}:</strong> {section.section_text}</p>
+            </div>"""
+        return sections_html

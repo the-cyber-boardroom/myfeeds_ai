@@ -29,4 +29,6 @@ class test__int__Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tr
             _.task__4__move_articles_to_next_step                   ()
             _.task__5__create_output                                ()
 
-            #pprint(_.output)
+
+            from osbot_utils.utils.Dev import pprint
+            pprint(_.output)

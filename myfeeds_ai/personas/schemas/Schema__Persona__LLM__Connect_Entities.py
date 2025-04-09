@@ -1,7 +1,5 @@
-from typing import Dict, List
-
-from myfeeds_ai.personas.llms.Schema__Persona__Connected_Entities import Schema__Persona__Connected_Entities, \
-    Schema__Persona__Connected_Entity
+from typing                                                       import Dict, List
+from myfeeds_ai.personas.llms.Schema__Persona__Connected_Entities import Schema__Persona__Connected_Entity
 from osbot_utils.helpers.Obj_Id                                   import Obj_Id
 from osbot_utils.type_safe.Type_Safe                              import Type_Safe
 

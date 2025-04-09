@@ -42,9 +42,11 @@ class Virtual_Storage__S3(Virtual_Storage__Local__Folder):                  # St
         s3_key = self.get_s3_key(path)
         return self.s3_db.s3_file_exists(s3_key)
 
-    def files__all(self) -> List[str]:                                      # List all files in S3 with the specified prefix.
+    def files__all(self, full_path=False) -> List[str]:                                      # List all files in S3 with the specified prefix.
         prefix = str(self.root_folder)
-        all_objects = self.s3_db.s3_folder_files__all(folder=prefix)
+        if prefix.endswith('/'):                                                             # todo: handle bug in s3_folder_files__all which will lost the first char if the folder path ends with an /
+            prefix = prefix[:-1]
+        all_objects = self.s3_db.s3_folder_files__all(folder=prefix, full_path=full_path)
         return all_objects
 
     @cache_on_self
@@ -57,7 +59,7 @@ class Virtual_Storage__S3(Virtual_Storage__Local__Folder):                  # St
     # todo: check for the performance impact (and costs) of this method
     def stats(self) -> Dict[str, Any]:                                      # Get storage statistics.
 
-        files = self.files__all()
+        files = self.files__all(full_path=True)
         total_size = 0
 
         for file_path in files:

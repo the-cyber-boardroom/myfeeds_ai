@@ -1,3 +1,4 @@
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Data import My_Feeds__Persona__Data
 from myfeeds_ai.personas.actions.My_Feeds__Personas                import My_Feeds__Personas
 from myfeeds_ai.personas.actions.My_Feeds__Personas__Create        import My_Feeds__Personas__Create
 from myfeeds_ai.personas.files.My_Feeds__Personas__File            import My_Feeds__Personas__File
@@ -16,13 +17,14 @@ class Flow__My_Feeds__Personas__1__Create__Persona(Type_Safe):
     persona_type            : Schema__Persona__Types    = Schema__Persona__Types.EXEC__CISO
     output                  : dict
     personas_create         : My_Feeds__Personas__Create
-    personas                : My_Feeds__Personas
+    #personas                : My_Feeds__Personas
+    persona_data            : My_Feeds__Persona__Data
     file_persona            : My_Feeds__Personas__File
     persona                 : Schema__Persona
 
     @task()
     def task__1__load_persona_data(self):
-        with self.personas.file__persona(persona_type=self.persona_type) as _:
+        with self.persona_data.file__persona(persona_type=self.persona_type) as _:
             self.file_persona = _
             self.persona      = _.data()
 
