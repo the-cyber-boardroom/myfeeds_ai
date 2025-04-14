@@ -15,6 +15,5 @@ class Routes__Debug(Fast_API_Routes):
                 return shell_server.invoke()
         return '...this is not the lambda shell you are looking for ....'
 
-
     def setup_routes(self):
         self.add_route_post(self.lambda_shell)

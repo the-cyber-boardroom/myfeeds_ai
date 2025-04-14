@@ -1,14 +1,11 @@
 import myfeeds_ai
 from starlette.staticfiles                                                                import StaticFiles
-
-from myfeeds_ai.fast_api.admin.Admin__Fast_API import Admin__Fast_API
+from myfeeds_ai.fast_api.admin.Admin__Fast_API                                            import Admin__Fast_API
 from myfeeds_ai.fast_api.public_data.LLM_Cache__Fast_API                                  import LLM_Cache__Fast_API
 from myfeeds_ai.fast_api.public_data.Public_Data__Fast_API                                import Public_Data__Fast_API
-from myfeeds_ai.fast_api.routes.Routes__Debug                                             import Routes__Debug
 from myfeeds_ai.personas.routes.Routes__My_Feeds__Personas                                import Routes__My_Feeds__Personas
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News__Articles import Routes__Hacker_News__Articles
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News__Cache    import Routes__Hacker_News__Cache
-from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News__Flows    import Routes__Hacker_News__Flows
 from myfeeds_ai.rss_feeds.RSS_Feeds__Fast_API                                             import RSS_Feeds__Fast_API
 from osbot_utils.utils.Env                                                                import get_env, load_dotenv
 from osbot_fast_api.api.Fast_API                                                          import Fast_API
@@ -36,7 +33,6 @@ class Data_Feeds__Fast_API(Fast_API):
         self.add_routes(Routes__Hacker_News          )
         self.add_routes(Routes__Hacker_News__Cache   )
         self.add_routes(Routes__OSS                  )
-        self.add_routes(Routes__Debug                )
 
         Public_Data__Fast_API().setup().mount(self.app())       # available at /public-data/docs
         LLM_Cache__Fast_API  ().setup().mount(self.app())       # available at /llm-cache/docs
