@@ -1,6 +1,6 @@
 from datetime                                                                       import datetime
 from typing                                                                         import Any, Type
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Extension, S3_Key__File__Content_Type
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage   import Hacker_News__Storage
 from osbot_utils.helpers.Safe_Id                                                    import Safe_Id
 from osbot_utils.type_safe.Type_Safe                                                import Type_Safe
@@ -10,8 +10,8 @@ class Hacker_News__File__Now(Type_Safe):
     hacker_news_storage : Hacker_News__Storage
     file_id             : Safe_Id
     file_data           : Any
-    extension           : S3_Key__File_Extension
-    content_type        : str
+    extension           : S3_Key__File__Extension
+    content_type        : S3_Key__File__Content_Type
     now                 : datetime
     data_type           : Type[Type_Safe]         = None
 
@@ -22,19 +22,20 @@ class Hacker_News__File__Now(Type_Safe):
     def exists__now      (self) -> bool: return self.hacker_news_storage.path__exists      (s3_path = self.path_now   ())
     def file_info__now   (self) -> dict: return self.hacker_news_storage.path__file_info   (s3_path = self.path_now   ())
     def path_now         (self) -> str : return self.hacker_news_storage.path__now         (file_id = self.file_id      , extension=self.extension, now=self.now)
+    def not_exists       (self) -> bool: return self.exists() is False
 
     def contents(self):
         return self.load()
 
     def data(self):
-        file_data = self.load()
-        if self.data_type:                                      # if there is a data_type defined
-            if file_data:                                       #   if there was data
-                return self.data_type.from_json(file_data)      #       return the full object (since self.data_type is Type[Type_Safe] we know the from_json exists)
-            else:                                               #   if there was no data
-                return self.data_type()                         #       return a new object of data_type (which should have a default value
-        else:                                                   # if there is no data_type defined
-            return file_data                                    #   just return the data
+        self.file_data = self.load()
+        if self.data_type:                                                      # if there is a data_type defined
+            if self.file_data:                                                  #   if there was data
+                self.file_data = self.data_type.from_json(self.file_data)       #       convert it to the full object (since self.data_type is Type[Type_Safe] we know the from_json exists)
+            else:                                                               #   if there was no data
+                self.file_data = self.data_type()                               #       create a new object of data_type (which should have a default value
+        return self.file_data
+
     def info(self) -> dict:
         return dict(exists      = self.exists     (),
                     path_now    = self.path_now   ())
@@ -56,10 +57,13 @@ class Hacker_News__File__Now(Type_Safe):
         if not self.file_data:
             raise ValueError(f"in Hacker_News__File.save, there was no data to save, self.file_data was empty")
 
-        if type(self.file_data) is str and self.content_type:                       # if the data is a string and we have set the content-type
-            data = str_to_bytes(self.file_data)                                     # then save it as bytes, since if not the data will be saved as json-dumps of this value (and the content type will not be set)
+        if self.data_type:                                                      # if data_type has been defined
+            data = self.file_data.json()                                        # get the json value of the current object
         else:
-            data = self.file_data
+            if type(self.file_data) is str and self.content_type:               # if the data is a string, and we have set the content-type
+                data = str_to_bytes(self.file_data)                             # then save it as bytes, since if not the data will be saved as json-dumps of this value (and the content type will not be set)
+            else:
+                data = self.file_data
         with self.hacker_news_storage as _:
             save_kwargs = dict(data         = data              ,
                                now          = self.now          ,

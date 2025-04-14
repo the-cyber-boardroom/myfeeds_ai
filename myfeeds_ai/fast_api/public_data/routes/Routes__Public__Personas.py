@@ -12,8 +12,6 @@ class Routes__Public__Personas(Fast_API_Routes):
     tag              : str                         = ROUTES__TAG__PUBLIC__PERSONAS
     personas_storage : My_Feeds__Personas__Storage
 
-
-
     def file_exists(self, file_path: str = Path(...)):
         with self.personas_storage as _:
             return {'file_exists': _.path__exists(file_path),

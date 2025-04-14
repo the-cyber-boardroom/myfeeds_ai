@@ -2,7 +2,7 @@ from datetime                                                   import datetime
 from typing                                                     import List
 from osbot_aws.aws.cloud_front.Cloud_Front                      import Cloud_Front
 from osbot_utils.utils.Env                                      import get_env
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator        import Data_Feeds__S3__Key_Generator, S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator        import Data_Feeds__S3__Key_Generator, S3_Key__File__Extension, S3_Key__File__Content_Type
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants         import S3_FOLDER_NAME__LATEST, S3_BUCKET_PREFIX__DATA_FEEDS, S3_BUCKET_SUFFIX__HACKER_NEWS, S3_FILE_NAME__LATEST__VERSIONS
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers  import Model__Data_Feeds__Providers
 from osbot_aws.aws.s3.S3__DB_Base                               import S3__DB_Base
@@ -32,7 +32,7 @@ class Data_Feeds__S3_DB(S3__DB_Base):
 
     # methods for paths
     @type_safe
-    def s3_path__latest(self, file_id, extension: S3_Key__File_Extension):
+    def s3_path__latest(self, file_id, extension: S3_Key__File__Extension):
         return url_join_safe(S3_FOLDER_NAME__LATEST, file_id + f'.{extension.value}')
 
     @type_safe
@@ -44,13 +44,13 @@ class Data_Feeds__S3_DB(S3__DB_Base):
 
     @type_safe
     def s3_path__date_time(self, date_time : datetime,
-                                 file_id   : Safe_Id               = None,
-                                 extension: S3_Key__File_Extension = None,
-                                 areas    : List[Safe_Id]          = None) -> str:
+                           file_id   : Safe_Id               = None,
+                           extension: S3_Key__File__Extension = None,
+                           areas    : List[Safe_Id]          = None) -> str:
         return self.s3_key_generator.s3_path__date_time(date_time=date_time, file_id=file_id, extension=extension, areas=areas)
 
     @type_safe
-    def s3_path__now(self, file_id: Safe_Id=None, extension: S3_Key__File_Extension=None, areas: List[Safe_Id] = None) -> str:
+    def s3_path__now(self, file_id: Safe_Id=None, extension: S3_Key__File__Extension=None, areas: List[Safe_Id] = None) -> str:
         return self.s3_key_generator.s3_path__now(file_id=file_id, extension=extension, areas=areas)
 
     # def s3_path__now_utc(self):
@@ -65,7 +65,8 @@ class Data_Feeds__S3_DB(S3__DB_Base):
         s3_key__now_utc = self.s3_key__for_provider_path(s3_path)
         return sorted(self.s3_folder_files(s3_key__now_utc, include_sub_folders=include_sub_folders))
 
-    def s3_path__save_data(self, data, s3_path, content_type=None):
+    @type_safe
+    def s3_path__save_data(self, data, s3_path, content_type:S3_Key__File__Content_Type=None):
         s3_key = self.s3_key__for_provider_path(s3_path)
         result = self.s3_save_data(data=data, s3_key=s3_key, content_type=content_type)
         return result

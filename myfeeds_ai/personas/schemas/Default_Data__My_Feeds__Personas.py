@@ -194,21 +194,24 @@ Default_Data__TEAM__GRC = dict(description = ("The Governance, Risk and Complian
                                                "units to implement controls that satisfy multiple compliance requirements simultaneously while "
                                                "optimizing audit activities and evidence collection to reduce compliance overhead."))
 
+Default_Data__TEST__PERSONA = dict(description = ("This is a test persona that is used in the unit tests for the MyFeeds.ai site. The areas of "
+                                                  "responsibility are the sames as a cyber security engineer"))
 # Comprehensive Dictionary
 Default_Data__My_Feeds__Personas = {
-    Schema__Persona__Types.EXEC__CEO              : Default_Data__EXEC__CEO,
-    Schema__Persona__Types.EXEC__CISO             : Default_Data__EXEC__CISO,
-    Schema__Persona__Types.EXEC__CTO              : Default_Data__EXEC__CTO,
-    Schema__Persona__Types.INVESTOR__ANGEL        : Default_Data__INVESTOR__ANGEL,
-    Schema__Persona__Types.INVESTOR__SERIES_A     : Default_Data__INVESTOR__SERIES_A,
-    Schema__Persona__Types.PRIVATE__CISO          : Default_Data__PRIVATE__CISO,
-    Schema__Persona__Types.PRIVATE__BOARD_MEMBER  : Default_Data__PRIVATE__BOARD_MEMBER,
-    Schema__Persona__Types.PUBLIC__CISO           : Default_Data__PUBLIC__CISO,
-    Schema__Persona__Types.PUBLIC__BOARD_MEMBER   : Default_Data__PUBLIC__BOARD_MEMBER,
-    Schema__Persona__Types.STARTUP__CISO          : Default_Data__STARTUP__CISO,
-    Schema__Persona__Types.STARTUP__BOARD_MEMBER  : Default_Data__STARTUP__BOARD_MEMBER,
-    Schema__Persona__Types.TEAM__APP_SEC          : Default_Data__TEAM__APP_SEC,
-    Schema__Persona__Types.TEAM__EXTERNAL_COMMS   : Default_Data__TEAM__EXTERNAL_COMMS,
-    Schema__Persona__Types.TEAM__INCIDENT_RESPONSE: Default_Data__TEAM__INCIDENT_RESPONSE,
-    Schema__Persona__Types.TEAM__GRC              : Default_Data__TEAM__GRC
+    Schema__Persona__Types.EXEC__CEO              : Default_Data__EXEC__CEO                 ,
+    Schema__Persona__Types.EXEC__CISO             : Default_Data__EXEC__CISO                ,
+    Schema__Persona__Types.EXEC__CTO              : Default_Data__EXEC__CTO                 ,
+    Schema__Persona__Types.INVESTOR__ANGEL        : Default_Data__INVESTOR__ANGEL           ,
+    Schema__Persona__Types.INVESTOR__SERIES_A     : Default_Data__INVESTOR__SERIES_A        ,
+    Schema__Persona__Types.PRIVATE__CISO          : Default_Data__PRIVATE__CISO             ,
+    Schema__Persona__Types.PRIVATE__BOARD_MEMBER  : Default_Data__PRIVATE__BOARD_MEMBER     ,
+    Schema__Persona__Types.PUBLIC__CISO           : Default_Data__PUBLIC__CISO              ,
+    Schema__Persona__Types.PUBLIC__BOARD_MEMBER   : Default_Data__PUBLIC__BOARD_MEMBER      ,
+    Schema__Persona__Types.STARTUP__CISO          : Default_Data__STARTUP__CISO             ,
+    Schema__Persona__Types.STARTUP__BOARD_MEMBER  : Default_Data__STARTUP__BOARD_MEMBER     ,
+    Schema__Persona__Types.TEAM__APP_SEC          : Default_Data__TEAM__APP_SEC             ,
+    Schema__Persona__Types.TEAM__EXTERNAL_COMMS   : Default_Data__TEAM__EXTERNAL_COMMS      ,
+    Schema__Persona__Types.TEAM__INCIDENT_RESPONSE: Default_Data__TEAM__INCIDENT_RESPONSE   ,
+    Schema__Persona__Types.TEAM__GRC              : Default_Data__TEAM__GRC                 ,
+    Schema__Persona__Types.TEST__PERSONA          : Default_Data__TEST__PERSONA
 }

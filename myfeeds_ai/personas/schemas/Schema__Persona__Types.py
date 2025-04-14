@@ -17,7 +17,7 @@ class Schema__Persona__Types(Enum):
     TEAM__EXTERNAL_COMMS    : str = 'team-external-comms'
     TEAM__INCIDENT_RESPONSE : str = 'team-incident-response'
     TEAM__GRC               : str = 'team-grc'
-
+    TEST__PERSONA           : str = 'test-persona'
 
 
 

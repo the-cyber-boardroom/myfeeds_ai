@@ -1,5 +1,7 @@
 from fastapi                                                                                    import Response
 from osbot_fast_api.api.Fast_API_Routes                                                         import Fast_API_Routes
+
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File__Content_Type
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                  import Hacker_News__Data
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data__Digest          import Hacker_News__Data__Digest
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__All     import Hacker_News__File__Articles__All
@@ -36,13 +38,11 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
 
     def digest_articles_html_page(self):
         content      = self.hacker_news_data_digest.digest_articles__html__as_page()
-        content_type =  'text/html; charset=utf-8'
-        return Response(content=content, media_type=content_type)
+        return Response(content=content, media_type=S3_Key__File__Content_Type.HTML)
 
     def digest_articles_html_section(self):
         content      = self.hacker_news_data_digest.digest_articles__html__as_section()
-        content_type =  'text/html; charset=utf-8'
-        return Response(content=content, media_type=content_type)
+        return Response(content=content, media_type=S3_Key__File__Content_Type.HTML)
 
     def new_articles(self):
         return self.hacker_news_data.new_articles().json()

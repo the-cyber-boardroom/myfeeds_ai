@@ -1,4 +1,4 @@
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                             import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                             import S3_Key__File__Extension, S3_Key__File__Content_Type
 from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News                      import FILE_ID__FEED_ARTICLE, FILE_ID__ARTICLE__MARKDOWN
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article                import Hacker_News__File__Article
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache       import Hacker_News__Execute_LLM__With_Cache
@@ -29,11 +29,11 @@ class Hacker_News__Article(Type_Safe):
 
     @cache_on_self
     def file_markdown(self):
-        article_kwargs = dict(article_id   = self.article_id                ,
-                              content_type = "text/markdown"                ,
-                              extension    = S3_Key__File_Extension.MARKDOWN,
-                              file_id      = FILE_ID__ARTICLE__MARKDOWN     ,
-                              now          = self.now()                     )
+        article_kwargs = dict(article_id   = self.article_id,
+                              content_type = S3_Key__File__Content_Type.MARKDOWN,
+                              extension    = S3_Key__File__Extension.MARKDOWN,
+                              file_id      = FILE_ID__ARTICLE__MARKDOWN,
+                              now          = self.now())
         return Hacker_News__File__Article(**article_kwargs)
 
     def article_markdown__create(self):

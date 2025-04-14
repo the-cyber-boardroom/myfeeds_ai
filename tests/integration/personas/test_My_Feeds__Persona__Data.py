@@ -25,9 +25,9 @@ class test_My_Feeds__Persona__Data(TestCase):
         persona_type = Schema__Persona__Types.TEAM__GRC
         with self.persona_data.file__persona(persona_type=persona_type) as _:
             assert type(_)         is My_Feeds__Personas__File
-            assert _.file_id       == 'team-grc__persona'
+            assert _.file_id       == 'persona'
             assert _.path_latest() == f'latest/{Schema__Persona__Types.TEAM__GRC.value}__{FILE_ID__PERSONA}.json'
-            assert _.path_now   () == f'{_.folder__path_now()}/{Schema__Persona__Types.TEAM__GRC.value}__{FILE_ID__PERSONA}.json'
+            assert _.path_now   () == f'{_.folder__path_now()}/{FILE_ID__PERSONA}.json'
 
     def test_persona__description__png(self):
         with self.persona_data as _:
@@ -41,4 +41,4 @@ class test_My_Feeds__Persona__Data(TestCase):
             persona_type = Schema__Persona__Types.EXEC__CISO
             tree_values  = _.persona__description__tree_values(persona_type)
             if tree_values:
-                assert type(tree_values) is str
+                assert type(tree_values) is bytes

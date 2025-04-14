@@ -1,12 +1,12 @@
 from mgraph_db.mgraph.MGraph                                                        import MGraph
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File        import Hacker_News__File
 
 
 
 class Hacker_News__MGraph(Hacker_News__File):
     mgraph    : MGraph
-    extension : S3_Key__File_Extension  = S3_Key__File_Extension.MGRAPH__JSON
+    extension : S3_Key__File__Extension  = S3_Key__File__Extension.MGRAPH__JSON
 
     def load(self):
         with self.hacker_news_storage as _:

@@ -28,7 +28,7 @@ class test_Flow__My_Feeds__Personas__3__LLM__Create__Digest(TestCase):
             assert type(_.persona_type              ) is Schema__Persona__Types
             assert type(_.file_persona.file_id      ) is Safe_Id
             assert type(_.persona_connected_entities) is Schema__Persona__LLM__Connect_Entities
-            assert _.file_persona.file_id             == f"{_.persona_type.value}__{FILE_ID__PERSONA}"
+            assert _.file_persona.file_id             == FILE_ID__PERSONA
             assert _.persona_type                     == Schema__Persona__Types.EXEC__CISO
 
     def test_task__2__llm_create_persona_digest(self):

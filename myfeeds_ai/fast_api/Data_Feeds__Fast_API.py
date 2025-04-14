@@ -1,5 +1,7 @@
 import myfeeds_ai
 from starlette.staticfiles                                                                import StaticFiles
+
+from myfeeds_ai.fast_api.admin.Admin__Fast_API import Admin__Fast_API
 from myfeeds_ai.fast_api.public_data.LLM_Cache__Fast_API                                  import LLM_Cache__Fast_API
 from myfeeds_ai.fast_api.public_data.Public_Data__Fast_API                                import Public_Data__Fast_API
 from myfeeds_ai.fast_api.routes.Routes__Debug                                             import Routes__Debug
@@ -30,16 +32,16 @@ class Data_Feeds__Fast_API(Fast_API):
     def setup_routes(self):
         self.add_routes(Routes__Info                 )
         self.add_routes(Routes__My_Feeds__Personas   )
-        self.add_routes(Routes__Hacker_News__Flows   )
         self.add_routes(Routes__Hacker_News__Articles)
         self.add_routes(Routes__Hacker_News          )
         self.add_routes(Routes__Hacker_News__Cache   )
         self.add_routes(Routes__OSS                  )
         self.add_routes(Routes__Debug                )
 
-        Public_Data__Fast_API().setup().mount(self.app())
-        LLM_Cache__Fast_API  ().setup().mount(self.app())
-        RSS_Feeds__Fast_API  ().setup().mount(self.app())
+        Public_Data__Fast_API().setup().mount(self.app())       # available at /public-data/docs
+        LLM_Cache__Fast_API  ().setup().mount(self.app())       # available at /llm-cache/docs
+        RSS_Feeds__Fast_API  ().setup().mount(self.app())       # available at /rss-feeds/docs
+        Admin__Fast_API      ().setup().mount(self.app())       # available at /admin/docs
 
     def path_static_folder(self):
         return path_combine(myfeeds_ai.path, 'static')

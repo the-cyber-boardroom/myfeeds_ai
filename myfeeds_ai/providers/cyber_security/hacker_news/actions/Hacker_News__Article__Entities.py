@@ -1,5 +1,5 @@
 from mgraph_db.mgraph.actions.MGraph__Screenshot                                                        import ENV_NAME__URL__MGRAPH_DB_SERVERLESS
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                                import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                                import S3_Key__File__Extension, S3_Key__File__Content_Type
 from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News                         import FILE_ID__ARTICLE__TEXT__ENTITIES__TITLE, FILE_ID__ARTICLE__TEXT__ENTITIES__DESCRIPTION, FILE_ID__ARTICLE__TEXT__ENTITIES
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article__Text_Entities    import Hacker_News__File__Article__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.prompts.LLM__Prompt__Extract_Entities         import LLM__Prompt__Extract_Entities
@@ -18,13 +18,13 @@ class Hacker_News__Article__Entities(Type_Safe):
 
     def file___text__entities__mgraph(self):
         with self.file___text__entities() as _:
-            _.extension     = S3_Key__File_Extension.MGRAPH__JSON
+            _.extension     = S3_Key__File__Extension.MGRAPH__JSON
             return _
 
     def file___text__entities__png(self):
         with self.file___text__entities() as _:
-            _.extension     = S3_Key__File_Extension.PNG
-            _.content_type = "image/png"
+            _.extension     = S3_Key__File__Extension.PNG
+            _.content_type  = S3_Key__File__Content_Type.PNG
             return _
 
     def file___text__entities__description(self):
@@ -35,7 +35,7 @@ class Hacker_News__Article__Entities(Type_Safe):
 
     def file___text__entities__description__mgraph(self):
         with self.file___text__entities__description() as _:
-            _.extension     = S3_Key__File_Extension.MGRAPH__JSON
+            _.extension     = S3_Key__File__Extension.MGRAPH__JSON
             return _
 
     def file___text__entities(self):
@@ -52,19 +52,19 @@ class Hacker_News__Article__Entities(Type_Safe):
 
     def file___text__entities__title__mgraph(self):
         with self.file___text__entities__title() as _:
-            _.extension     = S3_Key__File_Extension.MGRAPH__JSON
+            _.extension     = S3_Key__File__Extension.MGRAPH__JSON
             return _
 
     def file___text__entities__title__png(self):
         with self.file___text__entities__title() as _:
-            _.extension     = S3_Key__File_Extension.PNG
-            _.content_type = "image/png"
+            _.extension    = S3_Key__File__Extension.PNG
+            _.content_type = S3_Key__File__Content_Type.PNG
             return _
 
     def file___text__entities__description__png(self):
         with self.file___text__entities__description() as _:
-            _.extension     = S3_Key__File_Extension.PNG
-            _.content_type = "image/png"
+            _.extension    = S3_Key__File__Extension.PNG
+            _.content_type = S3_Key__File__Content_Type.PNG
             return _
 
     def create__text_entities__mgraph_and_png(self, file_with_entities: Hacker_News__File__Article__Text_Entities):

@@ -1,5 +1,4 @@
 from myfeeds_ai.personas.actions.My_Feeds__Persona__Data import My_Feeds__Persona__Data
-from myfeeds_ai.personas.actions.My_Feeds__Personas                                             import My_Feeds__Personas
 from myfeeds_ai.personas.files.My_Feeds__Personas__File                                         import My_Feeds__Personas__File
 from myfeeds_ai.personas.llms.LLM__Prompt__Personas__Create_Digest                              import LLM__Prompt__Personas__Create_Digest
 from myfeeds_ai.personas.llms.Schema__Persona__Digest                                           import Schema__Persona__Digest

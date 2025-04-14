@@ -1,6 +1,6 @@
 from datetime                                                                               import datetime
 from unittest                                                                               import TestCase
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                    import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                    import S3_Key__File__Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage__Article  import Hacker_News__Storage__Article, S3_FOLDER_NAME__ARTICLES
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article       import Hacker_News__File__Article
 from osbot_utils.helpers.Obj_Id                                                             import Obj_Id
@@ -35,6 +35,6 @@ class test_Hacker_News__File__Article(TestCase):
             assert _.areas() == ['articles', self.article_id]
             date_time = datetime(year=1955, month=11, day=12, hour=22)
             expected_path = f"1955/11/12/22/articles/{self.article_id}/{self.file_id}.mgraph.dot"
-            assert expected_path == _.path__date_time(date_time,self.file_id, S3_Key__File_Extension.MGRAPH__DOT)
+            assert expected_path == _.path__date_time(date_time, self.file_id, S3_Key__File__Extension.MGRAPH__DOT)
 
 

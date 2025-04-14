@@ -1,83 +1,44 @@
-from fastapi                                                                import Response
-from osbot_fast_api.api.Fast_API_Routes                                     import Fast_API_Routes
-from starlette                                                              import status
-
-from myfeeds_ai.personas.actions.My_Feeds__Persona__Data import My_Feeds__Persona__Data
-from myfeeds_ai.personas.actions.My_Feeds__Personas                         import My_Feeds__Personas
-from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__1__Create__Persona import Flow__My_Feeds__Personas__1__Create__Persona
-from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__2__LLM__Connected_Entities import \
-    Flow__My_Feeds__Personas__2__LLM__Connected_Entities
-from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__3__LLM__Create__Digest import \
-    Flow__My_Feeds__Personas__3__LLM__Create__Digest
-from myfeeds_ai.personas.schemas.Schema__Persona__Types                     import Schema__Persona__Types
+from fastapi                                                                        import Response
+from osbot_fast_api.api.Fast_API_Routes                                             import Fast_API_Routes
+from starlette                                                                      import status
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Content_Type
+from myfeeds_ai.personas.actions.My_Feeds__Persona                                  import My_Feeds__Persona
+from myfeeds_ai.personas.schemas.Schema__Persona__Types                             import Schema__Persona__Types
 
 ROUTE_PATH__PERSONAS = 'personas'
 
-ROUTES_PATHS__MY_FEEDS__PERSONAS = [f'/{ROUTE_PATH__PERSONAS}/flow-1-create-persona'        ,
-                                    f'/{ROUTE_PATH__PERSONAS}/flow-2-llm-connected-entities',
-                                    f'/{ROUTE_PATH__PERSONAS}/flow-3-llm-create-digest'     ,
-                                    f'/{ROUTE_PATH__PERSONAS}/persona'                      ,
+ROUTES_PATHS__MY_FEEDS__PERSONAS = [f'/{ROUTE_PATH__PERSONAS}/persona'                      ,
                                     f'/{ROUTE_PATH__PERSONAS}/persona-png'                  ,
-                                    f'/{ROUTE_PATH__PERSONAS}/persona-tree'                 ,
-                                    f'/{ROUTE_PATH__PERSONAS}/files-in-latest'              ,
-                                    f'/{ROUTE_PATH__PERSONAS}/files-in-now'                 ,
-                                    f'/{ROUTE_PATH__PERSONAS}/storage-all-files'            ,
-                                    f'/{ROUTE_PATH__PERSONAS}/delete-file'                  ]
+                                    f'/{ROUTE_PATH__PERSONAS}/persona-tree'                 ]
 
 class Routes__My_Feeds__Personas(Fast_API_Routes):
     tag          : str = ROUTE_PATH__PERSONAS
-    personas     : My_Feeds__Personas
-    persona_data : My_Feeds__Persona__Data
-
-    def flow_1_create_persona(self, persona_type: Schema__Persona__Types):
-        return Flow__My_Feeds__Personas__1__Create__Persona(persona_type=persona_type).run().flow_return_value
-
-    def flow_2_llm_connected_entities(self, persona_type: Schema__Persona__Types):
-        return Flow__My_Feeds__Personas__2__LLM__Connected_Entities(persona_type=persona_type).run().flow_return_value
-
-    def flow_3_llm_create_digest(self, persona_type: Schema__Persona__Types):
-        return Flow__My_Feeds__Personas__3__LLM__Create__Digest(persona_type=persona_type).run().flow_return_value
-
-    def files_in_latest(self):
-        return self.personas.files_in__latest()
-
-    def files_in_now(self):
-        return self.personas.files_in__now()
 
     def persona(self, persona_type: Schema__Persona__Types):
-        return self.persona_data.file__persona(persona_type=persona_type).load()
+        with My_Feeds__Persona(persona_type=persona_type) as _:
+            if _.exists():
+                return _.data()
+            else:
+                return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
 
     def persona_png(self, persona_type: Schema__Persona__Types):
-        png_bytes = self.persona_data.persona__description__png(persona_type=persona_type)
+        png_bytes = My_Feeds__Persona(persona_type=persona_type).persona__entities__png()
         if png_bytes:
-            content_type = "image/png"
-            return Response(content=png_bytes, media_type=content_type)
+            return Response(content=png_bytes, media_type=str(S3_Key__File__Content_Type.PNG))
         else:
             return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     def persona_tree(self, persona_type: Schema__Persona__Types):
-        tree_values = self.persona_data.persona__description__tree_values(persona_type=persona_type)
+        tree_values = My_Feeds__Persona(persona_type=persona_type).persona__entities__tree_values()
         if tree_values:
-            content_type = 'text/plain; charset=utf-8'
-            return Response(content=tree_values, media_type=content_type)
+            return Response(content=tree_values, media_type=str(S3_Key__File__Content_Type.TXT))
         else:
             return Response(status_code=status.HTTP_204_NO_CONTENT)
 
-    def delete_file(self, path:str):
-        return self.personas.storage.delete_from__path(path)
-
-    def storage_all_files(self):
-        return sorted(self.personas.storage.s3_db.provider__all_files(), reverse=True)
-
 
     def setup_routes(self):
-        self.add_route_get(self.flow_1_create_persona        )
-        self.add_route_get(self.flow_2_llm_connected_entities)
-        self.add_route_get(self.flow_3_llm_create_digest     )
-        self.add_route_get(self.persona                      )
-        self.add_route_get(self.persona_png                  )
-        self.add_route_get(self.persona_tree                 )
-        self.add_route_get(self.files_in_latest              )
-        self.add_route_get(self.files_in_now                 )
-        self.add_route_get(self.storage_all_files            )
-        self.add_route_delete(self.delete_file               )         # todo, remove this temp method
+        self.add_route_get   (self.persona                      )
+        self.add_route_get   (self.persona_png                  )
+        self.add_route_get   (self.persona_tree                 )

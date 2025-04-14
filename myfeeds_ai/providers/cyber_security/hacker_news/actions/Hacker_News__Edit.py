@@ -1,4 +1,4 @@
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                    import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                    import S3_Key__File__Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data              import FILE_NAME__CURRENT_ARTICLES
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage           import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Articles import Schema__Feed__Articles
@@ -12,7 +12,7 @@ class Hacker_News__Edit(Type_Safe):
     @type_safe
     def save__current_articles(self, current_articles: Schema__Feed__Articles):
         file_id   = FILE_NAME__CURRENT_ARTICLES
-        extension = S3_Key__File_Extension.JSON.value
+        extension = S3_Key__File__Extension.JSON.value
         with self.hacker_news_storage as _:
             data   = current_articles.json()
             s3_path = _.save_to__latest(data=data, file_id=file_id, extension=extension)

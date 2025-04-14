@@ -1,6 +1,6 @@
 import pytest
 from unittest                                                                       import TestCase
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__S3_DB             import Hacker_News__S3_DB
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage   import Hacker_News__Storage
 from osbot_utils.utils.Misc                                                         import random_text
@@ -18,7 +18,7 @@ class test_Hacker_News__Storage(TestCase):
     def setUp(self):                                                                  # Per-test setup
         self.test_data = {"key": "value", "test": random_text()}
         self.file_id   = Safe_Id(random_text())
-        self.extension = S3_Key__File_Extension.JSON
+        self.extension = S3_Key__File__Extension.JSON
         self.file_name = f'{self.file_id}.{self.extension.value}'
 
     def tearDown(self):                                                              # Cleanup after each test
