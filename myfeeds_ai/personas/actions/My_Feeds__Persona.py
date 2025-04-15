@@ -1,15 +1,16 @@
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                import S3_Key__File__Content_Type
-from myfeeds_ai.personas.actions.My_Feeds__Persona__Files               import My_Feeds__Persona__Files
-from myfeeds_ai.personas.actions.My_Feeds__Personas__Storage__Persona   import My_Feeds__Personas__Storage__Persona
-from myfeeds_ai.personas.files.My_Feeds__Personas__File                 import My_Feeds__Personas__File
-from myfeeds_ai.personas.files.My_Feeds__Personas__File__Now            import My_Feeds__Personas__File__Now
-from myfeeds_ai.personas.schemas.Default_Data__My_Feeds__Personas       import Default_Data__My_Feeds__Personas
-from myfeeds_ai.personas.schemas.Schema__Persona                        import Schema__Persona
-from myfeeds_ai.personas.schemas.Schema__Persona__Text__Entities        import Schema__Persona__Text__Entities
-from myfeeds_ai.personas.schemas.Schema__Persona__Types                 import Schema__Persona__Types
-from osbot_utils.decorators.methods.cache_on_self                       import cache_on_self
-from osbot_utils.helpers.safe_str.Safe_Str__Hash                        import safe_str_hash
-from osbot_utils.type_safe.Type_Safe                                    import Type_Safe
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                        import S3_Key__File__Content_Type
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Files                       import My_Feeds__Persona__Files
+from myfeeds_ai.personas.actions.My_Feeds__Personas__Storage__Persona           import My_Feeds__Personas__Storage__Persona
+from myfeeds_ai.personas.files.My_Feeds__Personas__File                         import My_Feeds__Personas__File
+from myfeeds_ai.personas.files.My_Feeds__Personas__File__Now                    import My_Feeds__Personas__File__Now
+from myfeeds_ai.personas.schemas.Default_Data__My_Feeds__Personas               import Default_Data__My_Feeds__Personas
+from myfeeds_ai.personas.schemas.Schema__Persona                                import Schema__Persona
+from myfeeds_ai.personas.schemas.Schema__Persona__Articles__Connected_Entities  import Schema__Persona__Articles__Connected_Entities
+from myfeeds_ai.personas.schemas.Schema__Persona__Text__Entities                import Schema__Persona__Text__Entities
+from myfeeds_ai.personas.schemas.Schema__Persona__Types                         import Schema__Persona__Types
+from osbot_utils.decorators.methods.cache_on_self                               import cache_on_self
+from osbot_utils.helpers.safe_str.Safe_Str__Hash                                import safe_str_hash
+from osbot_utils.type_safe.Type_Safe                                            import Type_Safe
 
 
 class My_Feeds__Persona(Type_Safe):
@@ -103,6 +104,11 @@ class My_Feeds__Persona(Type_Safe):
         path      = self.data().path__now
         json_data =  self.file_contents(path)
         return Schema__Persona.from_json(json_data)
+
+    def persona__articles__connected_entities(self) -> Schema__Persona__Articles__Connected_Entities:
+        path      = self.data().path__persona__articles__connected_entities
+        json_data = self.file_contents(path)
+        return Schema__Persona__Articles__Connected_Entities.from_json(json_data)
 
     def persona__entities(self) -> Schema__Persona__Text__Entities:
         path      = self.data().path__persona__entities

@@ -2,18 +2,15 @@ from typing import Dict
 
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                        import S3_Key__File__Content_Type
 from myfeeds_ai.personas.actions.My_Feeds__Persona                                              import My_Feeds__Persona
-from myfeeds_ai.personas.files.My_Feeds__Personas__File__Now import My_Feeds__Personas__File__Now
+from myfeeds_ai.personas.files.My_Feeds__Personas__File__Now                                    import My_Feeds__Personas__File__Now
 from myfeeds_ai.personas.llms.LLM__Prompt__Connect_Entities                                     import LLM__Prompt__Connect_Entities
-#from myfeeds_ai.personas.schemas.Schema__Persona__Articles__Connected_Entities                  import Schema__Persona__Articles__Connected_Entities
-from myfeeds_ai.personas.schemas.Schema__Persona__Text__Entities                                import Schema__Persona__Text__Entities
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                                         import Schema__Persona__Types
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Feed__Text_Entities   import Hacker_News__Feed__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage               import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File                    import Hacker_News__File
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Articles__Current import Hacker_News__File__Articles__Current
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache  import Hacker_News__Execute_LLM__With_Cache
-from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Text_Entities__Files import \
-    Schema__Feed__Text_Entities__Files
+from myfeeds_ai.providers.cyber_security.hacker_news.schemas.Schema__Feed__Text_Entities__Files import Schema__Feed__Text_Entities__Files
 from osbot_utils.helpers.Obj_Id                                                                 import Obj_Id
 from osbot_utils.helpers.flows.Flow                                                             import Flow
 from osbot_utils.helpers.flows.decorators.flow                                                  import flow

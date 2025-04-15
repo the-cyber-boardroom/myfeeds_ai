@@ -16,7 +16,8 @@ class test_Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
         if get_env(ENV_NAME_OPEN_AI__API_KEY) is None:
             pytest.skip('This test requires OpenAI API Key to run')
         myfeeds_tests__setup_local_stack()
-        cls.flow_connect_entities = Flow__My_Feeds__Personas__2__LLM__Connected_Entities()
+        cls.persona_type          = Schema__Persona__Types.EXEC__CISO
+        cls.flow_connect_entities = Flow__My_Feeds__Personas__2__LLM__Connected_Entities(persona_type=cls.persona_type)
 
     def test_task__1__load_persona_data(self):
         with self.flow_connect_entities as _:
@@ -67,6 +68,7 @@ class test_Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
             #assert _.persona.data().path__persona__articles__connected_entities == data.path__now           # todo: review the save workflow since there is a small race condition here caused by the use of @cache_on_self on the My_Feeds__Persona.data()
             assert type(data)                                                   is Schema__Persona__Articles__Connected_Entities
             assert type(data.connected_entities)                                is Type_Safe__List
+
 
     def test_task__4__collect_articles_markdown(self):
         with self.flow_connect_entities as _:
