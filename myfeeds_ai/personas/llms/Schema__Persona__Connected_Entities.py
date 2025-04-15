@@ -13,7 +13,7 @@ class Schema__Persona__Entity_Match(Type_Safe):
 class Schema__Persona__Connected_Entity(Type_Safe):
     """Complete relevance assessment between a persona and an article."""
     article_id          : str                     # The ID of the article
-    overall_score       : float                   # Overall relevance score (0.0-10.0)
+    overall_score       : float                   # Overall relevance score (0.0 to 1.0)
     entity_matches      : List[Schema__Persona__Entity_Match      ]
     primary_relevance   : List[str]               # Primary areas of relevance to persona responsibilities
     relevance_summary   : str                     # Summary explanation of relevance
