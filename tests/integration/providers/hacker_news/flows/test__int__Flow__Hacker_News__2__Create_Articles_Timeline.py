@@ -2,10 +2,10 @@ import pytest
 from unittest                                                                                                   import TestCase
 from mgraph_db.mgraph.actions.MGraph__Screenshot                                                                import ENV_NAME__URL__MGRAPH_DB_SERVERLESS
 from mgraph_db.providers.time_chain.MGraph__Time_Chain                                                          import MGraph__Time_Chain
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File__Content_Type
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Files                                         import Hacker_News__Files
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File                                    import Hacker_News__File
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Now                               import Hacker_News__File__Now
-from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Timeline__Dot_Code                import CONTENT_TYPE__MGRAPH__DOT
 from myfeeds_ai.providers.cyber_security.hacker_news.flows.Flow__Hacker_News__2__Create_Articles_Timeline       import Flow__Hacker_News__2__Create_Articles_Timeline, FILE_NAME__MGRAPH__TIMELINE
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph                                import Hacker_News__MGraph
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph__Timeline                      import Hacker_News__MGraph__Timeline, FILE_ID__TIMELINE__MGRAPH
@@ -106,7 +106,7 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
             assert _.exists     () is True
             assert _.file_name  () in _.hacker_news_storage.files_in__latest()
 
-            assert obj(_.file_info__latest()).ContentType == CONTENT_TYPE__MGRAPH__DOT
+            assert obj(_.file_info__latest()).ContentType == str(S3_Key__File__Content_Type.MGRAPH__DOT)
 
     def test_task__5__create_png(self):
         if get_env(ENV_NAME__URL__MGRAPH_DB_SERVERLESS):
@@ -121,9 +121,9 @@ class test__int__Flow__Hacker_News__2__Create_Articles_Timeline(TestCase):
                 assert _.file_name() in _.hacker_news_storage.files_in__latest()           # this is failing in GitHub action
                 assert _.exists   () is True
 
-                assert _.content_type                         == 'image/png'
-                assert obj(_.file_info__latest()).ContentType == _.content_type
-                assert obj(_.file_info__now   ()).ContentType == _.content_type
+                assert str(_.content_type)                    == 'image/png'
+                assert obj(_.file_info__latest()).ContentType == str(_.content_type)
+                assert obj(_.file_info__now   ()).ContentType == str(_.content_type)
 
     # this is tests
     # def test_task__6__create_output(self):

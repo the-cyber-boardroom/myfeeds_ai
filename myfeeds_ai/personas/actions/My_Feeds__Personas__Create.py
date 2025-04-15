@@ -13,17 +13,6 @@ class My_Feeds__Personas__Create(Type_Safe):
     prompt_extract_entities : LLM__Prompt__Personas__Extract_Entities
     personas                : My_Feeds__Personas
 
-    # def create_persona__ciso(self) -> Schema__Persona:
-    #     file__persona__ciso = self.personas.file__persona__ciso()
-    #     with self.personas.file__persona__ciso__load() as _:
-    #         _.description           = PERSONA__DESCRIPTION__CISO
-    #         _.path_now              = file__persona__ciso.path_now   ()
-    #         _.path_latest           = file__persona__ciso.path_latest()
-    #         _.description__entities = self.extract_entities_from_text(_.description).text_entities
-    #
-    #         file__persona__ciso.save_data(_.json())
-    #         return _
-
     def create_tree_values_from_entities(self, text_entities):
         if text_entities:
             root_id_type = Schema__MGraph__RAG__Node__Text_Id
@@ -52,15 +41,3 @@ class My_Feeds__Personas__Create(Type_Safe):
                                     timestamp     = timestamp       )
         article_text_entities = Schema__Persona__Text__Entities(**kwargs_text_entities)
         return article_text_entities
-
-
-PERSONA__DESCRIPTION__CISO = ("The Chief Information Security Officer (CISO), who reports to the CEO,  at a FinTech company collaborates closely "
-                              "with compliance officers and risk assessors to manage cybersecurity risks. "
-                              "The company leverages Digital Payment Platforms, Mobile Banking Solutions, "
-                              "and Identity and Access Management Systems, aligning with ISO/IEC 27001 and NIST Cybersecurity Framework. "
-                              "They actively employ Intrusion Detection Systems, Data Loss Prevention Tools, Incident Management Tools, "
-                              "and Security Information and Event Management (SIEM) platforms. Ensuring data protection through Privacy "
-                              "Policies, Data Encryption, and Anonymisation Techniques, the CISO maintains regulatory compliance adhering to "
-                              "GDPR, SOX, PCI DSS, and NIST SP 800-53 standards. Additionally, they utilize Threat Intelligence and Incident "
-                              "Response strategies, supported by Security Analysts, Incident Responders, and Threat Hunters, to proactively "
-                              "manage operational risks and information assurance.")

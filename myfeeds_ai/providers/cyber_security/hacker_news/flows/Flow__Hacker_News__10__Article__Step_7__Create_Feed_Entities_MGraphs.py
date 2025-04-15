@@ -111,7 +111,7 @@ class Flow__Hacker_News__10__Article__Step_7__Create_Feed_Entities_MGraphs(Type_
             data = _.data()
             data.path_latest__text_entities__titles = self.path_latest__text_entities__titles
             data.path_now__text_entities__titles    = self.path_now__text_entities__titles
-            _.save_data(data.json())
+            _.save_data(data)
 
 
     @task()

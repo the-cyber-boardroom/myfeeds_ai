@@ -1,4 +1,5 @@
 from unittest                                                                       import TestCase
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Extension
 from myfeeds_ai.personas.actions.My_Feeds__Personas__Storage                        import My_Feeds__Personas__Storage
 from myfeeds_ai.personas.actions.My_Feeds__Personas__Storage__Persona               import My_Feeds__Personas__Storage__Persona
 from myfeeds_ai.personas.files.My_Feeds__Personas__File                             import My_Feeds__Personas__File
@@ -15,7 +16,7 @@ class test_My_Feeds__Personas__File(TestCase):
     @classmethod
     def setUpClass(cls):
         persona_type      = Schema__Persona__Types.EXEC__CTO
-        cls.personas_file = My_Feeds__Personas__File(persona_type=persona_type)
+        cls.personas_file = My_Feeds__Personas__File(persona_type=persona_type, extension=S3_Key__File__Extension.JSON)
 
     def test__init__(self):
         with self.personas_file as _:

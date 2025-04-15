@@ -1,4 +1,4 @@
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                        import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                        import S3_Key__File__Extension, S3_Key__File__Content_Type
 from myfeeds_ai.providers.cyber_security.hacker_news.config.Config__Hacker_News import FILE_ID__TIMELINE__MGRAPH
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File    import Hacker_News__File
 from mgraph_db.providers.time_chain.schemas.Schema__MGraph__Time_Chain__Edge    import Schema__MGraph__Time_Chain__Edge__Day, Schema__MGraph__Time_Chain__Edge__Hour, Schema__MGraph__Time_Chain__Edge__Source, Schema__MGraph__Time_Chain__Edge__Month
@@ -16,12 +16,10 @@ link_color_day    = '#3B4B89'       # Navy blue
 link_color_hour   = '#4A5491'       # Dark slate blue
 link_color_source = '#5A5C98'       # Dark purple blue
 
-CONTENT_TYPE__MGRAPH__DOT = "text/vnd.graphviz"
-
 class Hacker_News__File__Timeline__Dot_Code(Hacker_News__File):
     file_id      = FILE_ID__TIMELINE__MGRAPH
-    extension    = S3_Key__File_Extension.MGRAPH__DOT
-    content_type = CONTENT_TYPE__MGRAPH__DOT
+    extension    = S3_Key__File__Extension.MGRAPH__DOT
+    content_type = S3_Key__File__Content_Type.MGRAPH__DOT
 
     def create_dot_code(self, mgraph_timeline):
 

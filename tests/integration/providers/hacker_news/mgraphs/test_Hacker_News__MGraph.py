@@ -1,6 +1,6 @@
 from unittest                                                                              import TestCase
 from mgraph_db.mgraph.MGraph                                                               import MGraph
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                   import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                   import S3_Key__File__Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage          import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.mgraphs.Hacker_News__MGraph           import Hacker_News__MGraph
 from osbot_utils.helpers.Safe_Id                                                           import Safe_Id
@@ -33,17 +33,17 @@ class test_Hacker_News__MGraph(TestCase):
     def test_path_now(self):                                                                        # Test path_now method returns expected path format
         path_now = self.hacker_news_mgraph.path_now()
         assert type(path_now)                                                                   is str
-        assert path_now.endswith(f"{self.file_id}.{S3_Key__File_Extension.MGRAPH__JSON.value}") is True
+        assert path_now.endswith(f"{self.file_id}.{S3_Key__File__Extension.MGRAPH__JSON.value}") is True
 
     def test_path_latest(self):                                                                     # Test path_latest method returns expected path format
         path_latest = self.hacker_news_mgraph.path_latest()
         assert type(path_latest)                                                                   is str
-        assert path_latest.endswith(f"{self.file_id}.{S3_Key__File_Extension.MGRAPH__JSON.value}") is True
+        assert path_latest.endswith(f"{self.file_id}.{S3_Key__File__Extension.MGRAPH__JSON.value}") is True
         assert 'latest' in path_latest.lower()
 
     def test_file_name(self):                                                                      # Test file_name method
         file_name = self.hacker_news_mgraph.file_name()
-        expected_file_name = f"{self.file_id}.{S3_Key__File_Extension.MGRAPH__JSON.value}"
+        expected_file_name = f"{self.file_id}.{S3_Key__File__Extension.MGRAPH__JSON.value}"
         assert file_name == expected_file_name
 
     def test_exists_methods_when_files_dont_exist(self):                                           # Test exists methods when files don't exist
@@ -116,5 +116,5 @@ class test_Hacker_News__MGraph(TestCase):
         expected_path_now    = self.hacker_news_mgraph.path_now()                                 # Verify that the expected paths are what's being checked against
         expected_path_latest = self.hacker_news_mgraph.path_latest()
 
-        assert expected_path_now.endswith(f"{self.file_id}.{S3_Key__File_Extension.MGRAPH__JSON.value}")    is True
-        assert expected_path_latest.endswith(f"{self.file_id}.{S3_Key__File_Extension.MGRAPH__JSON.value}") is True
+        assert expected_path_now.endswith(f"{self.file_id}.{S3_Key__File__Extension.MGRAPH__JSON.value}") is True
+        assert expected_path_latest.endswith(f"{self.file_id}.{S3_Key__File__Extension.MGRAPH__JSON.value}") is True

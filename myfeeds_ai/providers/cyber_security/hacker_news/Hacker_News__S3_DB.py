@@ -1,5 +1,5 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3_DB                                                    import Data_Feeds__S3_DB
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                        import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                        import S3_Key__File__Extension
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                                         import S3_FILE_NAME__RAW__FEED_DATA, S3_FILE_NAME__RAW__FEED_XML, S3_FOLDER_NAME__LATEST, S3_FOLDER_NAME__ARTICLES
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Data__Feed      import Model__Hacker_News__Data__Feed
 from myfeeds_ai.providers.cyber_security.hacker_news.models.Model__Hacker_News__Raw_Data__Feed  import Model__Hacker_News__Raw_Data__Feed
@@ -30,7 +30,7 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
             return data_feed
 
     def feed_data__load__from_date(self, year:int, month:int, day:int, hour:int):
-        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, file_id=S3_FILE_NAME__RAW__FEED_DATA, extension=S3_Key__File_Extension.JSON)
+        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, file_id=S3_FILE_NAME__RAW__FEED_DATA, extension=S3_Key__File__Extension.JSON)
         return self.feed_data__load__from_path(s3_path)
 
 
@@ -76,7 +76,7 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
         return raw_data_feed
 
     def raw_data__feed__load__from_date(self, year:int, month:int, day:int, hour:int):
-        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, file_id=S3_FILE_NAME__RAW__FEED_XML, extension=S3_Key__File_Extension.JSON)
+        s3_path = self.s3_key_generator.s3_path(year, month, day, hour, file_id=S3_FILE_NAME__RAW__FEED_XML, extension=S3_Key__File__Extension.JSON)
         return self.raw_data__feed__load__from_path(s3_path)
 
     # methods for s3 folders and files
@@ -93,10 +93,10 @@ class Hacker_News__S3_DB(Data_Feeds__S3_DB):
         return self.s3_key_generator.path__for_date_time__now_utc()
 
     def s3_path__raw_data__feed_data__now(self):
-        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_DATA, extension=S3_Key__File_Extension.JSON)
+        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_DATA, extension=S3_Key__File__Extension.JSON)
 
     def s3_path__raw_data__feed_xml__now(self):
-        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_XML, extension=S3_Key__File_Extension.JSON)
+        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__FEED_XML, extension=S3_Key__File__Extension.JSON)
 
     def s3_path__raw_data__feed_data__latest(self):
         return f'{S3_FOLDER_NAME__LATEST}/{S3_FILE_NAME__RAW__FEED_DATA}.json'

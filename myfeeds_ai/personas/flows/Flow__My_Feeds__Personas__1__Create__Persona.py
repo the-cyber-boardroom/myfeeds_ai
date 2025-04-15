@@ -1,84 +1,79 @@
-from myfeeds_ai.personas.actions.My_Feeds__Persona__Data import My_Feeds__Persona__Data
-from myfeeds_ai.personas.actions.My_Feeds__Personas                import My_Feeds__Personas
-from myfeeds_ai.personas.actions.My_Feeds__Personas__Create        import My_Feeds__Personas__Create
-from myfeeds_ai.personas.files.My_Feeds__Personas__File            import My_Feeds__Personas__File
-from myfeeds_ai.personas.schemas.Default_Data__My_Feeds__Personas  import Default_Data__My_Feeds__Personas
-from myfeeds_ai.personas.schemas.Schema__Persona                   import Schema__Persona
-from myfeeds_ai.personas.schemas.Schema__Persona__Types            import Schema__Persona__Types
-from osbot_utils.helpers.Safe_Id                                   import Safe_Id
-from osbot_utils.helpers.flows.Flow                                import Flow
-from osbot_utils.helpers.flows.decorators.flow                     import flow
-from osbot_utils.helpers.flows.decorators.task                     import task
-from osbot_utils.type_safe.Type_Safe                               import Type_Safe
-from osbot_utils.utils.Dev                                         import pprint
+from myfeeds_ai.personas.actions.My_Feeds__Persona                  import My_Feeds__Persona
+from myfeeds_ai.personas.actions.My_Feeds__Personas__Create         import My_Feeds__Personas__Create
+from myfeeds_ai.personas.schemas.Schema__Persona__Types             import Schema__Persona__Types
+from osbot_utils.helpers.flows.Flow                                 import Flow
+from osbot_utils.helpers.flows.decorators.flow                      import flow
+from osbot_utils.helpers.flows.decorators.task                      import task
+from osbot_utils.type_safe.Type_Safe                                import Type_Safe
 
 
+# todo add the creation of the persona png, tree view and entities files in the now folder (with paths saved on the persona file)
 class Flow__My_Feeds__Personas__1__Create__Persona(Type_Safe):
-    persona_type            : Schema__Persona__Types    = Schema__Persona__Types.EXEC__CISO
-    output                  : dict
-    personas_create         : My_Feeds__Personas__Create
-    #personas                : My_Feeds__Personas
-    persona_data            : My_Feeds__Persona__Data
-    file_persona            : My_Feeds__Personas__File
-    persona                 : Schema__Persona
+    persona_type                       : Schema__Persona__Types    = Schema__Persona__Types.EXEC__CISO
+    output                             : dict
+    personas_create                    : My_Feeds__Personas__Create
+    persona                            : My_Feeds__Persona              = None
 
     @task()
     def task__1__load_persona_data(self):
-        with self.persona_data.file__persona(persona_type=self.persona_type) as _:
-            self.file_persona = _
-            self.persona      = _.data()
+        self.persona = My_Feeds__Persona(persona_type=self.persona_type)
 
     @task()
-    def test__2__set_persona_details(self):
+    def task__2__set_persona_details(self):
         with self.persona as _:
-            if _.description is None:
-                persona_default_data = Default_Data__My_Feeds__Personas.get(self.persona_type)
-                if persona_default_data:
-                    _.description  = persona_default_data.get("description")
-            _.persona_type = self.persona_type
+            if _.exists() is False:                     # create persona if it doesn't exist
+                _.create()
 
     @task()
-    def test__3__create_entities(self):
-        with self.persona as _:
-            text = _.description
-            persona_text_entities                        = self.personas_create.extract_entities_from_text(text)
-            _.description__entities                      = persona_text_entities.text_entities
-            _.cache_ids[Safe_Id('description-entities')] = persona_text_entities.cache_id
+    def task__3__create_entities(self):
+        if self.persona.file__persona_entities().not_exists():
+            persona_entities = self.personas_create.extract_entities_from_text(self.persona.description())
+            self.persona.file__persona_entities().save_data(persona_entities)
+            with self.persona as _:
+                _.data().path__persona__entities = self.persona.file__persona_entities().path_now()             # update the path__persona__entities
+                _.save()
 
-    #@task()
+    @task()
     def task__4__create_tree_values(self):
         with self.persona as _:
-            text_entities              =  _.description__entities
-            tree_values                = self.personas_create.create_tree_values_from_entities(text_entities)
-            _.description__tree_values = tree_values
+            file__persona_entities__tree_values = _.file__persona_entities__tree_values()
+            if file__persona_entities__tree_values.not_exists():
+                text_entities                                 = _.persona__entities().text_entities
+                tree_values                                   = self.personas_create.create_tree_values_from_entities(text_entities)
+                _.data().path__persona__entities__tree_values = file__persona_entities__tree_values.path_now()
+                file__persona_entities__tree_values.save_data(tree_values)
+                _.save()
 
-            #print(_.description__tree_values)
 
     @task()
-    def task__5__save_data(self):
+    def task__5__create_description_png(self):
         with self.persona as _:
-            _.path_now    = self.file_persona.path_now()
-            _.path_latest = self.file_persona.path_latest()
-        with self.file_persona as _:
-            pprint(_.save_data(self.persona.json()))
+            file__persona_entities__png = _.file__persona_entities__png()
+            if file__persona_entities__png.not_exists():
+                text_entities  = _.persona__entities().text_entities
+                if text_entities:
+                    personas_create                       = My_Feeds__Personas__Create()
+                    graph_rag                             = personas_create.prompt_extract_entities.create_entities_graph_rag(text_entities)
+                    bytes_png                             = graph_rag.screenshot__create_bytes()
+                    _.data().path__persona__entities__png = file__persona_entities__png.path_now()
+                    file__persona_entities__png.save_data(bytes_png)
+                    _.save()
 
     @task()
     def task__6__create_output(self):
-        self.output = dict(persona_id   = self.persona_type,
-                           path_now     = self.file_persona.path_now(),
-                           path_latest  = self.file_persona.path_latest(),
-                           persona      = self.persona.json())
+        self.output = dict(persona_id          = self.persona_type         ,
+                           persona             = self.persona.data().json())
 
 
     @flow()
     def create_persona(self) -> Flow:
         with self as _:
-            _.task__1__load_persona_data  ()
-            _.test__2__set_persona_details()
-            _.test__3__create_entities    ()
-            _.task__4__create_tree_values ()
-            _.task__5__save_data          ()
-            _.task__6__create_output      ()
+            _.task__1__load_persona_data     ()
+            _.task__2__set_persona_details   ()
+            _.task__3__create_entities       ()
+            _.task__4__create_tree_values    ()
+            _.task__5__create_description_png()
+            _.task__6__create_output         ()
         return self.output
 
     def run(self):

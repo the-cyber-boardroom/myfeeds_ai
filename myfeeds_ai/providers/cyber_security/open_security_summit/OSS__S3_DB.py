@@ -1,5 +1,5 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3_DB                                                     import Data_Feeds__S3_DB
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File_Extension
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File__Extension
 from myfeeds_ai.data_feeds.Data_Feeds__Shared_Constants                                          import S3_FILE_NAME__RAW__CONTENT, S3_FILE_NAME__CONTENT
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Prompt                                      import Model__Data_Feeds__Prompt
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                                   import Model__Data_Feeds__Providers
@@ -113,7 +113,7 @@ class OSS__S3_DB(Data_Feeds__S3_DB):
         return self.s3_path__in_latest(file_id=S3_FILE_NAME__OSS__CURRENT_EVENT__PROMPT)
 
     def s3_path__content__now(self):
-        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__CONTENT, extension=S3_Key__File_Extension.JSON)
+        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__CONTENT, extension=S3_Key__File__Extension.JSON)
 
     def s3_path__raw_content__now(self):
-        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__CONTENT, extension=S3_Key__File_Extension.JSON)
+        return self.s3_key_generator.s3_path__now(file_id=S3_FILE_NAME__RAW__CONTENT, extension=S3_Key__File__Extension.JSON)

@@ -39,7 +39,7 @@ class Flow__Hacker_News__8__Article__Step_5__Merge_Text_Entities_Graphs(Type_Saf
 
         self.file_articles_current.save()
 
-    #@task()
+    @task()
     def task__2s__llm__merge_text_entities_graphs(self, article):
 
         article_id                         = article.article_id

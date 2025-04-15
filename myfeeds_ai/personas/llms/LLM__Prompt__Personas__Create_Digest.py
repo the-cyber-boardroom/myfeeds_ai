@@ -1,12 +1,12 @@
-from myfeeds_ai.personas.llms.Schema__Persona__Digest_Articles              import Schema__Persona__Digest_Articles
-from myfeeds_ai.personas.schemas.Schema__Persona                            import Schema__Persona
-from myfeeds_ai.personas.schemas.Schema__Persona__LLM__Connect_Entities     import Schema__Persona__LLM__Connect_Entities
-from osbot_utils.helpers.llms.builders.LLM_Request__Builder__Open_AI        import LLM_Request__Builder__Open_AI
-from osbot_utils.helpers.llms.schemas.Schema__LLM_Request                   import Schema__LLM_Request
-from osbot_utils.helpers.llms.schemas.Schema__LLM_Response                  import Schema__LLM_Response
-from osbot_utils.type_safe.Type_Safe                                        import Type_Safe
-from osbot_utils.type_safe.decorators.type_safe                             import type_safe
-from osbot_utils.utils.Json                                                 import str_to_json
+from myfeeds_ai.personas.llms.Schema__Persona__Digest_Articles                  import Schema__Persona__Digest_Articles
+from myfeeds_ai.personas.schemas.Schema__Persona                                import Schema__Persona
+from myfeeds_ai.personas.schemas.Schema__Persona__Articles__Connected_Entities  import Schema__Persona__Articles__Connected_Entities
+from osbot_utils.helpers.llms.builders.LLM_Request__Builder__Open_AI            import LLM_Request__Builder__Open_AI
+from osbot_utils.helpers.llms.schemas.Schema__LLM_Request                       import Schema__LLM_Request
+from osbot_utils.helpers.llms.schemas.Schema__LLM_Response                      import Schema__LLM_Response
+from osbot_utils.type_safe.Type_Safe                                            import Type_Safe
+from osbot_utils.type_safe.decorators.type_safe                                 import type_safe
+from osbot_utils.utils.Json                                                     import str_to_json
 
 SYSTEM_PROMPT__CREATE_DIGEST = """You are a specialized cybersecurity news analyst creating highly personalized digests for professionals across various security and leadership roles.
 
@@ -72,7 +72,7 @@ These articles have been selected as relevant to this persona with the following
 class LLM__Prompt__Personas__Create_Digest(Type_Safe):
     request_builder: LLM_Request__Builder__Open_AI
 
-    def format_articles_content(self, persona_connected_entities: Schema__Persona__LLM__Connect_Entities) -> str:  # Format all the article markdown content into a structured text for the prompt.
+    def format_articles_content(self, persona_connected_entities: Schema__Persona__Articles__Connected_Entities) -> str:  # Format all the article markdown content into a structured text for the prompt.
         content_sections = []
 
         for article_id, article_markdown in persona_connected_entities.articles_markdown.items():
@@ -80,7 +80,7 @@ class LLM__Prompt__Personas__Create_Digest(Type_Safe):
 
         return "\n\n-----\n\n".join(content_sections)
 
-    def format_connected_entities_data(self, persona_connected_entities: Schema__Persona__LLM__Connect_Entities) -> str:   # Format the entity connection data for better LLM understanding.
+    def format_connected_entities_data(self, persona_connected_entities: Schema__Persona__Articles__Connected_Entities) -> str:   # Format the entity connection data for better LLM understanding.
         sections = []
 
         for connected_entity in persona_connected_entities.connected_entities:
@@ -98,9 +98,10 @@ class LLM__Prompt__Personas__Create_Digest(Type_Safe):
 
         return "\n\n".join(sections)
 
+    @type_safe
     def llm_request(self, persona                   : Schema__Persona,
-                          persona_connected_entities: Schema__Persona__LLM__Connect_Entities,
-                     ) -> Schema__LLM_Request:                                              # Generate LLM request for creating a personalized digest."""
+                          persona_connected_entities: Schema__Persona__Articles__Connected_Entities,
+                     ) -> Schema__LLM_Request:                                                      # Generate LLM request for creating a personalized digest."""
         system_prompt           = SYSTEM_PROMPT__CREATE_DIGEST
         persona_description     = persona.description
         persona_type            = persona.persona_type
@@ -113,8 +114,9 @@ class LLM__Prompt__Personas__Create_Digest(Type_Safe):
                                                         articles_content        = articles_content       )
 
         with self.request_builder as _:
-            #_.set__model__gpt_4o_mini()                        # Using GPT-4o-mini
-            _.set__model__gpt_4o()                              # For this final step use the more expensive GPT-4o
+            _.set__model__gpt_4o()                               # For this final step use the more expensive GPT-4o
+            #_.set__model__gpt_4_1()                              # trying the new 4.1 model
+            #_.set__model__gpt_4_1_mini()
             _.add_message__system    (system_prompt)
             _.add_message__user      (user_prompt)
             _.set__function_call     (parameters=Schema__Persona__Digest_Articles, function_name='create_digest')
@@ -122,8 +124,7 @@ class LLM__Prompt__Personas__Create_Digest(Type_Safe):
         return self.request_builder.llm_request()
 
     @type_safe
-    def process_llm_response(self, llm_response: Schema__LLM_Response) -> Schema__Persona__Digest_Articles:
-        """Process the LLM response into a structured digest."""
+    def process_llm_response(self, llm_response: Schema__LLM_Response) -> Schema__Persona__Digest_Articles:             # Process the LLM response into a structured digest.
         content = llm_response.obj().response_data.choices[0].message.content
         content_json = str_to_json(content)
         return Schema__Persona__Digest_Articles.from_json(content_json)

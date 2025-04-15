@@ -1,4 +1,6 @@
 from unittest                                                                                        import TestCase
+
+from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator import S3_Key__File__Content_Type
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Article__Entities          import Hacker_News__Article__Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Article__Text_Entities import Hacker_News__File__Article__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Now                    import Hacker_News__File__Now
@@ -24,8 +26,8 @@ class test_Hacker__News__Article__Entities(TestCase):
             assert type(_) == Hacker_News__File__Article__Text_Entities
             assert base_types(_) == [Hacker_News__File__Now , Type_Safe, object]
             assert _.exists() is False
-            assert _.path_now() == f'{self.path__folder__data}/articles/{self.article_id}/entities/text-entities-title.json'
-            assert _.content_type == ''
+            assert _.path_now()   == f'{self.path__folder__data}/articles/{self.article_id}/entities/text-entities-title.json'
+            assert _.content_type is None
 
     def test_file___text__entities__title__png(self):
         with self.article_entities.file___text__entities__title__png() as _:
@@ -33,4 +35,4 @@ class test_Hacker__News__Article__Entities(TestCase):
             assert base_types(_) == [Hacker_News__File__Now , Type_Safe, object]
             assert _.exists() is False
             assert _.path_now() == f'{self.path__folder__data}/articles/{self.article_id}/entities/text-entities-title.png'
-            assert _.content_type == 'image/png'
+            assert _.content_type == S3_Key__File__Content_Type.PNG
