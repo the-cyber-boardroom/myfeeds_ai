@@ -29,7 +29,6 @@ class test_Data_Feeds__Fast_API(TestCase):
                                  + ROUTES_PATHS__INFO                                  \
                                  + ROUTES_PATHS__HACKER_NEWS                           \
                                  + ROUTES_PATHS__HACKER_NEWS__ARTICLES                 \
-                                 + ROUTES_PATHS__HACKER_NEWS__FLOWS                    \
                                  + ROUTES_PATHS__MY_FEEDS__PERSONAS                    \
                                  + ROUTES_PATHS__HACKER_NEWS__CACHE                    \
                                  + ROUTES_PATHS__OSS                                   )

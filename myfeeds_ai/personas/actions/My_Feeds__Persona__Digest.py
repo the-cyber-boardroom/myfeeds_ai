@@ -9,9 +9,9 @@ class My_Feeds__Persona__Digest(Type_Safe):
     def persona_digest(self, persona_type: Schema__Persona__Types):
         persona = self.persona_files.file__persona(persona_type).data()
 
-        persona_files = dict(persona=persona.path__persona)
-        persona_digest = dict(persona_type = persona_type.value,
-                              description  = persona.description,
+        persona_files = dict(persona=persona.path__now)
+        persona_digest = dict(persona_type  = persona_type.value,
+                              description   = persona.description,
                               persona_files = persona_files)
         return persona_digest
         #return persona.json()

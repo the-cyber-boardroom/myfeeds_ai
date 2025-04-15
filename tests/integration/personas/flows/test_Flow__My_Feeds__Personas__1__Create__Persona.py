@@ -3,7 +3,7 @@ from unittest                                                               impo
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                    import S3_Key__File__Extension
 from myfeeds_ai.personas.actions.My_Feeds__Persona                          import My_Feeds__Persona
 from myfeeds_ai.personas.config.Config__My_Feeds__Personas                  import FILE_ID__PERSONA, FILE_ID__PERSONA__ENTITIES
-from myfeeds_ai.personas.files.My_Feeds__Personas__File                     import My_Feeds__Personas__File
+from myfeeds_ai.personas.files.My_Feeds__Personas__File import My_Feeds__Personas__File
 from myfeeds_ai.personas.files.My_Feeds__Personas__File__Now                import My_Feeds__Personas__File__Now
 from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__1__Create__Persona import Flow__My_Feeds__Personas__1__Create__Persona
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                     import Schema__Persona__Types
@@ -34,7 +34,7 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
         with self.flow_create_persona.persona as _:
             assert _.exists() is True
 
-        with self.flow_create_persona.persona.file__persona_articles__connected_entities() as _:
+        with self.flow_create_persona.persona.file__persona() as _:
             assert type(_)          is My_Feeds__Personas__File
             assert type(_.file_id)  is Safe_Id
             assert _.path_now   ()  == f'{self.path__folder_now}/{FILE_ID__PERSONA}.{S3_Key__File__Extension.JSON.value}'
@@ -74,10 +74,10 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
 
         with self.flow_create_persona.persona.file__persona_entities__tree_values() as _:
             tree_values = _.data()
-            assert _.exists()           is True
-            assert type(tree_values)    is bytes
-            assert len (tree_values)    > 10
-            assert tree_values          == self.flow_create_persona.persona.persona__entities__tree_values()
+            assert _.exists()            is True
+            assert type(tree_values)     is bytes
+            assert len (tree_values)     > 10
+            assert tree_values.decode()  == self.flow_create_persona.persona.persona__entities__tree_values()
 
 
     def test_task__5__create_description_png(self):

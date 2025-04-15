@@ -114,8 +114,8 @@ class LLM__Prompt__Personas__Create_Digest(Type_Safe):
                                                         articles_content        = articles_content       )
 
         with self.request_builder as _:
-            #_.set__model__gpt_4o()                               # For this final step use the more expensive GPT-4o
-            _.set__model__gpt_4_1()                              # trying the new 4.1 model
+            _.set__model__gpt_4o()                               # For this final step use the more expensive GPT-4o
+            #_.set__model__gpt_4_1()                              # trying the new 4.1 model
             #_.set__model__gpt_4_1_mini()
             _.add_message__system    (system_prompt)
             _.add_message__user      (user_prompt)

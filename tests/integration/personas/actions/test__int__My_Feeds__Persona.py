@@ -4,6 +4,7 @@ from myfeeds_ai.personas.actions.My_Feeds__Persona                      import M
 from myfeeds_ai.personas.actions.My_Feeds__Persona__Files               import My_Feeds__Persona__Files
 from myfeeds_ai.personas.actions.My_Feeds__Personas__Storage__Persona   import My_Feeds__Personas__Storage__Persona
 from myfeeds_ai.personas.files.My_Feeds__Personas__File                 import My_Feeds__Personas__File
+from myfeeds_ai.personas.files.My_Feeds__Personas__File__Now import My_Feeds__Personas__File__Now
 from myfeeds_ai.personas.schemas.Default_Data__My_Feeds__Personas       import Default_Data__My_Feeds__Personas
 from myfeeds_ai.personas.schemas.Schema__Persona                        import Schema__Persona
 from myfeeds_ai.personas.schemas.Schema__Persona__Entities              import Schema__Persona__Entities
@@ -67,8 +68,8 @@ class test__int__My_Feeds__Persona(TestCase):
         with self.persona as _:
             if _.file__persona_entities__tree_values().exists():
                 tree_values = _.persona__entities__tree_values()
-                assert type(tree_values ) is bytes
-                assert b'entity:' in tree_values
+                assert type(tree_values ) is str
+                assert 'entity:' in tree_values
 
 
     def test_description(self):
@@ -86,17 +87,19 @@ class test__int__My_Feeds__Persona(TestCase):
             new_description_hash = safe_str_hash(new_description)
             assert _.description__change_value_and_reset_paths(new_description=new_description) is True
 
-            assert _.data().obj() == __(description                          = new_description,
-                                        description__hash                    = new_description_hash,
-                                        path__persona                        = _.file__persona_articles__connected_entities().path_now(),
-                                        path__persona__entities              = '',
-                                        path__persona__entities__png         = '',
-                                        path__persona__entities__tree_values = '',
-                                        path__persona__latest                = 'latest/test-persona__persona.json',
-                                        persona_type                         = 'TEST__PERSONA',
-                                        cache_ids                            = __())
+            assert _.data().obj() == __(description                                 = new_description             ,
+                                        description__hash                           = new_description_hash        ,
+                                        path__now                                   = _.file__persona().path_now(),
+                                        path__persona__articles__connected_entities = None  ,
+                                        path__persona__digest                       = None  ,
+                                        path__persona__digest__html                 = None  ,
+                                        path__persona__entities                     = ''    ,
+                                        path__persona__entities__png                = ''    ,
+                                        path__persona__entities__tree_values        = ''    ,
+                                        path__persona__latest                       = 'latest/test-persona__persona.json',
+                                        persona_type                                = 'TEST__PERSONA')
 
-            assert _.file__persona_articles__connected_entities().load() == _.data().json()
+            assert _.file__persona().load() == _.data().json()
 
     def test_description__reset_to_default_value(self):
         test_persona        = Schema__Persona__Types.TEST__PERSONA
@@ -114,25 +117,24 @@ class test__int__My_Feeds__Persona(TestCase):
             assert _.exists() is True
 
     def test_file__persona(self):
-        with self.persona.file__persona_articles__connected_entities() as _:
-            assert type(_)          is My_Feeds__Personas__File
-            assert _.data_type      is Schema__Persona
-            assert str(_.extension) == 'json'
-            assert _.file_id        == 'persona'
-            assert _.latest_prefix  == 'exec-ciso'
-            assert _.now            is None
+        with self.persona.file__persona() as _:
+            assert type(_)                            is My_Feeds__Personas__File
+            assert _.data_type                        is Schema__Persona
+            assert str(_.extension)                   == 'json'
+            assert _.file_id                          == 'persona'
+            assert _.latest_prefix                    == 'exec-ciso'
+            assert _.now                              is None
             assert _.hacker_news_storage.persona_type == self.persona_type
 
     def test_file_contents(self):
         with self.persona as _:
-            data = _.data()
-            path__persona = data.path__persona
-
-            assert _.file_contents(path__persona) == data.json()
+            data      = _.data()
+            path__now = data.path__now
+            assert _.file_contents(path__now) == data.json()
 
     def test_storage(self):
         with self.persona as _:
             storage = _.storage()
             assert type(storage) is My_Feeds__Personas__Storage__Persona
-            assert storage.json() == _.file__persona_articles__connected_entities().hacker_news_storage.json()
+            assert storage.json() == _.file__persona().hacker_news_storage.json()
             assert storage.persona_type == self.persona_type

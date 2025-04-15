@@ -7,7 +7,6 @@ class Hacker_News__File(Hacker_News__File__Now):
 
     def delete__latest   (self) -> bool: return self.hacker_news_storage.delete_from__path (s3_path = self.path_latest())
     def exists           (self) -> bool: return self.exists__latest()                                                       # only use the latest for now, since that is the default (and the return self.exists__now() only works when now has been set)
-    def exists__now      (self) -> bool: return self.exists__now()
     def exists__latest   (self) -> bool: return self.hacker_news_storage.path__exists      (s3_path = self.path_latest())
     def file_info__latest(self) -> dict: return self.hacker_news_storage.path__file_info   (s3_path = self.path_latest())
     def not_exists       (self) -> bool: return not self.exists()

@@ -29,7 +29,7 @@ class My_Feeds__Persona(Type_Safe):
 
     def data__reset_paths(self):
         with self.data() as _:
-            _.path__persona                        = self.file__persona().path_now()    # set main persona path to the place where this data will also be saved
+            _.path__now                            = self.file__persona().path_now()    # set main persona path to the place where this data will also be saved
             _.path__persona__latest                = self.file__persona().path_latest()
             _.path__persona__entities              = ''                                 # we need to reset these paths, since it's content is no longer value (they were created for the previous version of the description)
             _.path__persona__entities__png         = ''
@@ -101,7 +101,7 @@ class My_Feeds__Persona(Type_Safe):
             return self.storage().path__load_data(s3_path = path, content_type=content_type)
 
     def persona(self) -> Schema__Persona:
-        path      = self.data().path__persona
+        path      = self.data().path__now
         json_data =  self.file_contents(path)
         return Schema__Persona.from_json(json_data)
 
