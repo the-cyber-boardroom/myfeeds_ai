@@ -17,7 +17,8 @@ class test_Flow__My_Feeds__Personas__3__LLM__Create__Digest(TestCase):
         if get_env(ENV_NAME_OPEN_AI__API_KEY) is None:
             pytest.skip('This test requires OpenAI API Key to run')
         myfeeds_tests__setup_local_stack()
-        cls.flow_create_digest = Flow__My_Feeds__Personas__3__LLM__Create__Digest()
+        cls.persona_type       = Schema__Persona__Types.EXEC__CISO
+        cls.flow_create_digest = Flow__My_Feeds__Personas__3__LLM__Create__Digest(persona_type=cls.persona_type)
 
     def test_task__1__load_persona_data(self):
         with self.flow_create_digest as _:
@@ -32,7 +33,6 @@ class test_Flow__My_Feeds__Personas__3__LLM__Create__Digest(TestCase):
         with self.flow_create_digest as _:
             _.task__1__load_persona_data()
             _.task__2__llm_create_persona_digest()
-
             assert type(_.persona_digest_articles) is Schema__Persona__Digest_Articles
 
     def test_task__3__save_persona_digest(self):

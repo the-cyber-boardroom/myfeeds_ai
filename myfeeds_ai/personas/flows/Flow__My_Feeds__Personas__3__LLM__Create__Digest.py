@@ -13,7 +13,6 @@ from osbot_utils.helpers.flows.decorators.task                                  
 from osbot_utils.helpers.llms.schemas.Schema__LLM_Request                                       import Schema__LLM_Request
 from osbot_utils.helpers.llms.schemas.Schema__LLM_Response                                      import Schema__LLM_Response
 from osbot_utils.type_safe.Type_Safe                                                            import Type_Safe
-from osbot_utils.utils.Dev import pprint
 
 
 class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
@@ -27,9 +26,7 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
     prompt_create_digest                 : LLM__Prompt__Personas__Create_Digest
     output                               : dict
-    # path_now_file__persona_digest        : str
-    # path_latest_file__persona_digest     : str
-    # path_latest_file__persona_digest_html: str
+
     execute_llm_with_cache               : Hacker_News__Execute_LLM__With_Cache
     llm_request                          : Schema__LLM_Request
     llm_request__cache_id                : Obj_Id
@@ -38,19 +35,17 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
     @task()
     def task__1__load_persona_data(self):
-        self.persona = My_Feeds__Persona(persona_type=self.persona_type)
-
+        self.persona                    = My_Feeds__Persona(persona_type=self.persona_type)
         self.persona_data               = self.persona.data()
-        self.persona_connected_entities = self.persona.file__persona_articles__connected_entities().data()
-        # with self.persona_data.file__persona_articles__connected_entities() as _:
-        #     self.file_persona = _
-        #     self.persona      = _.data()
-        # with self.persona_data.file__persona_connect_entities(persona_type=self.persona_type) as _:
-        #     self.persona_connected_entities = _.data()
+        self.persona_connected_entities = self.persona.persona__articles__connected_entities()
 
 
-    @task()
+    #@task()
     def task__2__llm_create_persona_digest(self):
+        if self.persona_data is None:
+            raise Exception('No persona data')
+        if self.persona_connected_entities.connected_entities is None:
+            raise Exception('No persona connected entities')
         self.llm_request = self.prompt_create_digest.llm_request(persona                    = self.persona_data              ,
                                                                  persona_connected_entities = self.persona_connected_entities)
         with self.execute_llm_with_cache.setup() as _:
@@ -59,11 +54,12 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
         self.persona_digest_articles = self.prompt_create_digest.process_llm_response(self.llm_response)
 
-    @task()
+    #@task()
     def task__3__save_persona_digest(self):
         llm_request_cache          = self.execute_llm_with_cache.llm_cache
         self.llm_request__cache_id = llm_request_cache.get__cache_id__from__request(self.llm_request)
 
+        self.persona.file__persona_digest().delete__latest()                    # delete previous version
         with self.persona.file__persona_digest().update() as _:
             _.cache_id                = self.llm_request__cache_id
             _.digest_articles         = self.persona_digest_articles
@@ -80,28 +76,11 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
             _.path__persona__digest       = self.persona.file__persona_digest     ().path_now()
             _.path__persona__digest__html = self.persona.file__persona_digest_html().path_now()
 
-        #pprint( self.persona.file__persona_digest().load())
-
-            # #self.persona_digest.path_now = _.path_now()
-            # _.save_data(self.persona_digest.json())
-            #
-            # self.path_now_file__persona_digest    = _.path_now()
-            # self.path_latest_file__persona_digest = _.path_latest()
-
-        # with self.persona_data.file__persona_digest_html(persona_type=self.persona_type) as _:
-        #     _.save_data(self.persona_digest.digest_html)
-        #     self.path_latest_file__persona_digest_html = _.path_latest()
-
-
-
 
     @task()
     def task__4__create_output(self):
         self.output = dict(persona_type                              = self.persona_type.value                   ,
                            persona                                   = self.persona_data                         ,
-                           # path_now_file__persona_digest            = self.path_now_file__persona_digest        ,
-                           # path_now_file__persona_digest_html       = self.path_latest_file__persona_digest_html,
-                           # path_now__file_llm_connected_entities    = self.path_latest_file__persona_digest     ,
                            llm_request__cache_id                    = self.llm_request__cache_id                 )
 
 
