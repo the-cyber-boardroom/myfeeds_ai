@@ -8,5 +8,5 @@ Repo for MyFeeds.ai
 
 ## Repo details
 
-![Current Release](https://img.shields.io/badge/release-v1.95.1-blue)
+![Current Release](https://img.shields.io/badge/release-v1.96.0-blue)
 
