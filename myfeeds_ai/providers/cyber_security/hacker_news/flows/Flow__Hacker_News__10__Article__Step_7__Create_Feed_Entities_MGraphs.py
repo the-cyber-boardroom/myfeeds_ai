@@ -1,7 +1,7 @@
 from typing                                                                                             import List, Dict
 from mgraph_db.mgraph.MGraph                                                                            import MGraph
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data                          import Hacker_News__Data
-from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data__Digest import Hacker_News__Data__Digest
+from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Data__Digest                  import Hacker_News__Data__Digest
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Feed__Text_Entities           import Hacker_News__Feed__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage                       import Hacker_News__Storage
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Text_Entities                 import Hacker_News__Text_Entities

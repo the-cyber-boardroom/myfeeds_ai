@@ -35,11 +35,11 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
 
     def digest_articles_html_page(self):
         content      = self.hacker_news_data_digest.digest_articles__html__as_page()
-        return Response(content=content, media_type=S3_Key__File__Content_Type.HTML)
+        return Response(content=content, media_type=str(S3_Key__File__Content_Type.HTML))
 
     def digest_articles_html_section(self):
         content      = self.hacker_news_data_digest.digest_articles__html__as_section()
-        return Response(content=content, media_type=S3_Key__File__Content_Type.HTML)
+        return Response(content=content, media_type=str(S3_Key__File__Content_Type.HTML))
 
     def new_articles(self):
         return self.hacker_news_data.new_articles().json()
