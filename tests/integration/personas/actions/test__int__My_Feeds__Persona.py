@@ -4,7 +4,6 @@ from myfeeds_ai.personas.actions.My_Feeds__Persona                      import M
 from myfeeds_ai.personas.actions.My_Feeds__Persona__Files               import My_Feeds__Persona__Files
 from myfeeds_ai.personas.actions.My_Feeds__Personas__Storage__Persona   import My_Feeds__Personas__Storage__Persona
 from myfeeds_ai.personas.files.My_Feeds__Personas__File                 import My_Feeds__Personas__File
-from myfeeds_ai.personas.files.My_Feeds__Personas__File__Now import My_Feeds__Personas__File__Now
 from myfeeds_ai.personas.schemas.Default_Data__My_Feeds__Personas       import Default_Data__My_Feeds__Personas
 from myfeeds_ai.personas.schemas.Schema__Persona                        import Schema__Persona
 from myfeeds_ai.personas.schemas.Schema__Persona__Entities              import Schema__Persona__Entities
