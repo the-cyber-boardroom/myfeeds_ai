@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from datetime                                                                       import datetime
 from typing                                                                         import Any, Type
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Extension, S3_Key__File__Content_Type
@@ -6,7 +7,7 @@ from osbot_utils.helpers.Safe_Id                                                
 from osbot_utils.type_safe.Type_Safe                                                import Type_Safe
 from osbot_utils.utils.Misc                                                         import str_to_bytes
 
-class Hacker_News__File__Now(Type_Safe):
+class Hacker_News__File__Now(Type_Safe):                                            # this only saves the file to the now folder (not the latest)
     hacker_news_storage : Hacker_News__Storage
     file_id             : Safe_Id
     file_data           : Any
@@ -58,7 +59,8 @@ class Hacker_News__File__Now(Type_Safe):
             raise ValueError(f"in Hacker_News__File.save, there was no data to save, self.file_data was empty")
 
         if self.data_type:                                                      # if data_type has been defined
-            data = self.file_data.json()                                        # get the json value of the current object
+            self.file_data.path__now = self.path_now ()                         # make sure path__now value has the "now path" used on the save below
+            data                     = self.file_data.json()                    # get the json value of the current object
         else:
             if type(self.file_data) is str and self.content_type:               # if the data is a string, and we have set the content-type
                 data = str_to_bytes(self.file_data)                             # then save it as bytes, since if not the data will be saved as json-dumps of this value (and the content type will not be set)
@@ -78,3 +80,10 @@ class Hacker_News__File__Now(Type_Safe):
     def save_data(self, file_data):
         self.file_data = file_data
         return self.save()
+
+    @contextmanager
+    def update(self):
+         try:
+             yield self.data()
+         finally:
+             self.save()

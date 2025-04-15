@@ -1,15 +1,12 @@
 from fastapi                                                                        import Response
 from osbot_fast_api.api.Fast_API_Routes                                             import Fast_API_Routes
-from starlette                                                                      import status
-from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Content_Type
-from myfeeds_ai.personas.actions.My_Feeds__Persona import My_Feeds__Persona
-from myfeeds_ai.personas.actions.My_Feeds__Persona__Data                            import My_Feeds__Persona__Data
+from myfeeds_ai.personas.actions.My_Feeds__Persona                                  import My_Feeds__Persona
 from myfeeds_ai.personas.actions.My_Feeds__Personas                                 import My_Feeds__Personas
 from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__1__Create__Persona         import Flow__My_Feeds__Personas__1__Create__Persona
 from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__2__LLM__Connected_Entities import Flow__My_Feeds__Personas__2__LLM__Connected_Entities
 from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__3__LLM__Create__Digest     import Flow__My_Feeds__Personas__3__LLM__Create__Digest
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                             import Schema__Persona__Types
-from osbot_utils.utils.Status import status_ok, status_error
+from osbot_utils.utils.Status                                                       import status_ok, status_error
 
 ROUTE_PATH__PERSONAS = 'personas'
 

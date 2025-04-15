@@ -1,7 +1,9 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                import S3_Key__File__Content_Type
-from myfeeds_ai.personas.actions.My_Feeds__Persona__Data                import My_Feeds__Persona__Data
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Files               import My_Feeds__Persona__Files
 from myfeeds_ai.personas.actions.My_Feeds__Personas__Storage__Persona   import My_Feeds__Personas__Storage__Persona
 from myfeeds_ai.personas.files.My_Feeds__Personas__File                 import My_Feeds__Personas__File
+from myfeeds_ai.personas.files.My_Feeds__Personas__File__Now import My_Feeds__Personas__File__Now
+from myfeeds_ai.personas.llms.Schema__Persona__Digest import Schema__Persona__Digest
 from myfeeds_ai.personas.schemas.Default_Data__My_Feeds__Personas       import Default_Data__My_Feeds__Personas
 from myfeeds_ai.personas.schemas.Schema__Persona                        import Schema__Persona
 from myfeeds_ai.personas.schemas.Schema__Persona__Text__Entities        import Schema__Persona__Text__Entities
@@ -12,7 +14,7 @@ from osbot_utils.type_safe.Type_Safe                                    import T
 
 
 class My_Feeds__Persona(Type_Safe):
-    persona_data: My_Feeds__Persona__Data
+    persona_files: My_Feeds__Persona__Files
     persona_type : Schema__Persona__Types
 
     def create(self):
@@ -21,7 +23,7 @@ class My_Feeds__Persona(Type_Safe):
             self.description__reset_to_default_value()
         return self
 
-    @cache_on_self
+    @cache_on_self                                                                      # todo: research possible race conditions caused by this (for example when the save() method updates the path__now (which in one test was not in sync)
     def data(self) -> Schema__Persona:
         return self.file__persona().data()
 
@@ -67,19 +69,32 @@ class My_Feeds__Persona(Type_Safe):
 
     @cache_on_self
     def file__persona(self) -> My_Feeds__Personas__File:
-        return self.persona_data.file__persona(persona_type=self.persona_type)
+        return self.persona_files.file__persona(persona_type=self.persona_type)
 
     @cache_on_self
-    def file__persona_entities(self) -> My_Feeds__Personas__File:
-        return self.persona_data.file__persona_entities(persona_type=self.persona_type)
+    def file__persona_digest(self) -> My_Feeds__Personas__File:
+        return self.persona_files.file__persona_digest(persona_type=self.persona_type)
 
     @cache_on_self
-    def file__persona_entities__png(self) -> My_Feeds__Personas__File:
-        return self.persona_data.file__persona_entities__png(persona_type=self.persona_type)
+    def file__persona_digest_html(self) -> My_Feeds__Personas__File:
+        return self.persona_files.file__persona_digest_html(persona_type=self.persona_type)
 
     @cache_on_self
-    def file__persona_entities__tree_values(self) -> My_Feeds__Personas__File:
-        return self.persona_data.file__persona_entities__tree_values(persona_type=self.persona_type)
+    def file__persona_articles__connected_entities(self) -> My_Feeds__Personas__File__Now:
+        return self.persona_files.file__persona_articles__connected_entities(persona_type=self.persona_type)
+
+    @cache_on_self
+    def file__persona_entities(self) -> My_Feeds__Personas__File__Now:
+        return self.persona_files.file__persona_entities(persona_type=self.persona_type)
+
+    @cache_on_self
+    def file__persona_entities__png(self) -> My_Feeds__Personas__File__Now:
+        return self.persona_files.file__persona_entities__png(persona_type=self.persona_type)
+
+    @cache_on_self
+    def file__persona_entities__tree_values(self) -> My_Feeds__Personas__File__Now:
+        return self.persona_files.file__persona_entities__tree_values(persona_type=self.persona_type)
+
 
     def file_contents(self, path, content_type:S3_Key__File__Content_Type=None):
         if path:
@@ -103,7 +118,8 @@ class My_Feeds__Persona(Type_Safe):
     def persona__entities__tree_values(self) -> str:
         path        = self.data().path__persona__entities__tree_values
         tree_values = self.file_contents(path, S3_Key__File__Content_Type.TXT)
-        return tree_values
+        if tree_values:
+            return tree_values.decode()
 
     def save(self):
         self.file__persona().save()

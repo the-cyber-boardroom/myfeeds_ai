@@ -34,7 +34,8 @@ class Hacker_News__File(Hacker_News__File__Now):
 
         # refactor this with the code in Hacker_News__File__Now since it is just about the same
         if self.data_type:                                                              # if data_type has been defined
-            data = self.file_data.json()                                                # get the json value of the current object
+            self.file_data.path__now  = self.path_now()                                 # update the path__now value so that it is correctly pointing to the latest location (i.e. the value used below)
+            data                      = self.file_data.json()                           # get the json value of the current object
         else:
             if type(self.file_data) is str and self.content_type:                       # if the data is a string and we have set the content-type
                 data = str_to_bytes(self.file_data)                                     # then save it as bytes, since if not the data will be saved as json-dumps of this value (and the content type will not be set)

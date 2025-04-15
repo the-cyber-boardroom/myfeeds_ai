@@ -34,7 +34,7 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
         with self.flow_create_persona.persona as _:
             assert _.exists() is True
 
-        with self.flow_create_persona.persona.file__persona() as _:
+        with self.flow_create_persona.persona.file__persona_articles__connected_entities() as _:
             assert type(_)          is My_Feeds__Personas__File
             assert type(_.file_id)  is Safe_Id
             assert _.path_now   ()  == f'{self.path__folder_now}/{FILE_ID__PERSONA}.{S3_Key__File__Extension.JSON.value}'

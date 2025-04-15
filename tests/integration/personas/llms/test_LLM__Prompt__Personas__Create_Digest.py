@@ -1,12 +1,10 @@
 import pytest
 from unittest                                                                                   import TestCase
-
-from myfeeds_ai.personas.actions.My_Feeds__Persona__Data import My_Feeds__Persona__Data
-from myfeeds_ai.personas.actions.My_Feeds__Personas                                             import My_Feeds__Personas
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Files                                       import My_Feeds__Persona__Files
 from myfeeds_ai.personas.llms.LLM__Prompt__Personas__Create_Digest                              import LLM__Prompt__Personas__Create_Digest, SYSTEM_PROMPT__CREATE_DIGEST, USER_PROMPT__CREATE_DIGEST
 from myfeeds_ai.personas.llms.Schema__Persona__Digest_Articles                                  import Schema__Persona__Digest_Articles
 from myfeeds_ai.personas.schemas.Schema__Persona                                                import Schema__Persona
-from myfeeds_ai.personas.schemas.Schema__Persona__LLM__Connect_Entities                         import Schema__Persona__LLM__Connect_Entities
+from myfeeds_ai.personas.schemas.Schema__Persona__Articles__Connected_Entities                  import Schema__Persona__Articles__Connected_Entities
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                                         import Schema__Persona__Types
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache  import Hacker_News__Execute_LLM__With_Cache
 from osbot_utils.helpers.llms.platforms.open_ai.API__LLM__Open_AI                               import ENV_NAME_OPEN_AI__API_KEY
@@ -24,14 +22,14 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
         myfeeds_tests__setup_local_stack()
         cls.prompt_create_digest       = LLM__Prompt__Personas__Create_Digest()
         cls.persona_type               = Schema__Persona__Types.EXEC__CEO
-        cls.persona_data               = My_Feeds__Persona__Data()
-        cls.persona                    = cls.persona_data.file__persona                 (persona_type=cls.persona_type).data()
-        cls.persona_connected_entities = cls.persona_data.file__persona_connect_entities(persona_type=cls.persona_type).data()
+        cls.persona_files              = My_Feeds__Persona__Files()
+        cls.persona                    = cls.persona_files.file__persona                             (persona_type=cls.persona_type).data()
+        cls.persona_connected_entities = cls.persona_files.file__persona_articles__connected_entities(persona_type=cls.persona_type).data()
 
     def test_format_articles_content(self):                          # Test that article content is correctly formatted.
         if self.persona:
             assert type(self.persona) is Schema__Persona
-            assert type(self.persona_connected_entities) is Schema__Persona__LLM__Connect_Entities
+            assert type(self.persona_connected_entities) is Schema__Persona__Articles__Connected_Entities
             formatted_content = self.prompt_create_digest.format_articles_content(self.persona_connected_entities)
 
             assert "ARTICLE"  in formatted_content
