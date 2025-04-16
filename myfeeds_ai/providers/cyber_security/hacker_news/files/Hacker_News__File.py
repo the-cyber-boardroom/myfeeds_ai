@@ -6,7 +6,7 @@ class Hacker_News__File(Hacker_News__File__Now):
     latest_prefix : str = None                                                          # use this to add a special prefix to the file name used when saving in the latest folder (for example when saving multiple user's files in there which all have the same name in now)
 
     def delete__latest   (self) -> bool: return self.hacker_news_storage.delete_from__path (s3_path = self.path_latest())
-    def exists           (self) -> bool: return self.exists__latest()                                                       # only use the latest for now, since that is the default (and the return self.exists__now() only works when now has been set)
+    def exists           (self) -> bool: return self.exists__latest() and self.exists__now()                                                    # use both since this is used to see if the save needs to be called (which will save on both now and latest)
     def exists__latest   (self) -> bool: return self.hacker_news_storage.path__exists      (s3_path = self.path_latest())
     def file_info__latest(self) -> dict: return self.hacker_news_storage.path__file_info   (s3_path = self.path_latest())
     def not_exists       (self) -> bool: return not self.exists()
@@ -33,8 +33,10 @@ class Hacker_News__File(Hacker_News__File__Now):
 
         # refactor this with the code in Hacker_News__File__Now since it is just about the same
         if self.data_type:                                                              # if data_type has been defined
-            self.file_data.path__now  = self.path_now()                                 # update the path__now value so that it is correctly pointing to the latest location (i.e. the value used below)
-            data                      = self.file_data.json()                           # get the json value of the current object
+            if hasattr(self.file_data, 'path__now'):                                    # if the file_data object has a path__now variable
+                self.file_data.path__now__before = self.file_data.path__now                    # capture the previous value of path_now
+                self.file_data.path__now         = self.path_now()                             # update the path__now value so that it is correctly pointing to the latest location (i.e. the value used below)
+            data                          = self.file_data.json()                       # get the json value of the current object
         else:
             if type(self.file_data) is str and self.content_type:                       # if the data is a string and we have set the content-type
                 data = str_to_bytes(self.file_data)                                     # then save it as bytes, since if not the data will be saved as json-dumps of this value (and the content type will not be set)

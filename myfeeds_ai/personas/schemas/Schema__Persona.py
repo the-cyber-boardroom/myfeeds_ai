@@ -8,6 +8,7 @@ class Schema__Persona(Type_Safe):
     description                                : Str__Description       = None            # this is a version of Safe_Str__Text with support for ' and /
     description__hash                          : Safe_Str__Hash         = None
     path__now                                  : Safe_Str__File__Path   = None
+    path__now__before                          : Safe_Str__File__Path   = None
     path__persona__articles__connected_entities: Safe_Str__File__Path   = None
     path__persona__digest                      : Safe_Str__File__Path   = None
     path__persona__digest__html                : Safe_Str__File__Path   = None

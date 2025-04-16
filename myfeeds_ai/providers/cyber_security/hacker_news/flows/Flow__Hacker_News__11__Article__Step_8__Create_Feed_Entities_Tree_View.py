@@ -59,7 +59,7 @@ class Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View(Typ
                 data = _.data()
                 data.path_latest__text_entities__titles__tree = self.path_latest__text_entities__titles__tree
                 data.path_now__text_entities__titles__tree    = self.path_now__text_entities__titles__tree
-                _.save_data(data.json())
+                _.save_data(data)
 
     @task()
     def task__4__move_articles_to_next_step(self):

@@ -8,6 +8,7 @@ from myfeeds_ai.personas.schemas.Schema__Persona                                
 from myfeeds_ai.personas.schemas.Schema__Persona__Articles__Connected_Entities  import Schema__Persona__Articles__Connected_Entities
 from myfeeds_ai.personas.schemas.Schema__Persona__Text__Entities                import Schema__Persona__Text__Entities
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                         import Schema__Persona__Types
+from myfeeds_ai.utils.shared_schemas.Str__Description                           import Str__Description
 from osbot_utils.decorators.methods.cache_on_self                               import cache_on_self
 from osbot_utils.helpers.safe_str.Safe_Str__Hash                                import safe_str_hash
 from osbot_utils.type_safe.Type_Safe                                            import Type_Safe
@@ -29,23 +30,31 @@ class My_Feeds__Persona(Type_Safe):
 
     def data__reset_paths(self):
         with self.data() as _:
-            _.path__now                            = self.file__persona().path_now()    # set main persona path to the place where this data will also be saved
             _.path__persona__latest                = self.file__persona().path_latest()
             _.path__persona__entities              = ''                                 # we need to reset these paths, since it's content is no longer value (they were created for the previous version of the description)
             _.path__persona__entities__png         = ''
             _.path__persona__entities__tree_values = ''
 
     def delete(self):
-        return self.file__persona().delete__latest()                                    # only delete the file in the latest folder that that is the one that is used to find the others # todo: see if have a use case for a method to also delete all previously created files for this persona (i.e the files in the now folders)
+        self.file__persona                             ().delete__latest()              # delete the persona files that are stored in the latest folder
+        self.file__persona_digest                      ().delete__latest()
+        self.file__persona_digest_html                 ().delete__latest()
+        self.file__persona_articles__connected_entities().delete__now()                 # and files that are only stored in the now folder
+        self.file__persona_entities                    ().delete__now()
+        self.file__persona_entities__png               ().delete__now()
+        self.file__persona_entities__tree_values       ().delete__now()
+
+        return self.not_exists()
 
     def description(self) -> str:
         return self.data().description
 
-    def description__change_value_and_reset_paths(self, new_description: str):
+    def description__change_value_and_reset_paths(self, new_description: str, force_reset: bool = False):
         if new_description:
+            new_description = Str__Description(new_description)
             with self.data() as _:
                 new_description_hash = safe_str_hash(new_description)
-                if new_description_hash != _.description__hash:
+                if force_reset or new_description_hash != _.description__hash:
                     _.description        = new_description
                     _.description__hash  = new_description_hash
                     self.data__reset_paths()
@@ -54,9 +63,9 @@ class My_Feeds__Persona(Type_Safe):
 
         return False
 
-    def description__reset_to_default_value(self):
+    def description__reset_to_default_value(self, force_reset: bool = False):
         persona_default_description = Default_Data__My_Feeds__Personas.get(self.persona_type, {}).get('description')
-        return self.description__change_value_and_reset_paths(persona_default_description)
+        return self.description__change_value_and_reset_paths(new_description=persona_default_description, force_reset=force_reset)
 
 
     def description_changed(self) -> bool:
@@ -95,10 +104,12 @@ class My_Feeds__Persona(Type_Safe):
     def file__persona_entities__tree_values(self) -> My_Feeds__Personas__File__Now:
         return self.persona_files.file__persona_entities__tree_values(persona_type=self.persona_type)
 
-
     def file_contents(self, path, content_type:S3_Key__File__Content_Type=None):
         if path:
             return self.storage().path__load_data(s3_path = path, content_type=content_type)
+
+    def not_exists(self):
+        return self.exists() is False
 
     def persona(self) -> Schema__Persona:
         path      = self.data().path__now

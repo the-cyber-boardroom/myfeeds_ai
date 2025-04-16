@@ -46,6 +46,9 @@ class Routes__My_Feeds__Personas__Admin(Fast_API_Routes):
     def delete_file(self, path:str):
         return self.personas.storage.delete_from__path(path)
 
+    def reset_description(self,  persona_type: Schema__Persona__Types):
+        return My_Feeds__Persona(persona_type=persona_type).description__reset_to_default_value(force_reset=True)
+
     def storage_all_files(self):
         return sorted(self.personas.storage.s3_db.provider__all_files(), reverse=True)
 
@@ -57,5 +60,6 @@ class Routes__My_Feeds__Personas__Admin(Fast_API_Routes):
         self.add_route_get   (self.files_in_latest              )
         self.add_route_get   (self.files_in_now                 )
         self.add_route_get   (self.storage_all_files            )
+        self.add_route_post  (self.reset_description            )
         self.add_route_delete(self.persona_delete               )
         self.add_route_delete(self.delete_file                  )

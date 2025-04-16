@@ -59,7 +59,9 @@ class Hacker_News__File__Now(Type_Safe):                                        
             raise ValueError(f"in Hacker_News__File.save, there was no data to save, self.file_data was empty")
 
         if self.data_type:                                                      # if data_type has been defined
-            self.file_data.path__now = self.path_now ()                         # make sure path__now value has the "now path" used on the save below
+            if hasattr(self.file_data, 'path__now'):                            # if the file_data object has a path__now variable
+                self.file_data.path__now__before = self.file_data.path__now            # capture the previous value of path_now
+                self.file_data.path__now         = self.path_now()                     # update the path__now value so that it is correctly pointing to the latest location (i.e. the value used below)
             data                     = self.file_data.json()                    # get the json value of the current object
         else:
             if type(self.file_data) is str and self.content_type:               # if the data is a string, and we have set the content-type

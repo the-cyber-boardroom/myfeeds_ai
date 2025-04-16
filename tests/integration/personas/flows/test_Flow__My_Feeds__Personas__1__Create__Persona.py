@@ -21,7 +21,8 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
             pytest.skip('This test requires OpenAI API Key to run')
         myfeeds_tests__setup_local_stack()
         cls.persona_type        = Schema__Persona__Types.EXEC__CISO
-        cls.flow_create_persona = Flow__My_Feeds__Personas__1__Create__Persona()
+        #cls.persona_type        = Schema__Persona__Types.INVESTOR__SERIES_A
+        cls.flow_create_persona = Flow__My_Feeds__Personas__1__Create__Persona(persona_type=cls.persona_type)
         cls.path__folder_now    = My_Feeds__Personas__File__Now(persona_type=cls.persona_type).hacker_news_storage.path__folder_now()
 
     def test_task__1__load_persona_data(self):
@@ -55,7 +56,7 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
 
     def test_task__3__create_entities(self):
         with self.flow_create_persona as _:
-            _.task__1__load_persona_data  ()
+            _.task__1__load_persona_data()
             _.task__3__create_entities()
             with _.persona as persona:
                 assert type(persona)                             is My_Feeds__Persona
@@ -94,6 +95,7 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
     def test_task__6__save_persona(self):
         with self.flow_create_persona as _:
             _.task__1__load_persona_data     ()
+            #_.persona.delete()
             _.task__2__set_persona_details   ()
             _.task__3__create_entities       ()
             _.task__4__create_tree_values    ()

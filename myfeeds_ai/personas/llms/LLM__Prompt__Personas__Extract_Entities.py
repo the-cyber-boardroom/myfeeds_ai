@@ -1,7 +1,7 @@
 from mgraph_db.providers.graph_rag.schemas.Schema__Graph_RAG__Entity            import Schema__Graph_RAG__Entity
 from mgraph_db.providers.graph_rag.actions.Graph_RAG__Create_MGraph             import Graph_RAG__Create_MGraph
 from myfeeds_ai.personas.schemas.Schema__Persona__Entities                      import Schema__Persona__Entities
-from osbot_utils.helpers.Obj_Id import Obj_Id
+from osbot_utils.helpers.Obj_Id                                                 import Obj_Id
 from osbot_utils.helpers.llms.builders.LLM_Request__Builder__Open_AI            import LLM_Request__Builder__Open_AI
 from osbot_utils.helpers.llms.schemas.Schema__LLM_Response                      import Schema__LLM_Response
 from osbot_utils.type_safe.Type_Safe                                            import Type_Safe
@@ -63,7 +63,9 @@ RELATIONSHIP EXTRACTION GUIDELINES:
    - What security processes they oversee
    - What compliance requirements they must address
 
-Your output must create entities and relationships that could directly connect to cybersecurity news about vulnerabilities, threats, attacks, and security advisories. Focus on creating a knowledge graph that will remain relevant as new security information emerges.
+Your output must create entities and relationships that could directly connect to cybersecurity news about vulnerabilities, 
+threats, attacks, and security advisories. Focus on creating a knowledge graph that will remain relevant as new security 
+information emerges.
 """
 
 class LLM__Prompt__Personas__Extract_Entities(Type_Safe):
@@ -73,6 +75,7 @@ class LLM__Prompt__Personas__Extract_Entities(Type_Safe):
         extract_text = text
         with self.request_builder as _:
             _.set__model__gpt_4o_mini()
+            #_.set__model__gpt_4_1()
             _.llm_request_data.temperature = 1.0
             _.add_message__system(system_prompt)
             _.add_message__user  (extract_text)

@@ -89,6 +89,7 @@ class test__int__My_Feeds__Persona(TestCase):
             assert _.data().obj() == __(description                                 = new_description             ,
                                         description__hash                           = new_description_hash        ,
                                         path__now                                   = _.file__persona().path_now(),
+                                        path__now__before                           = _.file__persona().path_now(),
                                         path__persona__articles__connected_entities = None  ,
                                         path__persona__digest                       = None  ,
                                         path__persona__digest__html                 = None  ,
@@ -104,12 +105,20 @@ class test__int__My_Feeds__Persona(TestCase):
         test_persona        = Schema__Persona__Types.TEST__PERSONA
         description__random = random_text('This is a new description')
         description_test_persona = Default_Data__My_Feeds__Personas.get(test_persona).get('description')
-        with My_Feeds__Persona(persona_type=test_persona).create() as _:
+        with My_Feeds__Persona(persona_type=test_persona) as _:
+            assert _.delete()                                                       is True
+            assert _.create()                                                       == _
+            assert _.exists()                                                       is True
+            assert _.data().path__now                                               == _.file__persona().path_now() # path__now should have been set during save
+            assert _.data().path__now__before                                       is None                         # with no value in path__now__before since path__now should have been None before the assigment
             assert _.data().description                                             == description_test_persona     # creates sets the description value to the default
             assert _.description__change_value_and_reset_paths(description__random) is True                         # changing should work
+            assert _.data().path__now__before                                       == _.data().path__now           # after the first change path__now__before should have capture the previous value
             assert _.data().description                                             != description_test_persona     # now values should not match
             assert _.description__reset_to_default_value      ()                    is True                         # reset to default value should work
             assert _.data().description                                             == description_test_persona     # values should be equal again
+            assert _.delete()                                                       is True
+            assert _.exists()                                                       is False
 
     def test_exists(self):
         with self.persona as _:

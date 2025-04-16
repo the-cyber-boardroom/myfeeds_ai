@@ -65,24 +65,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
     def task__2__load_articles_data(self):
         self.articles_graph_tree                     = self.feed_text_entities.tree_view__entities__titles()
         self.path_now__entities__titles__tree_values = self.feed_text_entities.text_entities__files().path_now__text_entities__titles__tree
-        #pprint( self.feed_text_entities.file__feed_text_entities__files().data().json())
-        return
-        #self.feed_text_entities__files             = self.file__feed_text_entities__files.data()
-        #self.path_now__text_entities__titles__tree = self.feed_text_entities__files.path_now__text_entities__titles__tree
-        #self.articles_graph_tree                   = self.hacker_news_storage.path__load_data(self.path_now__text_entities__titles__tree, content_type=S3_Key__File__Content_Type.TXT).decode()
-        #self.persona_graph_tree                    = self.persona.persona__entities__tree_values()
 
-        # return
-        # with self.feed_text_entities.file__feed_text_entities__files().data() as _:
-        #
-        #     self.path_now__text_entities__titles__tree = _.path_now__text_entities__titles__tree
-        #     if self.path_now__text_entities__titles__tree:
-        #         self.articles_graph_tree = self.hacker_news_storage.path__load_data(self.path_now__text_entities__titles__tree, content_type=S3_Key__File__Content_Type.TXT).decode()
-        #         self.persona_graph_tree  = self.persona.description__tree_values
-        #     else:
-        #         raise ValueError(f"path_now__text_entities__titles__tree was empty in file: {self.feed_text_entities.file__feed_text_entities__files().path_now()} ")
-        #
-        #     #path_latest__text_entities__titles__tree
 
     @task()
     def task__3__create_connected_entities(self):
