@@ -4,6 +4,7 @@ from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                        
 from myfeeds_ai.personas.actions.My_Feeds__Persona                                              import My_Feeds__Persona
 from myfeeds_ai.personas.files.My_Feeds__Personas__File__Now                                    import My_Feeds__Personas__File__Now
 from myfeeds_ai.personas.llms.LLM__Prompt__Connect_Entities                                     import LLM__Prompt__Connect_Entities
+from myfeeds_ai.personas.schemas.Schema__Persona__Articles__Connected_Entities                  import Schema__Persona__Articles__Connected_Entities
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                                         import Schema__Persona__Types
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Feed__Text_Entities   import Hacker_News__Feed__Text_Entities
 from myfeeds_ai.providers.cyber_security.hacker_news.actions.Hacker_News__Storage               import Hacker_News__Storage
@@ -16,19 +17,18 @@ from osbot_utils.helpers.flows.Flow                                             
 from osbot_utils.helpers.flows.decorators.flow                                                  import flow
 from osbot_utils.helpers.flows.decorators.task                                                  import task
 from osbot_utils.type_safe.Type_Safe                                                            import Type_Safe
-from osbot_utils.utils.Dev import pprint
-
 
 class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
     persona_type                                : Schema__Persona__Types    = Schema__Persona__Types.EXEC__CISO
     persona                                     : My_Feeds__Persona
     hacker_news_storage                         : Hacker_News__Storage              # required to get the content of the markdown files
 
-    feed_text_entities__files                   : Schema__Feed__Text_Entities__Files
     feed_text_entities                          : Hacker_News__Feed__Text_Entities
     file__feed_text_entities__files             : Hacker_News__File
     file__persona_articles__connected_entities  : My_Feeds__Personas__File__Now
-
+    persona__articles__connected_entities       : Schema__Persona__Articles__Connected_Entities
+    paths__feed__text_entities                  : Schema__Feed__Text_Entities__Files
+    text_entities_changed                       : bool
     output                                      : dict
 
     #path_now__persona__tree_values              : str                             = None
@@ -63,36 +63,46 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
 
     @task()
     def task__2__load_articles_data(self):
-        self.articles_graph_tree                     = self.feed_text_entities.tree_view__entities__titles()
-        self.path_now__entities__titles__tree_values = self.feed_text_entities.text_entities__files().path_now__text_entities__titles__tree
+        self.paths__feed__text_entities = self.feed_text_entities.text_entities__files()
+        self.persona__articles__connected_entities = self.persona.persona__articles__connected_entities()
+        with self.persona__articles__connected_entities as _:
+            if _.paths__feed__text_entities is None:                                                # check if this is the first time we are doing this
+                self.text_entities_changed = True
+            elif _.paths__feed__text_entities.json() != self.paths__feed__text_entities.json():     # of if the contents has changed (i.e. one of the paths, which is updated when the text entities are recreated)
+                self.text_entities_changed = True
+
+        if self.text_entities_changed:
+            self.articles_graph_tree                     = self.feed_text_entities.tree_view__entities__titles()
+            self.path_now__entities__titles__tree_values = self.feed_text_entities.text_entities__files().path_now__text_entities__titles__tree
 
 
     @task()
     def task__3__create_connected_entities(self):
-        # with self.persona_data.file__persona_connect_entities(persona_type=self.persona_type) as _:
-        #     self.file_llm_connect_entities = _
-        #     self.llm_connect_entities      = _.data()
+        if self.text_entities_changed:
+            # with self.persona_data.file__persona_connect_entities(persona_type=self.persona_type) as _:
+            #     self.file_llm_connect_entities = _
+            #     self.llm_connect_entities      = _.data()
 
-        prompt_connect_entities = LLM__Prompt__Connect_Entities()
+            prompt_connect_entities = LLM__Prompt__Connect_Entities()
 
-        llm_request             = prompt_connect_entities.llm_request(persona_graph_tree  = self.persona_graph_tree ,
-                                                                      articles_graph_tree = self.articles_graph_tree)
-        with Hacker_News__Execute_LLM__With_Cache() as _:
-            llm_response                = _.setup().execute__llm_request(llm_request)
-            persona_connected_entities  = prompt_connect_entities.process_llm_response(llm_response)
-            cache_id__llm_request       = _.llm_cache.get__cache_id__from__request(llm_request)
+            llm_request             = prompt_connect_entities.llm_request(persona_graph_tree  = self.persona_graph_tree ,
+                                                                          articles_graph_tree = self.articles_graph_tree)
+            with Hacker_News__Execute_LLM__With_Cache() as _:
+                llm_response                = _.setup().execute__llm_request(llm_request)
+                persona_connected_entities  = prompt_connect_entities.process_llm_response(llm_response)
+                cache_id__llm_request       = _.llm_cache.get__cache_id__from__request(llm_request)
 
-        # assign save data into file__persona_articles__connected_entities
-        with  self.persona.file__persona_articles__connected_entities().update() as _:
-            _.path__now__persona                       = self.persona.data().path__now
-            _.path__now__persona__tree_values          = self.persona.data().path__persona__entities__tree_values
-            _.path__now__entities__titles__tree_values = self.path_now__entities__titles__tree_values
-            _.connected_entities                      = persona_connected_entities.connected_entities
-            _.cache_id__llm_request                   = cache_id__llm_request
+            # assign save data into file__persona_articles__connected_entities
+            with  self.persona.file__persona_articles__connected_entities().update() as _:
+                _.path__now__persona                       = self.persona.data().path__now
+                _.path__now__entities__titles__tree_values = self.path_now__entities__titles__tree_values
+                _.paths__feed__text_entities               = self.paths__feed__text_entities
+                _.connected_entities                       = persona_connected_entities.connected_entities
+                _.cache_id__llm_request                    = cache_id__llm_request
 
-        # update the main persona file with the path to the file created above
-        with self.persona.file__persona().update() as _:
-            _.path__persona__articles__connected_entities = self.persona.file__persona_articles__connected_entities().data().path__now
+            # update the main persona file with the path to the file created above
+            with self.persona.file__persona().update() as _:
+                _.path__persona__articles__connected_entities = self.persona.file__persona_articles__connected_entities().data().path__now
 
     @task()
     def task__4__collect_articles_markdown(self):
