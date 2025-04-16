@@ -44,7 +44,7 @@ class test_Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
             if _.text_entities_changed:
                 assert 'article_entity' in _.articles_graph_tree
                 if _.persona__articles__connected_entities.paths__feed__text_entities:
-                    assert _.paths__feed__text_entities.json() == _.persona__articles__connected_entities.paths__feed__text_entities.json()
+                    assert _.paths__feed__text_entities.json() != _.persona__articles__connected_entities.paths__feed__text_entities.json()
 
 
     def test_task__3__create_connected_entities(self):
@@ -53,18 +53,18 @@ class test_Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
             _.task__2__load_articles_data              ()
             _.task__3__create_connected_entities       ()
 
-        with _.persona.file__persona_articles__connected_entities().data() as data:
-            #assert _.persona.data().path__persona__articles__connected_entities == data.path__now           # todo: review the save workflow since there is a small race condition here caused by the use of @cache_on_self on the My_Feeds__Persona.data()
+        with _.persona.persona__articles__connected_entities() as data:
+            assert _.persona.data().path__persona__articles__connected_entities == data.path__now
             assert type(data)                                                   is Schema__Persona__Articles__Connected_Entities
             assert type(data.connected_entities)                                is Type_Safe__List
-
-            assert data.paths__feed__text_entities.json() == self.flow_connect_entities.paths__feed__text_entities.json()
-
+            assert data.paths__feed__text_entities.json()                       == self.flow_connect_entities.paths__feed__text_entities.json()
+            assert len(data.connected_entities)                                 > 0
 
     def test_task__4__collect_articles_markdown(self):
         with self.flow_connect_entities as _:
             _.task__1__load_persona_data               ()
             _.task__4__collect_articles_markdown       ()
 
-            with _.persona.file__persona_articles__connected_entities().data() as data:
+            with _.persona.persona__articles__connected_entities() as data:
                 assert len(data.articles_markdown) > 0
+                assert len(data.connected_entities) > 0

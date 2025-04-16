@@ -28,5 +28,5 @@ class test__int__Pipeline__Hacker_News__Create_Persona_Digest(TestCase):
             _.task__3__execute_flow_3__create_digest     ()
             _.task__n__create_output                     ()
 
-            from osbot_utils.utils.Dev import pprint
-            pprint(_.output)
+            # from osbot_utils.utils.Dev import pprint
+            # pprint(_.output)

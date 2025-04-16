@@ -11,6 +11,6 @@ class Schema__Persona__Articles__Connected_Entities(Type_Safe):
     path__now                                : Safe_Str__File__Path                    = None
     path__now__persona                       : Safe_Str__File__Path                    = None
     path__now__persona__tree_values          : Safe_Str__File__Path                    = None
-    paths__feed__text_entities               : Schema__Feed__Text_Entities__Files      = None
+    paths__feed__text_entities               : Schema__Feed__Text_Entities__Files
     connected_entities                       : List[Schema__Persona__Connected_Entity] = None
     articles_markdown                        : Dict[Obj_Id,str]

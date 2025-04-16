@@ -121,6 +121,11 @@ class My_Feeds__Persona(Type_Safe):
         json_data = self.file_contents(path)
         return Schema__Persona__Articles__Connected_Entities.from_json(json_data)
 
+    def persona_digest_html(self) -> My_Feeds__Personas__File:
+        path      = self.data().path__persona__digest__html
+        html_code = self.file_contents(path, content_type=S3_Key__File__Content_Type.HTML)
+        return html_code
+
     def persona__entities(self) -> Schema__Persona__Text__Entities:
         path      = self.data().path__persona__entities
         json_data = self.file_contents(path)

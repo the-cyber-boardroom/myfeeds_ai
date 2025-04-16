@@ -42,10 +42,14 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
     #@task()
     def task__2__llm_create_persona_digest(self):
+        if self.persona.data().path__persona__digest__html:                         # nothing to do if path__persona__digest__html is set
+            return
+
         if self.persona_data is None:
             raise Exception('No persona data')
         if self.persona_connected_entities.connected_entities is None:
             raise Exception('No persona connected entities')
+
         self.llm_request = self.prompt_create_digest.llm_request(persona                    = self.persona_data              ,
                                                                  persona_connected_entities = self.persona_connected_entities)
         with self.execute_llm_with_cache.setup() as _:
@@ -54,8 +58,10 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
         self.persona_digest_articles = self.prompt_create_digest.process_llm_response(self.llm_response)
 
-    #@task()
+    @task()
     def task__3__save_persona_digest(self):
+        if self.persona.data().path__persona__digest__html:                         # nothing to do if path__persona__digest__html is set
+            return
         llm_request_cache          = self.execute_llm_with_cache.llm_cache
         self.llm_request__cache_id = llm_request_cache.get__cache_id__from__request(self.llm_request)
 
@@ -70,7 +76,7 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
             digest_html = self.persona_digest_articles.get_html(cache_id=self.llm_request__cache_id)
             _.save_data(digest_html)
 
-            #_.digest_markdown         = self.persona_digest_articles.get_markdown()
+            #_.digest_markdown         = self.persona_digest_articles.get_markdown()                    # todo: see if we need this
 
         with self.persona.file__persona().update() as _:
             _.path__persona__digest       = self.persona.file__persona_digest     ().path_now()
@@ -79,9 +85,9 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
     @task()
     def task__4__create_output(self):
-        self.output = dict(persona_type                              = self.persona_type.value                   ,
-                           persona                                   = self.persona_data                         ,
-                           llm_request__cache_id                    = self.llm_request__cache_id                 )
+        self.output = dict(persona_type          = self.persona_type.value                   ,
+                           persona               = self.persona_data                         ,
+                           llm_request__cache_id = self.llm_request__cache_id                 )
 
 
     @flow()
