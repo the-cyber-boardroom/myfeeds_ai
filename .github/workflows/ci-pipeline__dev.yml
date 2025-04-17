@@ -3,8 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - dev
-      #__TEMP_DISABLED
+      - dev__TEMP_DISABLED
 
 env:
   GIT__BRANCH      : 'dev'
