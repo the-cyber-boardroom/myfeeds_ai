@@ -39,9 +39,10 @@ jobs:
       - name: "create persona digest"
         uses: ./.github/actions/my-feeds__create-persona-digest
         env:
-          PERSONA_TYPE         : ${{ inputs.persona_type }}
-          OPEN_AI__API_KEY     : ${{ secrets.OPEN_AI__API_KEY                    }}
-          AWS_ACCOUNT_ID       : ${{ secrets.AWS_ACCOUNT_ID__774305572074        }}
-          AWS_ACCESS_KEY_ID    : ${{ secrets.AWS_ACCESS_KEY_ID__774305572074     }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY__774305572074 }}
-          AWS_DEFAULT_REGION   : ${{ secrets.AWS_DEFAULT_REGION__774305572074    }}
+          PERSONA_TYPE              : ${{ inputs.persona_type }}
+          OPEN_AI__API_KEY          : ${{ secrets.OPEN_AI__API_KEY                    }}
+          URL__MGRAPH_DB_SERVERLESS : ${{ secrets.OPEN_AI__API_KEY                    }}
+          AWS_ACCOUNT_ID            : ${{ secrets.AWS_ACCOUNT_ID__774305572074        }}
+          AWS_ACCESS_KEY_ID         : ${{ secrets.AWS_ACCESS_KEY_ID__774305572074     }}
+          AWS_SECRET_ACCESS_KEY     : ${{ secrets.AWS_SECRET_ACCESS_KEY__774305572074 }}
+          AWS_DEFAULT_REGION        : ${{ secrets.AWS_DEFAULT_REGION__774305572074    }}
