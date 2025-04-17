@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+      #__TEMP_DISABLED
 
 env:
   GIT__BRANCH      : 'dev'
@@ -20,15 +21,6 @@ jobs:
       - name: "run-tests"
         uses: ./.github/actions/run-tests
 
-#  run-qunit-tests:
-#    name: Run QUnit tests
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - name: Run QUnit Tests
-#        uses: ./.github/actions/run-qunit-tests
-#        with:
-#          node-version: '22.4.1'
 
   increment-tag:
     name: Increment Tag - DEV

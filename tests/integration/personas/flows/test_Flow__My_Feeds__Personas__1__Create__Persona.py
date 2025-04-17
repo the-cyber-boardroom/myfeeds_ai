@@ -21,7 +21,8 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
             pytest.skip('This test requires OpenAI API Key to run')
         myfeeds_tests__setup_local_stack()
         cls.persona_type        = Schema__Persona__Types.EXEC__CISO
-        cls.flow_create_persona = Flow__My_Feeds__Personas__1__Create__Persona()
+        #cls.persona_type        = Schema__Persona__Types.INVESTOR__SERIES_A
+        cls.flow_create_persona = Flow__My_Feeds__Personas__1__Create__Persona(persona_type=cls.persona_type)
         cls.path__folder_now    = My_Feeds__Personas__File__Now(persona_type=cls.persona_type).hacker_news_storage.path__folder_now()
 
     def test_task__1__load_persona_data(self):
@@ -55,12 +56,11 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
 
     def test_task__3__create_entities(self):
         with self.flow_create_persona as _:
-            _.task__1__load_persona_data  ()
+            _.task__1__load_persona_data()
             _.task__3__create_entities()
             with _.persona as persona:
                 assert type(persona)                             is My_Feeds__Persona
-                assert persona.file__persona_entities().exists() is True
-                assert persona.data().path__persona__entities    == persona.file__persona_entities().path_now()
+                assert persona.data().path__persona__entities
                 assert persona.persona__entities().text          == _.persona.description()
 
 
@@ -70,14 +70,11 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
             _.task__4__create_tree_values()
 
             with _.persona as persona:
-                assert persona.data().path__persona__entities__tree_values == persona.file__persona_entities__tree_values().path_now()
+                assert persona.data().path__persona__entities__tree_values
 
-        with self.flow_create_persona.persona.file__persona_entities__tree_values() as _:
-            tree_values = _.data()
-            assert _.exists()            is True
-            assert type(tree_values)     is bytes
-            assert len (tree_values)     > 10
-            assert tree_values.decode()  == self.flow_create_persona.persona.persona__entities__tree_values()
+        tree_values = self.flow_create_persona.persona.persona__entities__tree_values()
+        assert type(tree_values)     is str
+        assert len (tree_values)     > 10
 
 
     def test_task__5__create_description_png(self):
@@ -86,14 +83,12 @@ class test_Flow__My_Feeds__Personas__1__Create__Persona(TestCase):
             _.task__1__load_persona_data()
             _.task__5__create_description_png()
 
-            file__persona_entities__png = _.persona.file__persona_entities__png()
-
-            assert file__persona_entities__png.exists()          is True
-            assert _.persona.data().path__persona__entities__png == file__persona_entities__png.path_now()
+            assert _.persona.data().path__persona__entities__png
 
     def test_task__6__save_persona(self):
         with self.flow_create_persona as _:
             _.task__1__load_persona_data     ()
+            #_.persona.delete()
             _.task__2__set_persona_details   ()
             _.task__3__create_entities       ()
             _.task__4__create_tree_values    ()

@@ -15,7 +15,7 @@ from osbot_utils.type_safe.Type_Safe                                            
 
 
 
-FLOW__HACKER_NEWS__8__MAX__ARTICLES_TO_MOVE = 1
+FLOW__HACKER_NEWS__8__MAX__ARTICLES_TO_MOVE = 10
 
 class Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View(Type_Safe):
     file_articles_current                    : Hacker_News__File__Articles__Current
@@ -59,7 +59,7 @@ class Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View(Typ
                 data = _.data()
                 data.path_latest__text_entities__titles__tree = self.path_latest__text_entities__titles__tree
                 data.path_now__text_entities__titles__tree    = self.path_now__text_entities__titles__tree
-                _.save_data(data.json())
+                _.save_data(data)
 
     @task()
     def task__4__move_articles_to_next_step(self):

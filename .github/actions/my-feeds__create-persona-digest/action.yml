@@ -1,0 +1,21 @@
+name: "my-feeds__create-persona-digest"
+description: "MyFeeds - Create Persona Digest"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+
+    - name: Poetry - Install Dependencies
+      uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/poetry__install@dev
+
+    - name: install myfeeds_ai
+      shell: bash
+      run: |
+        pip install -e .
+
+    - name: Create Persona Digest
+      shell: bash
+      run: |          
+        python ./myfeeds_ai/pipelines/ci_execution/my_feeds__create_persona_digest.py 
+

@@ -17,8 +17,8 @@ class Pipeline__Hacker_News__Create_Persona_Digest(Type_Safe):
     flow_1__create_persona             : Flow__My_Feeds__Personas__1__Create__Persona
     flow_2__connected_entities         : Flow__My_Feeds__Personas__2__LLM__Connected_Entities
     flow_3__create_digest              : Flow__My_Feeds__Personas__3__LLM__Create__Digest
-    flow_1__execute                    : bool  = False
-    flow_2__execute                    : bool  = False
+    flow_1__execute                    : bool  = True
+    flow_2__execute                    : bool  = True
     flow_3__execute                    : bool  = True
 
     @task()
@@ -53,7 +53,7 @@ class Pipeline__Hacker_News__Create_Persona_Digest(Type_Safe):
             _.task__2__execute_flow_2__connected_entities()
             _.task__3__execute_flow_3__create_digest     ()
             _.task__n__create_output                     ()
-        return self.output
+        #return self.output
 
     def run(self):
         return self.create_persona_digest().execute_flow()

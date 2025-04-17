@@ -1,5 +1,6 @@
 import pytest
 from unittest                                                                                   import TestCase
+from myfeeds_ai.personas.actions.My_Feeds__Persona                                              import My_Feeds__Persona
 from myfeeds_ai.personas.actions.My_Feeds__Persona__Files                                       import My_Feeds__Persona__Files
 from myfeeds_ai.personas.llms.LLM__Prompt__Personas__Create_Digest                              import LLM__Prompt__Personas__Create_Digest, SYSTEM_PROMPT__CREATE_DIGEST, USER_PROMPT__CREATE_DIGEST
 from myfeeds_ai.personas.llms.Schema__Persona__Digest_Articles                                  import Schema__Persona__Digest_Articles
@@ -20,18 +21,22 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
         if get_env(ENV_NAME_OPEN_AI__API_KEY) is None:
             pytest.skip('This test requires OpenAI API Key to run')
         myfeeds_tests__setup_local_stack()
-        cls.prompt_create_digest       = LLM__Prompt__Personas__Create_Digest()
         cls.persona_type               = Schema__Persona__Types.EXEC__CEO
         cls.persona_files              = My_Feeds__Persona__Files()
-        cls.persona                    = cls.persona_files.file__persona                             (persona_type=cls.persona_type).data()
-        cls.persona_connected_entities = cls.persona_files.file__persona_articles__connected_entities(persona_type=cls.persona_type).data()
+        cls.persona                    = My_Feeds__Persona(persona_type=cls.persona_type)
+        cls.persona_data               = cls.persona.data()
+        cls.persona_connected_entities = cls.persona.persona__articles__connected_entities()
+
+    def setUp(self):
+        self.prompt_create_digest = LLM__Prompt__Personas__Create_Digest()                              # this cannot be class level (because of the builder)
+
 
     def test_format_articles_content(self):                          # Test that article content is correctly formatted.
         if self.persona:
-            assert type(self.persona) is Schema__Persona
+            assert type(self.persona)                    is My_Feeds__Persona
+            assert type(self.persona_data)               is Schema__Persona
             assert type(self.persona_connected_entities) is Schema__Persona__Articles__Connected_Entities
             formatted_content = self.prompt_create_digest.format_articles_content(self.persona_connected_entities)
-
             assert "ARTICLE"  in formatted_content
             assert "Author"  in formatted_content
             assert "-----"   in formatted_content                               # Check separator
@@ -42,9 +47,11 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
         assert "ARTICLE ID:"              in formatted_data
         assert "PRIMARY RELEVANCE AREAS:" in formatted_data
 
+
     def test_llm_request(self):                                                 # Test that the LLM request is properly formatted.
-        llm_request = self.prompt_create_digest.llm_request(persona                     = self.persona                   ,
+        llm_request = self.prompt_create_digest.llm_request(persona                     = self.persona_data              ,
                                                             persona_connected_entities  = self.persona_connected_entities)
+
         assert llm_request.request_data.function_call.parameters == Schema__Persona__Digest_Articles         # Check function call parameters
 
         with llm_request.request_data.messages[0] as _:                                             # Check system message
@@ -54,14 +61,14 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
 
         with llm_request.request_data.messages[1] as _:                                                                 # Check user message
             assert _.role                                             == Schema__LLM_Request__Message__Role.USER
-            assert self.persona.description                           in  _.content                                     # Check that the persona description is included
+            assert self.persona.description()                         in  _.content                                     # Check that the persona description is included
             assert f"PERSONA TYPE: {self.persona.persona_type.value}" in  _.content                                     # Check that persona type is included
             assert "ARTICLE ID: "                                     in  _.content                                     # Check that formatted connected entities data is included
             assert "RELEVANCE SCORE: "                                in  _.content
 
 
     def test_process_llm_response(self):    # Test processing an LLM response into a structured digest.
-        llm_request = self.prompt_create_digest.llm_request(persona                     = self.persona                   ,
+        llm_request = self.prompt_create_digest.llm_request(persona                     = self.persona_data              ,
                                                             persona_connected_entities  = self.persona_connected_entities)
 
         with Hacker_News__Execute_LLM__With_Cache().setup() as _:
@@ -71,8 +78,6 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
         digest = self.prompt_create_digest.process_llm_response(llm_response)
 
         assert type(digest) is Schema__Persona__Digest_Articles
-        # pprint(digest.json())
-        # file_create(path='./digest.html', contents=digest.get_html())
 
         # todo: fix and improve the asserts below
         self.assertIsInstance(digest, Schema__Persona__Digest_Articles)                  # Verify the result is a proper Schema__Persona__Digest
@@ -84,7 +89,6 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
         self.assertTrue(hasattr(digest, 'strategic_implications'))
 
         self.assertGreater(len(digest.articles), 0)                             # Check that there are articles in the digest
-
 
         self.assertEqual(digest.persona_type, self.persona_type.value)          # Check that persona type is correctly set
 
