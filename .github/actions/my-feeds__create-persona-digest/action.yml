@@ -9,6 +9,11 @@ runs:
     - name: Poetry - Install Dependencies
       uses: owasp-sbot/OSBot-GitHub-Actions/.github/actions/poetry__install@dev
 
+    - name: install myfeeds_ai
+      shell: bash
+      run: |
+        pip install -e .
+
     - name: Create Persona Digest
       shell: bash
       run: |          
