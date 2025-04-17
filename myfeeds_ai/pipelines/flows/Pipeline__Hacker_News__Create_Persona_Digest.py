@@ -17,8 +17,8 @@ class Pipeline__Hacker_News__Create_Persona_Digest(Type_Safe):
     flow_1__create_persona             : Flow__My_Feeds__Personas__1__Create__Persona
     flow_2__connected_entities         : Flow__My_Feeds__Personas__2__LLM__Connected_Entities
     flow_3__create_digest              : Flow__My_Feeds__Personas__3__LLM__Create__Digest
-    flow_1__execute                    : bool  = False
-    flow_2__execute                    : bool  = False
+    flow_1__execute                    : bool  = True
+    flow_2__execute                    : bool  = True
     flow_3__execute                    : bool  = True
 
     @task()
@@ -27,7 +27,7 @@ class Pipeline__Hacker_News__Create_Persona_Digest(Type_Safe):
             self.flow_1__create_persona         = Flow__My_Feeds__Personas__1__Create__Persona(persona_type=self.persona_type)
             self.output__flow_1__create_persona = self.flow_1__create_persona.run().flow_return_value
 
-    @task()
+    #@task()
     def task__2__execute_flow_2__connected_entities(self):
         if self.flow_2__execute:
             self.flow_2__connected_entities         = Flow__My_Feeds__Personas__2__LLM__Connected_Entities(persona_type=self.persona_type)

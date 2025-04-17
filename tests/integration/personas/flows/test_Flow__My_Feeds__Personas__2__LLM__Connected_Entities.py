@@ -51,7 +51,7 @@ class test_Flow__My_Feeds__Personas__2__LLM__Connected_Entities(TestCase):
         with self.flow_connect_entities as _:
             _.task__1__load_persona_data               ()
             _.task__2__load_articles_data              ()
-            _.task__3__create_connected_entities       ()
+            _.task__3__create_connected_entities       ()   # requestHash: e4de872fde | cache_id: 4c47f2da
 
         with _.persona.persona__articles__connected_entities() as data:
             assert _.persona.data().path__persona__articles__connected_entities == data.path__now

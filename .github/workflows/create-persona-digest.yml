@@ -1,0 +1,16 @@
+name : Create Persona Digest
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+
+jobs:
+
+  run-tests:
+    name: "Create Persona Digest"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: "create persona digest"
+        uses: ./.github/actions/my-feeds__create-persona-digest

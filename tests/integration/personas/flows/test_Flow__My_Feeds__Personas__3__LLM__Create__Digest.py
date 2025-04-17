@@ -37,11 +37,12 @@ class test_Flow__My_Feeds__Personas__3__LLM__Create__Digest(TestCase):
     def test_task__3__save_persona_digest(self):
         with self.flow_create_digest as _:
             _.task__1__load_persona_data        ()
-            _.task__2__llm_create_persona_digest()
+            _.task__2__llm_create_persona_digest()          # >>>>> saved request hash 8f4d279d8d into cache_id 3ec19425
             _.task__3__save_persona_digest      ()
 
-            assert _.persona.data().path__persona__digest__html             # double check these are set
-            assert _.persona.data().path__persona__digest
+            with _.persona.file__persona().data() as data:
+                assert data.path__persona__digest__html             # double check these are set
+                assert data.path__persona__digest
 
 
     # def test_task__4__create_output(self):

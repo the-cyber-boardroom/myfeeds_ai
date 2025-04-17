@@ -21,12 +21,15 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
         if get_env(ENV_NAME_OPEN_AI__API_KEY) is None:
             pytest.skip('This test requires OpenAI API Key to run')
         myfeeds_tests__setup_local_stack()
-        cls.prompt_create_digest       = LLM__Prompt__Personas__Create_Digest()
         cls.persona_type               = Schema__Persona__Types.EXEC__CEO
         cls.persona_files              = My_Feeds__Persona__Files()
         cls.persona                    = My_Feeds__Persona(persona_type=cls.persona_type)
         cls.persona_data               = cls.persona.data()
         cls.persona_connected_entities = cls.persona.persona__articles__connected_entities()
+
+    def setUp(self):
+        self.prompt_create_digest = LLM__Prompt__Personas__Create_Digest()                              # this cannot be class level (because of the builder)
+
 
     def test_format_articles_content(self):                          # Test that article content is correctly formatted.
         if self.persona:
@@ -44,9 +47,11 @@ class test_LLM__Prompt__Personas__Create_Digest(TestCase):
         assert "ARTICLE ID:"              in formatted_data
         assert "PRIMARY RELEVANCE AREAS:" in formatted_data
 
+
     def test_llm_request(self):                                                 # Test that the LLM request is properly formatted.
         llm_request = self.prompt_create_digest.llm_request(persona                     = self.persona_data              ,
                                                             persona_connected_entities  = self.persona_connected_entities)
+
         assert llm_request.request_data.function_call.parameters == Schema__Persona__Digest_Articles         # Check function call parameters
 
         with llm_request.request_data.messages[0] as _:                                             # Check system message

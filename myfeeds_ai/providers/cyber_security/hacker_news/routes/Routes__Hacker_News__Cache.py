@@ -17,7 +17,7 @@ class Routes__Hacker_News__Cache(Fast_API_Routes):
     virtual_storage_s3: Virtual_Storage__S3
 
     def all_files(self):
-        return self.virtual_storage_s3.files__all()
+        return sorted(self.virtual_storage_s3.files__all())
 
     def cache_entry(self, cache_id: str):
         cache_index = self.index()

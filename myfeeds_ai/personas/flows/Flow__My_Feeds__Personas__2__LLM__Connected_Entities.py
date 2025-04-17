@@ -84,8 +84,8 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
             prompt_connect_entities = LLM__Prompt__Connect_Entities()
             llm_request             = prompt_connect_entities.llm_request(persona_graph_tree  = self.persona_graph_tree ,
                                                                           articles_graph_tree = self.articles_graph_tree)
-            with Hacker_News__Execute_LLM__With_Cache() as _:
-                llm_response                = _.setup().execute__llm_request(llm_request)
+            with Hacker_News__Execute_LLM__With_Cache().setup() as _:
+                llm_response                = _.execute__llm_request(llm_request)
                 persona_connected_entities  = prompt_connect_entities.process_llm_response(llm_response)
                 cache_id__llm_request       = _.llm_cache.get__cache_id__from__request(llm_request)
 
@@ -93,7 +93,7 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
             with  self.persona.file__persona_articles__connected_entities().update() as _:
                 _.path__now__persona                       = self.persona.data().path__now
                 _.path__now__entities__titles__tree_values = self.path_now__entities__titles__tree_values
-                _.paths__feed__text_entities               = self.paths__feed__text_entities
+                _.paths__feed__text_entities               = self.paths__feed__text_entities.json()
                 _.connected_entities                       = persona_connected_entities.connected_entities
                 _.cache_id__llm_request                    = cache_id__llm_request
 
@@ -106,24 +106,27 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
 
     #@task()
     def task__4__collect_articles_markdown(self):
-        file_current_articles = Hacker_News__File__Articles__Current()
-        file_current_articles.load()
-        with  self.persona.file__persona_articles__connected_entities().update() as _:
-        #with self.persona_data.file__persona_connect_entities(persona_type=self.persona_type) as _:
-            #llm_connect_entities = _.data()
-            for connected_entity in _.connected_entities:
+        if self.text_entities_changed:
+            file_current_articles = Hacker_News__File__Articles__Current()
+            file_current_articles.load()
+            persona__articles__connected_entities = self.persona.persona__articles__connected_entities()
+            connected_entities                    = persona__articles__connected_entities.connected_entities
+            articles_markdown                     = {}
+            for connected_entity in connected_entities:
                 article_id = Obj_Id(connected_entity.article_id)
                 article    = file_current_articles.article(article_id=article_id)
                 if article:
                     path__file__markdown = article.path__file__markdown
                     markdown_content = self.hacker_news_storage.path__load_data(path__file__markdown, content_type=S3_Key__File__Content_Type.TXT).decode()
-                    #print(markdown_content)
-                    _.articles_markdown[article_id] = markdown_content
+                    articles_markdown[article_id] = markdown_content
 
-            # _.save_data(llm_connect_entities.json())
-            # self.articles_markdown  = llm_connect_entities.articles_markdown
-                    # from osbot_utils.utils.Dev import pprint
-                    # pprint(article.json())
+            persona__articles__connected_entities.articles_markdown = articles_markdown
+
+            self.persona.file__persona_articles__connected_entities().save_data(persona__articles__connected_entities)
+                # _.save_data(llm_connect_entities.json())
+                # self.articles_markdown  = llm_connect_entities.articles_markdown
+                        # from osbot_utils.utils.Dev import pprint
+                        # pprint(article.json())
 
 
     @task()

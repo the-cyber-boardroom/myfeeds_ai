@@ -21,7 +21,7 @@ class test__int__Pipeline__Hacker_News__Create_Persona_Digest(TestCase):
 
     def test_create_persona_digest(self):
         with self.pipline_create_persona_digest as _:
-            _.flow_3__create_digest.llm_request__cache_refresh = False
+            #_.flow_3__create_digest.llm_request__cache_refresh = False
 
             _.task__1__execute_flow_1__create_persona    ()
             _.task__2__execute_flow_2__connected_entities()

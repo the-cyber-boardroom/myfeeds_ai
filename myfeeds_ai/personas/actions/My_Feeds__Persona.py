@@ -74,7 +74,7 @@ class My_Feeds__Persona(Type_Safe):
                 return _.description__hash != safe_str_hash(_.description)
 
     def exists(self):
-        return self.file__persona().exists()
+        return self.file__persona().exists__latest()
 
     @cache_on_self
     def file__persona(self) -> My_Feeds__Personas__File:
@@ -149,3 +149,6 @@ class My_Feeds__Persona(Type_Safe):
     @cache_on_self
     def storage(self):
         return My_Feeds__Personas__Storage__Persona(persona_type=self.persona_type)
+
+    def update(self):
+        return self.file__persona().update()

@@ -15,7 +15,7 @@ from osbot_utils.type_safe.Type_Safe                                            
 
 
 
-FLOW__HACKER_NEWS__8__MAX__ARTICLES_TO_MOVE = 1
+FLOW__HACKER_NEWS__8__MAX__ARTICLES_TO_MOVE = 10
 
 class Flow__Hacker_News__11__Article__Step_8__Create_Feed_Entities_Tree_View(Type_Safe):
     file_articles_current                    : Hacker_News__File__Articles__Current

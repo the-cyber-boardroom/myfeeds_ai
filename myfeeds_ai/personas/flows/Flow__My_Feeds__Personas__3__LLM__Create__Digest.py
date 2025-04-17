@@ -85,9 +85,9 @@ class Flow__My_Feeds__Personas__3__LLM__Create__Digest(Type_Safe):
 
     @task()
     def task__4__create_output(self):
-        self.output = dict(persona_type          = self.persona_type.value                   ,
-                           persona               = self.persona_data                         ,
-                           llm_request__cache_id = self.llm_request__cache_id                 )
+        self.output = dict(persona_type          = self.persona_type.value             ,
+                           persona               = self.persona.file__persona().load() ,
+                           llm_request__cache_id = self.llm_request__cache_id          )
 
 
     @flow()
