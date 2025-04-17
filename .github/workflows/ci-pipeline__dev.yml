@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - dev
+      - dev__TEMP_DISABLED
 
 env:
   GIT__BRANCH      : 'dev'
@@ -13,7 +13,6 @@ env:
 jobs:
 
   run-tests:
-    if: False
     name: "Run tests"
     runs-on: ubuntu-latest
     steps:
