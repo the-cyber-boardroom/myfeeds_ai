@@ -8,7 +8,9 @@ from osbot_utils.utils.Dev                                                      
 if __name__ == '__main__':
 
     input_arg = sys.argv[1] if len(sys.argv) > 1 else 'EXEC__CISO'
-
+    print("********")
+    print(input_arg)
+    print(sys.argv)
     try:
         persona_type = Schema__Persona__Types[input_arg]
     except KeyError:
