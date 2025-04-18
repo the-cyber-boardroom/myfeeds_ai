@@ -1,4 +1,4 @@
-import requests, io, os
+import requests, io
 from PIL                                            import Image, ImageDraw, ImageFont, UnidentifiedImageError
 from myfeeds_ai.personas.actions.My_Feeds__Persona  import My_Feeds__Persona
 from osbot_utils.helpers.Local_Cache                import Local_Cache

@@ -3,13 +3,15 @@ from osbot_fast_api.api.Fast_API_Routes                                         
 from starlette                                                                      import status
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Content_Type
 from myfeeds_ai.personas.actions.My_Feeds__Persona                                  import My_Feeds__Persona
-from myfeeds_ai.personas.actions.My_Feeds__Persona__Digest__Image import My_Feeds__Persona__Digest__Image
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Digest__Image                   import My_Feeds__Persona__Digest__Image
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Html_Page                       import My_Feeds__Persona__Html_Page
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                             import Schema__Persona__Types
 
 ROUTE_PATH__PERSONAS = 'personas'
 
 ROUTES_PATHS__MY_FEEDS__PERSONAS = [f'/{ROUTE_PATH__PERSONAS}/persona'              ,
                                     f'/{ROUTE_PATH__PERSONAS}/persona-digest'       ,
+                                    f'/{ROUTE_PATH__PERSONAS}/persona-home-page'    ,
                                     f'/{ROUTE_PATH__PERSONAS}/persona-digest-image' ,
                                     f'/{ROUTE_PATH__PERSONAS}/persona-png'          ,
                                     f'/{ROUTE_PATH__PERSONAS}/persona-tree'         ]
@@ -26,8 +28,14 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
 
     def persona_digest(self, persona_type: Schema__Persona__Types):
         with My_Feeds__Persona(persona_type=persona_type) as _:
-            content = _.persona_digest_html()
-            return Response(content=content, media_type=str(S3_Key__File__Content_Type.HTML))
+            html_code = _.persona_digest_html()
+            return Response(content=html_code, media_type=str(S3_Key__File__Content_Type.HTML))
+
+    def persona_home_page(self, persona_type: Schema__Persona__Types):
+        persona = My_Feeds__Persona(persona_type=persona_type)
+        with My_Feeds__Persona__Html_Page(persona=persona) as _:
+            html_code = _.create()
+            return Response(content=html_code, media_type=str(S3_Key__File__Content_Type.HTML))
 
     def persona_digest_image(self, persona_type: Schema__Persona__Types):
         persona = My_Feeds__Persona(persona_type=persona_type)
@@ -55,6 +63,7 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
     def setup_routes(self):
         self.add_route_get(self.persona             )
         self.add_route_get(self.persona_digest      )
+        self.add_route_get(self.persona_home_page   )
         self.add_route_get(self.persona_digest_image)
         self.add_route_get(self.persona_png         )
         self.add_route_get(self.persona_tree        )

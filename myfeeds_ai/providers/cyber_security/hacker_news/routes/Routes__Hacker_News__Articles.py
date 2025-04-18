@@ -15,8 +15,8 @@ ROUTES_PATHS__HACKER_NEWS__ARTICLES = [f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/di
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/digest-articles-html-section'    ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/new-articles'                    ,
                                        f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-articles'                ,
-                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article'                 ,
-                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article-change-next-step']
+                                       f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article'                 ]
+                                       #f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/current-article-change-next-step']
                                        # f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/delete-file-articles-all'        ,
                                        # f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/delete-file-articles-current'    ,
                                        # f'/{ROUTE_PATH__HACKER_NEWS__ARTICLES}/delete-file-articles-new'        ]
@@ -55,11 +55,11 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
             _.load()
             return _.article(article_id)
 
-    def current_article_change_next_step(self, article_id: str, next_step: Schema__Feed__Article__Step):
-        article_id = Obj_Id(article_id)
-        with Hacker_News__File__Articles__Current() as _:
-            _.load()
-            return _.change_article_next_step(article_id, next_step)
+    # def current_article_change_next_step(self, article_id: str, next_step: Schema__Feed__Article__Step):
+    #     article_id = Obj_Id(article_id)
+    #     with Hacker_News__File__Articles__Current() as _:
+    #         _.load()
+    #         return _.change_article_next_step(article_id, next_step)
 
     # def current_articles_exists(self):
     #     with Hacker_News__File__Current_Articles() as _:
@@ -85,7 +85,7 @@ class Routes__Hacker_News__Articles(Fast_API_Routes):
         self.add_route_get   (self.new_articles                     )
         self.add_route_get   (self.current_articles                 )
         self.add_route_get   (self.current_article                  )
-        self.add_route_get   (self.current_article_change_next_step )
+        #self.add_route_get   (self.current_article_change_next_step )
         # self.add_route_delete(self.delete_file_articles_all         )
         # self.add_route_delete(self.delete_file_articles_current     )
         # self.add_route_delete(self.delete_file_articles_new         )
