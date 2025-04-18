@@ -24,9 +24,9 @@ on:
           - TEAM__INCIDENT_RESPONSE
           - TEAM__GRC
           - TEST__PERSONA
-  push:
-    branches:
-      - dev
+#  push:
+#    branches:
+#      - dev
 
 jobs:
 
