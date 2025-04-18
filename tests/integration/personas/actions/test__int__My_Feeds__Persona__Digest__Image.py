@@ -1,11 +1,10 @@
-from unittest import TestCase
-from PIL.Image import Image
-from PIL.ImageFont import FreeTypeFont
-
+from unittest                                                       import TestCase
+from PIL.Image                                                      import Image
+from PIL.ImageFont                                                  import FreeTypeFont
 from myfeeds_ai.personas.actions.My_Feeds__Persona                  import My_Feeds__Persona
 from myfeeds_ai.personas.actions.My_Feeds__Persona__Digest__Image   import My_Feeds__Persona__Digest__Image
 from myfeeds_ai.personas.schemas.Schema__Persona__Types             import Schema__Persona__Types
-from tests.integration.data_feeds__objs_for_tests               import myfeeds_tests__setup_local_stack
+from tests.integration.data_feeds__objs_for_tests                   import myfeeds_tests__setup_local_stack
 
 
 class test__int__My_Feeds__Persona__Digest__Image(TestCase):

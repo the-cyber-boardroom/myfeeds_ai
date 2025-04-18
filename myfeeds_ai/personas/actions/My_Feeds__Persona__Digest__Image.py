@@ -1,12 +1,10 @@
-import base64
-
 import requests, io, os
-from PIL import Image, ImageDraw, ImageFont, ImageEnhance, UnidentifiedImageError
+from PIL                                            import Image, ImageDraw, ImageFont, UnidentifiedImageError
 from myfeeds_ai.personas.actions.My_Feeds__Persona  import My_Feeds__Persona
 from osbot_utils.helpers.Local_Cache                import Local_Cache
 from osbot_utils.helpers.safe_str.Safe_Str__Hash    import safe_str_hash
 from osbot_utils.type_safe.Type_Safe                import Type_Safe
-from osbot_utils.utils.Misc import bytes_to_base64, base64_to_bytes
+from osbot_utils.utils.Misc                         import bytes_to_base64, base64_to_bytes
 
 URL__FONT__OPEN_SANS = 'https://cdn.jsdelivr.net/fontsource/fonts/open-sans@latest/latin-700-normal.ttf'
 
