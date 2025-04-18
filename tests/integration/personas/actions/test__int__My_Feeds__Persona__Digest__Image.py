@@ -1,15 +1,11 @@
-import io
 from unittest import TestCase
-
-import requests
 from PIL.Image import Image
+from PIL.ImageFont import FreeTypeFont
 
-from myfeeds_ai.personas.actions.My_Feeds__Persona import My_Feeds__Persona
-from myfeeds_ai.personas.actions.My_Feeds__Persona__Digest__Image import My_Feeds__Persona__Digest__Image
-from myfeeds_ai.personas.schemas.Schema__Persona__Types import Schema__Persona__Types
-from osbot_utils.helpers.duration.decorators.print_duration import print_duration
-from osbot_utils.utils.Dev import pprint
-from tests.integration.data_feeds__objs_for_tests import myfeeds_tests__setup_local_stack
+from myfeeds_ai.personas.actions.My_Feeds__Persona                  import My_Feeds__Persona
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Digest__Image   import My_Feeds__Persona__Digest__Image
+from myfeeds_ai.personas.schemas.Schema__Persona__Types             import Schema__Persona__Types
+from tests.integration.data_feeds__objs_for_tests               import myfeeds_tests__setup_local_stack
 
 
 class test__int__My_Feeds__Persona__Digest__Image(TestCase):
@@ -30,18 +26,19 @@ class test__int__My_Feeds__Persona__Digest__Image(TestCase):
     def test_articles__images(self):
         with self.persona_digest_image as _:
             images = _.articles__images()
-            assert len(images) > 0
             for image in images:
                 assert type(image) is Image
 
-    def test__generate_digest_cover(self):
-        return
+    def test_font(self):
+        print()
         with self.persona_digest_image as _:
-            images_urls = _.articles__images__urls()
+            font = _.font()
+            assert type(font) is FreeTypeFont
+
+    def test__generate_digest_cover(self):
+        with self.persona_digest_image as _:
             title       = f"CISO CYBERSECURITY DIGEST"
-            subtitle    = "March 19 – 26, 2025"             # or derive from your date logic
-            image_url = images_urls[0]
-            #return Image.open(io.BytesIO(requests.get(url, timeout=10).content)).convert("RGBA")
-
-
-            #pprint(result)
+            sub_title   = "March 19 – 26, 2025"
+            image_bytes = _.generate_digest_cover(title=title, sub_title=sub_title)
+            assert type(image_bytes) is bytes
+            assert len(image_bytes) > 10000

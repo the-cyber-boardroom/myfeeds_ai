@@ -8,6 +8,7 @@ from osbot_utils.helpers.safe_str.Safe_Str__Hash    import safe_str_hash
 from osbot_utils.type_safe.Type_Safe                import Type_Safe
 from osbot_utils.utils.Misc import bytes_to_base64, base64_to_bytes
 
+URL__FONT__OPEN_SANS = 'https://cdn.jsdelivr.net/fontsource/fonts/open-sans@latest/latin-700-normal.ttf'
 
 class My_Feeds__Persona__Digest__Image(Type_Safe):
     persona     : My_Feeds__Persona = None
@@ -52,30 +53,37 @@ class My_Feeds__Persona__Digest__Image(Type_Safe):
         except UnidentifiedImageError as error:
             print(f'failed to load image: {image_url} : {error}')
 
+    def font(self, size=42):
+        font_url      = URL__FONT__OPEN_SANS
+        font_url_hash = safe_str_hash(font_url)
+        if self.image_cache.has_key(font_url_hash):
+            font_bytes_base_64 = self.image_cache.get(font_url_hash)
+            font_bytes         = base64_to_bytes(font_bytes_base_64)
+        else:
+            font_bytes = requests.get(font_url, timeout=10).content
+            font_bytes_base_64 = bytes_to_base64(font_bytes)
+            self.image_cache.add(font_url_hash, font_bytes_base_64)
+        return ImageFont.truetype(io.BytesIO(font_bytes), size)
 
-    def generate_digest_cover(self, image_urls                      ,  # 3‑6 article_image_link_url strings
-                                    title                           ,  # e.g. "CISO CYBERSECURITY DIGEST"
+
+    def generate_digest_cover(self, title                           ,  # e.g. "CISO CYBERSECURITY DIGEST"
                                     sub_title                       ,  # e.g. "March 19 – 26, 2025"
                                     palette_bg  = "#101214"         ,  # dark background
                                     out_path    = "digest_cover.png",
                                     canvas_size = (1400, 800)       ):
 
-        # --- helpers -----------------------------------------------------------
-        def fetch(url):
-            # simple http -> Pillow Image   (production: add caching / retries)
-            return Image.open(io.BytesIO(requests.get(url, timeout=10).content)).convert("RGBA")
-
+        images = self.articles__images()
         margin = 20
-        cols = min(max(len(image_urls), 3), 6)  # clamp 3‑6
+        cols = min(max(len(images), 3), 6)  # clamp 3‑6
         cell_w = (canvas_size[0] - margin * (cols + 1)) // cols
         cell_h = canvas_size[1] - margin * 2
         resample = Image.Resampling.LANCZOS
+
 
         # -----------------------------------------------------------------------
         canvas = Image.new("RGBA", canvas_size, palette_bg)
 
         # bring in images -------------------------------------------------------
-        images = [fetch(u) for u in image_urls]
         for idx, im in enumerate(images):
             ratio = min(cell_w / im.width, cell_h / im.height)
             thumb = im.resize((int(im.width * ratio), int(im.height * ratio)), resample)
@@ -91,12 +99,9 @@ class My_Feeds__Persona__Digest__Image(Type_Safe):
         canvas.paste(overlay, (0, 0), overlay)
 
         draw = ImageDraw.Draw(canvas)
-        try:
-            font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
-            f_title = ImageFont.truetype(font_path, 54)
-            f_subtitle = ImageFont.truetype(font_path, 32)
-        except IOError:  # fallback if font not available
-            f_title = f_subtitle = ImageFont.load_default()
+
+        f_title   = self.font(74)
+        f_subtitle = self.font(55)
 
         # center text
         tw, th = draw.textbbox((0, 0), title, font=f_title)[2:]
@@ -104,6 +109,10 @@ class My_Feeds__Persona__Digest__Image(Type_Safe):
         draw.text(((canvas_size[0] - tw) // 2, 20), title, font=f_title, fill="white")
         draw.text(((canvas_size[0] - sw) // 2, 20 + th + 10), sub_title, font=f_subtitle, fill="silver")
 
-        canvas.convert("RGB").save(out_path, quality=95)
-        return out_path
+        output_buffer = io.BytesIO()
+        canvas.convert("RGB").save(output_buffer, format="PNG")
+        image_bytes = output_buffer.getvalue()
+        return image_bytes
+        #canvas.convert("RGB").save(out_path, quality=95)
+        #return out_path
 
