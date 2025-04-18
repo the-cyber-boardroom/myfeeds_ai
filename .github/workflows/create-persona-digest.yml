@@ -1,9 +1,32 @@
 name : Create Persona Digest
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - dev
+    inputs:
+      persona_type:
+        description: "Persona Type"
+        required: true
+        default: "EXEC__CISO"
+        type: choice
+        options:
+          - EXEC__CEO
+          - EXEC__CISO
+          - EXEC__CTO
+          - INVESTOR__ANGEL
+          - INVESTOR__SERIES_A
+          - PRIVATE__CISO
+          - PRIVATE__BOARD_MEMBER
+          - PUBLIC__CISO
+          - PUBLIC__BOARD_MEMBER
+          - STARTUP__CISO
+          - STARTUP__BOARD_MEMBER
+          - TEAM__APP_SEC
+          - TEAM__EXTERNAL_COMMS
+          - TEAM__INCIDENT_RESPONSE
+          - TEAM__GRC
+          - TEST__PERSONA
+#  push:
+#    branches:
+#      - dev
 
 jobs:
 
@@ -16,7 +39,10 @@ jobs:
       - name: "create persona digest"
         uses: ./.github/actions/my-feeds__create-persona-digest
         env:
-          AWS_ACCOUNT_ID       : ${{ secrets.AWS_ACCOUNT_ID__774305572074        }}
-          AWS_ACCESS_KEY_ID    : ${{ secrets.AWS_ACCESS_KEY_ID__774305572074     }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY__774305572074 }}
-          AWS_DEFAULT_REGION   : ${{ secrets.AWS_DEFAULT_REGION__774305572074    }}
+          PERSONA_TYPE              : ${{ inputs.persona_type }}
+          OPEN_AI__API_KEY          : ${{ secrets.OPEN_AI__API_KEY                    }}
+          URL__MGRAPH_DB_SERVERLESS : ${{ secrets.URL__MGRAPH_DB_SERVERLESS           }}
+          AWS_ACCOUNT_ID            : ${{ secrets.AWS_ACCOUNT_ID__774305572074        }}
+          AWS_ACCESS_KEY_ID         : ${{ secrets.AWS_ACCESS_KEY_ID__774305572074     }}
+          AWS_SECRET_ACCESS_KEY     : ${{ secrets.AWS_SECRET_ACCESS_KEY__774305572074 }}
+          AWS_DEFAULT_REGION        : ${{ secrets.AWS_DEFAULT_REGION__774305572074    }}

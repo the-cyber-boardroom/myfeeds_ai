@@ -3,13 +3,16 @@ from osbot_fast_api.api.Fast_API_Routes                                         
 from starlette                                                                      import status
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Content_Type
 from myfeeds_ai.personas.actions.My_Feeds__Persona                                  import My_Feeds__Persona
+from myfeeds_ai.personas.actions.My_Feeds__Persona__Digest__Image import My_Feeds__Persona__Digest__Image
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                             import Schema__Persona__Types
 
 ROUTE_PATH__PERSONAS = 'personas'
 
-ROUTES_PATHS__MY_FEEDS__PERSONAS = [f'/{ROUTE_PATH__PERSONAS}/persona'                      ,
-                                    f'/{ROUTE_PATH__PERSONAS}/persona-png'                  ,
-                                    f'/{ROUTE_PATH__PERSONAS}/persona-tree'                 ]
+ROUTES_PATHS__MY_FEEDS__PERSONAS = [f'/{ROUTE_PATH__PERSONAS}/persona'              ,
+                                    f'/{ROUTE_PATH__PERSONAS}/persona-digest'       ,
+                                    f'/{ROUTE_PATH__PERSONAS}/persona-digest-image' ,
+                                    f'/{ROUTE_PATH__PERSONAS}/persona-png'          ,
+                                    f'/{ROUTE_PATH__PERSONAS}/persona-tree'         ]
 
 class Routes__My_Feeds__Personas(Fast_API_Routes):
     tag          : str = ROUTE_PATH__PERSONAS
@@ -21,7 +24,18 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
             else:
                 return Response(status_code=status.HTTP_204_NO_CONTENT)
 
+    def persona_digest(self, persona_type: Schema__Persona__Types):
+        with My_Feeds__Persona(persona_type=persona_type) as _:
+            content = _.persona_digest_html()
+            return Response(content=content, media_type=str(S3_Key__File__Content_Type.HTML))
 
+    def persona_digest_image(self, persona_type: Schema__Persona__Types):
+        persona = My_Feeds__Persona(persona_type=persona_type)
+        with My_Feeds__Persona__Digest__Image(persona=persona) as _:
+            title     = f'{persona_type}'
+            sub_title = 'between two dates'
+            png_bytes = _.generate_digest_cover(title=title, sub_title=sub_title)
+            return Response(content=png_bytes, media_type=str(S3_Key__File__Content_Type.PNG))
 
     def persona_png(self, persona_type: Schema__Persona__Types):
         png_bytes = My_Feeds__Persona(persona_type=persona_type).persona__entities__png()
@@ -39,6 +53,8 @@ class Routes__My_Feeds__Personas(Fast_API_Routes):
 
 
     def setup_routes(self):
-        self.add_route_get   (self.persona                      )
-        self.add_route_get   (self.persona_png                  )
-        self.add_route_get   (self.persona_tree                 )
+        self.add_route_get(self.persona             )
+        self.add_route_get(self.persona_digest      )
+        self.add_route_get(self.persona_digest_image)
+        self.add_route_get(self.persona_png         )
+        self.add_route_get(self.persona_tree        )

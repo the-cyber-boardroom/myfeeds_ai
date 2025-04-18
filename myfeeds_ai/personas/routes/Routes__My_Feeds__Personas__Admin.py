@@ -1,4 +1,3 @@
-from fastapi                                                                        import Response
 from osbot_fast_api.api.Fast_API_Routes                                             import Fast_API_Routes
 from myfeeds_ai.personas.actions.My_Feeds__Persona                                  import My_Feeds__Persona
 from myfeeds_ai.personas.actions.My_Feeds__Personas                                 import My_Feeds__Personas
@@ -6,6 +5,7 @@ from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__1__Create__Persona     
 from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__2__LLM__Connected_Entities import Flow__My_Feeds__Personas__2__LLM__Connected_Entities
 from myfeeds_ai.personas.flows.Flow__My_Feeds__Personas__3__LLM__Create__Digest     import Flow__My_Feeds__Personas__3__LLM__Create__Digest
 from myfeeds_ai.personas.schemas.Schema__Persona__Types                             import Schema__Persona__Types
+from myfeeds_ai.pipelines.flows.Pipeline__Hacker_News__Create_Persona_Digest        import Pipeline__Hacker_News__Create_Persona_Digest
 from osbot_utils.utils.Status                                                       import status_ok, status_error
 
 ROUTE_PATH__PERSONAS = 'personas'
@@ -30,6 +30,11 @@ class Routes__My_Feeds__Personas__Admin(Fast_API_Routes):
 
     def flow_3_llm_create_digest(self, persona_type: Schema__Persona__Types):
         return Flow__My_Feeds__Personas__3__LLM__Create__Digest(persona_type=persona_type).run().flow_return_value
+
+    def pipline_1_create_digest(self, persona_type: Schema__Persona__Types):
+        with Pipeline__Hacker_News__Create_Persona_Digest(persona_type=persona_type) as _:
+            _.create_persona_digest().execute_flow()
+            return _.output
 
     def files_in_latest(self):
         return self.personas.files_in__latest()
@@ -57,6 +62,7 @@ class Routes__My_Feeds__Personas__Admin(Fast_API_Routes):
         self.add_route_get   (self.flow_1_create_persona        )
         self.add_route_get   (self.flow_2_llm_connected_entities)
         self.add_route_get   (self.flow_3_llm_create_digest     )
+        self.add_route_get   (self.pipline_1_create_digest      )
         self.add_route_get   (self.files_in_latest              )
         self.add_route_get   (self.files_in_now                 )
         self.add_route_get   (self.storage_all_files            )

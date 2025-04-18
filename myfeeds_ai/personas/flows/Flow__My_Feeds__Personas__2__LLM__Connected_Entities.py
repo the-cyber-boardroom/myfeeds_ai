@@ -131,13 +131,13 @@ class Flow__My_Feeds__Personas__2__LLM__Connected_Entities(Type_Safe):
 
     @task()
     def task__5__create_output(self):
-        self.output = dict(persona_type                             = self.persona_type.value             ,
-                           persona                                  = self.persona.file__persona().load() ,
-                           size__articles_graph_tree                = len(self.articles_graph_tree       ),
-                           size__persona_graph_tree                 = len(self.persona_graph_tree        ),
-                           size_articles_markdown                   = len(self.articles_markdown         ),
-                           text_entities_changed                    = self.text_entities_changed          ,
-                           paths__feed__text_entities               = self.paths__feed__text_entities     )
+        self.output = dict(persona_type                             = self.persona_type.value               ,
+                           persona                                  = self.persona.file__persona().load()   ,
+                           size__articles_graph_tree                = len(self.articles_graph_tree         ),
+                           size__persona_graph_tree                 = len(self.persona_graph_tree          ),
+                           size_articles_markdown                   = len(self.articles_markdown           ),
+                           text_entities_changed                    = self.text_entities_changed            ,
+                           paths__feed__text_entities               = self.paths__feed__text_entities.json())
 
 
 

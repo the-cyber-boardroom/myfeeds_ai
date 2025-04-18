@@ -17,5 +17,5 @@ runs:
     - name: Create Persona Digest
       shell: bash
       run: |          
-        python ./myfeeds_ai/pipelines/ci_execution/my_feeds__create_persona_digest.py 
+        python ./myfeeds_ai/pipelines/ci_execution/my_feeds__create_persona_digest.py "${{env.PERSONA_TYPE}}"
 
