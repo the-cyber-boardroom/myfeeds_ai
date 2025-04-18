@@ -17,14 +17,14 @@ class test__init__My_Feeds__Persona__Html_Page(TestCase):
         cls.persona_html_page = My_Feeds__Persona__Html_Page(persona=cls.persona)
 
     def test_create(self):
-        if in_github_action:
+        if in_github_action():
             pytest.skip("test was failing in GH actions")
         with self.persona_html_page as _:
             html = _.create()
             #pprint(html)
             #file_create(contents=html, path='./persona.html')
 
-            assert "Ciso Cybersecurity Dashboard" in html
+            assert "Ciso Data" in html
 
 
 

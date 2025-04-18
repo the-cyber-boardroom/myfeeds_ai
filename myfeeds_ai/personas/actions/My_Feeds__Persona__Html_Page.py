@@ -146,7 +146,7 @@ class My_Feeds__Persona__Html_Page(Type_Safe):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{formatted_title} Cybersecurity Dashboard</title>
+        <title>{formatted_title} Data</title>
         <style>
             :root {{
                 --primary: #2c3e50;
@@ -316,7 +316,7 @@ class My_Feeds__Persona__Html_Page(Type_Safe):
     </head>
     <body>
         <header>
-            <h1>{formatted_title} Cybersecurity Dashboard</h1>
+            <h1>{formatted_title} Data</h1>
             <div class="date-display">{current_date}</div>
         </header>
         
