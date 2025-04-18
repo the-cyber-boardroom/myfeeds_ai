@@ -19,6 +19,7 @@ mangum             = "*"
 httpx              = "*"
 uvicorn            = "*"
 bs4                = "*"
+pillow             = "*"
 
 [build-system]
 requires        = ["poetry-core>=1.0.0"]
