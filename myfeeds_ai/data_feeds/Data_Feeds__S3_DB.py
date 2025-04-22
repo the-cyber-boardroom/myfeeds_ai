@@ -44,9 +44,9 @@ class Data_Feeds__S3_DB(S3__DB_Base):
 
     @type_safe
     def s3_path__date_time(self, date_time : datetime,
-                           file_id   : Safe_Id               = None,
-                           extension: S3_Key__File__Extension = None,
-                           areas    : List[Safe_Id]          = None) -> str:
+                                 file_id   : Safe_Id                 = None,
+                                 extension : S3_Key__File__Extension = None,
+                                 areas     : List[Safe_Id]           = None) -> str:
         return self.s3_key_generator.s3_path__date_time(date_time=date_time, file_id=file_id, extension=extension, areas=areas)
 
     @type_safe

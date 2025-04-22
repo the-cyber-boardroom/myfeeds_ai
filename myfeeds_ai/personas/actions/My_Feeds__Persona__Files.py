@@ -13,7 +13,7 @@ from osbot_utils.type_safe.decorators.type_safe                                i
 class My_Feeds__Persona__Files(Type_Safe):
 
     @type_safe
-    def file__persona(self, persona_type: Schema__Persona__Types) ->My_Feeds__Personas__File:
+    def file__persona(self, persona_type: Schema__Persona__Types) -> My_Feeds__Personas__File:
         kwargs_file= dict(persona_type = persona_type                ,
                           file_id      = FILE_ID__PERSONA            ,
                           extension    = S3_Key__File__Extension.JSON,

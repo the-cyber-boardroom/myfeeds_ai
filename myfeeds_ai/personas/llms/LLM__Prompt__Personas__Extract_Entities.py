@@ -8,7 +8,8 @@ from osbot_utils.type_safe.Type_Safe                                            
 from osbot_utils.type_safe.decorators.type_safe                                 import type_safe
 from osbot_utils.utils.Json                                                     import str_to_json
 
-system_prompt = """You are a specialized cybersecurity knowledge graph extractor designed to create entities and relationships that can seamlessly connect with real-time cybersecurity news and threat intelligence.
+system_prompt = """You are a specialized cybersecurity knowledge graph extractor designed to create entities and
+                    relationships that can seamlessly connect with real-time cybersecurity news and threat intelligence.
 
 ENTITY EXTRACTION GUIDELINES:
 1. Extract entities from the text with a focus on cybersecurity relevance, including:

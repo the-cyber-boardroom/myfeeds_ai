@@ -6,6 +6,7 @@ from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News 
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News__Articles import ROUTES_PATHS__HACKER_NEWS__ARTICLES
 from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News__Cache    import ROUTES_PATHS__HACKER_NEWS__CACHE
 from myfeeds_ai.providers.cyber_security.open_security_summit.routes.Routes__OSS          import ROUTES_PATHS__OSS
+from myfeeds_ai.providers.cyber_security.owasp.routes.Routes__Owasp                       import ROUTES_PATHS__OWASP
 from tests.integration.data_feeds__objs_for_tests                                         import myfeeds_tests__setup_local_stack
 
 class test_Data_Feeds__Fast_API(TestCase):
@@ -30,7 +31,8 @@ class test_Data_Feeds__Fast_API(TestCase):
                                  + ROUTES_PATHS__HACKER_NEWS__ARTICLES                 \
                                  + ROUTES_PATHS__MY_FEEDS__PERSONAS                    \
                                  + ROUTES_PATHS__HACKER_NEWS__CACHE                    \
-                                 + ROUTES_PATHS__OSS                                   )
+                                 + ROUTES_PATHS__OSS                                   \
+                                 + ROUTES_PATHS__OWASP                                 )
 
 
 
