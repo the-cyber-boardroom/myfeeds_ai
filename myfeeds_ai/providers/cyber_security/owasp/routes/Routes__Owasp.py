@@ -8,8 +8,10 @@ from myfeeds_ai.providers.cyber_security.owasp.schemas.Owasp__Top_10__Category  
 ROUTE_PATH__OWASP = 'owasp'
 
 ROUTES_PATHS__OWASP = [f'/{ROUTE_PATH__OWASP}/all-files'    ,
-                       f'/{ROUTE_PATH__OWASP}/data-to-parse'     ,
+                       f'/{ROUTE_PATH__OWASP}/data-to-parse',
                        f'/{ROUTE_PATH__OWASP}/ontology'     ,
+                       f'/{ROUTE_PATH__OWASP}/taxonomy'     ,
+                       f'/{ROUTE_PATH__OWASP}/rdf-triples'  ,
                        f'/{ROUTE_PATH__OWASP}/raw-data'     ,
                        f'/{ROUTE_PATH__OWASP}/raw-data-json']
 
@@ -24,6 +26,16 @@ class Routes__Owasp(Fast_API_Routes):
     def ontology(self, category: Owasp__Top_10__Category):
         ontology = self.owasp_files_top_10.ontology(category)
         return ontology
+
+    def taxonomy(self, category: Owasp__Top_10__Category):
+        ontology = self.owasp_files_top_10.taxonomy(category)
+        return ontology
+
+    def rdf_triples(self, category: Owasp__Top_10__Category):
+        rdf_triples = self.owasp_files_top_10.rdf_triples(category)
+        return rdf_triples
+
+
 
     def raw_data(self, category: Owasp__Top_10__Category):
         raw_data = self.owasp_files_top_10.raw_data(category)
@@ -42,6 +54,8 @@ class Routes__Owasp(Fast_API_Routes):
     def setup_routes(self):
         self.add_route_get(self.data_to_parse   )
         self.add_route_get(self.ontology        )
+        self.add_route_get(self.taxonomy        )
+        self.add_route_get(self.rdf_triples     )
         self.add_route_get(self.raw_data        )
         self.add_route_get(self.raw_data_json   )
         self.add_route_get(self.all_files       )
