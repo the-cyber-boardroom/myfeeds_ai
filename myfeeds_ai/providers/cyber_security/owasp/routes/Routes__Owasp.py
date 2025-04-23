@@ -12,6 +12,7 @@ ROUTES_PATHS__OWASP = [f'/{ROUTE_PATH__OWASP}/all-files'    ,
                        f'/{ROUTE_PATH__OWASP}/ontology'     ,
                        f'/{ROUTE_PATH__OWASP}/taxonomy'     ,
                        f'/{ROUTE_PATH__OWASP}/rdf-triples'  ,
+                       f'/{ROUTE_PATH__OWASP}/screenshot'   ,
                        f'/{ROUTE_PATH__OWASP}/raw-data'     ,
                        f'/{ROUTE_PATH__OWASP}/raw-data-json']
 
@@ -35,6 +36,10 @@ class Routes__Owasp(Fast_API_Routes):
         rdf_triples = self.owasp_files_top_10.rdf_triples(category)
         return rdf_triples
 
+    def screenshot(self, category: Owasp__Top_10__Category):
+        png_bytes = self.owasp_files_top_10.screenshot(category)
+        return Response(content=png_bytes, media_type=str(S3_Key__File__Content_Type.PNG))
+
 
 
     def raw_data(self, category: Owasp__Top_10__Category):
@@ -56,6 +61,7 @@ class Routes__Owasp(Fast_API_Routes):
         self.add_route_get(self.ontology        )
         self.add_route_get(self.taxonomy        )
         self.add_route_get(self.rdf_triples     )
+        self.add_route_get(self.screenshot      )
         self.add_route_get(self.raw_data        )
         self.add_route_get(self.raw_data_json   )
         self.add_route_get(self.all_files       )

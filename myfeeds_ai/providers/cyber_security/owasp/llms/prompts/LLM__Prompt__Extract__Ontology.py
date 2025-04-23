@@ -1,5 +1,4 @@
-from typing import List
-
+from typing                                                             import List
 from osbot_utils.helpers.llms.builders.LLM_Request__Builder__Open_AI    import LLM_Request__Builder__Open_AI
 from osbot_utils.type_safe.Type_Safe                                    import Type_Safe
 from osbot_utils.utils.Json                                             import str_to_json
