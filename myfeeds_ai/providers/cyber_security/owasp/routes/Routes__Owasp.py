@@ -35,8 +35,9 @@ class Routes__Owasp(Fast_API_Routes):
 
 
     def all_files(self):
-        storage = Owasp__File__Top_10().hacker_news_storage
-        return storage.s3_db.s3_folder_files__all('public-data/owasp')
+        storage   = Owasp__File__Top_10().hacker_news_storage
+        all_files = storage.s3_db.s3_folder_files__all('public-data/owasp')
+        return sorted(all_files)
 
     def setup_routes(self):
         self.add_route_get(self.data_to_parse   )

@@ -35,6 +35,13 @@ class Owasp__Files__Top_10(Type_Safe):
                           data_type    = Schema__RDF__Ontology              )
         return Owasp__File__Top_10(**kwargs_file)
 
+    def file__category__taxonomy(self, category: Owasp__Top_10__Category):
+        kwargs_file= dict(category     = category                           ,
+                          file_id      = FILE_ID__ONTOLOGY                  ,
+                          extension    = S3_Key__File__Extension   .JSON    ,
+                          data_type    = Schema__RDF__Ontology              )
+        return Owasp__File__Top_10(**kwargs_file)
+
     def file__a01__broken_access_control__raw_Data(self):
         return self.file__category__raw_data(Owasp__Top_10__Category.A01_2021__BROKEN_ACCESS_CONTROL)
 
@@ -86,6 +93,24 @@ class Owasp__Files__Top_10(Type_Safe):
     def ontology(self, category: Owasp__Top_10__Category) -> Schema__Owasp__Top_10__Category:
         data_to_parse  = self.category__data_to_parse(category=category)
         file__ontology = self.file__category__ontology(category=category)
+        with file__ontology as _:
+            if _.exists():
+                return _.data()
+
+
+            prompt_extract_category = LLM__Prompt__Extract__Ontology()
+            execute_llm_with_cache  = Hacker_News__Execute_LLM__With_Cache().setup()
+            llm_request             = prompt_extract_category.llm_request(text_content=data_to_parse)
+            llm_response            = execute_llm_with_cache.execute__llm_request(llm_request)
+            ontology                = prompt_extract_category.process_llm_response(llm_response)
+            _.save_data(ontology)
+            return ontology
+
+    def taxonomy(self, category: Owasp__Top_10__Category) -> Schema__Owasp__Top_10__Category:
+        data_to_parse  = self.category__data_to_parse(category=category)
+        file__taxonomy = self.file__category__taxonomy(category=category)
+        ontology       = self.ontology(category=category)
+        return
         with file__ontology as _:
             if _.exists():
                 return _.data()
