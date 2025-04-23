@@ -1,12 +1,15 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                                import S3_Key__File__Extension, S3_Key__File__Content_Type
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache          import Hacker_News__Execute_LLM__With_Cache
-from myfeeds_ai.providers.cyber_security.owasp.config.Config__Owasp                                     import FILE_ID__RAW_DATA
+from myfeeds_ai.providers.cyber_security.owasp.config.Config__Owasp                                     import FILE_ID__RAW_DATA, FILE_ID__ONTOLOGY
 from myfeeds_ai.providers.cyber_security.owasp.files.Owasp__File__Top_10                                import Owasp__File__Top_10
 from myfeeds_ai.providers.cyber_security.owasp.files.Owasp__Git_Hub__Http_Content                       import Owasp__Git_Hub__Http_Content
+from myfeeds_ai.providers.cyber_security.owasp.llms.prompts.LLM__Prompt__Extract__Ontology              import LLM__Prompt__Extract__Ontology, Schema__RDF__Ontology
 from myfeeds_ai.providers.cyber_security.owasp.llms.prompts.LLM__Prompt__Owasp__Top_10__Parse_Markdown  import LLM__Prompt__Owasp__Top_10__Parse_Markdown
 from myfeeds_ai.providers.cyber_security.owasp.schemas.Owasp__Top_10__Category                          import Owasp__Top_10__Category
 from myfeeds_ai.providers.cyber_security.owasp.schemas.Schema__Owasp__Top_10__Category                  import Schema__Owasp__Top_10__Category
 from osbot_utils.type_safe.Type_Safe                                                                    import Type_Safe
+from osbot_utils.utils.Json import json_to_str
+
 
 class Owasp__Files__Top_10(Type_Safe):
     owasp_github_content: Owasp__Git_Hub__Http_Content
@@ -25,6 +28,13 @@ class Owasp__Files__Top_10(Type_Safe):
                           data_type    = Schema__Owasp__Top_10__Category    )
         return Owasp__File__Top_10(**kwargs_file)
 
+    def file__category__ontology(self, category: Owasp__Top_10__Category):
+        kwargs_file= dict(category     = category                           ,
+                          file_id      = FILE_ID__ONTOLOGY                  ,
+                          extension    = S3_Key__File__Extension   .JSON    ,
+                          data_type    = Schema__RDF__Ontology              )
+        return Owasp__File__Top_10(**kwargs_file)
+
     def file__a01__broken_access_control__raw_Data(self):
         return self.file__category__raw_data(Owasp__Top_10__Category.A01_2021__BROKEN_ACCESS_CONTROL)
 
@@ -40,8 +50,6 @@ class Owasp__Files__Top_10(Type_Safe):
         category       = Owasp__Top_10__Category.A01_2021__BROKEN_ACCESS_CONTROL
         raw_data__json = self.raw_data__json(category)
         return raw_data__json
-
-
 
     def raw_data(self, category: Owasp__Top_10__Category) -> str:
         file__raw_data = self.file__category__raw_data(category=category)
@@ -67,6 +75,29 @@ class Owasp__Files__Top_10(Type_Safe):
             owasp_top_10_category   = prompt_extract_category.process_llm_response(llm_response)
             _.save_data(owasp_top_10_category)
             return owasp_top_10_category
+
+    def category__data_to_parse(self, category: Owasp__Top_10__Category):
+        with self.raw_data__json(category=category) as _:
+            data_to_parse = dict(name        = _.name              ,
+                                 description = _.description.json())
+            text_to_parse = json_to_str(data_to_parse)
+            return text_to_parse
+
+    def ontology(self, category: Owasp__Top_10__Category) -> Schema__Owasp__Top_10__Category:
+        data_to_parse  = self.category__data_to_parse(category=category)
+        file__ontology = self.file__category__ontology(category=category)
+        with file__ontology as _:
+            if _.exists():
+                return _.data()
+
+
+            prompt_extract_category = LLM__Prompt__Extract__Ontology()
+            execute_llm_with_cache  = Hacker_News__Execute_LLM__With_Cache().setup()
+            llm_request             = prompt_extract_category.llm_request(text_content=data_to_parse)
+            llm_response            = execute_llm_with_cache.execute__llm_request(llm_request)
+            ontology                = prompt_extract_category.process_llm_response(llm_response)
+            _.save_data(ontology)
+            return ontology
 
 
 

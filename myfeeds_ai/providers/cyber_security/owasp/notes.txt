@@ -1,0 +1,4 @@
+OWASP OpenCRE
+ - great resource : https://opencre.org
+ - data explorer: https://zeljkoobrenovic.github.io/opencre-explorer/
+ - download data from: https://opencre.org/rest/v1/all_cres?per_page=100000
