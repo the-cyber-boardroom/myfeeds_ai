@@ -1,20 +1,16 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                                                import S3_Key__File__Extension, S3_Key__File__Content_Type
 from myfeeds_ai.providers.cyber_security.hacker_news.llms.Hacker_News__Execute_LLM__With_Cache          import Hacker_News__Execute_LLM__With_Cache
-from myfeeds_ai.providers.cyber_security.owasp.config.Config__Owasp import FILE_ID__RAW_DATA, FILE_ID__RDF__ONTOLOGY, \
-    FILE_ID__RDF__TAXONOMY, FILE_ID__RDF__TRIPLES
+from myfeeds_ai.providers.cyber_security.owasp.config.Config__Owasp                                     import FILE_ID__RAW_DATA, FILE_ID__RDF__ONTOLOGY, FILE_ID__RDF__TAXONOMY, FILE_ID__RDF__TRIPLES
 from myfeeds_ai.providers.cyber_security.owasp.files.Owasp__File__Top_10                                import Owasp__File__Top_10
 from myfeeds_ai.providers.cyber_security.owasp.files.Owasp__Git_Hub__Http_Content                       import Owasp__Git_Hub__Http_Content
 from myfeeds_ai.providers.cyber_security.owasp.llms.prompts.LLM__Prompt__Extract__Ontology              import LLM__Prompt__Extract__Ontology, Schema__RDF__Ontology
-from myfeeds_ai.providers.cyber_security.owasp.llms.prompts.LLM__Prompt__Extract__RDF_Triples import \
-    LLM__Prompt__Extract__RDF_Triples, Schema__RDF__Triples
-from myfeeds_ai.providers.cyber_security.owasp.llms.prompts.LLM__Prompt__Extract__Taxonomy import \
-    LLM__Prompt__Extract__Taxonomy, Schema__RDF__Taxonomy
+from myfeeds_ai.providers.cyber_security.owasp.llms.prompts.LLM__Prompt__Extract__RDF_Triples           import LLM__Prompt__Extract__RDF_Triples, Schema__RDF__Triples
+from myfeeds_ai.providers.cyber_security.owasp.llms.prompts.LLM__Prompt__Extract__Taxonomy              import LLM__Prompt__Extract__Taxonomy, Schema__RDF__Taxonomy
 from myfeeds_ai.providers.cyber_security.owasp.llms.prompts.LLM__Prompt__Owasp__Top_10__Parse_Markdown  import LLM__Prompt__Owasp__Top_10__Parse_Markdown
 from myfeeds_ai.providers.cyber_security.owasp.schemas.Owasp__Top_10__Category                          import Owasp__Top_10__Category
 from myfeeds_ai.providers.cyber_security.owasp.schemas.Schema__Owasp__Top_10__Category                  import Schema__Owasp__Top_10__Category
 from osbot_utils.type_safe.Type_Safe                                                                    import Type_Safe
-from osbot_utils.utils.Json import json_to_str
-
+from osbot_utils.utils.Json                                                                             import json_to_str
 
 class Owasp__Files__Top_10(Type_Safe):
     owasp_github_content: Owasp__Git_Hub__Http_Content
@@ -155,8 +151,11 @@ class Owasp__Files__Top_10(Type_Safe):
             _.save_data(rdf_triples)
             return rdf_triples
 
-
-
+    def screenshot(self, category: Owasp__Top_10__Category):
+        from myfeeds_ai.providers.cyber_security.owasp.mgraphs.MGraph__Owasp__Top_10__Category import MGraph__Owasp__Top_10__Category
+        with MGraph__Owasp__Top_10__Category(category=category) as _:
+            _.build()
+            return _.screenshot()
 
 
 
