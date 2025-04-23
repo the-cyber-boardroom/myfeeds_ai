@@ -1,11 +1,13 @@
-from unittest import TestCase
+from unittest                                                                           import TestCase
 
-from myfeeds_ai.providers.cyber_security.owasp.actions.Owasp__Files__Top_10 import Owasp__Files__Top_10
-from myfeeds_ai.providers.cyber_security.owasp.files.Owasp__File__Top_10 import Owasp__File__Top_10
-from osbot_utils.helpers.duration.decorators.print_duration import print_duration
-from osbot_utils.utils.Dev import pprint
-from tests.integration.data_feeds__objs_for_tests import myfeeds_tests__setup_local_stack
+import pytest
 
+from myfeeds_ai.providers.cyber_security.owasp.actions.Owasp__Files__Top_10             import Owasp__Files__Top_10
+from myfeeds_ai.providers.cyber_security.owasp.files.Owasp__File__Top_10                import Owasp__File__Top_10
+from myfeeds_ai.providers.cyber_security.owasp.schemas.Schema__Owasp__Top_10__Category  import Schema__Owasp__Top_10__Category
+from osbot_utils.helpers.llms.platforms.open_ai.API__LLM__Open_AI import ENV_NAME_OPEN_AI__API_KEY
+from osbot_utils.utils.Env import get_env
+from tests.integration.data_feeds__objs_for_tests                                       import myfeeds_tests__setup_local_stack
 
 class test_Owasp__Files__Top_10(TestCase):
 
@@ -18,4 +20,17 @@ class test_Owasp__Files__Top_10(TestCase):
         with self.owasp_files_top_10.file__a01__broken_access_control__raw_Data() as _:
             assert type(_)                              is Owasp__File__Top_10
             assert _.path_now()                         == 'owasp-top-10/2021/A01_2021-Broken_Access_Control/raw-data.md'
-            assert "# A01:2021 – Broken Access Control" in _.data()
+
+    def test_a01__broken_access_control__raw_data(self):
+        with self.owasp_files_top_10 as _:
+            raw_data =  _.a01__broken_access_control__raw_data()
+            assert "# A01:2021 – Broken Access Control" in raw_data
+
+    def test_a01__broken_access_control__raw_data__json(self):
+        if get_env(ENV_NAME_OPEN_AI__API_KEY) is None:
+            pytest.skip('This test requires OpenAI API Key to run')
+
+        with self.owasp_files_top_10 as _:
+            raw_data_json =  _.a01__broken_access_control__raw_data__json()
+            assert type(raw_data_json) is Schema__Owasp__Top_10__Category
+

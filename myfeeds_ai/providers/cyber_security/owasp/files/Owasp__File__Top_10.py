@@ -1,6 +1,6 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3__Key_Generator                            import S3_Key__File__Extension
 from myfeeds_ai.providers.cyber_security.hacker_news.files.Hacker_News__File__Now   import Hacker_News__File__Now
-from myfeeds_ai.providers.cyber_security.owasp.files.Owasp__Git_Hub__Http_Content import Owasp__Git_Hub__Http_Content
+from myfeeds_ai.providers.cyber_security.owasp.files.Owasp__Git_Hub__Http_Content   import Owasp__Git_Hub__Http_Content
 from myfeeds_ai.providers.cyber_security.owasp.files.Owasp__Storage                 import Owasp__Storage
 from myfeeds_ai.providers.cyber_security.owasp.schemas.Owasp__Projects__Folders     import Owasp__Projects__Folders
 from myfeeds_ai.providers.cyber_security.owasp.schemas.Owasp__Top_10__Category      import Owasp__Top_10__Category
@@ -16,15 +16,7 @@ class Owasp__File__Top_10(Hacker_News__File__Now):
     project              : Safe_Id                      = DEFAULT__AREA__PROJECT
     year                 : Safe_Id                      = DEFAULT__AREA__YEAR
     category             : Owasp__Top_10__Category      = DEFAULT__AREA__CATEGORY
-    owasp_github_content : Owasp__Git_Hub__Http_Content
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.hacker_news_storage = Owasp__Storage(project=self.project, year=self.year, category=self.category)
-
-    def load(self):
-        if self.exists():
-            return super().load().decode()
-        raw_data = self.owasp_github_content.owasp_top_10__category(self.category)
-        self.save_data(raw_data)
-        return raw_data

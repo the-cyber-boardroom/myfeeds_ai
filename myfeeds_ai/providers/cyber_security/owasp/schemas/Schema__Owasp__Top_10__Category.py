@@ -40,7 +40,7 @@ class Schema__OWASP__Description(Type_Safe):
     intro: str                      # Introduction paragraph for this category
     items: List[str]                # Bullet points inside description
 
-class Schema__OWASP__Top_10__Category(Type_Safe):
+class Schema__Owasp__Top_10__Category(Type_Safe):
     """Individual OWASP Top 10 category."""
     identifier              : str                              # The identifier of the category (e.g., "A01:2021")
     name                    : str                              # The name of the category

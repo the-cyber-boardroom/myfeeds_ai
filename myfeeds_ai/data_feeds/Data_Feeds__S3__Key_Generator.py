@@ -9,6 +9,7 @@ from osbot_utils.type_safe.decorators.type_safe         import type_safe
 
 class S3_Key__File__Content_Type(Enum):
     HTML       : str = 'text/html; charset=utf-8'
+    JSON       : str = 'application/json; charset=utf-8'
     MARKDOWN   : str = "text/markdown"
     MGRAPH__DOT: str = "text/vnd.graphviz"
     PNG        : str = 'image/png'
