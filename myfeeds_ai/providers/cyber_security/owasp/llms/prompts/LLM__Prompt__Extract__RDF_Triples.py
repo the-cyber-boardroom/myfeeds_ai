@@ -19,7 +19,7 @@ class Schema__RDF__Triple(Type_Safe):
 
 class Schema__RDF__Triples(Type_Safe):
     """Collection of typed RDF triples"""
-    triplets: List[Schema__RDF__Triple]
+    triples: List[Schema__RDF__Triple]
 
 
 system_prompt = """
@@ -55,7 +55,8 @@ Previously extracted ontology:
 Previously extracted taxonomy:
 {taxonomy}
 
-Based on this text, ontology, and taxonomy, extract RDF triples that form a consistent and complete knowledge graph.
+Based on this text, ontology, and taxonomy, 
+extract RDF triples that form a consistent and complete knowledge graph.
 """
 
         with self.request_builder as _:

@@ -51,7 +51,7 @@ Text to analyze:
 Previously extracted ontology:
 {ontology}
 
-Based on this text and ontology, create a comprehensive taxonomy.
+Based on this text and ontology, create a comprehensive taxonomy. 
 """
         with self.request_builder as _:
             _.set__model__gpt_4_1()
