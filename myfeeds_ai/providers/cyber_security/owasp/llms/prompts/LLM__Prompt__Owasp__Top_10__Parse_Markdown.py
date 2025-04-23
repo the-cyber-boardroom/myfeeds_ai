@@ -1,4 +1,4 @@
-from myfeeds_ai.providers.cyber_security.owasp.schemas.Schema__Owasp__Top_10__Category import Schema__OWASP__Top_10__Category
+from myfeeds_ai.providers.cyber_security.owasp.schemas.Schema__Owasp__Top_10__Category import Schema__Owasp__Top_10__Category
 from osbot_utils.helpers.llms.builders.LLM_Request__Builder__Open_AI                   import LLM_Request__Builder__Open_AI
 from osbot_utils.helpers.llms.schemas.Schema__LLM_Response                             import Schema__LLM_Response
 from osbot_utils.type_safe.Type_Safe                                                   import Type_Safe
@@ -39,7 +39,7 @@ class LLM__Prompt__Owasp__Top_10__Parse_Markdown(Type_Safe):
             _.set__model__gpt_4o_mini()
             _.add_message__system(system_prompt)
             _.add_message__user  (category_markdown)
-            _.set__function_call(parameters=Schema__OWASP__Top_10__Category, function_name='extract_entities')
+            _.set__function_call(parameters=Schema__Owasp__Top_10__Category, function_name='extract_entities')
 
         return self.request_builder.llm_request()
 
@@ -47,4 +47,4 @@ class LLM__Prompt__Owasp__Top_10__Parse_Markdown(Type_Safe):
     def process_llm_response(self, llm_response: Schema__LLM_Response):
         content      = llm_response.obj().response_data.choices[0].message.content
         content_json = str_to_json(content)
-        return Schema__OWASP__Top_10__Category.from_json(content_json)
+        return Schema__Owasp__Top_10__Category.from_json(content_json)
