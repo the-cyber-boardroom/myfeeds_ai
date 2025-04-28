@@ -7,13 +7,12 @@ from osbot_utils.helpers.safe_str.Safe_Str__Url             import Safe_Str__Url
 from osbot_utils.type_safe.Type_Safe                        import Type_Safe
 
 
-class Schema__My_Feeds__HTTP__Request__Data(Type_Safe):
+class Schema__HTTP__Request__Data(Type_Safe):
     content_type  : Safe_Str             = None
     duration      : float                = None
     etag          : Safe_Str             = None
     html__dict    : dict                 = None
     json__data    : dict                 = None
-    #html_tag     : Tag__Base            = None
     last_modified : Safe_Str             = None
     method        : Safe_Str             = None
     status_code   : int                  = None

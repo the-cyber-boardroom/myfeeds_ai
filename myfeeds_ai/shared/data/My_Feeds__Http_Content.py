@@ -1,7 +1,7 @@
 import requests
 
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Raw_Data           import Model__Data_Feeds__Raw_Data
-from myfeeds_ai.shared.schemas.Schema__My_Feeds__HTTP__Request__Data    import Schema__My_Feeds__HTTP__Request__Data
+from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Data         import Schema__HTTP__Request__Data
 from osbot_utils.helpers.html.Html_To_Dict                              import html_to_dict
 from osbot_utils.helpers.safe_str.Safe_Str__Hash                        import safe_str_hash
 from osbot_utils.type_safe.Type_Safe                                    import Type_Safe
@@ -27,7 +27,7 @@ class My_Feeds__Http_Content(Type_Safe):
         response = requests.get(url, params=params, headers=headers)
         return response
 
-    def requests_get__data(self, path='', params=None, headers=None) -> Schema__My_Feeds__HTTP__Request__Data:
+    def requests_get__data(self, path='', params=None, headers=None) -> Schema__HTTP__Request__Data:
         with capture_duration() as duration:
             response                 = self.requests_get(path, params=params, headers=headers)
             response_url             = response.url
@@ -57,7 +57,7 @@ class My_Feeds__Http_Content(Type_Safe):
                                         url__hash       = url_hash      ,
                                         etag            = etag          ,
                                         last_modified   = last_modified)
-            request_data = Schema__My_Feeds__HTTP__Request__Data(**request_data__kwargs)
+            request_data = Schema__HTTP__Request__Data(**request_data__kwargs)
 
 
         request_data.duration = duration.seconds
