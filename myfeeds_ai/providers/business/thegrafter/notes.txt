@@ -1,0 +1,5 @@
+Good pages with content from site:
+
+ wordpress data:
+  - pages: https://thegrafter.com/wp-json/wp/v2/pages
+  - users: https://thegrafter.com/wp-json/wp/v2/users

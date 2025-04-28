@@ -11,6 +11,11 @@
     https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2025-23209
 ### with RSS feeds
 
+- the register:
+        https://www.theregister.com/Design/page/feeds.html      # list of feeds
+        https://www.theregister.com/headlines.atom              # main feed
+        https://www.theregister.com/security/headlines.atom     # cyber security feed
+
 - https://cybersecuritynews.com     : https://feeds.feedburner.com/cyber-security-news
 
 

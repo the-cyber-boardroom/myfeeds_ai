@@ -1,11 +1,11 @@
 import requests
 
-from myfeeds_ai.data_feeds.Data_Feeds__Http_Content                              import Data_Feeds__Http_Content
+from myfeeds_ai.shared.data.My_Feeds__Http_Content                               import My_Feeds__Http_Content
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser         import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator import Hacker_News__Prompt_Creator
 
 
-class Hacker_News__Http_Content(Data_Feeds__Http_Content):                 # Handler for fetching and parsing Hacker News RSS feed
+class Hacker_News__Http_Content(My_Feeds__Http_Content):                 # Handler for fetching and parsing Hacker News RSS feed
     prompt_creator : Hacker_News__Prompt_Creator
     server         : str = 'https://feeds.feedburner.com'
 
