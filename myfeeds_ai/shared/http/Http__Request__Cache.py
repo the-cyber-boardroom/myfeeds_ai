@@ -1,5 +1,6 @@
 from typing                                                             import Dict
-from myfeeds_ai.shared.http                                             import Http__Request__Execute
+
+from myfeeds_ai.shared.http.Http__Request__Execute                      import Http__Request__Execute
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Cache__Entry import Schema__Http__Request__Cache__Entry
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Cache__Index import Schema__Http__Request__Cache__Index
 from osbot_utils.helpers.Obj_Id                                         import Obj_Id
@@ -35,5 +36,5 @@ class Http__Request__Cache(Type_Safe):
 
         return None
 
-    # def requests__get__cache_entry(self, url: Safe_Str__Url, params:dict=None, headers:dict=None) -> Schema__Http__Request__Cache__Entry:
-    #     return self.http_request_execute.requests_get__cache_entry(url=url, params=params, headers=headers)
+    def requests__get__cache_entry(self, url: Safe_Str__Url, params:dict=None, headers:dict=None) -> Schema__Http__Request__Cache__Entry:
+        return self.http_request_execute.requests_get__cache_entry(url=url, params=params, headers=headers)

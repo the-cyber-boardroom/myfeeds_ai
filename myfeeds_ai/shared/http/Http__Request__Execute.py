@@ -13,22 +13,19 @@ HTTP__HEADERS__DEFAULT = {  'accept'                    : 'text/html,application
                             }
 
 # todo: refactor the use of this class with the Http__Request__Cache.py and Http__Request__Execute (which has http cache support)
-class My_Feeds__Http_Content(Type_Safe):
-    server : str
+class Http__Request__Execute(Type_Safe):
+    #server : str
 
-    def requests_get(self, path='', params=None, headers=None):          # Makes HTTP GET request to the server
-        if not self.server:
-            raise ValueError('server not set')
-        url = url_join_safe(self.server, path)
+    def requests_get(self, url='', params=None, headers=None):          # Makes HTTP GET request to the server
         if headers is None:
             headers = HTTP__HEADERS__DEFAULT
 
         response = requests.get(url, params=params, headers=headers)
         return response
 
-    def requests_get__data(self, path='', params=None, headers=None) -> Schema__Http__Request__Cache__Entry:
+    def requests_get__cache_entry(self, url='', params=None, headers=None) -> Schema__Http__Request__Cache__Entry:
         with capture_duration() as duration:
-            response                 = self.requests_get(path, params=params, headers=headers)
+            response                 = self.requests_get(url, params=params, headers=headers)
             response_url             = response.url
             content_type             = response.headers.get('Content-Type' , '').lower()
             status_code              = response.status_code

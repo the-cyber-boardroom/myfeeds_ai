@@ -1,5 +1,5 @@
 from myfeeds_ai.data_feeds.Data_Feeds__S3_DB        import Data_Feeds__S3_DB
-from myfeeds_ai.shared.http.Http__Request__Execute  import My_Feeds__Http_Content
+from myfeeds_ai.shared.data.My_Feeds__Http_Content  import My_Feeds__Http_Content
 from osbot_utils.type_safe.Type_Safe                import Type_Safe
 
 class Data_Feeds__Files(Type_Safe):

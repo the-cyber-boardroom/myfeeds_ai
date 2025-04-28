@@ -10,6 +10,7 @@ HTTP__HEADERS__DEFAULT = {  'accept'                    : 'text/html,application
                             'user-agent'                : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)'
                             }
 
+# todo: refactor the use of this class with the Http__Request__Cache.py and Http__Request__Execute (which has http cache support)
 class My_Feeds__Http_Content(Type_Safe):
     server : str
 

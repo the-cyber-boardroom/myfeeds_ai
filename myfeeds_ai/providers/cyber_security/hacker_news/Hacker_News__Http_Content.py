@@ -1,9 +1,6 @@
-import requests
-
-
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Parser         import Hacker_News__Parser
 from myfeeds_ai.providers.cyber_security.hacker_news.Hacker_News__Prompt_Creator import Hacker_News__Prompt_Creator
-from myfeeds_ai.shared.http.Http__Request__Execute                               import My_Feeds__Http_Content
+from myfeeds_ai.shared.data.My_Feeds__Http_Content                               import My_Feeds__Http_Content
 
 
 class Hacker_News__Http_Content(My_Feeds__Http_Content):                 # Handler for fetching and parsing Hacker News RSS feed
