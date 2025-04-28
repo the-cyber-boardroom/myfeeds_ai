@@ -1,6 +1,7 @@
-from myfeeds_ai.shared.data.My_Feeds__Http_Content                              import My_Feeds__Http_Content
+
 from myfeeds_ai.providers.cyber_security.owasp.schemas.Owasp__Top_10__Category  import Owasp__Top_10__Category
 from myfeeds_ai.providers.cyber_security.owasp.schemas.Owasp__Top_10__Version   import Owasp__Top_10__Version
+from myfeeds_ai.shared.http.Http__Request__Execute                              import My_Feeds__Http_Content
 from osbot_utils.type_safe.decorators.type_safe import type_safe
 
 
