@@ -1,4 +1,4 @@
-from typing                                                             import Dict
+from typing import Dict, Optional
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request               import Schema__Http__Request
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Cache__Entry import Schema__Http__Request__Cache__Entry
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Cache__Index import Schema__Http__Request__Cache__Index
@@ -10,8 +10,9 @@ from osbot_utils.helpers.safe_str.Safe_Str__Url                         import S
 from osbot_utils.type_safe.Type_Safe                                    import Type_Safe
 from osbot_utils.type_safe.decorators.type_safe                         import type_safe
 
+# this is the in-memory version of the Http__Request__Cache
 class Http__Request__Cache(Type_Safe):
-    cache_index          : Schema__Http__Request__Cache__Index
+    cache_index          : Schema__Http__Request__Cache__Index                                          # Index mapping request hashes to cache entries
     cache_entries        : Dict[Obj_Id, Schema__Http__Request__Cache__Entry]                            # In-memory storage of cache entries
     #http_request_execute: Http__Request__Execute
 
@@ -24,7 +25,38 @@ class Http__Request__Cache(Type_Safe):
         request_hash = Safe_Str__Hash(safe_str_hash(hash_string))
         return request_hash
 
-    # def requests__get(self, url: str, params:dict, headers: dict) -> dict:
+    @type_safe
+    def add__cache_entry(self, request : Schema__Http__Request ,  # Request to cache
+                  response: Schema__Http__Response,  # Response to store
+             ) -> Obj_Id:
+
+        cache_entry = Schema__Http__Request__Cache__Entry(request=request, response=response)
+        cache_hash  = cache_entry.request.cache__hash
+        cache_id    = cache_entry.cache_id
+
+        self.cache_index.cache_id__from__hash__request[cache_hash] = cache_id                                      # Update the cache index
+        self.cache_entries                            [cache_id  ] = cache_entry                                   # Store in memory
+        return cache_id
+
+    def exists(self, request: Schema__Http__Request) -> bool:
+        return request.cache__hash in self.cache_index.cache_id__from__hash__request
+
+    @type_safe
+    def get__cache_entry__from__request(self, request: Schema__Http__Request) -> Optional[Schema__Http__Request__Cache__Entry]:                                      # Cached response or None
+        cache__hash = request.cache__hash
+        if request.cache__hash in self.cache_index.cache_id__from__hash__request:
+            cache_id    = self.cache_index.cache_id__from__hash__request[cache__hash]
+            cache_entry = self.get__cache_entry__from__cache_id(cache_id)
+            return cache_entry
+
+        return None
+
+    @type_safe
+    def get__cache_entry__from__cache_id(self, cache_id: Obj_Id) -> Optional[Schema__Http__Request__Cache__Entry]:  # Get cache entry by ID
+        if cache_id:
+            return self.cache_entries.get(cache_id)
+
+# def requests__get(self, url: str, params:dict, headers: dict) -> dict:
     #     request_hash = self.compute_request_hash(url=url, params=params, headers=headers)
     #     #requests_get__cache_entry
     #     return request_hash
@@ -52,3 +84,19 @@ class Http__Request__Cache(Type_Safe):
         request_data = Schema__Http__Request__Cache__Entry(**request_data__kwargs)
 
         return request_data
+
+    def delete__using__request(self, request : Schema__Http__Request) -> bool:                                                            # Success status
+        return self.delete__using__request__hash(request.cache__hash)
+
+    def delete__using__request__hash(self, cache_hash: Safe_Str__Hash) -> bool:                                                            # Success status
+        if cache_hash not in self.cache_index.cache_id__from__hash__request:
+            return False
+        else:
+            cache_id = self.cache_index.cache_id__from__hash__request[cache_hash]
+            del self.cache_index.cache_id__from__hash__request[cache_hash]
+            if cache_id in self.cache_entries:                                                                              # Remove from memory
+                del self.cache_entries[cache_id]
+            return self.save()
+
+    def save(self) -> bool:                                                                 # For overriding in subclasses
+        return True

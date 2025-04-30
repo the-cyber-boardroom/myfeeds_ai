@@ -1,11 +1,13 @@
 from unittest                                                           import TestCase
 from myfeeds_ai.shared.http.Http__Request__Cache                        import Http__Request__Cache
 from myfeeds_ai.shared.http.Http__Request__Execute                      import Http__Request__Execute
+from myfeeds_ai.shared.http.schemas.Schema__Http__Request               import Schema__Http__Request
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Cache__Entry import Schema__Http__Request__Cache__Entry
+from myfeeds_ai.shared.http.schemas.Schema__Http__Response              import Schema__Http__Response
+from osbot_utils.helpers.Obj_Id                                         import Obj_Id
 from osbot_utils.helpers.safe_str.Safe_Str                              import Safe_Str
 from osbot_utils.helpers.safe_str.Safe_Str__Hash                        import Safe_Str__Hash
 from osbot_utils.helpers.safe_str.Safe_Str__Url                         import Safe_Str__Url
-from osbot_utils.utils.Misc                                             import list_set
 from osbot_utils.utils.Objects                                          import __
 from tests.integration.data_feeds__objs_for_tests                       import myfeeds_tests__setup_local_stack
 
@@ -16,7 +18,36 @@ class test__int__Http__Request__Cache(TestCase):
     def setUpClass(cls):
         myfeeds_tests__setup_local_stack()
         cls.http_request_execute = Http__Request__Execute()
-        cls.http_request_cache   = Http__Request__Cache()
+        cls.http_request_cache   = Http__Request__Cache  ()
+
+    def test_add__cache_entry(self):
+        with self.http_request_cache as _:
+            # create test data
+            cache_hash  = Safe_Str__Hash('0123456789')
+            request     = Schema__Http__Request(cache__hash=cache_hash)
+            response    = Schema__Http__Response()
+            # add request and response
+            cache_id    = _.add__cache_entry(request, response)
+            cache_entry = _.cache_entries[cache_id]
+            assert type(cache_id   )                                       is Obj_Id
+            assert type(cache_entry)                                       is Schema__Http__Request__Cache__Entry
+            assert cache_entry.request                                     == request
+            assert cache_entry.response                                    == response
+            assert cache_entry.cache_id                                    == cache_id
+            assert _.cache_index.cache_id__from__hash__request[cache_hash] == cache_id
+
+            # Check if it exists
+            assert _.exists(request) is True  # Item should exist in cache
+
+            # Retrieve it
+            cached_entry = _.get__cache_entry__from__request(request)
+            assert cached_entry == cache_entry
+
+            # Delete it
+            assert _.delete__using__request(request=request) is True
+            assert _.exists(request)                         is False
+
+
 
     def test_calculate_hash(self):
         method  = Safe_Str('GET')
