@@ -11,18 +11,7 @@ class test_Schema__Http__Request__Cache__Entry(TestCase):
     def test__init__(self):
         with self.http_request_data as _:
             assert type(_) == Schema__Http__Request__Cache__Entry
-            assert _.obj() == __(cache_id       = _.cache_id ,
-                                 content_type   = None       ,
-                                 duration       = None       ,
-                                 etag           = None       ,
-                                 html__dict     = None       ,
-                                 json__data     = None       ,
-                                 last_modified  = None       ,
-                                 method         = None       ,
-                                 request__hash  = None       ,
-                                 status_code    = None       ,
-                                 text           = None       ,
-                                 text__hash     = None       ,
-                                 timestamp      = _.timestamp,
-                                 url            = None       ,
-                                 url__hash      = None       )
+            assert _.obj() == __(cache_id  = _.cache_id ,
+                                 request   = None       ,
+                                 response  = None       ,
+                                 timestamp = _.timestamp)
