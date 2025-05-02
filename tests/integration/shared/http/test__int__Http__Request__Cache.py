@@ -42,6 +42,7 @@ class test__int__Http__Request__Cache(TestCase):
             # Retrieve it
             cached_entry = _.get__cache_entry__from__request(request)
             assert cached_entry == cache_entry
+            assert _.get__response__by_id(cache_id) == response
 
             # Delete it
             assert _.delete__using__request(request=request) is True

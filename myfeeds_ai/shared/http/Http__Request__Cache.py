@@ -56,6 +56,10 @@ class Http__Request__Cache(Type_Safe):
         if cache_id:
             return self.cache_entries.get(cache_id)
 
+    def get__response__by_id(self, cache_id) -> Optional[Schema__Http__Response]:
+        cache_entry = self.get__cache_entry__from__cache_id(cache_id)
+        if cache_entry:
+            return cache_entry.response
 # def requests__get(self, url: str, params:dict, headers: dict) -> dict:
     #     request_hash = self.compute_request_hash(url=url, params=params, headers=headers)
     #     #requests_get__cache_entry

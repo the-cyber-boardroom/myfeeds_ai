@@ -3,14 +3,18 @@
  - https://github.com/mrtouch93/awesome-security-feed
  - https://rss.feedspot.com/cyber_security_rss_feeds/
 
+
 ### good json based resources
     https://www.cisa.gov/known-exploited-vulnerabilities-catalog
 
 ### get cve data
 
     https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=CVE-2025-23209
-### with RSS feeds
 
+### with RSS feeds
+ - kevintel  : list of Known Exploited Vulnerabilities Intel
+            https://kevintel.com/
+            has rss, json and csv feeds
 - the register:
         https://www.theregister.com/Design/page/feeds.html      # list of feeds
         https://www.theregister.com/headlines.atom              # main feed
@@ -88,3 +92,7 @@
 
     - We Live Security RSS Feed         : https://feeds.feedburner.com/eset/blog
 
+
+# players in this space
+ - https://gnews.io/  - "A powerful REST News API to search for current and historical articles and get trending news in over 22 languages across 30 countries from 60,000+ sources"
+ - https://newsapi.org/
