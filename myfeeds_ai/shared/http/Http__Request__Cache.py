@@ -2,9 +2,9 @@ from typing import Dict, Optional
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request               import Schema__Http__Request
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Cache__Entry import Schema__Http__Request__Cache__Entry
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Cache__Index import Schema__Http__Request__Cache__Index
+from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Methods      import Schema__Http__Request__Methods
 from myfeeds_ai.shared.http.schemas.Schema__Http__Response              import Schema__Http__Response
 from osbot_utils.helpers.Obj_Id                                         import Obj_Id
-from osbot_utils.helpers.safe_str.Safe_Str                              import Safe_Str
 from osbot_utils.helpers.safe_str.Safe_Str__Hash                        import safe_str_hash, Safe_Str__Hash
 from osbot_utils.helpers.safe_str.Safe_Str__Url                         import Safe_Str__Url
 from osbot_utils.type_safe.Type_Safe                                    import Type_Safe
@@ -17,8 +17,8 @@ class Http__Request__Cache(Type_Safe):
     #http_request_execute: Http__Request__Execute
 
     @type_safe
-    def calculate_hash (self, method: Safe_Str, url: Safe_Str__Url, params: dict=None) -> Safe_Str__Hash:
-        hash_string = (f"Method: {method}\n"
+    def calculate_hash (self, method: Schema__Http__Request__Methods, url: Safe_Str__Url, params: dict=None) -> Safe_Str__Hash:
+        hash_string = (f"Method: {method.value}\n"
                        f"Url   : {url}")
         if params:
             hash_string += f"Params: {params}"

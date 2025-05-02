@@ -1,11 +1,11 @@
 from unittest                                                           import TestCase
 from myfeeds_ai.shared.http.Http__Request__Cache                        import Http__Request__Cache
-from myfeeds_ai.shared.http.Http__Request__Execute                      import Http__Request__Execute
+from myfeeds_ai.shared.http.Http__Request__Execute__Requests            import Http__Request__Execute__Requests
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request               import Schema__Http__Request
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Cache__Entry import Schema__Http__Request__Cache__Entry
+from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Methods      import Schema__Http__Request__Methods
 from myfeeds_ai.shared.http.schemas.Schema__Http__Response              import Schema__Http__Response
 from osbot_utils.helpers.Obj_Id                                         import Obj_Id
-from osbot_utils.helpers.safe_str.Safe_Str                              import Safe_Str
 from osbot_utils.helpers.safe_str.Safe_Str__Hash                        import Safe_Str__Hash
 from osbot_utils.helpers.safe_str.Safe_Str__Url                         import Safe_Str__Url
 from osbot_utils.utils.Objects                                          import __
@@ -17,7 +17,7 @@ class test__int__Http__Request__Cache(TestCase):
     @classmethod
     def setUpClass(cls):
         myfeeds_tests__setup_local_stack()
-        cls.http_request_execute = Http__Request__Execute()
+        cls.http_request_execute = Http__Request__Execute__Requests()
         cls.http_request_cache   = Http__Request__Cache  ()
 
     def test_add__cache_entry(self):
@@ -51,7 +51,7 @@ class test__int__Http__Request__Cache(TestCase):
 
 
     def test_calculate_hash(self):
-        method  = Safe_Str('GET')
+        method  = Schema__Http__Request__Methods.GET
         url     = Safe_Str__Url('https://docs.diniscruz.ai')
         params  = dict(a=42)
         with self.http_request_cache as _:
@@ -62,11 +62,11 @@ class test__int__Http__Request__Cache(TestCase):
 
 
     def test_create_cache_entry(self):
-        method  = Safe_Str('GET')
+        method  = Schema__Http__Request__Methods.GET
         url     = Safe_Str__Url('https://docs.diniscruz.ai')
         with self.http_request_execute as _:
             request  = _.create_http_request(method=method, url=url)
-            response  = _.requests_get(request=request)
+            response  = _.execute__http_request(request=request)
 
         with self.http_request_cache as _:
             cache_entry = _.create_cache_entry(request=request, response=response)
