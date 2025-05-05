@@ -22,14 +22,15 @@ class Html_Document_To__Html_MGraph(Type_Safe):
         return self.html_mgraph
 
     def build_mgraph__from__html_node(self, target_node: Schema__Html_Node, parent_node: Domain__MGraph__Node = None):
-        print(type(parent_node))
+        #print(type(parent_node))
         with self.html_mgraph.builder() as _:
-            _.add_node(target_node.tag)
+            key = Obj_Id()
+            _.add_node(target_node.tag, key=key)
             for node in target_node.nodes:
                 if type(node) is Schema__Html_Node:
-                    self.build_mgraph__from__html_node(node)
-                    key = Obj_Id()
-                    _.add_node(node.tag, key=key)
+                    self.build_mgraph__from__html_node(node, _.current_node())
+                    #key = Obj_Id()
+                    #_.add_node(node.tag, key=key)
                     #print(type(_.current_node()))
 
                     #_.up()
