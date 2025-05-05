@@ -29,7 +29,7 @@ class test_Html_Document_To__Html_MGraph(TestCase):
                     dot.set_node__shape__type__box()
                     dot.set_node__shape__rounded()
                     dot.show_node__value()
-                    dot.show_node__id()
+                    #dot.show_node__id()
 
                 _.save_to(png_file)
                 _.dot()
@@ -48,9 +48,11 @@ class test_Html_Document_To__Html_MGraph(TestCase):
             assert type(_.html__document) is Schema__Html_Document
             #pprint(_.html__dict)
 
-        # with self.html_to_graph.html_mgraph as _:
-        #     pprint(_.data().stats())
-        # return
+
+    def test_convert__to__html_schema(self):
+        with self.html_to_graph as _:
+            _.convert__to__html_schema()
+            assert type(_.html__document) is Schema__Html_Document
 
     def test_convert__simple_html(self):
         html = """\
