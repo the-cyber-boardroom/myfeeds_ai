@@ -25,7 +25,8 @@ class Html_Document_To__Html_MGraph(Type_Safe):
             for node in target_node.nodes:
                 if type(node) is Schema__Html_Node:
                     self.build_mgraph__from__html_node(node)
-                    _.connect_to(node.tag, unique_link=True)
+                    #_.connect_to(node.tag, unique_link=True)
+                    _.connect_to(node.tag)
                     _.up()
 
 
