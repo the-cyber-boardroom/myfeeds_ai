@@ -47,7 +47,7 @@ class test_Html_Document_To__Html_MGraph(TestCase):
             assert type(_.html)   is Safe_Str__Html
 
     def test_convert(self):
-        self.create_png = True
+        #self.create_png = True
         with self.html_to_graph as _:
             #target= "https://docs.diniscruz.ai"                 # doesn't work (with full colors)
             #target = "https://www.google.com"
