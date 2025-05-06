@@ -17,7 +17,7 @@ from osbot_utils.utils.Dev                                          import pprin
 
 class Html_MGraph__Screenshot__Config__Graph(Type_Safe):
     """Graph-wide configuration settings"""
-    title           : str = "HTML Document Structure"
+    title           : str = "HTML MGraph"
     title_font_size : int = 30
     title_font_color: str = "#333333"
     bg_color        : str = "#f8f9fa"
@@ -46,7 +46,9 @@ class Html_MGraph__Screenshot(Type_Safe):
     html_mgraph: MGraph
     create_png : bool = True
 
-    def create(self, config: Html_MGraph__Screenshot__Config):          # Create a screenshot of the HTML graph with the specified configuration
+    def create(self, config: Html_MGraph__Screenshot__Config=None):          # Create a screenshot of the HTML graph with the specified configuration
+        if not config:
+            config = Html_MGraph__Screenshot__Config()
         with self.html_mgraph.screenshot() as _:
             with _.export().export_dot() as dot:
 
@@ -58,7 +60,7 @@ class Html_MGraph__Screenshot(Type_Safe):
                 dot.set_graph__node_sep(config.graph.node_sep)
                 dot.set_graph__margin(config.graph.margin)
 
-
+                #dot.show_node__id()
                 if config.graph.title:                                                  # Set graph title
                     dot.set_graph__title(config.graph.title)
                     dot.set_graph__title__font__size(config.graph.title_font_size)
