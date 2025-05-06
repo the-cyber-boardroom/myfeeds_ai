@@ -1,8 +1,16 @@
 from unittest                                                        import TestCase
+
+from mgraph_db.mgraph.actions.exporters.dot.models.MGraph__Export__Dot__Layout__Engine import \
+    MGraph__Export__Dot__Layout__Engine
+
 from myfeeds_ai.mgraphs.html_to_mgraph.Html_Document_To__Html_MGraph import Html_Document_To__Html_MGraph
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot import Html_MGraph__Screenshot__Config
 from osbot_utils.helpers.html.schemas.Schema__Html_Document          import Schema__Html_Document
 from osbot_utils.helpers.safe_str.Safe_Str__Html                     import Safe_Str__Html
+from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Env import load_dotenv
+from osbot_utils.utils.Http import GET
+
 
 class test_Html_Document_To__Html_MGraph(TestCase):
 
@@ -12,34 +20,47 @@ class test_Html_Document_To__Html_MGraph(TestCase):
     #     cls.html = GET("https://www.linkedin.com")
 
     def setUp(self):
-        self.html = HTML__EXAMPLE__WITH__FORM
+        self.html          = HTML__EXAMPLE__WITH__FORM
+        self.title         = "Html Graph"
         self.html_to_graph = Html_Document_To__Html_MGraph(html=self.html)
         self.create_png    = False
 
     def tearDown(self):
         if self.create_png:
-            with self.html_to_graph.html_mgraph.screenshot() as _:
-                load_dotenv()
-                png_file = f"{self.__class__.__name__}.png"
-
-                with _.export().export_dot() as dot:
-                    dot.set_node__shape__type__box()
-                    dot.set_node__shape__rounded()
-                    dot.show_node__value()
-                    #dot.show_node__id()
-
-                _.save_to(png_file)
-                _.dot()
+            #pprint(self.html_to_graph.html_mgraph.data().stats())
+            load_dotenv()
+            with Html_MGraph__Screenshot__Config() as _:
+                _.target_file          = f"{self.__class__.__name__}.png"
+                _.graph.title          = self.title
+                #_.graph.layout_engine = MGraph__Export__Dot__Layout__Engine.FDP
+                _.print_dot_code      = False
+                #_.graph.node_sep       = 0.1
+                #_.graph.rank_sep        = 0.1
+                #_.graph.spring_constant = 0.25
+                self.html_to_graph.create_screenshot(config=_)
 
     def test__init__(self):
         with self.html_to_graph as _:
             assert type(_) is Html_Document_To__Html_MGraph
-            assert len(self.html) == 352
+            assert len(self.html) == 421
             assert _.html         == self.html
             assert type(_.html)   is Safe_Str__Html
 
     def test_convert(self):
+        self.create_png = True
         with self.html_to_graph as _:
+            #target= "https://docs.diniscruz.ai"                 # doesn't work (with full colors)
+            #target = "https://www.google.com"
+            #target = "https://www.apple.com"
+            #_.html = HTML__EXAMPLE__WITH__PARAGRAPHS
+            #_.html = HTML__EXAMPLE__WITH__NESTED_LISTS
+            #_.html = HTML__EXAMPLE__WITH__BOOTSTRAP
+            # _.html  = GET("https://thegrafter.com/about")
+            # self.title = "https://thegrafter.com/about"
+            #_.html = GET("https://www.apple.com")
+            #_.html = GET("https://www.google.com")
+            #_.html = GET(target)
+            #self.title = target
             _.convert()
             assert type(_.html__document) is Schema__Html_Document
             #pprint(_.html__dict)
@@ -47,6 +68,7 @@ class test_Html_Document_To__Html_MGraph(TestCase):
 
     def test_convert__to__html_schema(self):
         with self.html_to_graph as _:
+            #_.html = GET("https://docs.diniscruz.ai")
             _.convert__to__html_schema()
             assert type(_.html__document) is Schema__Html_Document
 
@@ -94,6 +116,9 @@ HTML__EXAMPLE__WITH__LINK_AND_IMAGE = """\
 
 HTML__EXAMPLE__WITH__FORM = """\
 <html>
+    <head>
+        <title>Html example with Form</title>
+    </head>
     <body>
         <h1>Contact Us</h1>
         <form>
@@ -130,3 +155,73 @@ HTML__EXAMPLE__WITH__NESTED_LISTS = """\
     </body>
 </html>
 """
+
+
+HTML__EXAMPLE__WITH__BOOTSTRAP = """\
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta charset="UTF-8"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>Simple Bootstrap 5 Webpage</title>
+      <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+              rel="stylesheet"
+              integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+              crossorigin="anonymous"/>
+    </head>
+    <body>
+
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Webpage Name</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Features</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Pricing</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Jumbotron / Hero -->
+      <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+          <h1 class="display-5 fw-bold">Welcome to Our Website!</h1>
+          <p class="col-md-8 fs-4">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+          <button class="btn btn-primary btn-lg" type="button">Example button</button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="py-3 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Home</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Features</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">Pricing</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">FAQs</a></li>
+          <li class="nav-item"><a href="#" class="nav-link px-2 text-muted">About</a></li>
+        </ul>
+        <p class="text-center text-muted">© 2023 Company, Inc</p>
+      </footer>
+
+      <!-- Bootstrap JS -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+              integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    </body>
+</html>"""

@@ -15,13 +15,14 @@
  - kevintel  : list of Known Exploited Vulnerabilities Intel
             https://kevintel.com/
             has rss, json and csv feeds
-- the register:
+  - the register:
         https://www.theregister.com/Design/page/feeds.html      # list of feeds
         https://www.theregister.com/headlines.atom              # main feed
         https://www.theregister.com/security/headlines.atom     # cyber security feed
 
-- https://cybersecuritynews.com     : https://feeds.feedburner.com/cyber-security-news
+  - https://cybersecuritynews.com     : https://feeds.feedburner.com/cyber-security-news
 
+  - https://www.404media.co/rss/
 
 
  - https://krebsonsecurity.com: https://krebsonsecurity.com/feed/
