@@ -6,6 +6,7 @@ from tests.unit.mgraphs.html_to_mgraph.test_Html_Document_To__Html_MGraph       
 
 
 class test_Html_MGraph__View__Page_Structure(TestCase):
+    # add support for using data from S3
     @classmethod
     def setUpClass(cls):
         cls.html                = HTML__EXAMPLE__WITH__FORM

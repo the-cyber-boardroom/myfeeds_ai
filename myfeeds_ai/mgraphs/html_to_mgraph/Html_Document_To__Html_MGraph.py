@@ -10,8 +10,6 @@ from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data__Type import Schem
 from osbot_utils.helpers.safe_str.http.Safe_Str__Html               import Safe_Str__Html
 from osbot_utils.type_safe.Type_Safe                                import Type_Safe
 
-#MAX__NODE_DATA__DISPLAY__VALUE = 10
-
 class Html_Document_To__Html_MGraph(Type_Safe):
     html          : Safe_Str__Html         = None
     html__document: Schema__Html_Document  = None

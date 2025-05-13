@@ -28,6 +28,3 @@ class test__int__Http__Request__Cache(TestCase):
             response = _.execute(request)
             assert type(response) is Schema__Http__Response
             assert type(response.text) == Safe_Str__Http__Text
-            #html_to_tag = Html_To_Tag(response.text).convert()
-            #pprint(html_to_tag.json())
-            #print(response.text)
