@@ -1,6 +1,6 @@
 [tool.poetry]
 name        = "myfeeds_ai"
-version     = "v1.108.9"
+version     = "v1.109.0"
 description = "MyFeeds.ai"
 authors     = ["Dinis Cruz <dinis.cruz@owasp.org>"]
 license     = "Apache 2.0"
