@@ -7,7 +7,7 @@ from osbot_utils.helpers.html.schemas.Schema__Html_Document         import Schem
 from osbot_utils.helpers.html.schemas.Schema__Html_Node             import Schema__Html_Node
 from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data       import Schema__Html_Node__Data
 from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data__Type import Schema__Html_Node__Data__Type
-from osbot_utils.helpers.safe_str.Safe_Str__Html                    import Safe_Str__Html
+from osbot_utils.helpers.safe_str.http.Safe_Str__Html               import Safe_Str__Html
 from osbot_utils.type_safe.Type_Safe                                import Type_Safe
 
 #MAX__NODE_DATA__DISPLAY__VALUE = 10

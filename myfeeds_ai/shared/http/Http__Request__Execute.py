@@ -1,4 +1,5 @@
 from myfeeds_ai.shared.http.Http__Request__Cache                    import Http__Request__Cache
+from myfeeds_ai.shared.http.schemas.Schema__Http__Action import Schema__Http__Action
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request           import Schema__Http__Request
 from myfeeds_ai.shared.http.schemas.Schema__Http__Request__Methods  import Schema__Http__Request__Methods
 from myfeeds_ai.shared.http.schemas.Schema__Http__Response          import Schema__Http__Response
@@ -18,7 +19,10 @@ class Http__Request__Execute(Type_Safe):
     use_cache          : bool                   = True
     refresh_cache      : bool                 = False
 
-    def create_http_request(self, method: Schema__Http__Request__Methods, url: Safe_Str__Url, params: dict = None):
+    def create_http_request(self, method: Schema__Http__Request__Methods,
+                                  url   : Safe_Str__Url                 ,
+                                  params: dict          = None
+                              )-> Schema__Http__Request :
         request_hash   = self.http_request_cache.calculate_hash(method=method, url=url, params=params)
         request_kwargs = dict(cache__hash = request_hash   ,
                               method        = method       ,
@@ -26,7 +30,7 @@ class Http__Request__Execute(Type_Safe):
         request        = Schema__Http__Request(**request_kwargs)
         return request
 
-    def create_http_response(self, response, duration: float):
+    def create_http_response(self, response, duration: float) -> Schema__Http__Response:
         content_type             = response.headers.get('Content-Type' , '').lower()
         status_code              = response.status_code
         text                     = response.text
@@ -45,7 +49,9 @@ class Http__Request__Execute(Type_Safe):
 
 
     @type_safe
-    def execute(self, request: Schema__Http__Request, headers:dict=None):
+    def execute(self, request: Schema__Http__Request,
+                      headers : dict         = None
+                  )-> Schema__Http__Response :
         if headers is None:
             headers = HTTP__HEADERS__DEFAULT
         response = self.execute__http_request(request=request, headers=headers)
@@ -54,3 +60,13 @@ class Http__Request__Execute(Type_Safe):
 
     def execute__http_request(self, request: Schema__Http__Request, headers:dict=None):
         raise NotImplemented()
+
+    @type_safe
+    def execute__get(self, url    : Safe_Str__Url,
+                           params : dict         = None,
+                           headers: dict         = None
+                      ) -> Schema__Http__Action  :
+        method   = Schema__Http__Request__Methods.GET
+        request  = self.create_http_request(method, url, params)
+        response = self.execute(request=request, headers=headers)
+        return Schema__Http__Action(request=request, response=response)

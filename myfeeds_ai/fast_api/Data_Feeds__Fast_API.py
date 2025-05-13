@@ -1,20 +1,21 @@
 import myfeeds_ai
-from starlette.staticfiles                                                                import StaticFiles
-from myfeeds_ai.fast_api.admin.Admin__Fast_API                                            import Admin__Fast_API
-from myfeeds_ai.fast_api.public_data.LLM_Cache__Fast_API                                  import LLM_Cache__Fast_API
-from myfeeds_ai.fast_api.public_data.Public_Data__Fast_API                                import Public_Data__Fast_API
-from myfeeds_ai.personas.routes.Routes__My_Feeds__Personas                                import Routes__My_Feeds__Personas
-from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News__Articles import Routes__Hacker_News__Articles
-from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News__Cache    import Routes__Hacker_News__Cache
-from myfeeds_ai.providers.cyber_security.owasp.routes.Routes__Owasp                       import Routes__Owasp
-from myfeeds_ai.rss_feeds.RSS_Feeds__Fast_API                                             import RSS_Feeds__Fast_API
-from osbot_utils.utils.Env                                                                import get_env, load_dotenv
-from osbot_fast_api.api.Fast_API                                                          import Fast_API
-from myfeeds_ai                                                                           import web_ui
-from osbot_utils.utils.Files                                                              import path_combine
-from myfeeds_ai.fast_api.routes.Routes__Info                                              import Routes__Info
-from myfeeds_ai.providers.cyber_security.open_security_summit.routes.Routes__OSS          import Routes__OSS
-from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News           import Routes__Hacker_News
+from starlette.staticfiles                                                                  import StaticFiles
+from myfeeds_ai.fast_api.admin.Admin__Fast_API                                              import Admin__Fast_API
+from myfeeds_ai.fast_api.public_data.LLM_Cache__Fast_API                                    import LLM_Cache__Fast_API
+from myfeeds_ai.fast_api.public_data.Public_Data__Fast_API                                  import Public_Data__Fast_API
+from myfeeds_ai.personas.routes.Routes__My_Feeds__Personas                                  import Routes__My_Feeds__Personas
+from myfeeds_ai.providers.cyber_security.docs_diniscruz_ai.routes.Routes__Docs_DinisCruz_Ai import Routes__Docs_DinisCruz_Ai
+from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News__Articles   import Routes__Hacker_News__Articles
+from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News__Cache      import Routes__Hacker_News__Cache
+from myfeeds_ai.providers.cyber_security.owasp.routes.Routes__Owasp                         import Routes__Owasp
+from myfeeds_ai.rss_feeds.RSS_Feeds__Fast_API                                               import RSS_Feeds__Fast_API
+from osbot_utils.utils.Env                                                                  import get_env, load_dotenv
+from osbot_fast_api.api.Fast_API                                                            import Fast_API
+from myfeeds_ai                                                                             import web_ui
+from osbot_utils.utils.Files                                                                import path_combine
+from myfeeds_ai.fast_api.routes.Routes__Info                                                import Routes__Info
+from myfeeds_ai.providers.cyber_security.open_security_summit.routes.Routes__OSS            import Routes__OSS
+from myfeeds_ai.providers.cyber_security.hacker_news.routes.Routes__Hacker_News             import Routes__Hacker_News
 
 
 # todo: refactor Data_Feeds class name
@@ -33,9 +34,10 @@ class Data_Feeds__Fast_API(Fast_API):
         self.add_routes(Routes__My_Feeds__Personas   )
         self.add_routes(Routes__Hacker_News__Articles)
         self.add_routes(Routes__Hacker_News          )
+        self.add_routes(Routes__Docs_DinisCruz_Ai    )
         self.add_routes(Routes__Owasp                )
         self.add_routes(Routes__OSS                  )
-        self.add_routes(Routes__Hacker_News__Cache)
+        self.add_routes(Routes__Hacker_News__Cache   )
 
         Public_Data__Fast_API().setup().mount(self.app())       # available at /public-data/docs
         LLM_Cache__Fast_API  ().setup().mount(self.app())       # available at /llm-cache/docs
