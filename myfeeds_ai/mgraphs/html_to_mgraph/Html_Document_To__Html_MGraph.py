@@ -2,23 +2,19 @@ from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph                  import Html_
 from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Schemas         import HTML__EDGES_TYPES__FOR__TAG, HTML__NODES_TYPES__FOR__TAG, Schema__MGraph__NODE__HTML__TEXT, Schema__MGraph__Edge__HTML__TEXT
 from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot      import Html_MGraph__Screenshot__Config
 from osbot_utils.helpers.Obj_Id                                     import Obj_Id
-from osbot_utils.helpers.html.Html__To__Html_Document               import Html__To__Html_Document
 from osbot_utils.helpers.html.schemas.Schema__Html_Document         import Schema__Html_Document
 from osbot_utils.helpers.html.schemas.Schema__Html_Node             import Schema__Html_Node
 from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data       import Schema__Html_Node__Data
 from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data__Type import Schema__Html_Node__Data__Type
-from osbot_utils.helpers.safe_str.http.Safe_Str__Html               import Safe_Str__Html
 from osbot_utils.type_safe.Type_Safe                                import Type_Safe
 
 class Html_Document_To__Html_MGraph(Type_Safe):
-    html          : Safe_Str__Html         = None
-    html__document: Schema__Html_Document  = None
-    html_mgraph   : Html_MGraph
+    html_document: Schema__Html_Document  = None
+    html_mgraph  : Html_MGraph
 
     def convert(self):
-        with Html__To__Html_Document(html=self.html).convert() as _:
-            self.html__document = _
-            self.build_mgraph__from__html_node(_.root_node)
+        target_node  = self.html_document.root_node
+        self.build_mgraph__from__html_node(target_node=target_node)
         return self.html_mgraph
 
     def resolve_edge_type_from_node_tag(self, node_tag):
@@ -60,9 +56,10 @@ class Html_Document_To__Html_MGraph(Type_Safe):
             return _.current_node()
 
     def convert__to__html_schema(self):
-        with Html__To__Html_Document(html=self.html).convert() as _:
-            self.html__document = _
-            self.build_mgraph__with__html_schema(_.root_node)
+        # with Html__To__Html_Document(html=self.html).convert() as _:
+        #     self.html_document = _
+        target_node = self.html_document.root_node
+        self.build_mgraph__with__html_schema(target_node=target_node)
         return self.html_mgraph
 
     def build_mgraph__with__html_schema(self, target_node: Schema__Html_Node):

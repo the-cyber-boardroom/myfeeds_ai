@@ -1,8 +1,11 @@
 import pytest
 from unittest                                                                               import TestCase
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                              import Model__Data_Feeds__Providers
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph                                          import Html_MGraph
 from myfeeds_ai.providers.cyber_security.docs_diniscruz_ai.actions.Docs_DinisCruz_Ai__Files import Docs_DinisCruz_Ai__Files, URL__DOCS_DINISCRUZ_AI
 from myfeeds_ai.shared.http.schemas.Schema__Http__Action                                    import Schema__Http__Action
+from osbot_utils.helpers.html.schemas.Schema__Html_Document                                 import Schema__Html_Document
+from osbot_utils.helpers.safe_str.http.Safe_Str__Http__Text                                 import Safe_Str__Http__Text
 from osbot_utils.utils.Env                                                                  import not_in_github_action
 from osbot_utils.utils.Functions                                                            import method_source_code
 from tests.integration.data_feeds__objs_for_tests                                           import myfeeds_tests__setup_local_stack
@@ -23,10 +26,23 @@ class test_Docs_DinisCruz_Ai__Files(TestCase):
 
     def test_home_page__data(self):
         with self.docs_files as _:
-            result = _.home_page__data()
-            assert type(result) is Schema__Http__Action
+            assert type(_.home_page__data()) is Schema__Http__Action
 
+    def test_home_page__html(self):
+        with self.docs_files as _:
+            assert type(_.home_page__html()) is Safe_Str__Http__Text
 
+    def test_home_page__html_dict(self):
+        with self.docs_files as _:
+            assert type(_.home_page__html_dict()) is dict
+
+    def test_home_page__html_document(self):
+        with self.docs_files as _:
+            assert type(_.home_page__html_document()) is Schema__Html_Document
+
+    def test_home_page__html_mgraph(self):
+        with self.docs_files as _:
+            assert type(_.home_page__html_mgraph()) is Html_MGraph
 
     # this test confirms the behaviour of the requests.get() response object, when used in an if statement
     #      the reason was a bug that we had where the initial expectation was that calling "if response:" would result in
