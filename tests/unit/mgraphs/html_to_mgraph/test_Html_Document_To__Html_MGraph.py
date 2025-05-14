@@ -1,8 +1,8 @@
 from unittest                                                        import TestCase
 from myfeeds_ai.mgraphs.html_to_mgraph.Html_Document_To__Html_MGraph import Html_Document_To__Html_MGraph
 from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot       import Html_MGraph__Screenshot__Config
+from osbot_utils.helpers.html.Html__To__Html_Document                import Html__To__Html_Document
 from osbot_utils.helpers.html.schemas.Schema__Html_Document          import Schema__Html_Document
-from osbot_utils.helpers.safe_str.http.Safe_Str__Html                import Safe_Str__Html
 from osbot_utils.utils.Env                                           import load_dotenv
 
 
@@ -16,7 +16,8 @@ class test_Html_Document_To__Html_MGraph(TestCase):
     def setUp(self):
         self.html          = HTML__EXAMPLE__WITH__FORM
         self.title         = "Html Graph"
-        self.html_to_graph = Html_Document_To__Html_MGraph(html=self.html)
+        self.html_document = Html__To__Html_Document(html=self.html).convert()
+        self.html_to_graph = Html_Document_To__Html_MGraph(html_document=self.html_document)
         self.create_png    = False
 
     def tearDown(self):
@@ -35,10 +36,10 @@ class test_Html_Document_To__Html_MGraph(TestCase):
 
     def test__init__(self):
         with self.html_to_graph as _:
-            assert type(_) is Html_Document_To__Html_MGraph
-            assert len(self.html) == 421
-            assert _.html         == self.html
-            assert type(_.html)   is Safe_Str__Html
+            assert type(_)         is Html_Document_To__Html_MGraph
+            assert len(self.html)  == 421
+            assert _.html_document        == self.html_document
+            assert type(_.html_document)  is Schema__Html_Document
 
     def test_convert(self):
         #self.create_png = True
@@ -56,7 +57,7 @@ class test_Html_Document_To__Html_MGraph(TestCase):
             #_.html = GET(target)
             #self.title = target
             _.convert()
-            assert type(_.html__document) is Schema__Html_Document
+            assert type(_.html_document) is Schema__Html_Document
             #pprint(_.html__dict)
 
 
@@ -64,12 +65,12 @@ class test_Html_Document_To__Html_MGraph(TestCase):
         with self.html_to_graph as _:
             #_.html = GET("https://docs.diniscruz.ai")
             _.convert__to__html_schema()
-            assert type(_.html__document) is Schema__Html_Document
+            assert type(_.html_document) is Schema__Html_Document
 
     def test_convert__simple_html(self):
-        html = HTML__EXAMPLE__WITH__PARAGRAPHS
-        print()
-        self.html_to_graph = Html_Document_To__Html_MGraph(html=html)
+        html               = HTML__EXAMPLE__WITH__PARAGRAPHS
+        html_document      = Html__To__Html_Document      (html          = html         ).convert()
+        self.html_to_graph = Html_Document_To__Html_MGraph(html_document = html_document)
         with self.html_to_graph as _:
             _.convert()
 

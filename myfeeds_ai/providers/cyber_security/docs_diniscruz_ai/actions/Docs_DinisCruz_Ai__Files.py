@@ -1,10 +1,14 @@
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                  import Model__Data_Feeds__Providers
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_Document_To__Html_MGraph            import Html_Document_To__Html_MGraph
 from myfeeds_ai.providers.cyber_security.docs_diniscruz_ai.files.Website__Files import Website__Files
 from myfeeds_ai.shared.http.Http__Request__Execute__Requests                    import Http__Request__Execute__Requests
 from myfeeds_ai.shared.http.schemas.Schema__Http__Action                        import Schema__Http__Action
+from osbot_utils.helpers.html.Html_Dict__To__Html_Document                      import Html_Dict__To__Html_Document
+from osbot_utils.helpers.html.Html__To__Html_Dict                               import Html__To__Html_Dict
+from osbot_utils.helpers.html.schemas.Schema__Html_Document                     import Schema__Html_Document
 from osbot_utils.helpers.safe_str.Safe_Str__Url                                 import Safe_Str__Url
 from osbot_utils.type_safe.Type_Safe                                            import Type_Safe
-from osbot_utils.utils.Http import url_join_safe
+from osbot_utils.utils.Http                                                     import url_join_safe
 
 URL__DOCS_DINISCRUZ_AI = Safe_Str__Url("https://docs.diniscruz.ai/")
 
@@ -26,13 +30,32 @@ class Docs_DinisCruz_Ai__Files(Type_Safe):
     def all_files(self):
         return self.website_files.website_storage.s3_db.provider__all_files()
 
-    def home_page__data(self) -> str:
+    def home_page__data(self) -> Schema__Http__Action:
         file = self.file__home_page()
         if file.exists():
             return file.data()
         http_action = self.get__path('/')
         file.save_data(http_action)
         return http_action
+
+    def home_page__html(self) -> str:
+        return self.home_page__data().response.text
+
+    def home_page__html_dict(self) -> dict:
+        html = self.home_page__data().response.text
+        html_dict = Html__To__Html_Dict(html=html).convert()
+        return html_dict
+
+    def home_page__html_document(self) -> Schema__Html_Document:
+        html          = self.home_page__data().response.text
+        html_dict     = Html__To__Html_Dict         (html       = html     ).convert()
+        html_document = Html_Dict__To__Html_Document(html__dict = html_dict).convert()
+        return html_document
+
+    def home_page__html_mgraph(self):
+        html_document = self.home_page__html_document()
+        html_mgraph   = Html_Document_To__Html_MGraph(html_document=html_document).convert()
+        return html_mgraph
 
     def get__path(self, path='/') -> Schema__Http__Action:
         with self.http_request_execute as _:
