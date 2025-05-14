@@ -12,7 +12,7 @@ class Html_Document_To__Html_MGraph(Type_Safe):
     html_document: Schema__Html_Document  = None
     html_mgraph  : Html_MGraph
 
-    def convert(self):
+    def convert(self) -> Html_MGraph:
         target_node  = self.html_document.root_node
         self.build_mgraph__from__html_node(target_node=target_node)
         return self.html_mgraph
