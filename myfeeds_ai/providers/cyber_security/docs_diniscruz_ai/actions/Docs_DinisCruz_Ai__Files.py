@@ -1,5 +1,6 @@
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                  import Model__Data_Feeds__Providers
 from myfeeds_ai.mgraphs.html_to_mgraph.Html_Document_To__Html_MGraph            import Html_Document_To__Html_MGraph
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph import Html_MGraph
 from myfeeds_ai.providers.cyber_security.docs_diniscruz_ai.files.Website__Files import Website__Files
 from myfeeds_ai.shared.http.Http__Request__Execute__Requests                    import Http__Request__Execute__Requests
 from myfeeds_ai.shared.http.schemas.Schema__Http__Action                        import Schema__Http__Action
@@ -27,6 +28,9 @@ class Docs_DinisCruz_Ai__Files(Type_Safe):
     def file__home_page(self):
         return self.website_files.file__home_page()
 
+    def file__home_page__mgraph(self):
+        return self.website_files.file__home_page__mgraph()
+
     def all_files(self):
         return self.website_files.website_storage.s3_db.provider__all_files()
 
@@ -52,10 +56,17 @@ class Docs_DinisCruz_Ai__Files(Type_Safe):
         html_document = Html_Dict__To__Html_Document(html__dict = html_dict).convert()
         return html_document
 
-    def home_page__html_mgraph(self):
+    def home_page__html_mgraph(self) -> Html_MGraph:
+        file = self.file__home_page__mgraph()
+        if file.exists():
+            return file.data()
         html_document = self.home_page__html_document()
         html_mgraph   = Html_Document_To__Html_MGraph(html_document=html_document).convert()
+        file.save_data(html_mgraph)
         return html_mgraph
+
+
+
 
     def get__path(self, path='/') -> Schema__Http__Action:
         with self.http_request_execute as _:
