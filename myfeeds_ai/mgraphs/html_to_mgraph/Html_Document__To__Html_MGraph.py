@@ -9,7 +9,7 @@ from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data               impo
 from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data__Type         import Schema__Html_Node__Data__Type
 from osbot_utils.type_safe.Type_Safe                                        import Type_Safe
 
-class Html_Document_To__Html_MGraph(Type_Safe):
+class Html_Document__To__Html_MGraph(Type_Safe):
     html_document: Schema__Html_Document  = None
     html_mgraph  : Html_MGraph
 
@@ -56,20 +56,6 @@ class Html_Document_To__Html_MGraph(Type_Safe):
             _.up()
             return _.current_node()
 
-    def convert__to__html_schema(self):
-        target_node = self.html_document.root_node
-        self.build_mgraph__with__html_schema(target_node=target_node)
-        return self.html_mgraph
-
-    def build_mgraph__with__html_schema(self, target_node: Schema__Html_Node):
-        with self.html_mgraph.builder() as _:
-
-            _.add_node(target_node.tag)
-            for node in target_node.nodes:
-                if type(node) is Schema__Html_Node:
-                    self.build_mgraph__with__html_schema(node)
-                    _.connect_to(node.tag, unique_link=True)
-                    _.up()
 
     def create_screenshot(self, config: Schema__Html_MGraph__Screenshot__Config):
         self.html_mgraph.html_mgraph__screenshot().create(config=config)

@@ -5,7 +5,7 @@ from osbot_utils.type_safe.Type_Safe                                            
 
 class Html_MGraph__Screenshot(Type_Safe):
     html_mgraph: MGraph
-    create_png : bool = True
+    png_bytes  : bytes = None
 
     def create(self, config: Schema__Html_MGraph__Screenshot__Config=None):          # Create a screenshot of the HTML graph with the specified configuration
         if not config:
@@ -46,4 +46,6 @@ class Html_MGraph__Screenshot(Type_Safe):
 
 
             # Save the graph
-            _.save_to(target_file=config.target_file).dot(print_dot_code=config.print_dot_code)
+            _.save_to(target_file=config.target_file)
+            self.png_bytes = _.dot(print_dot_code=config.print_dot_code)
+            return self.png_bytes
