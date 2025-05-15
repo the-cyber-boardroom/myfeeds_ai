@@ -1,9 +1,8 @@
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph import Html_MGraph
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Schemas import Schema__MGraph__NODE__HTML__HTML, \
-    Schema__MGraph__NODE__HTML__BODY, Schema__MGraph__NODE__HTML__DIV, Schema__MGraph__NODE__HTML__UL
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot import Html_MGraph__Screenshot__Config
-from osbot_utils.type_safe.Type_Safe import Type_Safe
-from osbot_utils.utils.Dev import pprint
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph                          import Html_MGraph
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot              import Schema__Html_MGraph__Screenshot__Config
+from myfeeds_ai.mgraphs.html_to_mgraph.schemas.Schema__Html_MGraph__Nodes   import Schema__Html_MGraph__Node__HTML__BODY
+from osbot_utils.type_safe.Type_Safe                                        import Type_Safe
+#from osbot_utils.utils.Dev import pprint
 
 
 class Html_MGraph__View__Page_Structure(Type_Safe):
@@ -12,7 +11,7 @@ class Html_MGraph__View__Page_Structure(Type_Safe):
 
     def create_screenshot(self):
         if self.create_png:
-            with Html_MGraph__Screenshot__Config() as _:
+            with Schema__Html_MGraph__Screenshot__Config() as _:
                 _.target_file          = f"{self.__class__.__name__}.png"
                 #_.graph.title          = self.title
                 #_.graph.layout_engine = MGraph__Export__Dot__Layout__Engine.FDP
@@ -29,12 +28,12 @@ class Html_MGraph__View__Page_Structure(Type_Safe):
         #     _.print()
 
         with self.html_mgraph.query() as _:
-            _.add().add_nodes_with_type(Schema__MGraph__NODE__HTML__BODY)
-            #html_node_ids = _.mgraph_index.get_nodes_by_type(Schema__MGraph__NODE__HTML__DIV)
+            _.add().add_nodes_with_type(Schema__Html_MGraph__Node__HTML__BODY)
+            #html_node_ids = _.mgraph_index.get_nodes_by_type(Schema__Html_MGraph__Node__HTML__DIV)
             #_.add_nodes_ids(html_node_ids)
 
             #pprint(html_node_ids)
-            #_.by_type(Schema__MGraph__NODE__HTML__HTML)
+            #_.by_type(Schema__Html_MGraph__Node__HTML__HTML)
             #
             _.add_outgoing_edges__with_depth(2)
             # with _.navigate() as navigate:

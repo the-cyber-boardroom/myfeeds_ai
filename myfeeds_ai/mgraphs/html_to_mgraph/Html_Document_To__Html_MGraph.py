@@ -1,12 +1,13 @@
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph                  import Html_MGraph
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Schemas         import HTML__EDGES_TYPES__FOR__TAG, HTML__NODES_TYPES__FOR__TAG, Schema__MGraph__NODE__HTML__TEXT, Schema__MGraph__Edge__HTML__TEXT
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot      import Html_MGraph__Screenshot__Config
-from osbot_utils.helpers.Obj_Id                                     import Obj_Id
-from osbot_utils.helpers.html.schemas.Schema__Html_Document         import Schema__Html_Document
-from osbot_utils.helpers.html.schemas.Schema__Html_Node             import Schema__Html_Node
-from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data       import Schema__Html_Node__Data
-from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data__Type import Schema__Html_Node__Data__Type
-from osbot_utils.type_safe.Type_Safe                                import Type_Safe
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph                          import Html_MGraph
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot              import Schema__Html_MGraph__Screenshot__Config
+from myfeeds_ai.mgraphs.html_to_mgraph.schemas.Schema__Html_MGraph__Edges   import HTML__EDGES_TYPES__FOR__TAG, Schema__Html_MGraph__Edge__HTML__TEXT
+from myfeeds_ai.mgraphs.html_to_mgraph.schemas.Schema__Html_MGraph__Nodes   import HTML__NODES_TYPES__FOR__TAG, Schema__Html_MGraph__Node__HTML__TEXT
+from osbot_utils.helpers.Obj_Id                                             import Obj_Id
+from osbot_utils.helpers.html.schemas.Schema__Html_Document                 import Schema__Html_Document
+from osbot_utils.helpers.html.schemas.Schema__Html_Node                     import Schema__Html_Node
+from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data               import Schema__Html_Node__Data
+from osbot_utils.helpers.html.schemas.Schema__Html_Node__Data__Type         import Schema__Html_Node__Data__Type
+from osbot_utils.type_safe.Type_Safe                                        import Type_Safe
 
 class Html_Document_To__Html_MGraph(Type_Safe):
     html_document: Schema__Html_Document  = None
@@ -47,17 +48,15 @@ class Html_Document_To__Html_MGraph(Type_Safe):
                 elif type(node) is Schema__Html_Node__Data:
                     if node.type == Schema__Html_Node__Data__Type.TEXT:
                         node_data = self.resolve_node_data(node)
-                        _.add_node(node_data, key=Obj_Id(), node_type=Schema__MGraph__NODE__HTML__TEXT)
+                        _.add_node(node_data, key=Obj_Id(), node_type=Schema__Html_MGraph__Node__HTML__TEXT)
                         text_node = _.current_node()
                         _.up()
-                        _.connect_to(text_node.node_id, edge_type=Schema__MGraph__Edge__HTML__TEXT)
+                        _.connect_to(text_node.node_id, edge_type=Schema__Html_MGraph__Edge__HTML__TEXT)
 
             _.up()
             return _.current_node()
 
     def convert__to__html_schema(self):
-        # with Html__To__Html_Document(html=self.html).convert() as _:
-        #     self.html_document = _
         target_node = self.html_document.root_node
         self.build_mgraph__with__html_schema(target_node=target_node)
         return self.html_mgraph
@@ -72,5 +71,5 @@ class Html_Document_To__Html_MGraph(Type_Safe):
                     _.connect_to(node.tag, unique_link=True)
                     _.up()
 
-    def create_screenshot(self, config: Html_MGraph__Screenshot__Config):
+    def create_screenshot(self, config: Schema__Html_MGraph__Screenshot__Config):
         self.html_mgraph.html_mgraph__screenshot().create(config=config)

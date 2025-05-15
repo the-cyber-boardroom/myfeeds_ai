@@ -1,13 +1,10 @@
-# ========================================================================================
-# Node Configuration Classes
-# ========================================================================================
-
+# todo: see if we need this
 
 # ========================================================================================
 # Edge Configuration Classes
 # ========================================================================================
 
-# class Html_MGraph__Config__Edge(Type_Safe):
+# class Schema__tml_MGraph__Config__Edge(Type_Safe):
 #     """Base configuration class for all HTML edges"""
 #     color       : str = "#555555"  # Default gray color
 #     style       : str = "solid"    # Default solid line style

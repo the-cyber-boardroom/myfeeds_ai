@@ -1,5 +1,5 @@
-from mgraph_db.mgraph.MGraph import MGraph
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot import Html_MGraph__Screenshot
+from mgraph_db.mgraph.MGraph                                    import MGraph
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot  import Html_MGraph__Screenshot
 
 
 class Html_MGraph(MGraph):

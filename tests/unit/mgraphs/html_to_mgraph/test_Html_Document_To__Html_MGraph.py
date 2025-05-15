@@ -1,8 +1,9 @@
 from unittest                                                        import TestCase
 from myfeeds_ai.mgraphs.html_to_mgraph.Html_Document_To__Html_MGraph import Html_Document_To__Html_MGraph
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot       import Html_MGraph__Screenshot__Config
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot       import Schema__Html_MGraph__Screenshot__Config
 from osbot_utils.helpers.html.Html__To__Html_Document                import Html__To__Html_Document
 from osbot_utils.helpers.html.schemas.Schema__Html_Document          import Schema__Html_Document
+from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Env                                           import load_dotenv
 
 
@@ -14,7 +15,7 @@ class test_Html_Document_To__Html_MGraph(TestCase):
     #     cls.html = GET("https://www.linkedin.com")
 
     def setUp(self):
-        self.html          = HTML__EXAMPLE__WITH__FORM
+        self.html          = HTML__EXAMPLE__WITH__BOOTSTRAP# HTML__EXAMPLE__WITH__FORM
         self.title         = "Html Graph"
         self.html_document = Html__To__Html_Document(html=self.html).convert()
         self.html_to_graph = Html_Document_To__Html_MGraph(html_document=self.html_document)
@@ -24,7 +25,7 @@ class test_Html_Document_To__Html_MGraph(TestCase):
         if self.create_png:
             #pprint(self.html_to_graph.html_mgraph.data().stats())
             load_dotenv()
-            with Html_MGraph__Screenshot__Config() as _:
+            with Schema__Html_MGraph__Screenshot__Config() as _:
                 _.target_file          = f"{self.__class__.__name__}.png"
                 _.graph.title          = self.title
                 #_.graph.layout_engine = MGraph__Export__Dot__Layout__Engine.FDP
@@ -62,10 +63,18 @@ class test_Html_Document_To__Html_MGraph(TestCase):
 
 
     def test_convert__to__html_schema(self):
+        url = "https://docs.diniscruz.ai"
+        url = 'https://mvp.myfeeds.ai'
+        self.title = f'Schema for {url}'
+        self.create_png = False
         with self.html_to_graph as _:
-            #_.html = GET("https://docs.diniscruz.ai")
+            from osbot_utils.utils.Http import GET
+            _.html = GET(url)
+            _.html_document = Html__To__Html_Document(html=_.html).convert()
             _.convert__to__html_schema()
             assert type(_.html_document) is Schema__Html_Document
+
+
 
     def test_convert__simple_html(self):
         html               = HTML__EXAMPLE__WITH__PARAGRAPHS
