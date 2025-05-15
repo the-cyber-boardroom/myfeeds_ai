@@ -1,5 +1,6 @@
 from myfeeds_ai.data_feeds.models.Model__Data_Feeds__Providers                  import Model__Data_Feeds__Providers
 from myfeeds_ai.mgraphs.html_to_mgraph.Html_Document__To__Html_MGraph           import Html_Document__To__Html_MGraph
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_Document__To__Html_MGraph__Schema   import Html_Document__To__Html_MGraph__Schema
 from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph                              import Html_MGraph
 from myfeeds_ai.providers.cyber_security.docs_diniscruz_ai.files.Website__Files import Website__Files
 from myfeeds_ai.shared.http.Http__Request__Execute__Requests                    import Http__Request__Execute__Requests
@@ -64,6 +65,13 @@ class Docs_DinisCruz_Ai__Files(Type_Safe):
         html_mgraph   = Html_Document__To__Html_MGraph(html_document=html_document).convert()
         file.save_data(html_mgraph)
         return html_mgraph
+
+    def home_page__html_mgraph__schema(self):
+        html_document = self.home_page__html_document()
+        with Html_Document__To__Html_MGraph__Schema(html_document=html_document) as _:
+            _.convert()
+            png_bytes = _.screenshot()
+            return png_bytes
 
 
 

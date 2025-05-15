@@ -4,7 +4,6 @@ from osbot_utils.helpers.html.schemas.Schema__Html_Document                     
 from osbot_utils.helpers.html.schemas.Schema__Html_Node                                 import Schema__Html_Node
 from osbot_utils.type_safe.Type_Safe                                                    import Type_Safe
 
-
 class Html_Document__To__Html_MGraph__Schema(Type_Safe):
     html_document: Schema__Html_Document = None
     html_mgraph  : Html_MGraph
