@@ -48,8 +48,9 @@ class test_Docs_DinisCruz_Ai__Files(TestCase):
 
     def test_home_page__html_mgraph__schema(self):
         if self.create_png:
+            target_file = f'{self.__class__.__name__}.png'
             with self.docs_files as _:
-                png_bytes = _.home_page__html_mgraph__schema()
+                png_bytes = _.home_page__html_mgraph__schema(target_file=target_file)
                 assert len(png_bytes) > 100000
                 assert png_bytes.startswith(b'\x89PNG\r\n\x1a\n\x00\x00') is True
 

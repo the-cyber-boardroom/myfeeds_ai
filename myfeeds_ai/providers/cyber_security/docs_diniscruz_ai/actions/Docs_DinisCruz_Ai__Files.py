@@ -66,11 +66,11 @@ class Docs_DinisCruz_Ai__Files(Type_Safe):
         file.save_data(html_mgraph)
         return html_mgraph
 
-    def home_page__html_mgraph__schema(self):
+    def home_page__html_mgraph__schema(self, target_file=None):
         html_document = self.home_page__html_document()
         with Html_Document__To__Html_MGraph__Schema(html_document=html_document) as _:
             _.convert()
-            png_bytes = _.screenshot()
+            png_bytes = _.screenshot(target_file=target_file)
             return png_bytes
 
 
