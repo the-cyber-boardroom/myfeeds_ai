@@ -2,7 +2,7 @@
 from enum import Enum
 
 
-class Html_MGraph__Theme__Colors(Enum):
+class Schema__Html_MGraph__Theme__Colors(Enum):
     # Base colors
     WHITE     = "#ffffff"
     BLACK     = "#000000"

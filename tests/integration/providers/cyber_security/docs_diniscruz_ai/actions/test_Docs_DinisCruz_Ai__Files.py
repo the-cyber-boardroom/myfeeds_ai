@@ -6,6 +6,7 @@ from myfeeds_ai.providers.cyber_security.docs_diniscruz_ai.actions.Docs_DinisCru
 from myfeeds_ai.shared.http.schemas.Schema__Http__Action                                    import Schema__Http__Action
 from osbot_utils.helpers.html.schemas.Schema__Html_Document                                 import Schema__Html_Document
 from osbot_utils.helpers.safe_str.http.Safe_Str__Http__Text                                 import Safe_Str__Http__Text
+from osbot_utils.utils.Dev import pprint
 from osbot_utils.utils.Env                                                                  import not_in_github_action
 from osbot_utils.utils.Functions                                                            import method_source_code
 from tests.integration.data_feeds__objs_for_tests                                           import myfeeds_tests__setup_local_stack
@@ -17,6 +18,7 @@ class test_Docs_DinisCruz_Ai__Files(TestCase):
     def setUpClass(cls):
         myfeeds_tests__setup_local_stack()
         cls.docs_files = Docs_DinisCruz_Ai__Files()
+        cls.create_png = False
 
     def test__init__(self):
         with self.docs_files as _:
@@ -43,6 +45,15 @@ class test_Docs_DinisCruz_Ai__Files(TestCase):
     def test_home_page__html_mgraph(self):
         with self.docs_files as _:
             assert type(_.home_page__html_mgraph()) is Html_MGraph
+
+    def test_home_page__html_mgraph__schema(self):
+        if self.create_png:
+            target_file = f'{self.__class__.__name__}.png'
+            with self.docs_files as _:
+                png_bytes = _.home_page__html_mgraph__schema(target_file=target_file)
+                assert len(png_bytes) > 100000
+                assert png_bytes.startswith(b'\x89PNG\r\n\x1a\n\x00\x00') is True
+
 
     # this test confirms the behaviour of the requests.get() response object, when used in an if statement
     #      the reason was a bug that we had where the initial expectation was that calling "if response:" would result in

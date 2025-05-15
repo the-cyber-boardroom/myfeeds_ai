@@ -1,12 +1,12 @@
-from unittest                                                        import TestCase
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_Document_To__Html_MGraph import Html_Document_To__Html_MGraph
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot       import Html_MGraph__Screenshot__Config
-from osbot_utils.helpers.html.Html__To__Html_Document                import Html__To__Html_Document
-from osbot_utils.helpers.html.schemas.Schema__Html_Document          import Schema__Html_Document
-from osbot_utils.utils.Env                                           import load_dotenv
+from unittest                                                         import TestCase
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_Document__To__Html_MGraph import Html_Document__To__Html_MGraph
+from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Screenshot        import Schema__Html_MGraph__Screenshot__Config
+from osbot_utils.helpers.html.Html__To__Html_Document                 import Html__To__Html_Document
+from osbot_utils.helpers.html.schemas.Schema__Html_Document           import Schema__Html_Document
+from osbot_utils.utils.Env                                            import load_dotenv
 
 
-class test_Html_Document_To__Html_MGraph(TestCase):
+class test_Html_Document__To__Html_MGraph(TestCase):
 
     # @classmethod
     # def setUpClass(cls):
@@ -17,14 +17,14 @@ class test_Html_Document_To__Html_MGraph(TestCase):
         self.html          = HTML__EXAMPLE__WITH__FORM
         self.title         = "Html Graph"
         self.html_document = Html__To__Html_Document(html=self.html).convert()
-        self.html_to_graph = Html_Document_To__Html_MGraph(html_document=self.html_document)
+        self.html_to_graph = Html_Document__To__Html_MGraph(html_document=self.html_document)
         self.create_png    = False
 
     def tearDown(self):
         if self.create_png:
             #pprint(self.html_to_graph.html_mgraph.data().stats())
             load_dotenv()
-            with Html_MGraph__Screenshot__Config() as _:
+            with Schema__Html_MGraph__Screenshot__Config() as _:
                 _.target_file          = f"{self.__class__.__name__}.png"
                 _.graph.title          = self.title
                 #_.graph.layout_engine = MGraph__Export__Dot__Layout__Engine.FDP
@@ -36,7 +36,7 @@ class test_Html_Document_To__Html_MGraph(TestCase):
 
     def test__init__(self):
         with self.html_to_graph as _:
-            assert type(_)         is Html_Document_To__Html_MGraph
+            assert type(_) is Html_Document__To__Html_MGraph
             assert len(self.html)  == 421
             assert _.html_document        == self.html_document
             assert type(_.html_document)  is Schema__Html_Document
@@ -61,16 +61,10 @@ class test_Html_Document_To__Html_MGraph(TestCase):
             #pprint(_.html__dict)
 
 
-    def test_convert__to__html_schema(self):
-        with self.html_to_graph as _:
-            #_.html = GET("https://docs.diniscruz.ai")
-            _.convert__to__html_schema()
-            assert type(_.html_document) is Schema__Html_Document
-
     def test_convert__simple_html(self):
         html               = HTML__EXAMPLE__WITH__PARAGRAPHS
         html_document      = Html__To__Html_Document      (html          = html         ).convert()
-        self.html_to_graph = Html_Document_To__Html_MGraph(html_document = html_document)
+        self.html_to_graph = Html_Document__To__Html_MGraph(html_document = html_document)
         with self.html_to_graph as _:
             _.convert()
 

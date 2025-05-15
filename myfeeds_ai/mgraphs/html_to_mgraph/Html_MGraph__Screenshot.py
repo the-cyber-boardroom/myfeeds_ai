@@ -1,54 +1,15 @@
-from enum import Enum
-from typing import Dict, Type
-
-from mgraph_db.mgraph.actions.exporters.dot.models.MGraph__Export__Dot__Layout__Engine import \
-    MGraph__Export__Dot__Layout__Engine
-
-from mgraph_db.mgraph.MGraph                                        import MGraph
-from myfeeds_ai.mgraphs.html_to_mgraph.Html_MGraph__Config__Node    import Html_MGraph__Config__Node, HTML_MGRAPH__NODES__CONFIG
-from osbot_utils.type_safe.Type_Safe                                import Type_Safe
-from osbot_utils.utils.Dev                                          import pprint
-
-
-
-# ========================================================================================
-# Global Configuration
-# ========================================================================================
-
-class Html_MGraph__Screenshot__Config__Graph(Type_Safe):
-    """Graph-wide configuration settings"""
-    title           : str = "HTML MGraph"
-    title_font_size : int = 30
-    title_font_color: str = "#333333"
-    bg_color        : str = "#f8f9fa"
-    rank_sep        : float = 1.0           # vertical separation distance
-    node_sep        : float = 0.8           # distance between nodes
-    margin          : float = 0.2           # graph margin
-    layout_engine   : MGraph__Export__Dot__Layout__Engine = None
-    spring_constant : float = None          # string strength in FDP
-
-class Html_MGraph__Screenshot__Config(Type_Safe):                    # Main configuration class for HTML MGraph screenshots
-    graph         : Html_MGraph__Screenshot__Config__Graph
-    target_file   : str  = None
-    print_dot_code: bool = False
-    node_configs  : Dict[Type, Html_MGraph__Config__Node]             # Optional overrides for specific node/edge configs
-
-    def get_node_config(self, node_type: Type) -> Html_MGraph__Config__Node:    # Get configuration for a specific node type, with overrides if specified
-        if node_type in self.node_configs:
-            return self.node_configs[node_type]
-        return HTML_MGRAPH__NODES__CONFIG.get(node_type, Html_MGraph__Config__Node())
-
-# ========================================================================================
-# Screenshot Creation Class
-# ========================================================================================
+from mgraph_db.mgraph.MGraph                                                            import MGraph
+from myfeeds_ai.mgraphs.html_to_mgraph.schemas.Schema__Html_MGraph__Config__Node        import HTML_MGRAPH__NODES__CONFIG
+from myfeeds_ai.mgraphs.html_to_mgraph.schemas.Schema__Html_MGraph__Screenshot__Config  import Schema__Html_MGraph__Screenshot__Config
+from osbot_utils.type_safe.Type_Safe                                                    import Type_Safe
 
 class Html_MGraph__Screenshot(Type_Safe):
     html_mgraph: MGraph
-    create_png : bool = True
+    png_bytes  : bytes = None
 
-    def create(self, config: Html_MGraph__Screenshot__Config=None):          # Create a screenshot of the HTML graph with the specified configuration
+    def create(self, config: Schema__Html_MGraph__Screenshot__Config=None):          # Create a screenshot of the HTML graph with the specified configuration
         if not config:
-            config = Html_MGraph__Screenshot__Config()
+            config = Schema__Html_MGraph__Screenshot__Config()
         with self.html_mgraph.screenshot() as _:
             with _.export().export_dot() as dot:
 
@@ -85,4 +46,6 @@ class Html_MGraph__Screenshot(Type_Safe):
 
 
             # Save the graph
-            _.save_to(target_file=config.target_file).dot(print_dot_code=config.print_dot_code)
+            _.save_to(target_file=config.target_file)
+            self.png_bytes = _.dot(print_dot_code=config.print_dot_code)
+            return self.png_bytes
